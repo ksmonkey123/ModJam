@@ -9,3 +9,8 @@
 /LICENSE-fml.txt
 /Minecraft*
 /README.txt
+/.gradle/
+/.settings
+/.project
+/.classpath
+/org.ecli*
