@@ -6,10 +6,10 @@ import net.minecraft.item.Item;
 public class ItemDilithiumCrystal extends Item {
 
     public ItemDilithiumCrystal() {
-	setMaxStackSize(64);
-	setUnlocalizedName("dilithiumCrystal");
-	setTextureName(TrekTech.MODID + ":dilithium_crystal");
-	setCreativeTab(TrekTech.tabCustom);
+        setMaxStackSize(64);
+        setUnlocalizedName("dilithiumCrystal");
+        setTextureName(TrekTech.MODID + ":dilithium_crystal");
+        setCreativeTab(TrekTech.tabCustom);
     }
 
 }

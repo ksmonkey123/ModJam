@@ -20,39 +20,39 @@ import cpw.mods.fml.relauncher.SideOnly;
 @Mod(modid = TrekTech.MODID, version = TrekTech.VERSION)
 public class TrekTech {
 
-    public static final String MODID = "TrekTech";
-    public static final String VERSION = "0.1";
+	public static final String MODID = "TrekTech";
+	public static final String VERSION = "0.1";
 
-    public static CreativeTabs tabCustom = new CreativeTabs("tabTrekTech") {
-	@Override
-	@SideOnly(Side.CLIENT)
-	public Item getTabIconItem() {
-	    return TrekTech.itemStarFleetSymbol;
+	public static CreativeTabs tabCustom = new CreativeTabs("tabTrekTech") {
+		@Override
+		@SideOnly(Side.CLIENT)
+		public Item getTabIconItem() {
+			return TrekTech.itemStarFleetSymbol;
+		}
+	};
+
+	public static Item itemStarFleetSymbol = new ItemStarFleetSymbol();
+	public static Item itemDuraniumIngot = new DuraniumIngot();
+	public static Item itemDilithiumRaw = new ItemDilithiumRaw();
+	public static Item itemDilithiumCrystal = new ItemDilithiumCrystal();
+
+	public static Block blockDuraniumWall = new BlockDuraniumWall();
+
+	@EventHandler
+	public void init(FMLInitializationEvent event) {
+		GameRegistry.registerItem(itemStarFleetSymbol, "symbolStarFleet");
+		GameRegistry.registerItem(itemDuraniumIngot, "ingotDuranium");
+		GameRegistry.registerItem(itemDilithiumRaw, "dilithiumRaw");
+		GameRegistry.registerItem(itemDilithiumCrystal, "dilithiumCrystal");
+
+		GameRegistry.registerBlock(blockDuraniumWall, "duraniumWall");
+
+		registerRecipes();
 	}
-    };
 
-    public static Item itemStarFleetSymbol = new ItemStarFleetSymbol();
-    public static Item itemDuraniumIngot = new DuraniumIngot();
-    public static Item itemDilithiumRaw = new ItemDilithiumRaw();
-    public static Item itemDilithiumCrystal = new ItemDilithiumCrystal();
-
-    public static Block blockDuraniumWall = new BlockDuraniumWall();
-
-    @EventHandler
-    public void init(FMLInitializationEvent event) {
-	GameRegistry.registerItem(itemStarFleetSymbol, "symbolStarFleet");
-	GameRegistry.registerItem(itemDuraniumIngot, "ingotDuranium");
-	GameRegistry.registerItem(itemDilithiumRaw, "dilithiumRaw");
-	GameRegistry.registerItem(itemDilithiumCrystal, "dilithiumCrystal");
-
-	GameRegistry.registerBlock(blockDuraniumWall, "duraniumWall");
-	
-	registerRecepies();
-    }
-    
-    private static void registerRecepies() {
-	GameRegistry.addSmelting(Items.iron_ingot, new ItemStack(itemDuraniumIngot, 1), 0.5F); // TODO: Implement Real Recepy. This is a placeholder
-	GameRegistry.addSmelting(itemDilithiumRaw, new ItemStack(itemDilithiumCrystal, 1), 0.5F);
-    }
+	private static void registerRecipes() {
+		GameRegistry.addSmelting(Items.iron_ingot, new ItemStack(itemDuraniumIngot, 1), 0.5F); // TODO: Implement Real Recipe. This is a placeholder
+		GameRegistry.addSmelting(itemDilithiumRaw, new ItemStack(itemDilithiumCrystal, 1), 0.5F);
+	}
 
 }
