@@ -1,0 +1,11 @@
+/build.gradle
+/gradle*
+/bin
+/build
+/eclipse
+/logs
+/CREDITS-fml.txt
+/forge*
+/LICENSE-fml.txt
+/Minecraft*
+/README.txt
