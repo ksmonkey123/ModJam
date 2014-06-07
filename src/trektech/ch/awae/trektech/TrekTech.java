@@ -53,6 +53,9 @@ public class TrekTech {
 	private static void registerRecipes() {
 		GameRegistry.addSmelting(Items.iron_ingot, new ItemStack(itemDuraniumIngot, 1), 0.5F); // TODO: Implement Real Recipe. This is a placeholder
 		GameRegistry.addSmelting(itemDilithiumRaw, new ItemStack(itemDilithiumCrystal, 1), 0.5F);
+		GameRegistry.addShapedRecipe(new ItemStack(blockDuraniumWall, 4), "DDD", "DDD", 'D', new ItemStack(itemDuraniumIngot));
+		ItemStack duraniumWallStack = new ItemStack(blockDuraniumWall);
+		GameRegistry.addShapelessRecipe(new ItemStack(itemDuraniumIngot, 6), duraniumWallStack, duraniumWallStack, duraniumWallStack, duraniumWallStack);
 	}
 
 }
