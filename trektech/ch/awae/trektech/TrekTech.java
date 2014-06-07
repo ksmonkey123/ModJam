@@ -40,13 +40,14 @@ public class TrekTech {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
+		// ITEMS
 		GameRegistry.registerItem(itemStarFleetSymbol, "symbolStarFleet");
 		GameRegistry.registerItem(itemDuraniumIngot, "ingotDuranium");
 		GameRegistry.registerItem(itemDilithiumRaw, "dilithiumRaw");
 		GameRegistry.registerItem(itemDilithiumCrystal, "dilithiumCrystal");
-
+		// BLOCKS
 		GameRegistry.registerBlock(blockDuraniumWall, "duraniumWall");
-
+		// RECIPES
 		registerRecipes();
 	}
 
