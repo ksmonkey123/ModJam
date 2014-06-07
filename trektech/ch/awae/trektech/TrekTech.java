@@ -1,6 +1,8 @@
 package ch.awae.trektech;
 
 import ch.awae.trektech.blocks.BlockDuraniumWall;
+import ch.awae.trektech.blocks.BlockPlasmaPipe;
+import ch.awae.trektech.entities.TileEntityPlasmaPipe;
 import ch.awae.trektech.items.DuraniumIngot;
 import ch.awae.trektech.items.ItemDilithiumCrystal;
 import ch.awae.trektech.items.ItemDilithiumRaw;
@@ -12,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -37,6 +40,10 @@ public class TrekTech {
 	public static Item itemDilithiumCrystal = new ItemDilithiumCrystal();
 
 	public static Block blockDuraniumWall = new BlockDuraniumWall();
+	public static Block blockPlasmaPipe = new BlockPlasmaPipe();
+
+	@SidedProxy(clientSide = "ch.awae.trektech.ClientProxy", serverSide = "ch.awae.trektech.CommonProxy")
+	public static CommonProxy proxy;
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
@@ -47,16 +54,26 @@ public class TrekTech {
 		GameRegistry.registerItem(itemDilithiumCrystal, "dilithiumCrystal");
 		// BLOCKS
 		GameRegistry.registerBlock(blockDuraniumWall, "duraniumWall");
+		GameRegistry.registerBlock(blockPlasmaPipe, "plasmaPipe");
+		// ENTITIES
+		GameRegistry.registerTileEntity(TileEntityPlasmaPipe.class, "tilePlasmaPipe");
 		// RECIPES
 		registerRecipes();
+		proxy.registerRenderers();
 	}
 
 	private static void registerRecipes() {
-		GameRegistry.addSmelting(Items.iron_ingot, new ItemStack(itemDuraniumIngot, 1), 0.5F); // TODO: Implement Real Recipe. This is a placeholder
-		GameRegistry.addSmelting(itemDilithiumRaw, new ItemStack(itemDilithiumCrystal, 1), 0.5F);
-		GameRegistry.addShapedRecipe(new ItemStack(blockDuraniumWall, 4), "DDD", "DDD", 'D', new ItemStack(itemDuraniumIngot));
+		GameRegistry.addSmelting(Items.iron_ingot, new ItemStack(
+				itemDuraniumIngot, 1), 0.5F); // TODO: Implement Real Recipe.
+												// This is a placeholder
+		GameRegistry.addSmelting(itemDilithiumRaw, new ItemStack(
+				itemDilithiumCrystal, 1), 0.5F);
+		GameRegistry.addShapedRecipe(new ItemStack(blockDuraniumWall, 4),
+				"DDD", "DDD", 'D', new ItemStack(itemDuraniumIngot));
 		ItemStack duraniumWallStack = new ItemStack(blockDuraniumWall);
-		GameRegistry.addShapelessRecipe(new ItemStack(itemDuraniumIngot, 6), duraniumWallStack, duraniumWallStack, duraniumWallStack, duraniumWallStack);
+		GameRegistry.addShapelessRecipe(new ItemStack(itemDuraniumIngot, 6),
+				duraniumWallStack, duraniumWallStack, duraniumWallStack,
+				duraniumWallStack);
 	}
 
 }

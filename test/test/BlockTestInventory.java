@@ -22,4 +22,6 @@ public class BlockTestInventory extends BlockContainer {
 		return new TileEntityTestInventory();
 	}
 	
+	
+	
 }
