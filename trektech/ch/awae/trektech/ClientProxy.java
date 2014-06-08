@@ -8,7 +8,7 @@ public class ClientProxy extends CommonProxy {
 
 	@Override
 	public void registerRenderers() {
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPlasmaPipe.class, new TileEntityRendererBlockPipe());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPlasmaPipe.class, new TileEntityRendererBlockPipe(TileEntityPlasmaPipe.TEXTURE_ID, TileEntityPlasmaPipe.WIDTH));
 	}
 	
 }

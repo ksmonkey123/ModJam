@@ -6,6 +6,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityPlasmaPipe extends TileEntity {
 
+	public final static float WIDTH = 8F;
+	public final static int TEXTURE_ID = 0;
+	
 	public TileEntityPlasmaPipe() {
 	}
 
