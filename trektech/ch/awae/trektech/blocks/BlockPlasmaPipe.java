@@ -15,7 +15,6 @@ public class BlockPlasmaPipe extends BlockContainer {
 		setBlockName("plasmaPipe");
 		setCreativeTab(TrekTech.tabCustom);
 		useNeighborBrightness = true;
-		setLightOpacity(0);
 	}
 
 	@Override

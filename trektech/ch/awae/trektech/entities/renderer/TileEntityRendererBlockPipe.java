@@ -3,6 +3,7 @@ package ch.awae.trektech.entities.renderer;
 import org.lwjgl.opengl.GL11;
 
 import ch.awae.trektech.TrekTech;
+import ch.awae.trektech.entities.IPlasmaPipe;
 import ch.awae.trektech.entities.TileEntityPlasmaPipe;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -21,32 +22,31 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 	float pixel = 1F / 16F;
 	float textp = 1F / 64F;
 
-	float texX;
-	float texY;
-
-	float rad;
-
-	public TileEntityRendererBlockPipe(int textureID, float width) {
-		this.texX = (textureID / texturesPerRow) * textp;
-		this.texY = (textureID % texturesPerRow) * textp;
-		this.rad = width / 2F;
+	public TileEntityRendererBlockPipe() {
 	}
 
 	@Override
 	public void renderTileEntityAt(TileEntity ent, double transX,
 			double transY, double transZ, float f) {
-		TileEntityPlasmaPipe t = (TileEntityPlasmaPipe) ent;
+		if (!(ent instanceof IPlasmaPipe))
+			return;
+		IPlasmaPipe t = (IPlasmaPipe) ent;
+		float texX = (t.getTextureID() / texturesPerRow) * textp;
+		float texY = (t.getTextureID() % texturesPerRow) * textp;
+		float rad = t.getPipeRadius();
 		// SETUP
 		GL11.glTranslated(transX + 0.5, transY + 0.5, transZ + 0.5);
 		this.bindTexture(this.texture);
 		RenderHelper.disableStandardItemLighting();
 		// RENDER
-		renderCore();
-		for (ForgeDirection dir : ForgeDirection.values()) {
-			if (dir == ForgeDirection.UNKNOWN)
-				continue;
-			if (t.connectsTo(dir)) {
-				this.connect(dir);
+		renderCore(texX, texY, rad);
+		if (rad < 8) {
+			for (ForgeDirection dir : ForgeDirection.values()) {
+				if (dir == ForgeDirection.UNKNOWN)
+					continue;
+				if (t.connectsTo(dir)) {
+					this.renderConnection(texX, texY, rad, dir);
+				}
 			}
 		}
 		// CLEANUP
@@ -54,46 +54,23 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 		GL11.glTranslated(-transX - 0.5, -transY - 0.5, -transZ - 0.5);
 	}
 
-	private void renderCore() {
+	private void renderCore(float texX, float texY, float rad) {
 		Tessellator t = Tessellator.instance;
 		// SIDES
 		for (int i = 0; i < 4; i++) {
-			t.startDrawingQuads();
-			t.addVertexWithUV(-4 * pixel, -4 * pixel, -4 * pixel, texX + 12
-					* textp, texY + 12 * textp);
-			t.addVertexWithUV(-4 * pixel, 4 * pixel, -4 * pixel, texX + 12
-					* textp, texY + 4 * textp);
-			t.addVertexWithUV(4 * pixel, 4 * pixel, -4 * pixel, texX + 4
-					* textp, texY + 4 * textp);
-			t.addVertexWithUV(4 * pixel, -4 * pixel, -4 * pixel, texX + 4
-					* textp, texY + 12 * textp);
-			t.draw();
+			this.renderCap(t, texX, texY, rad);
 			GL11.glRotated(90, 0, 1, 0);
 		}
-		t.startDrawingQuads();
-		// TOP
-		t.addVertexWithUV(-4 * pixel, 4 * pixel, -4 * pixel, texX + 12 * textp,
-				texY + 12 * textp);
-		t.addVertexWithUV(-4 * pixel, 4 * pixel, 4 * pixel, texX + 12 * textp,
-				texY + 4 * textp);
-		t.addVertexWithUV(4 * pixel, 4 * pixel, 4 * pixel, texX + 4 * textp,
-				texY + 4 * textp);
-		t.addVertexWithUV(4 * pixel, 4 * pixel, -4 * pixel, texX + 4 * textp,
-				texY + 12 * textp);
-		// BOTTOM
-		t.addVertexWithUV(-4 * pixel, -4 * pixel, -4 * pixel,
-				texX + 12 * textp, texY + 12 * textp);
-		t.addVertexWithUV(4 * pixel, -4 * pixel, -4 * pixel, texX + 12 * textp,
-				texY + 4 * textp);
-		t.addVertexWithUV(4 * pixel, -4 * pixel, 4 * pixel, texX + 4 * textp,
-				texY + 4 * textp);
-		t.addVertexWithUV(-4 * pixel, -4 * pixel, 4 * pixel, texX + 4 * textp,
-				texY + 12 * textp);
+		GL11.glRotated(90, 1, 0, 0);
+		this.renderCap(t, texX, texY, rad);
+		GL11.glRotated(180, 1, 0, 0);
+		this.renderCap(t, texX, texY, rad);
+		GL11.glRotated(90, 1, 0, 0);
 		// FINISH
-		t.draw();
 	}
 
-	private void connect(ForgeDirection dir) {
+	private void renderConnection(float texX, float texY, float rad,
+			ForgeDirection dir) {
 		// rotate in place
 		switch (dir) {
 		case DOWN:
@@ -115,29 +92,15 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 			break;
 		}
 		Tessellator t = Tessellator.instance;
-		t.startDrawingQuads();
 		// draw end cap
-		t.addVertexWithUV(-8 * pixel, -4 * pixel, -4 * pixel,
-				texX + 12 * textp, texY + 12 * textp);
-		t.addVertexWithUV(-8 * pixel, -4 * pixel, 4 * pixel, texX + 12 * textp,
-				texY + 4 * textp);
-		t.addVertexWithUV(-8 * pixel, 4 * pixel, 4 * pixel, texX + 4 * textp,
-				texY + 4 * textp);
-		t.addVertexWithUV(-8 * pixel, 4 * pixel, -4 * pixel, texX + 4 * textp,
-				texY + 12 * textp);
-		t.draw();
+		GL11.glRotated(90, 0, -1, 0); // rotate to north
+		GL11.glTranslated(0, 0, -0.5 + rad); // shift in place
+		this.renderCap(t, texX, texY, rad);
+		GL11.glTranslated(0, 0, 0.5 - rad); // shift back
+		GL11.glRotated(90, 0, 1, 0); // rotate to west
 		// draw beams
 		for (int i = 0; i < 4; i++) {
-			t.startDrawingQuads();
-			t.addVertexWithUV(-8 * pixel, -4 * pixel, -4 * pixel, texX + 16
-					* textp, texY + 12 * textp);
-			t.addVertexWithUV(-8 * pixel, 4 * pixel, -4 * pixel, texX + 16
-					* textp, texY + 4 * textp);
-			t.addVertexWithUV(-4 * pixel, 4 * pixel, -4 * pixel, texX + 12
-					* textp, texY + 4 * textp);
-			t.addVertexWithUV(-4 * pixel, -4 * pixel, -4 * pixel, texX + 12
-					* textp, texY + 12 * textp);
-			t.draw();
+			this.renderBeam(t, texX, texY, rad);
 			GL11.glRotated(90, 1, 0, 0);
 		}
 		// finish: rotate back
@@ -161,4 +124,47 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 			break;
 		}
 	}
+
+	/**
+	 * renders a cap offset by <tt>-rad</tt> on the z axis facing (0, 0, 1)
+	 * 
+	 * @param t
+	 * @param texX
+	 * @param texY
+	 * @param rad
+	 */
+	private void renderCap(Tessellator t, float texX, float texY, float rad) {
+		t.startDrawingQuads();
+		t.addVertexWithUV(-4 * pixel, -4 * pixel, -4 * pixel,
+				texX + 12 * textp, texY + 12 * textp);
+		t.addVertexWithUV(-4 * pixel, 4 * pixel, -4 * pixel, texX + 12 * textp,
+				texY + 4 * textp);
+		t.addVertexWithUV(4 * pixel, 4 * pixel, -4 * pixel, texX + 4 * textp,
+				texY + 4 * textp);
+		t.addVertexWithUV(4 * pixel, -4 * pixel, -4 * pixel, texX + 4 * textp,
+				texY + 12 * textp);
+		t.draw();
+	}
+
+	/**
+	 * renders a beam facing (0, 0, 1)
+	 * 
+	 * @param t
+	 * @param texX
+	 * @param texY
+	 * @param rad
+	 */
+	private void renderBeam(Tessellator t, float texX, float texY, float rad) {
+		t.startDrawingQuads();
+		t.addVertexWithUV(-8 * pixel, -4 * pixel, -4 * pixel,
+				texX + 16 * textp, texY + 12 * textp);
+		t.addVertexWithUV(-8 * pixel, 4 * pixel, -4 * pixel, texX + 16 * textp,
+				texY + 4 * textp);
+		t.addVertexWithUV(-4 * pixel, 4 * pixel, -4 * pixel, texX + 12 * textp,
+				texY + 4 * textp);
+		t.addVertexWithUV(-4 * pixel, -4 * pixel, -4 * pixel,
+				texX + 12 * textp, texY + 12 * textp);
+		t.draw();
+	}
+
 }
