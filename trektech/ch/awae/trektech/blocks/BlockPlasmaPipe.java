@@ -10,17 +10,26 @@ import net.minecraft.world.World;
 
 public class BlockPlasmaPipe extends BlockContainer {
 
-	public BlockPlasmaPipe() {
+	private EnumPlasmaTypes plasma;
+	private int textureID;
+	private float radius;
+
+	public BlockPlasmaPipe(String id, EnumPlasmaTypes plasma, int textureID,
+			float radius) {
 		super(Material.rock);
 		setHardness(10);
-		setBlockName("plasmaPipe");
+		setBlockName(id);
 		setCreativeTab(TrekTech.tabCustom);
 		useNeighborBrightness = true;
+		this.textureID = textureID;
+		this.radius = radius;
+		this.plasma = plasma;
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityPlasmaPipe(EnumPlasmaTypes.NEUTRAL, 0, 4);
+		return new TileEntityPlasmaPipe(this.plasma, this.textureID,
+				this.radius);
 	}
 
 	@Override

@@ -3,10 +3,6 @@ package ch.awae.trektech;
 import test.BlockPlasmaTest;
 import ch.awae.trektech.blocks.BlockDuraniumWall;
 import ch.awae.trektech.blocks.BlockPlasmaPipe;
-import ch.awae.trektech.blocks.BlockPlasmaPipeEncased;
-import ch.awae.trektech.blocks.BlockPlasmaPipeEnergy;
-import ch.awae.trektech.blocks.BlockPlasmaPipeHighEnergy;
-import ch.awae.trektech.blocks.BlockPlasmaPipeMediumEnergy;
 import ch.awae.trektech.entities.TileEntityPlasmaPipe;
 import ch.awae.trektech.items.DuraniumIngot;
 import ch.awae.trektech.items.ItemDilithiumCrystal;
@@ -45,11 +41,22 @@ public class TrekTech {
 	public static Item itemDilithiumCrystal = new ItemDilithiumCrystal();
 
 	public static Block blockDuraniumWall = new BlockDuraniumWall();
-	public static Block blockPlasmaPipe = new BlockPlasmaPipe();
-	public static Block blockPlasmaPipeEnergy = new BlockPlasmaPipeEnergy();
-	public static Block blockPlasmaPipeMediumEnergy = new BlockPlasmaPipeMediumEnergy();
-	public static Block blockPlasmaPipeHighEnergy = new BlockPlasmaPipeHighEnergy();
-	public static Block blockPlasmaPipeEncased = new BlockPlasmaPipeEncased();
+	public static Block blockPlasmaPipe = new BlockPlasmaPipe("plasmaPipe",
+			EnumPlasmaTypes.NEUTRAL, 0, 4);
+	public static Block blockPlasmaPipeEnergy = new BlockPlasmaPipe(
+			"plasmaPipeEnergy", EnumPlasmaTypes.LOW, 1, 4);
+	public static Block blockPlasmaPipeMediumEnergy = new BlockPlasmaPipe(
+			"plasmaPipeMediumEnergy", EnumPlasmaTypes.MEDIUM, 3, 4);
+	public static Block blockPlasmaPipeHighEnergy = new BlockPlasmaPipe(
+			"plasmaPipeHighEnergy", EnumPlasmaTypes.HIGH, 4, 4);
+	public static Block blockPlasmaPipeEncased = new BlockPlasmaPipe(
+			"plasmaPipeEncased", EnumPlasmaTypes.NEUTRAL, 8, 8);
+	public static Block blockPlasmaPipeEnergyEncased = new BlockPlasmaPipe(
+			"plasmaPipeEnergyEncased", EnumPlasmaTypes.LOW, 9, 8);
+	public static Block blockPlasmaPipeMediumEnergyEncased = new BlockPlasmaPipe(
+			"plasmaPipeMediumEnergyEncased", EnumPlasmaTypes.MEDIUM, 11, 8);
+	public static Block blockPlasmaPipeHighEnergyEncased = new BlockPlasmaPipe(
+			"plasmaPipeHighEnergyEncased", EnumPlasmaTypes.HIGH, 12, 8);
 
 	@SidedProxy(clientSide = "ch.awae.trektech.ClientProxy", serverSide = "ch.awae.trektech.CommonProxy")
 	public static CommonProxy proxy;
@@ -70,6 +77,12 @@ public class TrekTech {
 		GameRegistry.registerBlock(blockPlasmaPipeHighEnergy,
 				"plasmaPipeHighEnergy");
 		GameRegistry.registerBlock(blockPlasmaPipeEncased, "plasmaPipeEncased");
+		GameRegistry.registerBlock(blockPlasmaPipeEnergyEncased,
+				"plasmaPipeEnergyEncased");
+		GameRegistry.registerBlock(blockPlasmaPipeMediumEnergyEncased,
+				"plasmaPipeMediumEnergyEncased");
+		GameRegistry.registerBlock(blockPlasmaPipeHighEnergyEncased,
+				"plasmaPipeHighEnergyEncased");
 		// ENTITIES
 		GameRegistry.registerTileEntity(TileEntityPlasmaPipe.class,
 				"tilePlasmaPipe");
