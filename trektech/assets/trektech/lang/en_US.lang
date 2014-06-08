@@ -1,6 +1,10 @@
 itemGroup.tabTrekTech=TrekTech
 
 tile.duraniumWall.name=Duranium Wall
+tile.plasmaPipe.name=Plasma Pipe (Neutral Plasma)
+tile.plasmaPipeEnergy.name=EPS Conduit Mk. 1 (Low Power)
+tile.plasmaPipeMediumEnergy.name=EPS Conduit Mk. 2 (Medium Power)
+tile.plasmaPipeHighEnergy.name=EPS Conduit Mk. 3 (High Power)
 
 item.duraniumIngot.name=Duranium Ingot
 item.dilithiumRaw.name=Raw Dilithium Crystal

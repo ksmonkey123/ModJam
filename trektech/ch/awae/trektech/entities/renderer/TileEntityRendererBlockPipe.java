@@ -31,8 +31,8 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 		if (!(ent instanceof IPlasmaPipe))
 			return;
 		IPlasmaPipe t = (IPlasmaPipe) ent;
-		float texX = (t.getTextureID() / texturesPerRow) * textp;
-		float texY = (t.getTextureID() % texturesPerRow) * textp;
+		float texX = (t.getTextureID() % texturesPerRow) * 16 * textp;
+		float texY = (t.getTextureID() / texturesPerRow) * 16 * textp;
 		float rad = t.getPipeRadius();
 		// SETUP
 		GL11.glTranslated(transX + 0.5, transY + 0.5, transZ + 0.5);
@@ -93,11 +93,11 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 		}
 		Tessellator t = Tessellator.instance;
 		// draw end cap
-		GL11.glRotated(90, 0, -1, 0); // rotate to north
-		GL11.glTranslated(0, 0, -0.5 + rad); // shift in place
+		GL11.glRotated(90, 0, 1, 0); // rotate to north
+		GL11.glTranslated(0, 0, -0.5 + rad * pixel); // shift in place
 		this.renderCap(t, texX, texY, rad);
-		GL11.glTranslated(0, 0, 0.5 - rad); // shift back
-		GL11.glRotated(90, 0, 1, 0); // rotate to west
+		GL11.glTranslated(0, 0, 0.5 - rad * pixel); // shift back
+		GL11.glRotated(90, 0, -1, 0); // rotate to west
 		// draw beams
 		for (int i = 0; i < 4; i++) {
 			this.renderBeam(t, texX, texY, rad);
@@ -135,14 +135,14 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 	 */
 	private void renderCap(Tessellator t, float texX, float texY, float rad) {
 		t.startDrawingQuads();
-		t.addVertexWithUV(-4 * pixel, -4 * pixel, -4 * pixel,
-				texX + 12 * textp, texY + 12 * textp);
-		t.addVertexWithUV(-4 * pixel, 4 * pixel, -4 * pixel, texX + 12 * textp,
-				texY + 4 * textp);
-		t.addVertexWithUV(4 * pixel, 4 * pixel, -4 * pixel, texX + 4 * textp,
-				texY + 4 * textp);
-		t.addVertexWithUV(4 * pixel, -4 * pixel, -4 * pixel, texX + 4 * textp,
-				texY + 12 * textp);
+		t.addVertexWithUV(-rad * pixel, -rad * pixel, -rad * pixel, texX
+				+ (8 + rad) * textp, texY + (8 + rad) * textp);
+		t.addVertexWithUV(-rad * pixel, rad * pixel, -rad * pixel, texX
+				+ (8 + rad) * textp, texY + (8 - rad) * textp);
+		t.addVertexWithUV(rad * pixel, rad * pixel, -rad * pixel, texX
+				+ (8 - rad) * textp, texY + (8 - rad) * textp);
+		t.addVertexWithUV(rad * pixel, -rad * pixel, -rad * pixel, texX
+				+ (8 - rad) * textp, texY + (8 + rad) * textp);
 		t.draw();
 	}
 
@@ -156,14 +156,14 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 	 */
 	private void renderBeam(Tessellator t, float texX, float texY, float rad) {
 		t.startDrawingQuads();
-		t.addVertexWithUV(-8 * pixel, -4 * pixel, -4 * pixel,
-				texX + 16 * textp, texY + 12 * textp);
-		t.addVertexWithUV(-8 * pixel, 4 * pixel, -4 * pixel, texX + 16 * textp,
-				texY + 4 * textp);
-		t.addVertexWithUV(-4 * pixel, 4 * pixel, -4 * pixel, texX + 12 * textp,
-				texY + 4 * textp);
-		t.addVertexWithUV(-4 * pixel, -4 * pixel, -4 * pixel,
-				texX + 12 * textp, texY + 12 * textp);
+		t.addVertexWithUV(-8 * pixel, -rad * pixel, -rad * pixel, texX + 16
+				* textp, texY + (8 + rad) * textp);
+		t.addVertexWithUV(-8 * pixel, rad * pixel, -rad * pixel, texX + 16
+				* textp, texY + (8 - rad) * textp);
+		t.addVertexWithUV(-rad * pixel, rad * pixel, -rad * pixel, texX
+				+ (8 + rad) * textp, texY + (8 - rad) * textp);
+		t.addVertexWithUV(-rad * pixel, -rad * pixel, -rad * pixel, texX
+				+ (8 + rad) * textp, texY + (8 + rad) * textp);
 		t.draw();
 	}
 

@@ -8,19 +8,19 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class BlockPlasmaPipe extends BlockContainer {
+public class BlockPlasmaPipeEncased extends BlockContainer {
 
-	public BlockPlasmaPipe() {
+	public BlockPlasmaPipeEncased() {
 		super(Material.rock);
 		setHardness(10);
-		setBlockName("plasmaPipe");
+		setBlockName("plasmaPipeEncased");
 		setCreativeTab(TrekTech.tabCustom);
 		useNeighborBrightness = true;
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityPlasmaPipe(EnumPlasmaTypes.NEUTRAL, 0, 4);
+		return new TileEntityPlasmaPipe(EnumPlasmaTypes.NEUTRAL, 8, 8);
 	}
 
 	@Override

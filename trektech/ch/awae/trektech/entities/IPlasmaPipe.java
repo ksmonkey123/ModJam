@@ -1,5 +1,6 @@
 package ch.awae.trektech.entities;
 
+import ch.awae.trektech.EnumPlasmaTypes;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public interface IPlasmaPipe {
@@ -29,5 +30,6 @@ public interface IPlasmaPipe {
 	 * @return the pipe radius
 	 */
 	public float getPipeRadius();
+	
 
 }

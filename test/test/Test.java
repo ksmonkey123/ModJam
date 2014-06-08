@@ -26,11 +26,14 @@ public class Test {
 	};
 	
 	public static BlockTestInventory blockTestInventory = new BlockTestInventory();
+	public static BlockPlasmaTest blockPlasmaTest = new BlockPlasmaTest();
 	
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		GameRegistry.registerBlock(blockTestInventory, "testInventory");
-		GameRegistry.registerTileEntity(TileEntityTestInventory.class, "testEnt");
+		//GameRegistry.registerBlock(blockTestInventory, "testInventory");
+		//GameRegistry.registerBlock(blockPlasmaTest, "plasmaTest");
+		//GameRegistry.registerTileEntity(TileEntityTestInventory.class, "testEnt");
+		//GameRegistry.registerTileEntity(TileEntityPlasma.class, "plasmaEnt");
 	}
 	
 }

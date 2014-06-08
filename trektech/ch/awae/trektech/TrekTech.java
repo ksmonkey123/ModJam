@@ -1,7 +1,12 @@
 package ch.awae.trektech;
 
+import test.BlockPlasmaTest;
 import ch.awae.trektech.blocks.BlockDuraniumWall;
 import ch.awae.trektech.blocks.BlockPlasmaPipe;
+import ch.awae.trektech.blocks.BlockPlasmaPipeEncased;
+import ch.awae.trektech.blocks.BlockPlasmaPipeEnergy;
+import ch.awae.trektech.blocks.BlockPlasmaPipeHighEnergy;
+import ch.awae.trektech.blocks.BlockPlasmaPipeMediumEnergy;
 import ch.awae.trektech.entities.TileEntityPlasmaPipe;
 import ch.awae.trektech.items.DuraniumIngot;
 import ch.awae.trektech.items.ItemDilithiumCrystal;
@@ -41,6 +46,10 @@ public class TrekTech {
 
 	public static Block blockDuraniumWall = new BlockDuraniumWall();
 	public static Block blockPlasmaPipe = new BlockPlasmaPipe();
+	public static Block blockPlasmaPipeEnergy = new BlockPlasmaPipeEnergy();
+	public static Block blockPlasmaPipeMediumEnergy = new BlockPlasmaPipeMediumEnergy();
+	public static Block blockPlasmaPipeHighEnergy = new BlockPlasmaPipeHighEnergy();
+	public static Block blockPlasmaPipeEncased = new BlockPlasmaPipeEncased();
 
 	@SidedProxy(clientSide = "ch.awae.trektech.ClientProxy", serverSide = "ch.awae.trektech.CommonProxy")
 	public static CommonProxy proxy;
@@ -55,8 +64,16 @@ public class TrekTech {
 		// BLOCKS
 		GameRegistry.registerBlock(blockDuraniumWall, "duraniumWall");
 		GameRegistry.registerBlock(blockPlasmaPipe, "plasmaPipe");
+		GameRegistry.registerBlock(blockPlasmaPipeEnergy, "plasmaPipeEnergy");
+		GameRegistry.registerBlock(blockPlasmaPipeMediumEnergy,
+				"plasmaPipeMediumEnergy");
+		GameRegistry.registerBlock(blockPlasmaPipeHighEnergy,
+				"plasmaPipeHighEnergy");
+		GameRegistry.registerBlock(blockPlasmaPipeEncased, "plasmaPipeEncased");
 		// ENTITIES
-		GameRegistry.registerTileEntity(TileEntityPlasmaPipe.class, "tilePlasmaPipe");
+		GameRegistry.registerTileEntity(TileEntityPlasmaPipe.class,
+				"tilePlasmaPipe");
+
 		// RECIPES
 		registerRecipes();
 		proxy.registerRenderers();
