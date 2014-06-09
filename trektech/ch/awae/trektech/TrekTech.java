@@ -42,21 +42,22 @@ public class TrekTech {
 
 	public static Block blockDuraniumWall = new BlockDuraniumWall();
 	public static Block blockPlasmaPipe = new BlockPlasmaPipe("plasmaPipe",
-			EnumPlasmaTypes.NEUTRAL, 0, 4);
+			EnumPlasmaTypes.NEUTRAL, "conduit", 4);
 	public static Block blockPlasmaPipeEnergy = new BlockPlasmaPipe(
-			"plasmaPipeEnergy", EnumPlasmaTypes.LOW, 1, 4);
+			"plasmaPipeEnergyA", EnumPlasmaTypes.LOW, "conduit_energy", 4);
 	public static Block blockPlasmaPipeMediumEnergy = new BlockPlasmaPipe(
-			"plasmaPipeMediumEnergy", EnumPlasmaTypes.MEDIUM, 3, 4);
+			"plasmaPipeEnergyB", EnumPlasmaTypes.MEDIUM, "conduit_medium_energy", 5);
 	public static Block blockPlasmaPipeHighEnergy = new BlockPlasmaPipe(
-			"plasmaPipeHighEnergy", EnumPlasmaTypes.HIGH, 4, 4);
+			"plasmaPipeEnergyC", EnumPlasmaTypes.HIGH, "conduit_high_energy", 6);
 	public static Block blockPlasmaPipeEncased = new BlockPlasmaPipe(
 			"plasmaPipeEncased", EnumPlasmaTypes.NEUTRAL, "conduit_encased");
 	public static Block blockPlasmaPipeEnergyEncased = new BlockPlasmaPipe(
-			"plasmaPipeEnergyEncased", EnumPlasmaTypes.LOW, 9, 8);
+			"plasmaPipeEncasedEnergyA", EnumPlasmaTypes.LOW,
+			"conduit_encased_energy");
 	public static Block blockPlasmaPipeMediumEnergyEncased = new BlockPlasmaPipe(
-			"plasmaPipeMediumEnergyEncased", EnumPlasmaTypes.MEDIUM, 11, 8);
+			"plasmaPipeEncasedEnergyB", EnumPlasmaTypes.MEDIUM, "conduit_encased_medium_energy");
 	public static Block blockPlasmaPipeHighEnergyEncased = new BlockPlasmaPipe(
-			"plasmaPipeHighEnergyEncased", EnumPlasmaTypes.HIGH, 12, 8);
+			"plasmaPipeEncasedEnergyC", EnumPlasmaTypes.HIGH, "conduit_encased_high_energy");
 
 	@SidedProxy(clientSide = "ch.awae.trektech.ClientProxy", serverSide = "ch.awae.trektech.CommonProxy")
 	public static CommonProxy proxy;
@@ -71,18 +72,18 @@ public class TrekTech {
 		// BLOCKS
 		GameRegistry.registerBlock(blockDuraniumWall, "duraniumWall");
 		GameRegistry.registerBlock(blockPlasmaPipe, "plasmaPipe");
-		GameRegistry.registerBlock(blockPlasmaPipeEnergy, "plasmaPipeEnergy");
+		GameRegistry.registerBlock(blockPlasmaPipeEnergy, "plasmaPipeEnergyA");
 		GameRegistry.registerBlock(blockPlasmaPipeMediumEnergy,
-				"plasmaPipeMediumEnergy");
+				"plasmaPipeEnergyB");
 		GameRegistry.registerBlock(blockPlasmaPipeHighEnergy,
-				"plasmaPipeHighEnergy");
+				"plasmaPipeEnergyC");
 		GameRegistry.registerBlock(blockPlasmaPipeEncased, "plasmaPipeEncased");
 		GameRegistry.registerBlock(blockPlasmaPipeEnergyEncased,
-				"plasmaPipeEnergyEncased");
+				"plasmaPipeEncasedEnergyA");
 		GameRegistry.registerBlock(blockPlasmaPipeMediumEnergyEncased,
-				"plasmaPipeMediumEnergyEncased");
+				"plasmaPipeEncasedEnergyB");
 		GameRegistry.registerBlock(blockPlasmaPipeHighEnergyEncased,
-				"plasmaPipeHighEnergyEncased");
+				"plasmaPipeEncasedEnergyC");
 		// ENTITIES
 		GameRegistry.registerTileEntity(TileEntityPlasmaPipe.class,
 				"tilePlasmaPipe");

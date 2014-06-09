@@ -14,13 +14,10 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 
-	ResourceLocation texture = new ResourceLocation(TrekTech.MODID
-			+ ":textures/blocks/conduits.png");
-
 	int texturesPerRow = 4;
 
 	float pixel = 1F / 16F;
-	float textp = 1F / 64F;
+	float textp = 1F / 16F;
 
 	public TileEntityRendererBlockPipe() {
 	}
@@ -31,14 +28,14 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 		if (!(ent instanceof IPlasmaPipe))
 			return;
 		IPlasmaPipe t = (IPlasmaPipe) ent;
-		float texX = (t.getTextureID() % texturesPerRow) * 16 * textp;
-		float texY = (t.getTextureID() / texturesPerRow) * 16 * textp;
+		float texX = 0;
+		float texY = 0;
 		float rad = t.getPipeRadius();
 		if (rad == 0)
 			return;
 		// SETUP
 		GL11.glTranslated(transX + 0.5, transY + 0.5, transZ + 0.5);
-		this.bindTexture(this.texture);
+		this.bindTexture(t.getTexture());
 		RenderHelper.disableStandardItemLighting();
 		// RENDER
 		renderCore(texX, texY, rad);

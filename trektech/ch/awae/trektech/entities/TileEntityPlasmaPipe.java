@@ -1,8 +1,10 @@
 package ch.awae.trektech.entities;
 
 import ch.awae.trektech.EnumPlasmaTypes;
+import ch.awae.trektech.TrekTech;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -12,13 +14,14 @@ public class TileEntityPlasmaPipe extends TileEntity implements IPlasmaPipe,
 	private short maxPlasma = 1000;
 	private short currentPlasma = 0;
 	private EnumPlasmaTypes plasmaType;
-	private int textureID;
+	private ResourceLocation texture;
 	private float radius;
 
-	public TileEntityPlasmaPipe(EnumPlasmaTypes plasma, int textureID,
+	public TileEntityPlasmaPipe(EnumPlasmaTypes plasma, String texture,
 			float radius) {
 		this.plasmaType = plasma;
-		this.textureID = textureID;
+		this.texture = new ResourceLocation(TrekTech.MODID
+				+ ":textures/blocks/" + texture + ".png");
 		this.radius = radius;
 	}
 
@@ -50,13 +53,13 @@ public class TileEntityPlasmaPipe extends TileEntity implements IPlasmaPipe,
 	}
 
 	@Override
-	public int getTextureID() {
-		return this.textureID;
+	public float getPipeRadius() {
+		return this.radius;
 	}
 
 	@Override
-	public float getPipeRadius() {
-		return this.radius;
+	public ResourceLocation getTexture() {
+		return this.texture;
 	}
 
 	// -- IPlasmaConnection --

@@ -1,6 +1,7 @@
 package ch.awae.trektech.entities;
 
 import ch.awae.trektech.EnumPlasmaTypes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public interface IPlasmaPipe {
@@ -17,19 +18,12 @@ public interface IPlasmaPipe {
 	public boolean connectsTo(ForgeDirection direction);
 
 	/**
-	 * The ID (index) of the pipe texture in the pipe texture file. The textures
-	 * are indexed in standard reading direction (Left-Right, Top-Down)
-	 * 
-	 * @return the texture ID
-	 */
-	public int getTextureID();
-
-	/**
 	 * The radius of the pipe in pixels. Note that a full block is 16px.
 	 * 
 	 * @return the pipe radius
 	 */
 	public float getPipeRadius();
 	
+	public ResourceLocation getTexture();
 
 }
