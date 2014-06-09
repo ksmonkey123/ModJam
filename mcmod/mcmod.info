@@ -3,7 +3,7 @@
     "modList": [
         {
             "modid": "mcmod",
-            "name": "My Test Mod",
+            "name": "§4lMy Test Mod",
             "description": "A scrambled assembly line of tutorial informational implementation content.",
             "mcversion": "${mcversion}",
             "version": "0.2",
