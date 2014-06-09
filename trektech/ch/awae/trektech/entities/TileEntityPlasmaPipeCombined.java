@@ -4,6 +4,9 @@ import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.Properties;
 import ch.awae.trektech.TrekTech;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -27,6 +30,7 @@ public class TileEntityPlasmaPipeCombined extends TileEntity implements
 
 	@Override
 	public void writeToNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
 		tag.setShort("Plasma1", this.currentNeutralPlasma);
 		tag.setShort("Plasma2", this.currentLowPlasma);
 	}
@@ -35,6 +39,21 @@ public class TileEntityPlasmaPipeCombined extends TileEntity implements
 	public void readFromNBT(NBTTagCompound tag) {
 		this.currentNeutralPlasma = tag.getShort("Plasma1");
 		this.currentLowPlasma = tag.getShort("Plasma2");
+		super.writeToNBT(tag);
+	}
+
+	public Packet getDescriptionPacket() {
+		NBTTagCompound nbtTag = new NBTTagCompound();
+		this.writeToNBT(nbtTag);
+		System.out.println("gotPacket");
+		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord,
+				this.zCoord, 1, nbtTag);
+	}
+
+	@Override
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+		System.out.println("gotPacket");
+		readFromNBT(pkt.func_148857_g());
 	}
 
 	@Override
@@ -69,6 +88,7 @@ public class TileEntityPlasmaPipeCombined extends TileEntity implements
 						halfDiff);
 			}
 		}
+		this.markDirty();
 	}
 
 	// -- IPlasmaPipe --
