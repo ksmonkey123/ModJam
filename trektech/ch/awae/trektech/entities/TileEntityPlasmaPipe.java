@@ -1,6 +1,7 @@
 package ch.awae.trektech.entities;
 
 import ch.awae.trektech.EnumPlasmaTypes;
+import ch.awae.trektech.Properties;
 import ch.awae.trektech.TrekTech;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -37,7 +38,25 @@ public class TileEntityPlasmaPipe extends TileEntity implements IPlasmaPipe,
 
 	@Override
 	public void updateEntity() {
-		// TODO: implement entity tick
+		for (ForgeDirection d : ForgeDirection.values()) {
+			if (d == ForgeDirection.UNKNOWN)
+				continue;
+			TileEntity entity = worldObj.getTileEntity(this.xCoord + d.offsetX,
+					this.yCoord + d.offsetY, this.zCoord + d.offsetZ);
+			if (entity == null || !(entity instanceof IPlasmaConnection))
+				continue;
+			IPlasmaConnection t = (IPlasmaConnection) entity;
+			// make actual transfer
+			if (t.acceptsPlasma(this.plasmaType)) {
+				short halfDiff = (short) Math.min(
+						Properties.PLASMA_TRANSFER_SPEED,
+						(this.currentPlasma - t
+								.getCurrentPlasmaAmount(this.plasmaType)) / 2);
+				if (halfDiff <= 0)
+					continue;
+				this.currentPlasma -= t.fillPlasma(this.plasmaType, halfDiff);
+			}
+		}
 	}
 
 	// -- IPlasmaPipe --
