@@ -13,6 +13,7 @@ public class BlockPlasmaPipe extends BlockContainer {
 	private EnumPlasmaTypes plasma;
 	private int textureID;
 	private float radius;
+	private boolean useRenderer;
 
 	public BlockPlasmaPipe(String id, EnumPlasmaTypes plasma, int textureID,
 			float radius) {
@@ -20,10 +21,24 @@ public class BlockPlasmaPipe extends BlockContainer {
 		setHardness(10);
 		setBlockName(id);
 		setCreativeTab(TrekTech.tabCustom);
-		useNeighborBrightness = true;
+		//useNeighborBrightness = true;
 		this.textureID = textureID;
 		this.radius = radius;
 		this.plasma = plasma;
+		this.useRenderer = true;
+		setLightOpacity(0);
+	}
+
+	public BlockPlasmaPipe(String id, EnumPlasmaTypes plasma, String texture) {
+		super(Material.rock);
+		setHardness(15);
+		setBlockName(id);
+		setCreativeTab(TrekTech.tabCustom);
+		this.useRenderer = false;
+		this.plasma = plasma;
+		this.textureID = 15;
+		this.radius = 0;
+		setBlockTextureName(TrekTech.MODID + ":" + texture);
 	}
 
 	@Override
@@ -34,17 +49,17 @@ public class BlockPlasmaPipe extends BlockContainer {
 
 	@Override
 	public boolean renderAsNormalBlock() {
-		return false;
+		return !this.useRenderer;
 	}
 
 	@Override
 	public int getRenderType() {
-		return -1;
+		return this.useRenderer ? -1 : super.getRenderType();
 	}
 
 	@Override
 	public boolean isOpaqueCube() {
-		return false;
+		return !this.useRenderer;
 	}
 
 }

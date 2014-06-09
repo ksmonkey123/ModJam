@@ -34,6 +34,8 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 		float texX = (t.getTextureID() % texturesPerRow) * 16 * textp;
 		float texY = (t.getTextureID() / texturesPerRow) * 16 * textp;
 		float rad = t.getPipeRadius();
+		if (rad == 0)
+			return;
 		// SETUP
 		GL11.glTranslated(transX + 0.5, transY + 0.5, transZ + 0.5);
 		this.bindTexture(this.texture);
@@ -94,9 +96,7 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 		Tessellator t = Tessellator.instance;
 		// draw end cap
 		GL11.glRotated(90, 0, 1, 0); // rotate to north
-		GL11.glTranslated(0, 0, -0.5 + rad * pixel); // shift in place
-		this.renderCap(t, texX, texY, rad);
-		GL11.glTranslated(0, 0, 0.5 - rad * pixel); // shift back
+		this.renderCap(t, texX, texY, 0.5F);
 		GL11.glRotated(90, 0, -1, 0); // rotate to west
 		// draw beams
 		for (int i = 0; i < 4; i++) {

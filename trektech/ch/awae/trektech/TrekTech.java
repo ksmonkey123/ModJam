@@ -50,7 +50,7 @@ public class TrekTech {
 	public static Block blockPlasmaPipeHighEnergy = new BlockPlasmaPipe(
 			"plasmaPipeHighEnergy", EnumPlasmaTypes.HIGH, 4, 4);
 	public static Block blockPlasmaPipeEncased = new BlockPlasmaPipe(
-			"plasmaPipeEncased", EnumPlasmaTypes.NEUTRAL, 8, 8);
+			"plasmaPipeEncased", EnumPlasmaTypes.NEUTRAL, "conduit_encased");
 	public static Block blockPlasmaPipeEnergyEncased = new BlockPlasmaPipe(
 			"plasmaPipeEnergyEncased", EnumPlasmaTypes.LOW, 9, 8);
 	public static Block blockPlasmaPipeMediumEnergyEncased = new BlockPlasmaPipe(
