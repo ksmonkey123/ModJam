@@ -57,13 +57,13 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 		Tessellator t = Tessellator.instance;
 		// SIDES
 		for (int i = 0; i < 4; i++) {
-			this.renderCap(t, texX, texY, rad);
+			this.renderCap(t, texX, texY, rad, rad);
 			GL11.glRotated(90, 0, 1, 0);
 		}
 		GL11.glRotated(90, 1, 0, 0);
-		this.renderCap(t, texX, texY, rad);
+		this.renderCap(t, texX, texY, rad, rad);
 		GL11.glRotated(180, 1, 0, 0);
-		this.renderCap(t, texX, texY, rad);
+		this.renderCap(t, texX, texY, rad, rad);
 		GL11.glRotated(90, 1, 0, 0);
 		// FINISH
 	}
@@ -93,7 +93,7 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 		Tessellator t = Tessellator.instance;
 		// draw end cap
 		GL11.glRotated(90, 0, 1, 0); // rotate to north
-		this.renderCap(t, texX, texY, 0.5F);
+		this.renderCap(t, texX, texY, rad, 8);
 		GL11.glRotated(90, 0, -1, 0); // rotate to west
 		// draw beams
 		for (int i = 0; i < 4; i++) {
@@ -130,15 +130,16 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 	 * @param texY
 	 * @param rad
 	 */
-	private void renderCap(Tessellator t, float texX, float texY, float rad) {
+	private void renderCap(Tessellator t, float texX, float texY, float rad,
+			float offset) {
 		t.startDrawingQuads();
-		t.addVertexWithUV(-rad * pixel, -rad * pixel, -rad * pixel, texX
+		t.addVertexWithUV(-rad * pixel, -rad * pixel, -offset * pixel, texX
 				+ (8 + rad) * textp, texY + (8 + rad) * textp);
-		t.addVertexWithUV(-rad * pixel, rad * pixel, -rad * pixel, texX
+		t.addVertexWithUV(-rad * pixel, rad * pixel, -offset * pixel, texX
 				+ (8 + rad) * textp, texY + (8 - rad) * textp);
-		t.addVertexWithUV(rad * pixel, rad * pixel, -rad * pixel, texX
+		t.addVertexWithUV(rad * pixel, rad * pixel, -offset * pixel, texX
 				+ (8 - rad) * textp, texY + (8 - rad) * textp);
-		t.addVertexWithUV(rad * pixel, -rad * pixel, -rad * pixel, texX
+		t.addVertexWithUV(rad * pixel, -rad * pixel, -offset * pixel, texX
 				+ (8 - rad) * textp, texY + (8 + rad) * textp);
 		t.draw();
 	}

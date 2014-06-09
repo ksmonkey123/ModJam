@@ -3,12 +3,16 @@ package ch.awae.trektech;
 import test.BlockPlasmaTest;
 import ch.awae.trektech.blocks.BlockDuraniumWall;
 import ch.awae.trektech.blocks.BlockPlasmaPipe;
+import ch.awae.trektech.blocks.BlockPlasmaPipeCombined;
 import ch.awae.trektech.entities.TileEntityPlasmaPipe;
+import ch.awae.trektech.entities.TileEntityPlasmaPipeCombined;
 import ch.awae.trektech.items.DuraniumIngot;
 import ch.awae.trektech.items.ItemDilithiumCrystal;
 import ch.awae.trektech.items.ItemDilithiumRaw;
+import ch.awae.trektech.items.ItemPlasmaContainmentRing;
 import ch.awae.trektech.items.ItemStarFleetSymbol;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -39,6 +43,7 @@ public class TrekTech {
 	public static Item itemDuraniumIngot = new DuraniumIngot();
 	public static Item itemDilithiumRaw = new ItemDilithiumRaw();
 	public static Item itemDilithiumCrystal = new ItemDilithiumCrystal();
+	public static Item itemPlasmaContainmentRing = new ItemPlasmaContainmentRing();
 
 	public static Block blockDuraniumWall = new BlockDuraniumWall();
 	public static Block blockPlasmaPipe = new BlockPlasmaPipe("plasmaPipe",
@@ -46,7 +51,8 @@ public class TrekTech {
 	public static Block blockPlasmaPipeEnergy = new BlockPlasmaPipe(
 			"plasmaPipeEnergyA", EnumPlasmaTypes.LOW, "conduit_energy", 4);
 	public static Block blockPlasmaPipeMediumEnergy = new BlockPlasmaPipe(
-			"plasmaPipeEnergyB", EnumPlasmaTypes.MEDIUM, "conduit_medium_energy", 5);
+			"plasmaPipeEnergyB", EnumPlasmaTypes.MEDIUM,
+			"conduit_medium_energy", 5);
 	public static Block blockPlasmaPipeHighEnergy = new BlockPlasmaPipe(
 			"plasmaPipeEnergyC", EnumPlasmaTypes.HIGH, "conduit_high_energy", 6);
 	public static Block blockPlasmaPipeEncased = new BlockPlasmaPipe(
@@ -55,9 +61,15 @@ public class TrekTech {
 			"plasmaPipeEncasedEnergyA", EnumPlasmaTypes.LOW,
 			"conduit_encased_energy");
 	public static Block blockPlasmaPipeMediumEnergyEncased = new BlockPlasmaPipe(
-			"plasmaPipeEncasedEnergyB", EnumPlasmaTypes.MEDIUM, "conduit_encased_medium_energy");
+			"plasmaPipeEncasedEnergyB", EnumPlasmaTypes.MEDIUM,
+			"conduit_encased_medium_energy");
 	public static Block blockPlasmaPipeHighEnergyEncased = new BlockPlasmaPipe(
-			"plasmaPipeEncasedEnergyC", EnumPlasmaTypes.HIGH, "conduit_encased_high_energy");
+			"plasmaPipeEncasedEnergyC", EnumPlasmaTypes.HIGH,
+			"conduit_encased_high_energy");
+	public static Block blockPlasmaPipeCombined = new BlockPlasmaPipeCombined(
+			false);
+	public static Block blockPlasmaPipeCombinedEncased = new BlockPlasmaPipeCombined(
+			true);
 
 	@SidedProxy(clientSide = "ch.awae.trektech.ClientProxy", serverSide = "ch.awae.trektech.CommonProxy")
 	public static CommonProxy proxy;
@@ -69,6 +81,8 @@ public class TrekTech {
 		GameRegistry.registerItem(itemDuraniumIngot, "ingotDuranium");
 		GameRegistry.registerItem(itemDilithiumRaw, "dilithiumRaw");
 		GameRegistry.registerItem(itemDilithiumCrystal, "dilithiumCrystal");
+		GameRegistry.registerItem(itemPlasmaContainmentRing,
+				"plasmaContainmentRing");
 		// BLOCKS
 		GameRegistry.registerBlock(blockDuraniumWall, "duraniumWall");
 		GameRegistry.registerBlock(blockPlasmaPipe, "plasmaPipe");
@@ -84,9 +98,15 @@ public class TrekTech {
 				"plasmaPipeEncasedEnergyB");
 		GameRegistry.registerBlock(blockPlasmaPipeHighEnergyEncased,
 				"plasmaPipeEncasedEnergyC");
+		GameRegistry.registerBlock(blockPlasmaPipeCombined,
+				"plasmaPipeCombined");
+		GameRegistry.registerBlock(blockPlasmaPipeCombinedEncased,
+				"plasmaPipeCombinedEncased");
 		// ENTITIES
 		GameRegistry.registerTileEntity(TileEntityPlasmaPipe.class,
 				"tilePlasmaPipe");
+		GameRegistry.registerTileEntity(TileEntityPlasmaPipeCombined.class,
+				"tilePlasmaPipeCombined");
 
 		// RECIPES
 		registerRecipes();
@@ -94,9 +114,6 @@ public class TrekTech {
 	}
 
 	private static void registerRecipes() {
-		GameRegistry.addSmelting(Items.iron_ingot, new ItemStack(
-				itemDuraniumIngot, 1), 0.5F); // TODO: Implement Real Recipe.
-												// This is a placeholder
 		GameRegistry.addSmelting(itemDilithiumRaw, new ItemStack(
 				itemDilithiumCrystal, 1), 0.5F);
 		GameRegistry.addShapedRecipe(new ItemStack(blockDuraniumWall, 4),
@@ -105,6 +122,49 @@ public class TrekTech {
 		GameRegistry.addShapelessRecipe(new ItemStack(itemDuraniumIngot, 6),
 				duraniumWallStack, duraniumWallStack, duraniumWallStack,
 				duraniumWallStack);
+		GameRegistry.addSmelting(Items.redstone, new ItemStack(
+				itemPlasmaContainmentRing, 1), 0.5F);
+		GameRegistry.addShapedRecipe(new ItemStack(blockPlasmaPipe, 6), "III",
+				"CCC", "III", 'I', new ItemStack(Items.iron_ingot), 'C',
+				new ItemStack(itemPlasmaContainmentRing));
+		GameRegistry.addShapedRecipe(new ItemStack(blockPlasmaPipeEnergy, 6),
+				"PPP", "CCC", "PPP", 'P', new ItemStack(blockPlasmaPipe), 'C',
+				new ItemStack(itemPlasmaContainmentRing));
+
+		ItemStack duraniumings = new ItemStack(itemDuraniumIngot);
+		ItemStack mk1pipestack = new ItemStack(blockPlasmaPipeEnergy);
+		ItemStack containments = new ItemStack(itemPlasmaContainmentRing);
+
+		GameRegistry.addShapelessRecipe(new ItemStack(
+				blockPlasmaPipeMediumEnergy, 3), duraniumings, duraniumings,
+				duraniumings, containments, containments, containments,
+				mk1pipestack, mk1pipestack, mk1pipestack);
+
+		ItemStack mk2pipestack = new ItemStack(blockPlasmaPipeMediumEnergy);
+
+		GameRegistry.addShapelessRecipe(new ItemStack(
+				blockPlasmaPipeHighEnergy, 3), duraniumings, duraniumings,
+				duraniumings, containments, containments, containments,
+				mk2pipestack, mk2pipestack, mk2pipestack);
+
+		GameRegistry.addShapelessRecipe(new ItemStack(blockPlasmaPipeCombined,
+				1), new ItemStack(blockPlasmaPipe), new ItemStack(
+				Items.iron_ingot), new ItemStack(blockPlasmaPipeEnergy));
+
+		addEncasingRecipe(blockPlasmaPipeEncased, blockPlasmaPipe);
+		addEncasingRecipe(blockPlasmaPipeEnergyEncased, blockPlasmaPipeEnergy);
+		addEncasingRecipe(blockPlasmaPipeMediumEnergyEncased,
+				blockPlasmaPipeMediumEnergy);
+		addEncasingRecipe(blockPlasmaPipeHighEnergyEncased,
+				blockPlasmaPipeHighEnergy);
+		addEncasingRecipe(blockPlasmaPipeCombinedEncased,
+				blockPlasmaPipeCombined);
+	}
+
+	private static void addEncasingRecipe(Block result, Block pipe) {
+		GameRegistry.addShapedRecipe(new ItemStack(result, 4), " P ", "PDP",
+				" P ", 'D', new ItemStack(blockDuraniumWall), 'P',
+				new ItemStack(pipe));
 	}
 
 }
