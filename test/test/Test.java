@@ -31,7 +31,7 @@ public class Test {
 	public static Block blockPersTest = new BlockTestTileEntityPersistance();
 
 	@EventHandler
-	public void init(FMLInitializationEvent event) {
+	public void preInit(FMLInitializationEvent event) {
 		// GameRegistry.registerBlock(blockTestInventory, "testInventory");
 		// GameRegistry.registerBlock(blockPlasmaTest, "plasmaTest");
 		// GameRegistry.registerTileEntity(TileEntityTestInventory.class,
