@@ -1,11 +1,12 @@
 package ch.awae.trektech;
 
-import test.BlockPlasmaTest;
 import ch.awae.trektech.blocks.BlockDuraniumWall;
 import ch.awae.trektech.blocks.BlockPlasmaPipe;
 import ch.awae.trektech.blocks.BlockPlasmaPipeCombined;
+import ch.awae.trektech.blocks.BlockPlasmaSource;
 import ch.awae.trektech.entities.TileEntityPlasmaPipe;
 import ch.awae.trektech.entities.TileEntityPlasmaPipeCombined;
+import ch.awae.trektech.entities.TileEntityPlasmaSource;
 import ch.awae.trektech.items.DuraniumIngot;
 import ch.awae.trektech.items.ItemDilithiumCrystal;
 import ch.awae.trektech.items.ItemDilithiumRaw;
@@ -70,6 +71,7 @@ public class TrekTech {
 			false);
 	public static Block blockPlasmaPipeCombinedEncased = new BlockPlasmaPipeCombined(
 			true);
+	public static Block blockPlasmaSource = new BlockPlasmaSource();
 
 	@SidedProxy(clientSide = "ch.awae.trektech.ClientProxy", serverSide = "ch.awae.trektech.CommonProxy")
 	public static CommonProxy proxy;
@@ -102,12 +104,13 @@ public class TrekTech {
 				"plasmaPipeCombined");
 		GameRegistry.registerBlock(blockPlasmaPipeCombinedEncased,
 				"plasmaPipeCombinedEncased");
+		GameRegistry.registerBlock(blockPlasmaSource, "plasmaSource");
 		// ENTITIES
 		GameRegistry.registerTileEntity(TileEntityPlasmaPipe.class,
 				"tilePlasmaPipe");
 		GameRegistry.registerTileEntity(TileEntityPlasmaPipeCombined.class,
 				"tilePlasmaPipeCombined");
-
+		GameRegistry.registerTileEntity(TileEntityPlasmaSource.class, "tilePlasmaSource");
 		// RECIPES
 		registerRecipes();
 		proxy.registerRenderers();
