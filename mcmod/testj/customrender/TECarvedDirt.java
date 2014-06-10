@@ -8,7 +8,7 @@ import testj.lib.Names;
 import testj.lib.References;
 import ch.modjam.generic.GenericTileEntity;
 
-public class TECarvedDirt extends GenericTileEntity {
+public class TECarvedDirt extends GenericTileEntity implements IConnecting {
 	
 	public TECarvedDirt() {
 		
