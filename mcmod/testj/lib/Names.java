@@ -8,4 +8,5 @@ public class Names {
 	
 	public static final String KryptonitBlock = "kryptonit_block";
 	public static final String KryptonitItem = "kryptonit_item";
+	public static final String CarvedDirt = "carved_dirt";
 }

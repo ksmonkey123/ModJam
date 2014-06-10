@@ -1,6 +1,6 @@
 package testj.lib;
 
-public class ProxyCommon {
+public class CommonProxy {
 
 	public void registerRenderInformation() {
 
