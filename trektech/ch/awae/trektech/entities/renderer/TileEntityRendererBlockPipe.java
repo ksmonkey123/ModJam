@@ -1,16 +1,15 @@
 package ch.awae.trektech.entities.renderer;
 
-import org.lwjgl.opengl.GL11;
-
-import ch.awae.trektech.TrekTech;
-import ch.awae.trektech.entities.IPlasmaPipe;
-import ch.awae.trektech.entities.TileEntityPlasmaPipe;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
+
+import ch.awae.trektech.entities.IPlasmaPipe;
 
 public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 
@@ -67,6 +66,8 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 
 	private void renderConnection(float texX, float texY, float rad,
 			ForgeDirection dir) {
+		
+		GL11.glPushMatrix();
 		// rotate in place
 		switch (dir) {
 		case DOWN:
@@ -97,26 +98,9 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 			this.renderBeam(t, texX, texY, rad);
 			GL11.glRotated(90, 1, 0, 0);
 		}
-		// finish: rotate back
-		switch (dir) {
-		case DOWN:
-			GL11.glRotated(90, 0, 0, -1);
-			break;
-		case EAST:
-			GL11.glRotated(180, 0, 1, 0);
-			break;
-		case NORTH:
-			GL11.glRotated(90, 0, 1, 0);
-			break;
-		case SOUTH:
-			GL11.glRotated(90, 0, -1, 0);
-			break;
-		case UP:
-			GL11.glRotated(90, 0, 0, 1);
-			break;
-		default:
-			break;
-		}
+		
+		GL11.glPopMatrix();// finish: rotate back
+		
 	}
 
 	/**

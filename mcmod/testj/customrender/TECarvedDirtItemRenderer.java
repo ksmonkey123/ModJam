@@ -1,23 +1,20 @@
 package testj.customrender;
 
-import org.lwjgl.opengl.GL11;
-
-import testj.TutorialMod;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
 
+import org.lwjgl.opengl.GL11;
+
+import testj.TutorialMod;
+import testj.lib.ClientProxy;
+
 public class TECarvedDirtItemRenderer implements IItemRenderer {
 
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		if (Block.getBlockFromItem(item.getItem()) == TutorialMod.blockCarvedDirt) {
-			if (type == ItemRenderType.INVENTORY)
-				return true;
-		}
-
-		return false;
+		return Block.getBlockFromItem(item.getItem()) == TutorialMod.blockCarvedDirt;
 	}
 
 	@Override
@@ -29,22 +26,21 @@ public class TECarvedDirtItemRenderer implements IItemRenderer {
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 		if (Block.getBlockFromItem(item.getItem()) == TutorialMod.blockCarvedDirt) {
-			if (type == ItemRenderType.INVENTORY) {
-				GL11.glPushMatrix();
-//				GL11.glRotatef(225, 0.0F, 1.0F, 0.0F);
-//				GL11.glRotatef(45, -1.0F, 0.0F, -1.0F);
-//				GL11.glScalef(0.6F, 0.6F, 0.6F);
-//				GL11.glTranslatef(0.0F, -0.2F, 0.0F);
-				
-				TECarvedDirtRenderer.renderBlock(new IConnecting() {
-					@Override
-					public boolean connectsTo(ForgeDirection dir) {
-						return false;
-					}
-				});
-				
-				GL11.glPopMatrix();
-			}
+			GL11.glPushMatrix();
+			// GL11.glRotatef(225, 0.0F, 1.0F, 0.0F);
+			// GL11.glRotatef(45, -1.0F, 0.0F, -1.0F);
+			// GL11.glScalef(0.6F, 0.6F, 0.6F);
+			if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
+				GL11.glTranslatef(0.0F, 0.5F, 0.0F);
+
+			ClientProxy.renderer.renderBlock(new IConnecting() {
+				@Override
+				public boolean connectsTo(ForgeDirection dir) {
+					return false;
+				}
+			});
+
+			GL11.glPopMatrix();
 		}
 	}
 

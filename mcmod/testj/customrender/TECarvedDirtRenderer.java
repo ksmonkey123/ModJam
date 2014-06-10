@@ -13,8 +13,10 @@ import org.lwjgl.opengl.GL11;
 
 public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 
+	private static CustomRenderer renderer;
+
 	public TECarvedDirtRenderer() {
-		
+		renderer = new CustomRenderer(TECarvedDirt.getTexture());
 	}
 
 	@Override
@@ -39,6 +41,7 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 		TextureManager render = Minecraft.getMinecraft().renderEngine;
 		render.bindTexture(new ResourceLocation(TECarvedDirt.getTexture()));
 		RenderHelper.disableStandardItemLighting();
+//		GL11.glDisable(GL11.GL_BLEND);
 		// RENDER
 		renderCore(texX, texY);
 		for (ForgeDirection dir : ForgeDirection.values()) {
@@ -49,9 +52,11 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 			}
 		}
 		// CLEANUP
-		RenderHelper.enableStandardItemLighting();
 		
 		t.draw();
+		
+		RenderHelper.enableStandardItemLighting();
+		
 	}
 
 	private static void renderConnection(float texX, float texY, ForgeDirection dir) {
@@ -60,11 +65,24 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 	}
 
 	private static void renderCore(float texX, float texY) {
-		Tessellator t = Tessellator.instance;
-		t.addVertexWithUV(-0.5, 0.5, -0.5, 0, 0);
-		t.addVertexWithUV(-0.5, 0.5, 0.5, 1, 0);
-		t.addVertexWithUV(0.5, 0.5, 0.5, 1, 1);
-		t.addVertexWithUV(0.5, 0.5, -0.5, 0, 1);
+		
+		
+		renderer.cubeOfRadius(0.3);
+//		renderer.quad(-0.5, 0.5, -0.5, 1, 1, Side.TOP);
+//		renderer.quad(-0.5,-0.5,-0.5,1,1,Side.FRONT,15);
+//		renderer.quad(0.5,-0.5,-0.5,1,1,Side.LEFT);
+//		renderer.quad(-0.5,-0.5,-0.5,1,1,Side.RIGHT);
+//		renderer.quad(-0.5,-0.5,0.5,1,1,Side.BACK);
+//		renderer.quad(-0.5,-0.5,-0.5,1,1,Side.BOTTOM);
+		
+		
+		
+//		Tessellator t = Tessellator.instance;
+//		t.addVertexWithUV(-0.5, 0.5, -0.5, 0, 0);
+//		t.addVertexWithUV(-0.5, 0.5, 0.5, 1, 0);
+//		t.addVertexWithUV(0.5, 0.5, 0.5, 1, 1);
+//		t.addVertexWithUV(0.5, 0.5, -0.5, 0, 1);
+		
 	}
 	
 	
