@@ -1,11 +1,11 @@
 package testj.customrender;
 
-import testj.lib.Names;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import ch.awae.trektech.TrekTech;
-import ch.awae.trektech.entities.IPlasmaConnection;
+import testj.TutorialMod;
+import testj.lib.Names;
+import testj.lib.References;
 import ch.modjam.generic.GenericTileEntity;
 
 public class TECarvedDirt extends GenericTileEntity {
@@ -27,7 +27,7 @@ public class TECarvedDirt extends GenericTileEntity {
 	}
 
 	public static String getTexture() {
-		return TrekTech.MODID + ":textures/blocks/"+Names.CarvedDirt+".png";
+		return References.MOD_ID + ":textures/blocks/"+Names.CarvedDirt+".png";
 	}
 
 	public boolean connectsTo(ForgeDirection dir) {
