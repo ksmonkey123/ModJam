@@ -9,11 +9,14 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import testj.customrender.BlockCarvedDirt;
+import testj.customrender.TECarvedDirt;
 import testj.handlers.FillBucketHandler;
 import testj.handlers.FuelHandler;
 import testj.itemblockfluids.ItemKryptonite;
@@ -23,7 +26,7 @@ import testj.itemblockfluids.BlockFluidTar;
 import testj.itemblockfluids.ItemTarBucket;
 import testj.itemblockfluids.FluidTar;
 import testj.lib.Names;
-import testj.lib.ProxyCommon;
+import testj.lib.CommonProxy;
 import testj.lib.References;
 import testj.world.WorldGenerator;
 import cpw.mods.fml.common.Mod;
@@ -38,10 +41,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 @Mod(modid = References.MOD_ID, version = References.VERSION)
 public class TutorialMod {
 	@SidedProxy(clientSide = References.Client, serverSide = References.Common)
-	public static ProxyCommon proxy;
+	public static CommonProxy proxy;
 
+	public static CreativeTabs modTab;
+	
 	// Item
-	public static Item obsidianStick;
+	public static Item obsidianStick ;
 
 	// Tar Fluids
 	public static Block tarBlock;
@@ -52,8 +57,11 @@ public class TutorialMod {
 	// Ores
 	public static Block oreKryptonit;
 	
-	public static CreativeTabs modTab;
-
+	// Custom rendered block
+	public static Block blockCarvedDirt ;
+	public static Class<? extends TileEntity> teCarvedDirt ;
+	
+	
 	private ItemKryptonite itemKryptonit;
 
 	private FuelHandler fuelHandler;
@@ -62,12 +70,24 @@ public class TutorialMod {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) throws IOException {
+		System.out.println("PreInit MC Mod");
 		createCreativeTab();
 		createTarFluidAndBucket();
 		addBoneRecipies();
 		addObsidianStick();
 		addKryptonitOre();
 		addSmelting();
+		
+		addCarvedDirtCustomRenderingBlock();
+		proxy.registerRenderInformation();
+	}
+
+	private void addCarvedDirtCustomRenderingBlock() {
+		this.blockCarvedDirt= new BlockCarvedDirt();
+		this.teCarvedDirt= TECarvedDirt.class;
+		
+		GameRegistry.registerBlock(this.blockCarvedDirt,Names.CarvedDirt);
+		GameRegistry.registerTileEntity(this.teCarvedDirt,"tile_"+Names.CarvedDirt);
 	}
 
 	private void addSmelting() {
@@ -132,7 +152,7 @@ public class TutorialMod {
 	}
 
 	private void addObsidianStick() {
-		this.obsidianStick = new ItemObsidianStick();
+		this.obsidianStick= new ItemObsidianStick();
 		GameRegistry.registerItem(this.obsidianStick, Names.OStick);
 	}
 
@@ -158,11 +178,6 @@ public class TutorialMod {
 				Items.fish);
 		GameRegistry.addShapedRecipe(new ItemStack(Blocks.command_block), "Y",
 				"X", 'X', Blocks.diamond_block, 'Y', Items.redstone);
-	}
-
-	@EventHandler
-	public void load(FMLInitializationEvent event) {
-		proxy.registerRenderInformation();
 	}
 
 }
