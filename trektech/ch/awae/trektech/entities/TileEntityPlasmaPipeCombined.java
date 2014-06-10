@@ -3,6 +3,7 @@ package ch.awae.trektech.entities;
 import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.Properties;
 import ch.awae.trektech.TrekTech;
+import ch.modjam.generic.GenericTileEntity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -12,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityPlasmaPipeCombined extends TileEntity implements
+public class TileEntityPlasmaPipeCombined extends GenericTileEntity implements
 		IPlasmaPipe, IPlasmaConnection {
 
 	private short maxNeutralPlasma = 1000;
@@ -33,8 +34,7 @@ public class TileEntityPlasmaPipeCombined extends TileEntity implements
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag) {
-		super.writeToNBT(tag);
+	public void writeNBT(NBTTagCompound tag) {
 		tag.setShort("Plasma1", this.currentNeutralPlasma);
 		tag.setShort("Plasma2", this.currentLowPlasma);
 		tag.setFloat("Radius", this.radius);
@@ -42,28 +42,15 @@ public class TileEntityPlasmaPipeCombined extends TileEntity implements
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
+	public void readNBT(NBTTagCompound tag) {
 		this.currentNeutralPlasma = tag.getShort("Plasma1");
 		this.currentLowPlasma = tag.getShort("Plasma2");
 		this.texture = tag.getString("Texture");
 		this.radius = tag.getFloat("Radius");
-		super.readFromNBT(tag);
-	}
-
-	public Packet getDescriptionPacket() {
-		NBTTagCompound nbtTag = new NBTTagCompound();
-		this.writeToNBT(nbtTag);
-		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord,
-				this.zCoord, 1, nbtTag);
 	}
 
 	@Override
-	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		readFromNBT(pkt.func_148857_g());
-	}
-
-	@Override
-	public void updateEntity() {
+	public void tick() {
 		for (ForgeDirection d : ForgeDirection.values()) {
 			if (d == ForgeDirection.UNKNOWN)
 				continue;

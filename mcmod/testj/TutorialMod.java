@@ -16,12 +16,12 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import testj.handlers.FillBucketHandler;
 import testj.handlers.FuelHandler;
-import testj.itemblockfluids.ItemKryptonit;
-import testj.itemblockfluids.Kryptonit;
-import testj.itemblockfluids.ObsidianStick;
-import testj.itemblockfluids.TarBlock;
-import testj.itemblockfluids.TarBucket;
-import testj.itemblockfluids.TarFluid;
+import testj.itemblockfluids.ItemKryptonite;
+import testj.itemblockfluids.BlockKryptoniteOre;
+import testj.itemblockfluids.ItemObsidianStick;
+import testj.itemblockfluids.BlockFluidTar;
+import testj.itemblockfluids.ItemTarBucket;
+import testj.itemblockfluids.FluidTar;
 import testj.lib.Names;
 import testj.lib.ProxyCommon;
 import testj.lib.References;
@@ -47,14 +47,14 @@ public class TutorialMod {
 	public static Block tarBlock;
 	public static Fluid tarFluid;
 	public static Material materialTar;
-	public static TarBucket tarBucket;
+	public static ItemTarBucket tarBucket;
 	
 	// Ores
 	public static Block oreKryptonit;
 	
 	public static CreativeTabs modTab;
 
-	private ItemKryptonit itemKryptonit;
+	private ItemKryptonite itemKryptonit;
 
 	private FuelHandler fuelHandler;
 
@@ -64,10 +64,6 @@ public class TutorialMod {
 	public void preInit(FMLPreInitializationEvent e) throws IOException {
 		createCreativeTab();
 		createTarFluidAndBucket();
-	}
-	
-	@EventHandler
-	public void init(FMLInitializationEvent event) {
 		addBoneRecipies();
 		addObsidianStick();
 		addKryptonitOre();
@@ -85,22 +81,22 @@ public class TutorialMod {
 	}
 
 	private void addKryptonitOre() {
-		this.oreKryptonit=new Kryptonit();
+		this.oreKryptonit=new BlockKryptoniteOre();
 		GameRegistry.registerWorldGenerator(new WorldGenerator(), 0);
 		GameRegistry.registerBlock(this.oreKryptonit, Names.KryptonitBlock);
 		
-		this.itemKryptonit = new ItemKryptonit();
+		this.itemKryptonit = new ItemKryptonite();
 		GameRegistry.registerItem(this.itemKryptonit, Names.KryptonitItem);
 	}
 
 	private void createTarFluidAndBucket() {
-		this.tarFluid = new TarFluid();
+		this.tarFluid = new FluidTar();
 		FluidRegistry.registerFluid(this.tarFluid);
 
-		this.tarBlock = new TarBlock(this.tarFluid);
+		this.tarBlock = new BlockFluidTar(this.tarFluid);
 		GameRegistry.registerBlock(this.tarBlock, Names.TarBlock);
 
-		this.tarBucket = new TarBucket(this.tarBlock);
+		this.tarBucket = new ItemTarBucket(this.tarBlock);
 		GameRegistry.registerItem(this.tarBucket, Names.TarBucket);
 
 		int bucketVolume = FluidContainerRegistry.BUCKET_VOLUME;
@@ -136,7 +132,7 @@ public class TutorialMod {
 	}
 
 	private void addObsidianStick() {
-		this.obsidianStick = new ObsidianStick();
+		this.obsidianStick = new ItemObsidianStick();
 		GameRegistry.registerItem(this.obsidianStick, Names.OStick);
 	}
 

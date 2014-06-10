@@ -3,6 +3,7 @@ package ch.awae.trektech.entities;
 import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.Properties;
 import ch.awae.trektech.TrekTech;
+import ch.modjam.generic.GenericTileEntity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -12,8 +13,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityPlasmaPipe extends TileEntity implements IPlasmaPipe,
-		IPlasmaConnection {
+public class TileEntityPlasmaPipe extends GenericTileEntity implements
+		IPlasmaPipe, IPlasmaConnection {
 
 	private short maxPlasma = 1000;
 	private short currentPlasma = 0;
@@ -35,8 +36,7 @@ public class TileEntityPlasmaPipe extends TileEntity implements IPlasmaPipe,
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound tag) {
-		super.writeToNBT(tag);
+	public void writeNBT(NBTTagCompound tag) {
 		tag.setShort("Plasma", this.currentPlasma);
 		tag.setString("Texture", this.texture);
 		tag.setFloat("Radius", this.radius);
@@ -44,28 +44,15 @@ public class TileEntityPlasmaPipe extends TileEntity implements IPlasmaPipe,
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
-		super.readFromNBT(tag);
+	public void readNBT(NBTTagCompound tag) {
 		this.currentPlasma = tag.getShort("Plasma");
 		this.texture = tag.getString("Texture");
 		this.radius = tag.getFloat("Radius");
 		this.plasmaType = EnumPlasmaTypes.getByIndex(tag.getByte("Type"));
 	}
 
-	public Packet getDescriptionPacket() {
-		NBTTagCompound nbtTag = new NBTTagCompound();
-		this.writeToNBT(nbtTag);
-		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord,
-				this.zCoord, 1, nbtTag);
-	}
-
 	@Override
-	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		readFromNBT(pkt.func_148857_g());
-	}
-
-	@Override
-	public void updateEntity() {
+	public void tick() {
 		for (ForgeDirection d : ForgeDirection.values()) {
 			if (d == ForgeDirection.UNKNOWN)
 				continue;
