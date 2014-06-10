@@ -1,5 +1,5 @@
 item.o_stick.name=Obsidian Stick
 tile.tar_block.name=Fluid Tar
 item.tar_bucket.name=Tar Bucket
-tile.kryptonit_block.name=Kryptonit
-item.kryptonit_item.name=Kryptonit
+tile.kryptonit_block.name=Kryptonite Ore
+item.kryptonit_item.name=Kryptonite
