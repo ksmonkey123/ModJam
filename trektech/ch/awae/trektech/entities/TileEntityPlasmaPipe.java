@@ -18,46 +18,54 @@ public class TileEntityPlasmaPipe extends TileEntity implements IPlasmaPipe,
 	private short maxPlasma = 1000;
 	private short currentPlasma = 0;
 	private EnumPlasmaTypes plasmaType;
-	private ResourceLocation texture;
+	private String texture;
 	private float radius;
 
 	public TileEntityPlasmaPipe(EnumPlasmaTypes plasma, String texture,
 			float radius) {
 		this.plasmaType = plasma;
-		this.texture = new ResourceLocation(TrekTech.MODID
-				+ ":textures/blocks/" + texture + ".png");
+		this.texture = TrekTech.MODID + ":textures/blocks/" + texture + ".png";
 		this.radius = radius;
+	}
+
+	public TileEntityPlasmaPipe() {
+		this.plasmaType = EnumPlasmaTypes.NEUTRAL;
+		this.radius = 0;
+		this.texture = "";
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		tag.setShort("Plasma", this.currentPlasma);
+		tag.setString("Texture", this.texture);
+		tag.setFloat("Radius", this.radius);
+		tag.setByte("Type", this.plasmaType.getIndex());
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		this.currentPlasma = tag.getShort("Plasma");
+		this.texture = tag.getString("Texture");
+		this.radius = tag.getFloat("Radius");
+		this.plasmaType = EnumPlasmaTypes.getByIndex(tag.getByte("Type"));
 	}
 
 	public Packet getDescriptionPacket() {
 		NBTTagCompound nbtTag = new NBTTagCompound();
 		this.writeToNBT(nbtTag);
-		System.out.println("gotPacket");
 		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord,
 				this.zCoord, 1, nbtTag);
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		System.out.println("gotPacket");
 		readFromNBT(pkt.func_148857_g());
 	}
 
 	@Override
 	public void updateEntity() {
-		System.out.println(this.currentPlasma);
 		for (ForgeDirection d : ForgeDirection.values()) {
 			if (d == ForgeDirection.UNKNOWN)
 				continue;
@@ -98,7 +106,7 @@ public class TileEntityPlasmaPipe extends TileEntity implements IPlasmaPipe,
 	}
 
 	@Override
-	public ResourceLocation getTexture() {
+	public String getTexture() {
 		return this.texture;
 	}
 

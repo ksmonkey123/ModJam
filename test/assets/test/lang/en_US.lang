@@ -1,0 +1,18 @@
+itemGroup.tabTrekTech=TrekTech
+
+tile.duraniumWall.name=Duranium Wall
+tile.plasmaPipe.name=Plasma Pipe (Neutral Plasma)
+tile.plasmaPipeEnergyA.name=EPS Conduit Mk. 1 (Low Power)
+tile.plasmaPipeEnergyB.name=EPS Conduit Mk. 2 (Medium Power)
+tile.plasmaPipeEnergyC.name=EPS Conduit Mk. 3 (High Power)
+tile.plasmaPipeEncased.name=Duranium Encased Plasma Pipe (Neutral Plasma)
+tile.plasmaPipeEncasedEnergyA.name=Duranium Encased EPS Conduit Mk. 1 (Low Power)
+tile.plasmaPipeEncasedEnergyB.name=Duranium Encased EPS Conduit Mk. 2 (Medium Power)
+tile.plasmaPipeEncasedEnergyC.name=Duranium Encased EPS Conduit Mk. 3 (High Power)
+tile.plasmaPipeCombined.name=Combined EPS Conduit
+tile.plasmaPipeCombinedEncased.name=Duranium Encased Combined EPS Conduit
+
+item.duraniumIngot.name=Duranium Ingot
+item.dilithiumRaw.name=Raw Dilithium Crystal
+item.dilithiumCrystal.name=Refined Dilithium Crystal
+item.plasmaContainmentRing.name=Plasma Containment Ring

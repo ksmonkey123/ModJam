@@ -19,40 +19,46 @@ public class TileEntityPlasmaPipeCombined extends TileEntity implements
 	private short currentNeutralPlasma = 0;
 	private short maxLowPlasma = 1000;
 	private short currentLowPlasma = 0;
-	private ResourceLocation texture;
+	private String texture;
 	private float radius;
 
 	public TileEntityPlasmaPipeCombined(String texture, float radius) {
-		this.texture = new ResourceLocation(TrekTech.MODID
-				+ ":textures/blocks/" + texture + ".png");
+		this.texture = TrekTech.MODID + ":textures/blocks/" + texture + ".png";
 		this.radius = radius;
+	}
+
+	public TileEntityPlasmaPipeCombined() {
+		this.texture = "";
+		this.radius = 0;
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound tag) {
-		super.readFromNBT(tag);
+		super.writeToNBT(tag);
 		tag.setShort("Plasma1", this.currentNeutralPlasma);
 		tag.setShort("Plasma2", this.currentLowPlasma);
+		tag.setFloat("Radius", this.radius);
+		tag.setString("Texture", this.texture);
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		this.currentNeutralPlasma = tag.getShort("Plasma1");
 		this.currentLowPlasma = tag.getShort("Plasma2");
-		super.writeToNBT(tag);
+		this.texture = tag.getString("Texture");
+		this.radius = tag.getFloat("Radius");
+		super.readFromNBT(tag);
 	}
 
 	public Packet getDescriptionPacket() {
 		NBTTagCompound nbtTag = new NBTTagCompound();
 		this.writeToNBT(nbtTag);
-		System.out.println("gotPacket");
 		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord,
 				this.zCoord, 1, nbtTag);
 	}
 
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		System.out.println("gotPacket");
 		readFromNBT(pkt.func_148857_g());
 	}
 
@@ -111,7 +117,7 @@ public class TileEntityPlasmaPipeCombined extends TileEntity implements
 	}
 
 	@Override
-	public ResourceLocation getTexture() {
+	public String getTexture() {
 		return this.texture;
 	}
 

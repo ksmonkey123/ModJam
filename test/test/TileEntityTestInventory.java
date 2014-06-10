@@ -18,6 +18,7 @@ public class TileEntityTestInventory extends TileEntity implements IInventory {
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
+		this.markDirty();
 		return slot == 0 ? this.slot : null;
 	}
 
@@ -34,6 +35,7 @@ public class TileEntityTestInventory extends TileEntity implements IInventory {
 				}
 			}
 		}
+		this.markDirty();
 		return stack;
 	}
 
@@ -44,7 +46,8 @@ public class TileEntityTestInventory extends TileEntity implements IInventory {
 
 	@Override
 	public void setInventorySlotContents(int var1, ItemStack var2) {
-		if (var1 != 0) return;
+		if (var1 != 0)
+			return;
 		this.slot = var2;
 	}
 
@@ -65,7 +68,7 @@ public class TileEntityTestInventory extends TileEntity implements IInventory {
 
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer var1) {
-		return false;
+		return true;
 	}
 
 	@Override
@@ -78,8 +81,10 @@ public class TileEntityTestInventory extends TileEntity implements IInventory {
 
 	@Override
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {
-		if (var1 != 0) return false;
-		if (this.slot == null) return true;
+		if (var1 != 0)
+			return false;
+		if (this.slot == null)
+			return true;
 		return this.slot.getItem().equals(var2.getItem());
 	}
 

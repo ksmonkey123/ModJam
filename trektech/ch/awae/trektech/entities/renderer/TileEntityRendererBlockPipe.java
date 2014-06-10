@@ -32,7 +32,7 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 			return;
 		// SETUP
 		GL11.glTranslated(transX + 0.5, transY + 0.5, transZ + 0.5);
-		this.bindTexture(t.getTexture());
+		this.bindTexture(new ResourceLocation(t.getTexture()));
 		RenderHelper.disableStandardItemLighting();
 		// RENDER
 		renderCore(texX, texY, rad);

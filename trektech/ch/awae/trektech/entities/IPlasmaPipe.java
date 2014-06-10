@@ -24,6 +24,6 @@ public interface IPlasmaPipe {
 	 */
 	public float getPipeRadius();
 	
-	public ResourceLocation getTexture();
+	public String getTexture();
 
 }
