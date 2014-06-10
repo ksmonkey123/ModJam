@@ -19,9 +19,6 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 	float pixel = 1F / 16F;
 	float textp = 1F / 16F;
 
-	public TileEntityRendererBlockPipe() {
-	}
-
 	@Override
 	public void renderTileEntityAt(TileEntity ent, double transX,
 			double transY, double transZ, float f) {
