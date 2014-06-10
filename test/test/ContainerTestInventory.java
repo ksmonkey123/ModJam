@@ -43,6 +43,9 @@ public class ContainerTestInventory extends Container {
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
+		System.out.println(slot);
+		
+		System.out.println("duba");
 		ItemStack stack = null;
 		Slot slotObject = (Slot) inventorySlots.get(slot);
 
@@ -52,14 +55,14 @@ public class ContainerTestInventory extends Container {
 			stack = stackInSlot.copy();
 
 			// merges the item into player inventory since its in the tileEntity
-			if (slot < 9) {
-				if (!this.mergeItemStack(stackInSlot, 0, 35, true)) {
+			if (slot < 1) {
+				if (!this.mergeItemStack(stackInSlot, 1, 37, true)) {
 					return null;
 				}
 			}
 			// places it into the tileEntity is possible since its in the player
 			// inventory
-			else if (!this.mergeItemStack(stackInSlot, 0, 9, false)) {
+			else if (!this.mergeItemStack(stackInSlot, 0, 1, false)) {
 				return null;
 			}
 
