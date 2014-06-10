@@ -7,9 +7,9 @@ import testj.TutorialMod;
 import testj.lib.Names;
 import testj.lib.References;
 
-public class TarBucket extends ItemBucket {
+public class ItemTarBucket extends ItemBucket {
 
-	public TarBucket(Block tarBlock) {
+	public ItemTarBucket(Block tarBlock) {
 		super(tarBlock);
 		this.setUnlocalizedName(Names.TarBucket);
 		this.setCreativeTab(TutorialMod.modTab);

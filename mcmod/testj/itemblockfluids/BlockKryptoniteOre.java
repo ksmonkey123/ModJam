@@ -12,9 +12,9 @@ import testj.lib.ListedStuff;
 import testj.lib.Names;
 import testj.lib.References;
 
-public class Kryptonit extends Block {
+public class BlockKryptoniteOre extends Block {
 
-	public Kryptonit() {
+	public BlockKryptoniteOre() {
 		super(Material.rock);
 		this.setBlockName(Names.KryptonitBlock);
 		this.setBlockTextureName(References.MOD_ID + ":" + Names.KryptonitBlock);

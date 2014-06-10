@@ -7,9 +7,9 @@ import testj.TutorialMod;
 import testj.lib.Names;
 import testj.lib.References;
 
-public class TarBlock extends BlockFluidClassic {
+public class BlockFluidTar extends BlockFluidClassic {
 
-	public TarBlock(Fluid f) {
+	public BlockFluidTar(Fluid f) {
 		super(f, Material.water);
 		this.setCreativeTab(TutorialMod.modTab);
 		this.setBlockName(Names.TarBlock);

@@ -3,9 +3,9 @@ package testj.itemblockfluids;
 import net.minecraftforge.fluids.Fluid;
 import testj.lib.Names;
 
-public class TarFluid extends Fluid {
+public class FluidTar extends Fluid {
 
-	public TarFluid() {
+	public FluidTar() {
 		super(Names.TarFluid);
 		this.setLuminosity(0);
 		this.setDensity(2000);
