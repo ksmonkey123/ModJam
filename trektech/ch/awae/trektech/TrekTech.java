@@ -75,7 +75,7 @@ public class TrekTech {
 	public static CommonProxy proxy;
 
 	@EventHandler
-	public void init(FMLInitializationEvent event) {
+	public void preInit(FMLInitializationEvent event) {
 		// ITEMS
 		GameRegistry.registerItem(itemStarFleetSymbol, "symbolStarFleet");
 		GameRegistry.registerItem(itemDuraniumIngot, "ingotDuranium");

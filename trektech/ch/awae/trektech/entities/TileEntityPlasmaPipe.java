@@ -1,8 +1,12 @@
 package ch.awae.trektech.entities;
 
 import ch.awae.trektech.EnumPlasmaTypes;
+import ch.awae.trektech.Properties;
 import ch.awae.trektech.TrekTech;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -27,17 +31,53 @@ public class TileEntityPlasmaPipe extends TileEntity implements IPlasmaPipe,
 
 	@Override
 	public void writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
 		tag.setShort("Plasma", this.currentPlasma);
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
 		this.currentPlasma = tag.getShort("Plasma");
+	}
+
+	public Packet getDescriptionPacket() {
+		NBTTagCompound nbtTag = new NBTTagCompound();
+		this.writeToNBT(nbtTag);
+		System.out.println("gotPacket");
+		return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord,
+				this.zCoord, 1, nbtTag);
+	}
+
+	@Override
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+		System.out.println("gotPacket");
+		readFromNBT(pkt.func_148857_g());
 	}
 
 	@Override
 	public void updateEntity() {
-		// TODO: implement entity tick
+		System.out.println(this.currentPlasma);
+		for (ForgeDirection d : ForgeDirection.values()) {
+			if (d == ForgeDirection.UNKNOWN)
+				continue;
+			TileEntity entity = worldObj.getTileEntity(this.xCoord + d.offsetX,
+					this.yCoord + d.offsetY, this.zCoord + d.offsetZ);
+			if (entity == null || !(entity instanceof IPlasmaConnection))
+				continue;
+			IPlasmaConnection t = (IPlasmaConnection) entity;
+			// make actual transfer
+			if (t.acceptsPlasma(this.plasmaType)) {
+				short halfDiff = (short) Math.min(
+						Properties.PLASMA_TRANSFER_SPEED,
+						(this.currentPlasma - t
+								.getCurrentPlasmaAmount(this.plasmaType)) / 2);
+				if (halfDiff <= 0)
+					continue;
+				this.currentPlasma -= t.fillPlasma(this.plasmaType, halfDiff);
+			}
+		}
+		this.markDirty();
 	}
 
 	// -- IPlasmaPipe --
