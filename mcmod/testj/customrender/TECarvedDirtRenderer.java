@@ -11,6 +11,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
+import testj.customrender.CustomRenderer.Side;
+
 public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 
 	private static CustomRenderer renderer;
@@ -67,13 +69,27 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 	private static void renderCore(float texX, float texY) {
 		
 		
-		renderer.cubeOfRadius(0.3);
-//		renderer.quad(-0.5, 0.5, -0.5, 1, 1, Side.TOP);
-//		renderer.quad(-0.5,-0.5,-0.5,1,1,Side.FRONT,15);
-//		renderer.quad(0.5,-0.5,-0.5,1,1,Side.LEFT);
-//		renderer.quad(-0.5,-0.5,-0.5,1,1,Side.RIGHT);
-//		renderer.quad(-0.5,-0.5,0.5,1,1,Side.BACK);
-//		renderer.quad(-0.5,-0.5,-0.5,1,1,Side.BOTTOM);
+//		renderer.cubeOfRadius(0.1);
+		renderer.quad(-0.5, 0.5, -0.5, 1, 0.3, Side.TOP,3);
+		renderer.quad(0.2, 0.5, -0.5, 1, 0.3, Side.TOP,3);
+		renderer.quad(-0.2, 0.5, -0.5, 0.3, 0.4, Side.TOP,3);
+		renderer.quad(-0.2, 0.3, -0.2, 0.7, 0.4, Side.TOP,3);
+		
+		renderer.quad(-0.5,-0.5,-0.5,1,1,Side.FRONT);
+		renderer.quad(0.5,-0.5,-0.5,1,1,Side.LEFT);
+		
+		renderer.quad(-0.5,-0.5,-0.5,1,1,Side.RIGHT);
+		
+		renderer.quad(0.2,0.3,-0.2,0.7,0.2,Side.RIGHT,13);
+		renderer.quad(-0.2,0.3,-0.2,0.7,0.2,Side.LEFT,13);
+		renderer.quad(-0.2,0.3,-0.2,0.4,0.2,Side.BACK,13);
+		
+		renderer.quad(-0.5,-0.5,0.5,1,0.8,Side.BACK,8);
+		renderer.quad(-0.5,0.3,0.5,0.3,0.2,Side.BACK,8);
+		renderer.quad(0.2,0.3,0.5,0.3,0.2,Side.BACK,8);
+		
+		
+		renderer.quad(-0.5,-0.5,-0.5,1,1,Side.BOTTOM);
 		
 		
 		
