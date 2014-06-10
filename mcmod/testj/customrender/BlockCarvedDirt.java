@@ -14,11 +14,12 @@ public class BlockCarvedDirt extends BlockContainer {
 	public static final int RENDER_TYPE_CUSTOM = -1;
 
 	public BlockCarvedDirt() {
-		super(Material.ground);
+		super(Material.rock);
 		this.setBlockName(Names.CarvedDirt);
 		this.setBlockTextureName(References.MOD_ID + ":" + Names.CarvedDirt);
 		this.setCreativeTab(TutorialMod.modTab);
 		setLightOpacity(0);
+		setHardness(1);
 	}
 
 	

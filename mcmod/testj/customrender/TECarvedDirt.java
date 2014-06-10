@@ -11,6 +11,7 @@ import ch.modjam.generic.GenericTileEntity;
 public class TECarvedDirt extends GenericTileEntity {
 	
 	public TECarvedDirt() {
+		
 	}
 
 	@Override
@@ -26,7 +27,7 @@ public class TECarvedDirt extends GenericTileEntity {
 	}
 
 	public static String getTexture() {
-		return TrekTech.MODID + ":"+Names.CarvedDirt;
+		return TrekTech.MODID + ":textures/blocks/"+Names.CarvedDirt+".png";
 	}
 
 	public boolean connectsTo(ForgeDirection dir) {

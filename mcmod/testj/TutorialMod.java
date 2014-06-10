@@ -43,8 +43,10 @@ public class TutorialMod {
 	@SidedProxy(clientSide = References.Client, serverSide = References.Common)
 	public static CommonProxy proxy;
 
+	public static CreativeTabs modTab;
+	
 	// Item
-	public static Item obsidianStick = new ItemObsidianStick();
+	public static Item obsidianStick ;
 
 	// Tar Fluids
 	public static Block tarBlock;
@@ -53,14 +55,13 @@ public class TutorialMod {
 	public static ItemTarBucket tarBucket;
 	
 	// Ores
-	public static Block oreKryptonit=new BlockKryptoniteOre();
+	public static Block oreKryptonit;
 	
 	// Custom rendered block
-	public static Block blockCarvedDirt = new BlockCarvedDirt();
-	public static Class<? extends TileEntity> teCarvedDirt = TECarvedDirt.class;
+	public static Block blockCarvedDirt ;
+	public static Class<? extends TileEntity> teCarvedDirt ;
 	
-	public static CreativeTabs modTab;
-
+	
 	private ItemKryptonite itemKryptonit;
 
 	private FuelHandler fuelHandler;
@@ -69,6 +70,7 @@ public class TutorialMod {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) throws IOException {
+		System.out.println("PreInit MC Mod");
 		createCreativeTab();
 		createTarFluidAndBucket();
 		addBoneRecipies();
@@ -81,6 +83,9 @@ public class TutorialMod {
 	}
 
 	private void addCarvedDirtCustomRenderingBlock() {
+		this.blockCarvedDirt= new BlockCarvedDirt();
+		this.teCarvedDirt= TECarvedDirt.class;
+		
 		GameRegistry.registerBlock(this.blockCarvedDirt,Names.CarvedDirt);
 		GameRegistry.registerTileEntity(this.teCarvedDirt,"tile_"+Names.CarvedDirt);
 	}
@@ -96,6 +101,7 @@ public class TutorialMod {
 	}
 
 	private void addKryptonitOre() {
+		this.oreKryptonit=new BlockKryptoniteOre();
 		GameRegistry.registerWorldGenerator(new WorldGenerator(), 0);
 		GameRegistry.registerBlock(this.oreKryptonit, Names.KryptonitBlock);
 		
@@ -146,6 +152,7 @@ public class TutorialMod {
 	}
 
 	private void addObsidianStick() {
+		this.obsidianStick= new ItemObsidianStick();
 		GameRegistry.registerItem(this.obsidianStick, Names.OStick);
 	}
 
