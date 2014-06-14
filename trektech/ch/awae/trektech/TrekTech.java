@@ -1,5 +1,8 @@
 package ch.awae.trektech;
 
+import java.util.Random;
+
+import test.Test;
 import ch.awae.trektech.blocks.BlockDuraniumWall;
 import ch.awae.trektech.blocks.BlockPlasmaPipe;
 import ch.awae.trektech.blocks.BlockPlasmaPipeCombined;
@@ -20,8 +23,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -32,6 +37,8 @@ public class TrekTech {
 	public static final String MODID = "TrekTech";
 	public static final String VERSION = "0.1";
 
+	public static Random rand = new Random();
+
 	public static CreativeTabs tabCustom = new CreativeTabs("tabTrekTech") {
 		@Override
 		@SideOnly(Side.CLIENT)
@@ -39,6 +46,9 @@ public class TrekTech {
 			return TrekTech.itemStarFleetSymbol;
 		}
 	};
+
+	@Instance("TrekTech")
+	public static TrekTech instance;
 
 	public static Item itemStarFleetSymbol = new ItemStarFleetSymbol();
 	public static Item itemDuraniumIngot = new DuraniumIngot();
@@ -110,10 +120,13 @@ public class TrekTech {
 				"tilePlasmaPipe");
 		GameRegistry.registerTileEntity(TileEntityPlasmaPipeCombined.class,
 				"tilePlasmaPipeCombined");
-		GameRegistry.registerTileEntity(TileEntityPlasmaSource.class, "tilePlasmaSource");
+		GameRegistry.registerTileEntity(TileEntityPlasmaSource.class,
+				"tilePlasmaSource");
 		// RECIPES
 		registerRecipes();
 		proxy.registerRenderers();
+
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GUIHandler());
 	}
 
 	private static void registerRecipes() {

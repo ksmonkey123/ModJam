@@ -15,10 +15,10 @@ import ch.modjam.generic.GenericTileEntity;
 public class TileEntityPlasmaSource extends GenericTileEntity implements
 		IPlasmaConnection, IInventory {
 
-	private static final short PLASMA_PER_TICK = 20;
+	private static final short PLASMA_PER_TICK = 5;
 
 	private ItemStack stack;
-	private short maxPlasma = 1000;
+	private short maxPlasma = 10000;
 	private short currentPlasma = 0;
 	private int currentItemBurnTime = 0;
 	private int currentItemRemainingTime = 0;
@@ -55,11 +55,6 @@ public class TileEntityPlasmaSource extends GenericTileEntity implements
 	public void setInventorySlotContents(int var1, ItemStack var2) {
 		if (var1 == 0)
 			this.stack = var2;
-	}
-
-	@Override
-	public String getInventoryName() {
-		return "PlasmaSourceInventory";
 	}
 
 	@Override
@@ -118,14 +113,14 @@ public class TileEntityPlasmaSource extends GenericTileEntity implements
 
 	@Override
 	public void tick() {
-		if (this.currentItemRemainingTime > 0
-				&& this.currentPlasma < this.maxPlasma - PLASMA_PER_TICK) {
+
+		if (this.currentItemRemainingTime > 0) {
 			this.currentItemRemainingTime--;
-			this.currentPlasma += PLASMA_PER_TICK;
+			this.currentPlasma = (short) Math.min(this.maxPlasma,
+					this.currentPlasma + PLASMA_PER_TICK);
 		}
-		System.out.println(this.currentItemRemainingTime + "/"
-				+ this.currentItemBurnTime);
-		if (this.currentItemRemainingTime == 0)
+		if (this.currentItemRemainingTime == 0
+				&& this.currentPlasma < this.maxPlasma)
 			this.refuel();
 
 		for (ForgeDirection d : ForgeDirection.values()) {
@@ -201,4 +196,21 @@ public class TileEntityPlasmaSource extends GenericTileEntity implements
 
 	}
 
+	@Override
+	public String getInventoryName() {
+		return "container.plasmaSource";
+	}
+
+	public boolean isBurning() {
+		return this.currentItemRemainingTime > 0;
+	}
+
+	public int getBurnTimeRemainingScaled(int h) {
+		return currentItemBurnTime == 0 ? 0
+				: ((h * currentItemRemainingTime) / currentItemBurnTime);
+	}
+
+	public int getPlasmaLevelScaled(int h) {
+		return currentPlasma == 0 ? 0 : (currentPlasma * h) / maxPlasma;
+	}
 }
