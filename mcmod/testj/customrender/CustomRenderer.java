@@ -2,6 +2,11 @@ package testj.customrender;
 
 import net.minecraft.client.renderer.Tessellator;
 
+/**
+ * @author j
+ * TODO: rotation for textures
+ * TODO: rotation for the whole block
+ */
 public class CustomRenderer {
 
 	private String tex;
