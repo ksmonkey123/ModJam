@@ -43,7 +43,7 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 		TextureManager render = Minecraft.getMinecraft().renderEngine;
 		render.bindTexture(new ResourceLocation(TECarvedDirt.getTexture()));
 		RenderHelper.disableStandardItemLighting();
-//		GL11.glDisable(GL11.GL_BLEND);
+//		GL11.glEnable(GL11.GL_BLEND);
 		// RENDER
 		renderCore(texX, texY);
 		for (ForgeDirection dir : ForgeDirection.values()) {

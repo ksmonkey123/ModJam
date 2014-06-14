@@ -1,6 +1,7 @@
 package testj.customrender;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -30,16 +31,17 @@ public class TECarvedDirtItemRenderer implements IItemRenderer {
 			// GL11.glRotatef(225, 0.0F, 1.0F, 0.0F);
 			// GL11.glRotatef(45, -1.0F, 0.0F, -1.0F);
 			// GL11.glScalef(0.6F, 0.6F, 0.6F);
-			if (type == ItemRenderType.EQUIPPED_FIRST_PERSON)
-				GL11.glTranslatef(0.0F, 0.5F, 0.0F);
-
+			if (type == ItemRenderType.EQUIPPED_FIRST_PERSON || type==ItemRenderType.EQUIPPED)
+				GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+			RenderHelper.disableStandardItemLighting();
+			
 			ClientProxy.renderer.renderBlock(new IConnecting() {
 				@Override
 				public boolean connectsTo(ForgeDirection dir) {
 					return false;
 				}
 			});
-
+			RenderHelper.enableStandardItemLighting();
 			GL11.glPopMatrix();
 		}
 	}
