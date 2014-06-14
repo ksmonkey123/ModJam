@@ -60,25 +60,26 @@ public class TileEntityPlasmaPipeCombined extends GenericTileEntity implements
 				continue;
 			IPlasmaConnection t = (IPlasmaConnection) entity;
 			// make actual transfer
-			if (t.acceptsPlasma(EnumPlasmaTypes.NEUTRAL)) {
-				short halfDiff = (short) Math
-						.min(Properties.PLASMA_TRANSFER_SPEED,
-								(this.currentNeutralPlasma - t
-										.getCurrentPlasmaAmount(EnumPlasmaTypes.NEUTRAL)) / 2);
+			ForgeDirection opposite = d.getOpposite();
+			if (t.acceptsPlasma(EnumPlasmaTypes.NEUTRAL, opposite)) {
+				short halfDiff = (short) Math.min(
+						Properties.PLASMA_TRANSFER_SPEED,
+						(this.currentNeutralPlasma - t.getCurrentPlasmaAmount(
+								EnumPlasmaTypes.NEUTRAL, opposite)) / 2);
 				if (halfDiff <= 0)
 					continue;
 				this.currentNeutralPlasma -= t.fillPlasma(
-						EnumPlasmaTypes.NEUTRAL, halfDiff);
+						EnumPlasmaTypes.NEUTRAL, halfDiff, opposite);
 			}
-			if (t.acceptsPlasma(EnumPlasmaTypes.LOW)) {
-				short halfDiff = (short) Math
-						.min(Properties.PLASMA_TRANSFER_SPEED,
-								(this.currentLowPlasma - t
-										.getCurrentPlasmaAmount(EnumPlasmaTypes.LOW)) / 2);
+			if (t.acceptsPlasma(EnumPlasmaTypes.LOW, opposite)) {
+				short halfDiff = (short) Math.min(
+						Properties.PLASMA_TRANSFER_SPEED,
+						(this.currentLowPlasma - t.getCurrentPlasmaAmount(
+								EnumPlasmaTypes.LOW, opposite)) / 2);
 				if (halfDiff <= 0)
 					continue;
 				this.currentLowPlasma -= t.fillPlasma(EnumPlasmaTypes.LOW,
-						halfDiff);
+						halfDiff, opposite);
 			}
 		}
 		this.markDirty();
@@ -92,10 +93,11 @@ public class TileEntityPlasmaPipeCombined extends GenericTileEntity implements
 		if (t == null || !(t instanceof IPlasmaConnection))
 			return false;
 		IPlasmaConnection te = (IPlasmaConnection) t;
-		return te.acceptsPlasma(EnumPlasmaTypes.NEUTRAL)
-				|| te.providesPlasma(EnumPlasmaTypes.NEUTRAL)
-				|| te.acceptsPlasma(EnumPlasmaTypes.LOW)
-				|| te.providesPlasma(EnumPlasmaTypes.LOW);
+		ForgeDirection opp = d.getOpposite();
+		return te.acceptsPlasma(EnumPlasmaTypes.NEUTRAL, opp)
+				|| te.providesPlasma(EnumPlasmaTypes.NEUTRAL, opp)
+				|| te.acceptsPlasma(EnumPlasmaTypes.LOW, opp)
+				|| te.providesPlasma(EnumPlasmaTypes.LOW, opp);
 	}
 
 	@Override
@@ -110,19 +112,19 @@ public class TileEntityPlasmaPipeCombined extends GenericTileEntity implements
 
 	// -- IPlasmaConnection --
 	@Override
-	public boolean acceptsPlasma(EnumPlasmaTypes plasma) {
+	public boolean acceptsPlasma(EnumPlasmaTypes plasma, ForgeDirection d) {
 		return plasma == EnumPlasmaTypes.NEUTRAL
 				|| plasma == EnumPlasmaTypes.LOW;
 	}
 
 	@Override
-	public boolean providesPlasma(EnumPlasmaTypes plasma) {
+	public boolean providesPlasma(EnumPlasmaTypes plasma, ForgeDirection d) {
 		return plasma == EnumPlasmaTypes.NEUTRAL
 				|| plasma == EnumPlasmaTypes.LOW;
 	}
 
 	@Override
-	public short getMaxPlasmaAmount(EnumPlasmaTypes plasma) {
+	public short getMaxPlasmaAmount(EnumPlasmaTypes plasma, ForgeDirection d) {
 		switch (plasma) {
 		case NEUTRAL:
 			return this.maxNeutralPlasma;
@@ -134,7 +136,7 @@ public class TileEntityPlasmaPipeCombined extends GenericTileEntity implements
 	}
 
 	@Override
-	public short getCurrentPlasmaAmount(EnumPlasmaTypes plasma) {
+	public short getCurrentPlasmaAmount(EnumPlasmaTypes plasma, ForgeDirection d) {
 		switch (plasma) {
 		case NEUTRAL:
 			return this.currentNeutralPlasma;
@@ -146,7 +148,8 @@ public class TileEntityPlasmaPipeCombined extends GenericTileEntity implements
 	}
 
 	@Override
-	public short fillPlasma(EnumPlasmaTypes plasma, short amount) {
+	public short fillPlasma(EnumPlasmaTypes plasma, short amount,
+			ForgeDirection d) {
 		if (plasma == EnumPlasmaTypes.NEUTRAL) {
 			short filling = (short) Math.min(this.maxNeutralPlasma
 					- this.currentNeutralPlasma, amount);

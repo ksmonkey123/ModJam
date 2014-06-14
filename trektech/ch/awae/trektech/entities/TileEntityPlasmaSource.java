@@ -87,27 +87,28 @@ public class TileEntityPlasmaSource extends GenericTileEntity implements
 	}
 
 	@Override
-	public boolean acceptsPlasma(EnumPlasmaTypes plasma) {
+	public boolean acceptsPlasma(EnumPlasmaTypes plasma, ForgeDirection d) {
 		return false;
 	}
 
 	@Override
-	public boolean providesPlasma(EnumPlasmaTypes plasma) {
+	public boolean providesPlasma(EnumPlasmaTypes plasma, ForgeDirection d) {
 		return plasma == EnumPlasmaTypes.NEUTRAL;
 	}
 
 	@Override
-	public short getMaxPlasmaAmount(EnumPlasmaTypes plasma) {
+	public short getMaxPlasmaAmount(EnumPlasmaTypes plasma, ForgeDirection d) {
 		return 0;
 	}
 
 	@Override
-	public short getCurrentPlasmaAmount(EnumPlasmaTypes plasma) {
+	public short getCurrentPlasmaAmount(EnumPlasmaTypes plasma, ForgeDirection d) {
 		return 0;
 	}
 
 	@Override
-	public short fillPlasma(EnumPlasmaTypes plasma, short amount) {
+	public short fillPlasma(EnumPlasmaTypes plasma, short amount,
+			ForgeDirection d) {
 		return 0;
 	}
 
@@ -132,15 +133,16 @@ public class TileEntityPlasmaSource extends GenericTileEntity implements
 				continue;
 			IPlasmaConnection t = (IPlasmaConnection) entity;
 			// make actual transfer
-			if (t.acceptsPlasma(EnumPlasmaTypes.NEUTRAL)) {
-				short halfDiff = (short) Math
-						.min(Properties.PLASMA_TRANSFER_SPEED,
-								(this.currentPlasma - t
-										.getCurrentPlasmaAmount(EnumPlasmaTypes.NEUTRAL)) / 2);
+			ForgeDirection opp = d.getOpposite();
+			if (t.acceptsPlasma(EnumPlasmaTypes.NEUTRAL, opp)) {
+				short halfDiff = (short) Math.min(
+						Properties.PLASMA_TRANSFER_SPEED,
+						(this.currentPlasma - t.getCurrentPlasmaAmount(
+								EnumPlasmaTypes.NEUTRAL, opp)) / 2);
 				if (halfDiff <= 0)
 					continue;
 				this.currentPlasma -= t.fillPlasma(EnumPlasmaTypes.NEUTRAL,
-						halfDiff);
+						halfDiff, opp);
 			}
 		}
 		this.markDirty();

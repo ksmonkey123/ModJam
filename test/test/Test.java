@@ -31,27 +31,7 @@ public class Test {
 	@Instance("Test")
 	public static Test instance;
 
-	public static Block blockTestInventory = new BlockTestInventory();
-
-	// public static Block blockPlasmaTest = new BlockPlasmaTest();
-	// public static Block blockPersTest = new BlockTestTileEntityPersistance();
-	// public static Block blockTestSource = new BlockPlasmaSource();
-	public static Block blockTestDrain = new BlockPlasmaDrain();
-
 	@EventHandler
 	public void preInit(FMLInitializationEvent event) {
-		GameRegistry.registerBlock(blockTestInventory, "testInventory");
-		// GameRegistry.registerBlock(blockPlasmaTest, "plasmaTest");
-		// GameRegistry.registerTileEntity(TileEntityTestInventory.class,"testEnt");
-		// GameRegistry.registerTileEntity(TileEntityPlasma.class, "plasmaEnt");
-		// GameRegistry.registerBlock(blockPersTest, "persTest");
-		// GameRegistry.registerTileEntity(TileEntityPersistanceTest.class,"persTester");
-		// GameRegistry.registerBlock(blockTestSource, "plasmaTestSource");
-		// GameRegistry.registerTileEntity(TileEntityPlasmaSource.class,
-		// "testSource");
-		GameRegistry.registerBlock(blockTestDrain, "testPlasmaDrain");
-		GameRegistry.registerTileEntity(TileEntityPlasmaSource.class,
-				"testDrain");
-		// NetworkRegistry.INSTANCE.registerGuiHandler(this, new GUIHandler());
 	}
 }

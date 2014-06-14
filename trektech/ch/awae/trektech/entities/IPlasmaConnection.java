@@ -1,7 +1,15 @@
 package ch.awae.trektech.entities;
 
+import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
 
+/**
+ * This Interface allows for the interaction with the plasma system. It does
+ * support separated interactions for the different faces
+ * 
+ * @author Andreas Waelchli <andreas.waelchli@me.com>
+ * @version 2 - incompatible to version 1
+ */
 public interface IPlasmaConnection {
 
 	/**
@@ -10,18 +18,22 @@ public interface IPlasmaConnection {
 	 * 
 	 * @param plasma
 	 *            the type of plasma to check for
+	 * @param direction
 	 * @return true if the plasma type is accepted, false otherwise
 	 */
-	public boolean acceptsPlasma(EnumPlasmaTypes plasma);
+	public boolean acceptsPlasma(EnumPlasmaTypes plasma,
+			ForgeDirection direction);
 
 	/**
 	 * indicates if the entity provides a certain kind of plasma.
 	 * 
 	 * @param plasma
 	 *            the type of plasma to check for
+	 * @param direction
 	 * @return true if the plasma type is accepted, false otherwise
 	 */
-	public boolean providesPlasma(EnumPlasmaTypes plasma);
+	public boolean providesPlasma(EnumPlasmaTypes plasma,
+			ForgeDirection direction);
 
 	/**
 	 * get the maximum amount of plasma. For any plasma type that is not
@@ -29,9 +41,11 @@ public interface IPlasmaConnection {
 	 * be greater than 0.
 	 * 
 	 * @param plasma
+	 * @param direction
 	 * @return
 	 */
-	public short getMaxPlasmaAmount(EnumPlasmaTypes plasma);
+	public short getMaxPlasmaAmount(EnumPlasmaTypes plasma,
+			ForgeDirection direction);
 
 	/**
 	 * get the currently present amount of plasma. This number does not have to
@@ -43,9 +57,12 @@ public interface IPlasmaConnection {
 	 * 
 	 * @param plasma
 	 *            the type of plasma to retrieve the values for
+	 * @param direction
+	 *            the block face to check the plasma for
 	 * @return the amount of plasma stored
 	 */
-	public short getCurrentPlasmaAmount(EnumPlasmaTypes plasma);
+	public short getCurrentPlasmaAmount(EnumPlasmaTypes plasma,
+			ForgeDirection direction);
 
 	/**
 	 * try to fill with given amount of plasma
@@ -54,7 +71,9 @@ public interface IPlasmaConnection {
 	 *            the type of plasma to fill
 	 * @param amount
 	 *            the amount of plasma to fill
+	 * @param direction
 	 * @return the amount that was actually filled
 	 */
-	public short fillPlasma(EnumPlasmaTypes plasma, short amount);
+	public short fillPlasma(EnumPlasmaTypes plasma, short amount,
+			ForgeDirection direction);
 }

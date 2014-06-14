@@ -62,14 +62,16 @@ public class TileEntityPlasmaPipe extends GenericTileEntity implements
 				continue;
 			IPlasmaConnection t = (IPlasmaConnection) entity;
 			// make actual transfer
-			if (t.acceptsPlasma(this.plasmaType)) {
+			ForgeDirection face = d.getOpposite();
+			if (t.acceptsPlasma(this.plasmaType, face)) {
 				short halfDiff = (short) Math.min(
 						Properties.PLASMA_TRANSFER_SPEED,
-						(this.currentPlasma - t
-								.getCurrentPlasmaAmount(this.plasmaType)) / 2);
+						(this.currentPlasma - t.getCurrentPlasmaAmount(
+								this.plasmaType, face)) / 2);
 				if (halfDiff <= 0)
 					continue;
-				this.currentPlasma -= t.fillPlasma(this.plasmaType, halfDiff);
+				this.currentPlasma -= t.fillPlasma(this.plasmaType, halfDiff,
+						face);
 			}
 		}
 		this.markDirty();
@@ -83,8 +85,9 @@ public class TileEntityPlasmaPipe extends GenericTileEntity implements
 		if (t == null || !(t instanceof IPlasmaConnection))
 			return false;
 		IPlasmaConnection te = (IPlasmaConnection) t;
-		return te.acceptsPlasma(this.plasmaType)
-				|| te.providesPlasma(this.plasmaType);
+		ForgeDirection opposite = d.getOpposite();
+		return te.acceptsPlasma(this.plasmaType, opposite)
+				|| te.providesPlasma(this.plasmaType, opposite);
 	}
 
 	@Override
@@ -99,27 +102,32 @@ public class TileEntityPlasmaPipe extends GenericTileEntity implements
 
 	// -- IPlasmaConnection --
 	@Override
-	public boolean acceptsPlasma(EnumPlasmaTypes plasma) {
+	public boolean acceptsPlasma(EnumPlasmaTypes plasma,
+			ForgeDirection direction) {
 		return plasma == this.plasmaType;
 	}
 
 	@Override
-	public boolean providesPlasma(EnumPlasmaTypes plasma) {
+	public boolean providesPlasma(EnumPlasmaTypes plasma,
+			ForgeDirection direction) {
 		return plasma == this.plasmaType;
 	}
 
 	@Override
-	public short getMaxPlasmaAmount(EnumPlasmaTypes plasma) {
+	public short getMaxPlasmaAmount(EnumPlasmaTypes plasma,
+			ForgeDirection direction) {
 		return plasma == this.plasmaType ? this.maxPlasma : 0;
 	}
 
 	@Override
-	public short getCurrentPlasmaAmount(EnumPlasmaTypes plasma) {
+	public short getCurrentPlasmaAmount(EnumPlasmaTypes plasma,
+			ForgeDirection direction) {
 		return plasma == this.plasmaType ? this.currentPlasma : 0;
 	}
 
 	@Override
-	public short fillPlasma(EnumPlasmaTypes plasma, short amount) {
+	public short fillPlasma(EnumPlasmaTypes plasma, short amount,
+			ForgeDirection direction) {
 		if (plasma != this.plasmaType)
 			return 0;
 		short filling = (short) Math.min(this.maxPlasma - this.currentPlasma,

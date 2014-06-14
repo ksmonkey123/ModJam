@@ -37,9 +37,6 @@ public class ContainerPlasmaSource extends Container {
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
-		System.out.println(slot);
-
-		System.out.println("duba");
 		ItemStack stack = null;
 		Slot slotObject = (Slot) inventorySlots.get(slot);
 
