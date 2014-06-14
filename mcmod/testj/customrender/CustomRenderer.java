@@ -28,11 +28,17 @@ public class CustomRenderer {
 
 	public void quad(double x, double y, double z, double width, double height,
 			Side visibleFrom) {
-		quad(x, y, z, width, height, visibleFrom, visibleFrom.getTileIndex());
+		quad(x, y, z, width, height, visibleFrom, visibleFrom.getTileIndex(),0);
 	}
-
+	
 	public void quad(double x, double y, double z, double width, double height,
 			Side visibleFrom, int useTextureTileIndex) {
+		
+	}
+	
+
+	public void quad(double x, double y, double z, double width, double height,
+			Side visibleFrom, int useTextureTileIndex,int texRotation) {
 
 		double[] delta = sizeToDeltaCoords(visibleFrom, width, height);
 
@@ -45,95 +51,97 @@ public class CustomRenderer {
 		int tx = useTextureTileIndex % 4;
 		int ty = useTextureTileIndex / 4;
 
-		// double us,vs,dU,dV,up,vp;
-//		out(x,xp,y,yp,z,zp,us,up,vs,vp);
-
+		double us = 0,vs = 0;
 		switch (visibleFrom) {
 			case TOP: {
-				double us = tx * uvPerTile + (0.5-xp) * uvPerTile;
-				double vs = ty * uvPerTile + (0.5-zp) * uvPerTile;
-				double dU = height * uvPerTile;
-				double dV = width * uvPerTile;
-				double up = us + dU;
-				double vp = vs + dV;
-				
-				t.addVertexWithUV(xp, y, zp, us, vs);
-				t.addVertexWithUV(xp, y, z, us, vp);
-				t.addVertexWithUV(x, y, z, up, vp);
-				t.addVertexWithUV(x, y, zp, up, vs);
+				us = tx * uvPerTile + (0.5-xp) * uvPerTile;
+				vs = ty * uvPerTile + (0.5-zp) * uvPerTile;
 				break;
 			}
 			case FRONT: {
-				double us = tx * uvPerTile + (0.5-xp) * uvPerTile;
-				double vs = ty * uvPerTile + (0.5-yp) * uvPerTile;
-				double dU = width * uvPerTile;
-				double dV = height * uvPerTile;
-				double up = us + dU;
-				double vp = vs + dV;
-				
-				t.addVertexWithUV(xp, yp, z, us, vs);
-				t.addVertexWithUV(xp, y, z, us, vp);
-				t.addVertexWithUV(x, y, z, up, vp);
-				t.addVertexWithUV(x, yp, z, up, vs);
+				us = tx * uvPerTile + (0.5-xp) * uvPerTile;
+				vs = ty * uvPerTile + (0.5-yp) * uvPerTile;
 				break;
 			}
 			case LEFT: {
-				double us = tx * uvPerTile + (0.5-zp) * uvPerTile;
-				double vs = ty * uvPerTile + (0.5-yp) * uvPerTile;
-				double dU = width * uvPerTile;
-				double dV = height * uvPerTile;
-				double up = us + dU;
-				double vp = vs + dV;
-
-				t.addVertexWithUV(x, yp, zp, us, vs);
-				t.addVertexWithUV(x, y, zp, us, vp);
-				t.addVertexWithUV(x, y, z, up, vp);
-				t.addVertexWithUV(x, yp, z, up, vs);
+				us = tx * uvPerTile + (0.5-zp) * uvPerTile;
+				vs = ty * uvPerTile + (0.5-yp) * uvPerTile;
 				break;
 			}
 			case RIGHT: {
-				double us = tx * uvPerTile + (z + 0.5) * uvPerTile;
-				double vs = ty * uvPerTile + (0.5-yp) * uvPerTile;
-				double dU = width * uvPerTile;
-				double dV = height * uvPerTile;
-				double up = us + dU;
-				double vp = vs + dV;
-
-				t.addVertexWithUV(x, yp, z, us, vs);
-				t.addVertexWithUV(x, y, z, us, vp);
-				t.addVertexWithUV(x, y, zp, up, vp);
-				t.addVertexWithUV(x, yp, zp, up, vs);
+				us = tx * uvPerTile + (z + 0.5) * uvPerTile;
+				vs = ty * uvPerTile + (0.5-yp) * uvPerTile;
 				break;
 			}
 			case BACK: {
-				double us = tx * uvPerTile + (x + 0.5) * uvPerTile;
-				double vs = ty * uvPerTile + (0.5-yp) * uvPerTile;
-				double dU = width * uvPerTile;
-				double dV = height * uvPerTile;
-				double up = us + dU;
-				double vp = vs + dV;
-
-				t.addVertexWithUV(x, yp, z, us, vs);
-				t.addVertexWithUV(x, y, z, us, vp);
-				t.addVertexWithUV(xp, y, z, up, vp);
-				t.addVertexWithUV(xp, yp, z, up, vs);
+				us = tx * uvPerTile + (x + 0.5) * uvPerTile;
+				vs = ty * uvPerTile + (0.5-yp) * uvPerTile;
 				break;
 			}
 			case BOTTOM: {
-				double us = tx * uvPerTile + (0.5-xp) * uvPerTile;
-				double vs = ty * uvPerTile + (z+0.5) * uvPerTile;
-				double dU = height * uvPerTile;
-				double dV = width * uvPerTile;
-				double up = us + dU;
-				double vp = vs + dV;
-
-				t.addVertexWithUV(xp, y, z, us, vs);
-				t.addVertexWithUV(xp, y, zp, us, vp);
-				t.addVertexWithUV(x, y, zp, up, vp);
-				t.addVertexWithUV(x, y, z, up, vs);
+				us = tx * uvPerTile + (0.5-xp) * uvPerTile;
+				vs = ty * uvPerTile + (z+0.5) * uvPerTile;
+				break;
+			}
+			default: {
+				throw new RuntimeException("Unhandled enum type: "+visibleFrom);
+			}
+		}
+		
+		double dU = height * uvPerTile;
+		double dV = width * uvPerTile;
+		double up = us + dU;
+		double vp = vs + dV;
+		
+		double[] u = {us,us,up,up};
+		double[] v = {vs,vp,vp,vs};
+		double[] cx = null;
+		double[] cy = null;
+		double[] cz = null;
+		
+		
+		switch(visibleFrom) {
+			case TOP: {
+				cx=new double[]{xp,xp,x,x};
+				cy=new double[]{y,y,y,y};
+				cz=new double[]{zp,z,z,zp};
+				break;
+			}
+			case FRONT: {
+				cx=new double[]{xp,xp,x,x};
+				cy=new double[]{yp,y,y,yp};
+				cz=new double[]{z,z,z,z};
+				break;
+			}
+			case LEFT: {
+				cx=new double[]{x,x,x,x};
+				cy=new double[]{yp,y,y,yp};
+				cz=new double[]{zp,zp,z,z};
+				break;
+			}
+			case RIGHT: {
+				cx=new double[]{x,x,x,x};
+				cy=new double[]{yp,y,y,yp};
+				cz=new double[]{z,z,zp,zp};
+				break;
+			}
+			case BACK: {
+				cx=new double[]{x,x,xp,xp};
+				cy=new double[]{yp,y,y,yp};
+				cz=new double[]{z,z,z,z};
+				break;
+			}
+			case BOTTOM: {
+				cx=new double[]{xp,xp,x,x};
+				cy=new double[]{y,y,y,y};
+				cz=new double[]{z,zp,zp,z};
 				break;
 			}
 		}
+		
+		for(int i=0;i<4;i++)
+			t.addVertexWithUV(cx[i],cy[i],cz[i],u[i],v[i]);
+		
 	}
 
 	private void out(double ... c) {
