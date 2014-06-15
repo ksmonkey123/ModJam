@@ -33,7 +33,7 @@ public class CustomRenderer {
 	
 	public void quad(double x, double y, double z, double width, double height,
 			Side visibleFrom, int useTextureTileIndex) {
-		
+		quad(x, y, z, width, height, visibleFrom, useTextureTileIndex,0);
 	}
 	
 
@@ -52,10 +52,16 @@ public class CustomRenderer {
 		int ty = useTextureTileIndex / 4;
 
 		double us = 0,vs = 0;
+		
+		double dU = width * uvPerTile;
+		double dV = height * uvPerTile;
+		
 		switch (visibleFrom) {
 			case TOP: {
 				us = tx * uvPerTile + (0.5-xp) * uvPerTile;
 				vs = ty * uvPerTile + (0.5-zp) * uvPerTile;
+				dU = height * uvPerTile;
+				dV = width * uvPerTile;
 				break;
 			}
 			case FRONT: {
@@ -81,6 +87,8 @@ public class CustomRenderer {
 			case BOTTOM: {
 				us = tx * uvPerTile + (0.5-xp) * uvPerTile;
 				vs = ty * uvPerTile + (z+0.5) * uvPerTile;
+				dU = height * uvPerTile;
+				dV = width * uvPerTile;
 				break;
 			}
 			default: {
@@ -88,8 +96,7 @@ public class CustomRenderer {
 			}
 		}
 		
-		double dU = height * uvPerTile;
-		double dV = width * uvPerTile;
+		
 		double up = us + dU;
 		double vp = vs + dV;
 		

@@ -69,7 +69,9 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 	private static void renderCore(float texX, float texY) {
 		
 		
-//		renderer.cubeOfRadius(0.1);
+//		renderer.cubeOfRadius(0.5);
+		
+		
 		renderer.quad(-0.5, 0.5, -0.5, 1, 0.3, Side.TOP,3);
 		renderer.quad(0.2, 0.5, -0.5, 1, 0.3, Side.TOP,3);
 		renderer.quad(-0.2, 0.5, -0.5, 0.3, 0.4, Side.TOP,3);
@@ -90,14 +92,6 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 		
 		
 		renderer.quad(-0.5,-0.5,-0.5,1,1,Side.BOTTOM);
-		
-		
-		
-//		Tessellator t = Tessellator.instance;
-//		t.addVertexWithUV(-0.5, 0.5, -0.5, 0, 0);
-//		t.addVertexWithUV(-0.5, 0.5, 0.5, 1, 0);
-//		t.addVertexWithUV(0.5, 0.5, 0.5, 1, 1);
-//		t.addVertexWithUV(0.5, 0.5, -0.5, 0, 1);
 		
 	}
 	
