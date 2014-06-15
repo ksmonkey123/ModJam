@@ -147,7 +147,7 @@ public class CustomRenderer {
 		}
 		
 		for(int i=0;i<4;i++)
-			t.addVertexWithUV(cx[i],cy[i],cz[i],u[i],v[i]);
+			t.addVertexWithUV(cx[i],cy[i],cz[i],u[(i+texRotation)%4],v[(i+texRotation)%4]);
 		
 	}
 
