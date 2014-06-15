@@ -1,5 +1,6 @@
 package ch.awae.trektech.entities;
 
+import net.minecraft.block.BlockFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -10,6 +11,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.Properties;
+import ch.awae.trektech.blocks.BlockPlasmaSource;
 import ch.modjam.generic.GenericTileEntity;
 
 public class TileEntityPlasmaSource extends GenericTileEntity implements
@@ -93,7 +95,9 @@ public class TileEntityPlasmaSource extends GenericTileEntity implements
 
 	@Override
 	public boolean providesPlasma(EnumPlasmaTypes plasma, ForgeDirection d) {
-		return plasma == EnumPlasmaTypes.NEUTRAL;
+		return plasma == EnumPlasmaTypes.NEUTRAL
+				&& ForgeDirection.getOrientation(this.blockMetadata) == d
+						.getOpposite();
 	}
 
 	@Override
@@ -154,19 +158,24 @@ public class TileEntityPlasmaSource extends GenericTileEntity implements
 		if (value <= 0 || this.stack.stackSize <= 0 || this.stack == null) {
 			if (this.isActive) {
 				this.isActive = false;
-				// TODO: set block to inactive
+				this.updateBlock();
 			}
 		} else {
 			this.currentItemBurnTime = this.currentItemRemainingTime = value;
 			this.stack.stackSize--;
 			if (!this.isActive) {
 				this.isActive = true;
-				// TODO: set block to active
+				this.updateBlock();
 			}
 		}
 		if (this.stack != null && this.stack.stackSize <= 0) {
 			this.stack = null;
 		}
+	}
+
+	private void updateBlock() {
+		BlockPlasmaSource.updatePlasmaSourceState(this.isActive, this.worldObj,
+				this.xCoord, this.yCoord, this.zCoord);
 	}
 
 	private int getFuelValue() {
