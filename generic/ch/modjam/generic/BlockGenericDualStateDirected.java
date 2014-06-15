@@ -7,7 +7,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -131,6 +134,48 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 	public final void setIcon(EnumFace face, String iconOff, String iconOn) {
 		this.icons[face.ordinal()][0] = this.iconRegister.registerIcon(iconOff);
 		this.icons[face.ordinal()][1] = this.iconRegister.registerIcon(iconOn);
+	}
+
+	public static void updatePlasmaSourceState(boolean active, World w, int x,
+			int y, int z) {
+		int meta = w.getBlockMetadata(x, y, z);
+		int metaNew = meta % 10;
+		metaNew += active ? 10 : 0;
+		if (metaNew != meta)
+			w.setBlockMetadataWithNotify(x, y, z, metaNew, 2);
+
+	}
+
+	/**
+	 * Called when the block is placed in the world.
+	 */
+	@Override
+	public final void onBlockPlacedBy(World w, int x, int y, int z,
+			EntityLivingBase entityLivingBase, ItemStack p_149689_6_) {
+		int l = MathHelper
+				.floor_double((double) (entityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+
+		if (l == 0) {
+			w.setBlockMetadataWithNotify(x, y, z, 2, 2);
+		}
+
+		if (l == 1) {
+			w.setBlockMetadataWithNotify(x, y, z, 5, 2);
+		}
+
+		if (l == 2) {
+			w.setBlockMetadataWithNotify(x, y, z, 3, 2);
+		}
+
+		if (l == 3) {
+			w.setBlockMetadataWithNotify(x, y, z, 4, 2);
+		}
+		this.onBlockPlacedIntoWorldBy(w, x, y, z, entityLivingBase, p_149689_6_);
+	}
+	
+	public void onBlockPlacedIntoWorldBy(World w, int x, int y, int z,
+			EntityLivingBase entityLivingBase, ItemStack p_149689_6_) {
+		
 	}
 
 }
