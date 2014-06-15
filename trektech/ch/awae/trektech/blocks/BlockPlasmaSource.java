@@ -112,6 +112,8 @@ public class BlockPlasmaSource extends BlockGenericDualStateDirected {
 		this.setIcon(EnumFace.FRONT, TrekTech.MODID + ":plasma_gen_front_off",
 				TrekTech.MODID + ":plasma_gen_front_on");
 		this.setIcon(EnumFace.BACK, TrekTech.MODID + ":plasma_gen_back");
+		this.setIcon(EnumFace.TOP, TrekTech.MODID + ":plasma_gen_top_off",
+				TrekTech.MODID + ":plasma_gen_top_on");
 	}
 
 	@Override

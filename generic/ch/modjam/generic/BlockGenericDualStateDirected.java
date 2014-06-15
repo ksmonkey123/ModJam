@@ -172,10 +172,19 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 		}
 		this.onBlockPlacedIntoWorldBy(w, x, y, z, entityLivingBase, p_149689_6_);
 	}
-	
+
 	public void onBlockPlacedIntoWorldBy(World w, int x, int y, int z,
 			EntityLivingBase entityLivingBase, ItemStack p_149689_6_) {
-		
+
 	}
 
+	public static ForgeDirection getFaceDirectionForMeta(EnumFace face,
+			int metadata) {
+		return EnumFace.getDirectionOfFace(face,
+				ForgeDirection.getOrientation(metadata % 10).getOpposite());
+	}
+
+	public static boolean isOn(int metadata) {
+		return metadata >= 10;
+	}
 }

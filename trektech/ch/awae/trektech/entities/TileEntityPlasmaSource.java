@@ -12,6 +12,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.Properties;
 import ch.awae.trektech.blocks.BlockPlasmaSource;
+import ch.modjam.generic.BlockGenericDualStateDirected;
+import ch.modjam.generic.EnumFace;
 import ch.modjam.generic.GenericTileEntity;
 
 public class TileEntityPlasmaSource extends GenericTileEntity implements
@@ -96,8 +98,8 @@ public class TileEntityPlasmaSource extends GenericTileEntity implements
 	@Override
 	public boolean providesPlasma(EnumPlasmaTypes plasma, ForgeDirection d) {
 		return plasma == EnumPlasmaTypes.NEUTRAL
-				&& ForgeDirection.getOrientation(this.blockMetadata) == d
-						.getOpposite();
+				&& BlockGenericDualStateDirected.getFaceDirectionForMeta(
+						EnumFace.BACK, this.blockMetadata) == d.getOpposite();
 	}
 
 	@Override
