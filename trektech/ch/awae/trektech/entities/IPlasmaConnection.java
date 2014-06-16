@@ -20,6 +20,7 @@ public interface IPlasmaConnection {
 	 *            the type of plasma to check for
 	 * @param direction
 	 * @return true if the plasma type is accepted, false otherwise
+	 * @deprecated use connectsToPlasmaConnection()
 	 */
 	public boolean acceptsPlasma(EnumPlasmaTypes plasma,
 			ForgeDirection direction);
@@ -31,6 +32,7 @@ public interface IPlasmaConnection {
 	 *            the type of plasma to check for
 	 * @param direction
 	 * @return true if the plasma type is accepted, false otherwise
+	 * @deprecated use connectsToPlasmaConnection()
 	 */
 	public boolean providesPlasma(EnumPlasmaTypes plasma,
 			ForgeDirection direction);
@@ -43,6 +45,7 @@ public interface IPlasmaConnection {
 	 * @param plasma
 	 * @param direction
 	 * @return
+	 * @deprecated
 	 */
 	public short getMaxPlasmaAmount(EnumPlasmaTypes plasma,
 			ForgeDirection direction);
@@ -60,6 +63,7 @@ public interface IPlasmaConnection {
 	 * @param direction
 	 *            the block face to check the plasma for
 	 * @return the amount of plasma stored
+	 * @deprecated use getParticleCount()
 	 */
 	public short getCurrentPlasmaAmount(EnumPlasmaTypes plasma,
 			ForgeDirection direction);
@@ -73,7 +77,43 @@ public interface IPlasmaConnection {
 	 *            the amount of plasma to fill
 	 * @param direction
 	 * @return the amount that was actually filled
+	 * @deprecated use applyParticleFlow()
 	 */
-	public short fillPlasma(EnumPlasmaTypes plasma, short amount,
+	public float fillPlasma(EnumPlasmaTypes plasma, short amount,
+			ForgeDirection direction);
+
+	/**
+	 * indicates the amount of plasma the entity holds per bar of pressure.
+	 * 
+	 * @param plasma
+	 *            the plasma type to check for
+	 * @param direction
+	 *            the side to check on
+	 * @return the particle count per bar
+	 */
+	public float getParticlesPerBar(EnumPlasmaTypes plasma,
+			ForgeDirection direction);
+
+	/**
+	 * indicates the amount of plasma particles currently held.
+	 * 
+	 * @param plasma
+	 *            the plasma type to check for
+	 * @param direction
+	 *            the side to check on
+	 * @return the plasma particle count
+	 */
+	public int getParticleCount(EnumPlasmaTypes plasma, ForgeDirection direction);
+
+	/**
+	 * 
+	 * @param plasma
+	 * @param direction
+	 * @param particleCount
+	 */
+	public void applyParticleFlow(EnumPlasmaTypes plasma,
+			ForgeDirection direction, int particleCount);
+
+	public boolean connectsToPlasmaConnection(EnumPlasmaTypes plasma,
 			ForgeDirection direction);
 }
