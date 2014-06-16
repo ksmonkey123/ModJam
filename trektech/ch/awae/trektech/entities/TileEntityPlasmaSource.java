@@ -200,7 +200,7 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 			ForgeDirection direction) {
 		return plasma == EnumPlasmaTypes.NEUTRAL
 				&& BlockGenericDualStateDirected.getFaceDirectionForMeta(
-						EnumFace.BACK, this.blockMetadata) == direction
+						EnumFace.BACK, this.getBlockMetadata()) == direction
 						.getOpposite();
 	}
 
