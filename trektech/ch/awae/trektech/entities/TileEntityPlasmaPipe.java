@@ -100,11 +100,15 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 	@Override
 	public void writeCustomNBT(NBTTagCompound tag) {
 		tag.setInteger("Plasma", this.plasmaType.ordinal());
+		tag.setString("Texture", this.texture);
+		tag.setFloat("Radius", this.radius);
 	}
 
 	@Override
 	public void readCustomNBT(NBTTagCompound tag) {
 		this.plasmaType = EnumPlasmaTypes.values()[tag.getInteger("Plasma")];
+		this.texture = tag.getString("Texture");
+		this.radius = tag.getFloat("Radius");
 	}
 
 }

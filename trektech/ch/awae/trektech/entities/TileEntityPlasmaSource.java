@@ -14,16 +14,16 @@ import ch.awae.trektech.Properties;
 import ch.awae.trektech.blocks.BlockPlasmaSource;
 import ch.modjam.generic.BlockGenericDualStateDirected;
 import ch.modjam.generic.EnumFace;
-import ch.modjam.generic.GenericTileEntity;
 
-public class TileEntityPlasmaSource extends GenericTileEntity implements
+public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 		IPlasmaConnection, IInventory {
 
-	private static final short PLASMA_PER_TICK = 5;
+	private static final int PLASMA_PER_TICK = 5;
+	private static final int PLASMA_PER_BAR = 1000;
+	private static final int MAX_BAR = 10;
 
 	private ItemStack stack;
-	private short maxPlasma = 10000;
-	private short currentPlasma = 0;
+	private int currentPlasma = 0;
 	private int currentItemBurnTime = 0;
 	private int currentItemRemainingTime = 0;
 	private boolean isActive = false; // this value is used for caching. no need
@@ -91,68 +91,16 @@ public class TileEntityPlasmaSource extends GenericTileEntity implements
 	}
 
 	@Override
-	public boolean acceptsPlasma(EnumPlasmaTypes plasma, ForgeDirection d) {
-		return false;
-	}
-
-	@Override
-	public boolean providesPlasma(EnumPlasmaTypes plasma, ForgeDirection d) {
-		return plasma == EnumPlasmaTypes.NEUTRAL
-				&& BlockGenericDualStateDirected.getFaceDirectionForMeta(
-						EnumFace.BACK, this.blockMetadata) == d.getOpposite();
-	}
-
-	@Override
-	public short getMaxPlasmaAmount(EnumPlasmaTypes plasma, ForgeDirection d) {
-		return 0;
-	}
-
-	@Override
-	public short getCurrentPlasmaAmount(EnumPlasmaTypes plasma, ForgeDirection d) {
-		return 0;
-	}
-
-	@Override
-	public short fillPlasma(EnumPlasmaTypes plasma, short amount,
-			ForgeDirection d) {
-		return 0;
-	}
-
-	@Override
-	public void tick() {
+	public void customTick() {
 
 		if (this.currentItemRemainingTime > 0) {
 			this.currentItemRemainingTime--;
-			this.currentPlasma = (short) Math.min(this.maxPlasma,
-					this.currentPlasma + PLASMA_PER_TICK);
+			if (this.currentPlasma < PLASMA_PER_BAR * MAX_BAR)
+				this.currentPlasma += PLASMA_PER_TICK;
 		}
 		if (this.currentItemRemainingTime == 0
-				&& this.currentPlasma < this.maxPlasma)
+				&& this.currentPlasma < PLASMA_PER_BAR * MAX_BAR)
 			this.refuel();
-
-		for (ForgeDirection d : ForgeDirection.values()) {
-			if (d == ForgeDirection.UNKNOWN)
-				continue;
-			TileEntity entity = worldObj.getTileEntity(this.xCoord + d.offsetX,
-					this.yCoord + d.offsetY, this.zCoord + d.offsetZ);
-			if (entity == null || !(entity instanceof IPlasmaConnection))
-				continue;
-			IPlasmaConnection t = (IPlasmaConnection) entity;
-			// make actual transfer
-			ForgeDirection opp = d.getOpposite();
-			if (t.acceptsPlasma(EnumPlasmaTypes.NEUTRAL, opp)) {
-				short halfDiff = (short) Math.min(
-						Properties.PLASMA_TRANSFER_SPEED,
-						(this.currentPlasma - t.getCurrentPlasmaAmount(
-								EnumPlasmaTypes.NEUTRAL, opp)) / 2);
-				if (halfDiff <= 0)
-					continue;
-				this.currentPlasma -= t.fillPlasma(EnumPlasmaTypes.NEUTRAL,
-						halfDiff, opp);
-			}
-		}
-		this.markDirty();
-
 	}
 
 	private void refuel() {
@@ -185,8 +133,8 @@ public class TileEntityPlasmaSource extends GenericTileEntity implements
 	}
 
 	@Override
-	public void writeNBT(NBTTagCompound tag) {
-		tag.setShort("Plasma", this.currentPlasma);
+	public void writeCustomNBT(NBTTagCompound tag) {
+		// tag.setShort("Plasma", this.currentPlasma);
 		tag.setInteger("CurrentTotal", this.currentItemBurnTime);
 		tag.setInteger("CurrentRemain", this.currentItemRemainingTime);
 		NBTTagList nbttaglist = new NBTTagList();
@@ -199,8 +147,8 @@ public class TileEntityPlasmaSource extends GenericTileEntity implements
 	}
 
 	@Override
-	public void readNBT(NBTTagCompound tag) {
-		this.currentPlasma = tag.getShort("Plasma");
+	public void readCustomNBT(NBTTagCompound tag) {
+		// this.currentPlasma = tag.getShort("Plasma");
 		this.currentItemBurnTime = tag.getInteger("CurrentTotal");
 		this.currentItemRemainingTime = tag.getInteger("CurrentRemain");
 		NBTTagList nbttaglist = tag.getTagList("Items", 10);
@@ -224,6 +172,47 @@ public class TileEntityPlasmaSource extends GenericTileEntity implements
 	}
 
 	public int getPlasmaLevelScaled(int h) {
-		return currentPlasma == 0 ? 0 : (currentPlasma * h) / maxPlasma;
+		return currentPlasma == 0 ? 0 : (currentPlasma < PLASMA_PER_BAR
+				* MAX_BAR ? ((currentPlasma * h) / PLASMA_PER_BAR * MAX_BAR)
+				: h);
+	}
+
+	@Override
+	public float getParticlesPerBar(EnumPlasmaTypes plasma,
+			ForgeDirection direction) {
+		return plasma == EnumPlasmaTypes.NEUTRAL ? PLASMA_PER_BAR : 0;
+	}
+
+	@Override
+	public int getParticleCount(EnumPlasmaTypes plasma, ForgeDirection direction) {
+		return (this.connectsToPlasmaConnection(plasma, direction)) ? this.currentPlasma
+				: 0;
+	}
+
+	@Override
+	public void applyParticleFlow(EnumPlasmaTypes plasma,
+			ForgeDirection direction, int particleCount) {
+		if (connectsToPlasmaConnection(plasma, direction))
+			this.currentPlasma += particleCount;
+
+	}
+
+	@Override
+	public boolean connectsToPlasmaConnection(EnumPlasmaTypes plasma,
+			ForgeDirection direction) {
+		return plasma == EnumPlasmaTypes.NEUTRAL
+				&& BlockGenericDualStateDirected.getFaceDirectionForMeta(
+						EnumFace.BACK, this.blockMetadata) == direction
+						.getOpposite();
+	}
+
+	@Override
+	public boolean setParticleCount(EnumPlasmaTypes plasma,
+			ForgeDirection direction, int count) {
+		if (this.connectsToPlasmaConnection(plasma, direction)) {
+			this.currentPlasma = count;
+			return true;
+		}
+		return false;
 	}
 }

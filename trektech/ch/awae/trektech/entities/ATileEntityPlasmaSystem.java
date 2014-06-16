@@ -11,7 +11,7 @@ public abstract class ATileEntityPlasmaSystem extends GenericTileEntity
 		implements IPlasmaConnection {
 
 	@Override
-	public void tick() {
+	public final void tick() {
 		for (ForgeDirection direction : ForgeDirection.VALID_DIRECTIONS) {
 			this.transferPlasma(direction);
 		}
@@ -36,8 +36,11 @@ public abstract class ATileEntityPlasmaSystem extends GenericTileEntity
 			float ownPpB = this.getParticlesPerBar(plasma, direction);
 			float othPpB = other.getParticlesPerBar(plasma, opposite);
 			int dCount = (int) ((ownPpB * othCount - othPpB * ownCount) / (ownPpB + othPpB));
+			// crop transfer rate
 			if (dCount > Properties.PLASMA_TRANSFER_SPEED)
 				dCount = Properties.PLASMA_TRANSFER_SPEED;
+			else if (dCount < -Properties.PLASMA_TRANSFER_SPEED)
+				dCount = -Properties.PLASMA_TRANSFER_SPEED;
 			// apply particle flow
 			this.applyParticleFlow(plasma, direction, -dCount);
 			other.applyParticleFlow(plasma, opposite, dCount);
