@@ -13,76 +13,6 @@ import ch.awae.trektech.EnumPlasmaTypes;
 public interface IPlasmaConnection {
 
 	/**
-	 * indicates if the entity accepts a certain kind of plasma. If a type of
-	 * plasma is accepted, the <tt>max</tt> must be greater than 0
-	 * 
-	 * @param plasma
-	 *            the type of plasma to check for
-	 * @param direction
-	 * @return true if the plasma type is accepted, false otherwise
-	 * @deprecated use connectsToPlasmaConnection()
-	 */
-	public boolean acceptsPlasma(EnumPlasmaTypes plasma,
-			ForgeDirection direction);
-
-	/**
-	 * indicates if the entity provides a certain kind of plasma.
-	 * 
-	 * @param plasma
-	 *            the type of plasma to check for
-	 * @param direction
-	 * @return true if the plasma type is accepted, false otherwise
-	 * @deprecated use connectsToPlasmaConnection()
-	 */
-	public boolean providesPlasma(EnumPlasmaTypes plasma,
-			ForgeDirection direction);
-
-	/**
-	 * get the maximum amount of plasma. For any plasma type that is not
-	 * accepted, this must evaluate to 0, for any accepted plasma type it must
-	 * be greater than 0.
-	 * 
-	 * @param plasma
-	 * @param direction
-	 * @return
-	 * @deprecated
-	 */
-	public short getMaxPlasmaAmount(EnumPlasmaTypes plasma,
-			ForgeDirection direction);
-
-	/**
-	 * get the currently present amount of plasma. This number does not have to
-	 * represent the actual value, however at least <tt>(max - current)</tt>
-	 * units of plasma must be able to be accepted at any time and <tt>max</tt>
-	 * must always be greater than or equal to <tt>current</tt>. Of course
-	 * providing the actual value is recommended. If a plasma type is not
-	 * accepted, this must return 0.
-	 * 
-	 * @param plasma
-	 *            the type of plasma to retrieve the values for
-	 * @param direction
-	 *            the block face to check the plasma for
-	 * @return the amount of plasma stored
-	 * @deprecated use getParticleCount()
-	 */
-	public short getCurrentPlasmaAmount(EnumPlasmaTypes plasma,
-			ForgeDirection direction);
-
-	/**
-	 * try to fill with given amount of plasma
-	 * 
-	 * @param plasma
-	 *            the type of plasma to fill
-	 * @param amount
-	 *            the amount of plasma to fill
-	 * @param direction
-	 * @return the amount that was actually filled
-	 * @deprecated use applyParticleFlow()
-	 */
-	public float fillPlasma(EnumPlasmaTypes plasma, short amount,
-			ForgeDirection direction);
-
-	/**
 	 * indicates the amount of plasma the entity holds per bar of pressure.
 	 * 
 	 * @param plasma
@@ -106,14 +36,45 @@ public interface IPlasmaConnection {
 	public int getParticleCount(EnumPlasmaTypes plasma, ForgeDirection direction);
 
 	/**
+	 * changes the particle count by the given amount
 	 * 
 	 * @param plasma
+	 *            the plasma type to apply the change to
 	 * @param direction
+	 *            the side to apply the change to
 	 * @param particleCount
+	 *            the amount to change by
 	 */
 	public void applyParticleFlow(EnumPlasmaTypes plasma,
 			ForgeDirection direction, int particleCount);
 
+	/**
+	 * indicates whether or not a connection link can be established for a given
+	 * plasma type in a given direction
+	 * 
+	 * @param plasma
+	 *            the plasma type to check for
+	 * @param direction
+	 *            the side to check on
+	 * @return <tt>true</tt> if the connection is valid, <tt>false</tt>
+	 *         otherwise
+	 */
 	public boolean connectsToPlasmaConnection(EnumPlasmaTypes plasma,
 			ForgeDirection direction);
+
+	/**
+	 * sets the particle count of a given plasma type on a given side to a given
+	 * value.
+	 * 
+	 * @param plasma
+	 *            the plasma type to apply the change to
+	 * @param direction
+	 *            the side to apply the change to
+	 * @param count
+	 *            the plasma particle count to apply
+	 * @return <tt>true</tt> if the operation has been performed, <tt>false</tt>
+	 *         otherwise
+	 */
+	public boolean setParticleCount(EnumPlasmaTypes plasma,
+			ForgeDirection direction, int count);
 }

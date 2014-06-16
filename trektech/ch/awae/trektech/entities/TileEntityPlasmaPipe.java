@@ -13,11 +13,10 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityPlasmaPipe extends GenericTileEntity implements
+public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 		IPlasmaPipe, IPlasmaConnection {
 
-	private short maxPlasma = 1000;
-	private short currentPlasma = 0;
+	private int currentPlasma = 0;
 	private EnumPlasmaTypes plasmaType;
 	private String texture;
 	private float radius;
@@ -35,48 +34,6 @@ public class TileEntityPlasmaPipe extends GenericTileEntity implements
 		this.texture = "";
 	}
 
-	@Override
-	public void writeNBT(NBTTagCompound tag) {
-		tag.setShort("Plasma", this.currentPlasma);
-		tag.setString("Texture", this.texture);
-		tag.setFloat("Radius", this.radius);
-		tag.setByte("Type", this.plasmaType.getIndex());
-	}
-
-	@Override
-	public void readNBT(NBTTagCompound tag) {
-		this.currentPlasma = tag.getShort("Plasma");
-		this.texture = tag.getString("Texture");
-		this.radius = tag.getFloat("Radius");
-		this.plasmaType = EnumPlasmaTypes.getByIndex(tag.getByte("Type"));
-	}
-
-	@Override
-	public void tick() {
-		for (ForgeDirection d : ForgeDirection.values()) {
-			if (d == ForgeDirection.UNKNOWN)
-				continue;
-			TileEntity entity = worldObj.getTileEntity(this.xCoord + d.offsetX,
-					this.yCoord + d.offsetY, this.zCoord + d.offsetZ);
-			if (entity == null || !(entity instanceof IPlasmaConnection))
-				continue;
-			IPlasmaConnection t = (IPlasmaConnection) entity;
-			// make actual transfer
-			ForgeDirection face = d.getOpposite();
-			if (t.acceptsPlasma(this.plasmaType, face)) {
-				short halfDiff = (short) Math.min(
-						Properties.PLASMA_TRANSFER_SPEED,
-						(this.currentPlasma - t.getCurrentPlasmaAmount(
-								this.plasmaType, face)) / 2);
-				if (halfDiff <= 0)
-					continue;
-				this.currentPlasma -= t.fillPlasma(this.plasmaType, halfDiff,
-						face);
-			}
-		}
-		this.markDirty();
-	}
-
 	// -- IPlasmaPipe --
 	@Override
 	public boolean connectsTo(ForgeDirection d) {
@@ -86,8 +43,7 @@ public class TileEntityPlasmaPipe extends GenericTileEntity implements
 			return false;
 		IPlasmaConnection te = (IPlasmaConnection) t;
 		ForgeDirection opposite = d.getOpposite();
-		return te.acceptsPlasma(this.plasmaType, opposite)
-				|| te.providesPlasma(this.plasmaType, opposite);
+		return te.connectsToPlasmaConnection(this.plasmaType, opposite);
 	}
 
 	@Override
@@ -102,38 +58,53 @@ public class TileEntityPlasmaPipe extends GenericTileEntity implements
 
 	// -- IPlasmaConnection --
 	@Override
-	public boolean acceptsPlasma(EnumPlasmaTypes plasma,
+	public float getParticlesPerBar(EnumPlasmaTypes plasma,
 			ForgeDirection direction) {
-		return plasma == this.plasmaType;
+		return plasma == this.plasmaType ? 100 : 0;
 	}
 
 	@Override
-	public boolean providesPlasma(EnumPlasmaTypes plasma,
-			ForgeDirection direction) {
-		return plasma == this.plasmaType;
-	}
-
-	@Override
-	public short getMaxPlasmaAmount(EnumPlasmaTypes plasma,
-			ForgeDirection direction) {
-		return plasma == this.plasmaType ? this.maxPlasma : 0;
-	}
-
-	@Override
-	public short getCurrentPlasmaAmount(EnumPlasmaTypes plasma,
-			ForgeDirection direction) {
+	public int getParticleCount(EnumPlasmaTypes plasma, ForgeDirection direction) {
 		return plasma == this.plasmaType ? this.currentPlasma : 0;
 	}
 
 	@Override
-	public short fillPlasma(EnumPlasmaTypes plasma, short amount,
+	public void applyParticleFlow(EnumPlasmaTypes plasma,
+			ForgeDirection direction, int particleCount) {
+		if (plasma == this.plasmaType)
+			this.currentPlasma += particleCount;
+	}
+
+	@Override
+	public boolean connectsToPlasmaConnection(EnumPlasmaTypes plasma,
 			ForgeDirection direction) {
-		if (plasma != this.plasmaType)
-			return 0;
-		short filling = (short) Math.min(this.maxPlasma - this.currentPlasma,
-				amount);
-		this.currentPlasma += filling;
-		return filling;
+		return plasma == this.plasmaType;
+	}
+
+	@Override
+	public boolean setParticleCount(EnumPlasmaTypes plasma,
+			ForgeDirection direction, int count) {
+		if (plasma == this.plasmaType) {
+			this.currentPlasma = count;
+			return true;
+		}
+		return false;
+	}
+
+	// -- ATileEntityPlasmaSystem --
+	@Override
+	public void customTick() {
+		// NOT NEEDED
+	}
+
+	@Override
+	public void writeCustomNBT(NBTTagCompound tag) {
+		tag.setInteger("Plasma", this.plasmaType.ordinal());
+	}
+
+	@Override
+	public void readCustomNBT(NBTTagCompound tag) {
+		this.plasmaType = EnumPlasmaTypes.values()[tag.getInteger("Plasma")];
 	}
 
 }
