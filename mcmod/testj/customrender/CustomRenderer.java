@@ -3,9 +3,7 @@ package testj.customrender;
 import net.minecraft.client.renderer.Tessellator;
 
 /**
- * @author j
- * TODO: rotation for textures
- * TODO: rotation for the whole block
+ * @author j TODO: rotation for textures TODO: rotation for the whole block
  */
 public class CustomRenderer {
 
@@ -28,17 +26,16 @@ public class CustomRenderer {
 
 	public void quad(double x, double y, double z, double width, double height,
 			Side visibleFrom) {
-		quad(x, y, z, width, height, visibleFrom, visibleFrom.getTileIndex(),0);
+		quad(x, y, z, width, height, visibleFrom, visibleFrom.getTileIndex(), 0);
 	}
-	
-	public void quad(double x, double y, double z, double width, double height,
-			Side visibleFrom, int useTextureTileIndex) {
-		quad(x, y, z, width, height, visibleFrom, useTextureTileIndex,0);
-	}
-	
 
 	public void quad(double x, double y, double z, double width, double height,
-			Side visibleFrom, int useTextureTileIndex,int texRotation) {
+			Side visibleFrom, int useTextureTileIndex) {
+		quad(x, y, z, width, height, visibleFrom, useTextureTileIndex, 0);
+	}
+
+	public void quad(double x, double y, double z, double width, double height,
+			Side visibleFrom, int useTextureTileIndex, int texRotation) {
 
 		double[] delta = sizeToDeltaCoords(visibleFrom, width, height);
 
@@ -51,112 +48,118 @@ public class CustomRenderer {
 		int tx = useTextureTileIndex % 4;
 		int ty = useTextureTileIndex / 4;
 
-		double us = 0,vs = 0;
-		
-		double dU = width * uvPerTile;
-		double dV = height * uvPerTile;
-		
+		double us = 0, vs = 0, dU, dV;
+
+		boolean swaped = (texRotation % 2) == 1;
+
 		switch (visibleFrom) {
 			case TOP: {
-				us = tx * uvPerTile + (0.5-xp) * uvPerTile;
-				vs = ty * uvPerTile + (0.5-zp) * uvPerTile;
-				dU = height * uvPerTile;
-				dV = width * uvPerTile;
+				us = tx * uvPerTile + (0.5 + z) * uvPerTile;
+				vs = ty * uvPerTile + (0.5 - xp) * uvPerTile;
+				swaped = !swaped;
 				break;
 			}
 			case FRONT: {
-				us = tx * uvPerTile + (0.5-xp) * uvPerTile;
-				vs = ty * uvPerTile + (0.5-yp) * uvPerTile;
+				us = tx * uvPerTile + (0.5 - xp) * uvPerTile;
+				vs = ty * uvPerTile + (0.5 - yp) * uvPerTile;
 				break;
 			}
 			case LEFT: {
-				us = tx * uvPerTile + (0.5-zp) * uvPerTile;
-				vs = ty * uvPerTile + (0.5-yp) * uvPerTile;
+				us = tx * uvPerTile + (0.5 - zp) * uvPerTile;
+				vs = ty * uvPerTile + (0.5 - yp) * uvPerTile;
 				break;
 			}
 			case RIGHT: {
 				us = tx * uvPerTile + (z + 0.5) * uvPerTile;
-				vs = ty * uvPerTile + (0.5-yp) * uvPerTile;
+				vs = ty * uvPerTile + (0.5 - yp) * uvPerTile;
 				break;
 			}
 			case BACK: {
 				us = tx * uvPerTile + (x + 0.5) * uvPerTile;
-				vs = ty * uvPerTile + (0.5-yp) * uvPerTile;
+				vs = ty * uvPerTile + (0.5 - yp) * uvPerTile;
 				break;
 			}
 			case BOTTOM: {
-				us = tx * uvPerTile + (0.5-xp) * uvPerTile;
-				vs = ty * uvPerTile + (z+0.5) * uvPerTile;
-				dU = height * uvPerTile;
-				dV = width * uvPerTile;
+				us = tx * uvPerTile + (0.5 - xp) * uvPerTile;
+				vs = ty * uvPerTile + (z + 0.5) * uvPerTile;
+				swaped = !swaped;
 				break;
 			}
 			default: {
-				throw new RuntimeException("Unhandled enum type: "+visibleFrom);
+				throw new RuntimeException("Unhandled enum type: "
+						+ visibleFrom);
 			}
 		}
-		
-		
+
+		if (!swaped) {
+			dU = width * uvPerTile;
+			dV = height * uvPerTile;
+		} else {
+			dU = height * uvPerTile;
+			dV = width * uvPerTile;
+		}
+
 		double up = us + dU;
 		double vp = vs + dV;
-		
-		double[] u = {us,us,up,up};
-		double[] v = {vs,vp,vp,vs};
+
+		double[] u = { us, us, up, up };
+		double[] v = { vs, vp, vp, vs };
 		double[] cx = null;
 		double[] cy = null;
 		double[] cz = null;
-		
-		
-		switch(visibleFrom) {
+
+		switch (visibleFrom) {
 			case TOP: {
-				cx=new double[]{xp,xp,x,x};
-				cy=new double[]{y,y,y,y};
-				cz=new double[]{zp,z,z,zp};
+				cx = new double[] { xp, xp, x, x };
+				cy = new double[] { y, y, y, y };
+				cz = new double[] { zp, z, z, zp };
 				break;
 			}
 			case FRONT: {
-				cx=new double[]{xp,xp,x,x};
-				cy=new double[]{yp,y,y,yp};
-				cz=new double[]{z,z,z,z};
+				cx = new double[] { xp, xp, x, x };
+				cy = new double[] { yp, y, y, yp };
+				cz = new double[] { z, z, z, z };
 				break;
 			}
 			case LEFT: {
-				cx=new double[]{x,x,x,x};
-				cy=new double[]{yp,y,y,yp};
-				cz=new double[]{zp,zp,z,z};
+				cx = new double[] { x, x, x, x };
+				cy = new double[] { yp, y, y, yp };
+				cz = new double[] { zp, zp, z, z };
 				break;
 			}
 			case RIGHT: {
-				cx=new double[]{x,x,x,x};
-				cy=new double[]{yp,y,y,yp};
-				cz=new double[]{z,z,zp,zp};
+				cx = new double[] { x, x, x, x };
+				cy = new double[] { yp, y, y, yp };
+				cz = new double[] { z, z, zp, zp };
 				break;
 			}
 			case BACK: {
-				cx=new double[]{x,x,xp,xp};
-				cy=new double[]{yp,y,y,yp};
-				cz=new double[]{z,z,z,z};
+				cx = new double[] { x, x, xp, xp };
+				cy = new double[] { yp, y, y, yp };
+				cz = new double[] { z, z, z, z };
 				break;
 			}
 			case BOTTOM: {
-				cx=new double[]{xp,xp,x,x};
-				cy=new double[]{y,y,y,y};
-				cz=new double[]{z,zp,zp,z};
+				cx = new double[] { xp, xp, x, x };
+				cy = new double[] { y, y, y, y };
+				cz = new double[] { z, zp, zp, z };
 				break;
 			}
 		}
-		
-		for(int i=0;i<4;i++)
-			t.addVertexWithUV(cx[i],cy[i],cz[i],u[(i+texRotation)%4],v[(i+texRotation)%4]);
-		
+
+		for (int i = 0; i < 4; i++)
+			t.addVertexWithUV(cx[i], cy[i], cz[i], u[(i + texRotation) % 4],
+					v[(i + texRotation) % 4]);
+
 	}
 
-	private void out(double ... c) {
-		String[] name= {"x","xp","y","yp","z","zp","us","up","vs","vp"};
-		StringBuffer s =new StringBuffer();
-		for(int i=0;i<c.length;i++)
-			s.append(name[i]+":"+c[i]+", ");
-		System.out.println(s.substring(0, s.length()-2));
+	private void out(double... c) {
+		String[] name = {
+				"x", "xp", "y", "yp", "z", "zp", "us", "up", "vs", "vp" };
+		StringBuffer s = new StringBuffer();
+		for (int i = 0; i < c.length; i++)
+			s.append(name[i] + ":" + c[i] + ", ");
+		System.out.println(s.substring(0, s.length() - 2));
 	}
 
 	private double[] sizeToDeltaCoords(Side visibleFrom, double width,
@@ -209,14 +212,14 @@ public class CustomRenderer {
 	public void standardCube() {
 		cubeOfRadius(0.5);
 	}
-	
-	public void cubeOfRadius(double r){
-		double d = 2*r;
+
+	public void cubeOfRadius(double r) {
+		double d = 2 * r;
 		this.quad(-r, r, -r, d, d, Side.TOP);
-		this.quad(-r,-r,-r,d,d,Side.FRONT);
-		this.quad(r,-r,-r,d,d,Side.LEFT);
-		this.quad(-r,-r,-r,d,d,Side.RIGHT);
-		this.quad(-r,-r,r,d,d,Side.BACK);
-		this.quad(-r,-r,-r,d,d,Side.BOTTOM);
+		this.quad(-r, -r, -r, d, d, Side.FRONT);
+		this.quad(r, -r, -r, d, d, Side.LEFT);
+		this.quad(-r, -r, -r, d, d, Side.RIGHT);
+		this.quad(-r, -r, r, d, d, Side.BACK);
+		this.quad(-r, -r, -r, d, d, Side.BOTTOM);
 	}
 }
