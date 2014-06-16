@@ -26,8 +26,6 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 	private int currentPlasma = 0;
 	private int currentItemBurnTime = 0;
 	private int currentItemRemainingTime = 0;
-	private boolean isActive = false; // this value is used for caching. no need
-										// to store in NBT
 
 	@Override
 	public int getSizeInventory() {
@@ -104,25 +102,21 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 	private void refuel() {
 		int value = this.getFuelValue();
 		if (value <= 0 || this.stack.stackSize <= 0 || this.stack == null) {
-			if (this.isActive) {
-				this.isActive = false;
-				this.updateBlock();
-			}
+			if (BlockPlasmaSource.isOn(this.getBlockMetadata()))
+				this.updateBlock(false);
 		} else {
 			this.currentItemBurnTime = this.currentItemRemainingTime = value;
 			this.stack.stackSize--;
-			if (!this.isActive) {
-				this.isActive = true;
-				this.updateBlock();
-			}
+			if (!BlockPlasmaSource.isOn(this.getBlockMetadata()))
+				this.updateBlock(true);
 		}
 		if (this.stack != null && this.stack.stackSize <= 0) {
 			this.stack = null;
 		}
 	}
 
-	private void updateBlock() {
-		BlockPlasmaSource.updatePlasmaSourceState(this.isActive, this.worldObj,
+	private void updateBlock(boolean newState) {
+		BlockPlasmaSource.updatePlasmaSourceState(newState, this.worldObj,
 				this.xCoord, this.yCoord, this.zCoord);
 	}
 
@@ -132,7 +126,6 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 
 	@Override
 	public void writeCustomNBT(NBTTagCompound tag) {
-		// tag.setShort("Plasma", this.currentPlasma);
 		tag.setInteger("CurrentTotal", this.currentItemBurnTime);
 		tag.setInteger("CurrentRemain", this.currentItemRemainingTime);
 		NBTTagList nbttaglist = new NBTTagList();
@@ -146,7 +139,6 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 
 	@Override
 	public void readCustomNBT(NBTTagCompound tag) {
-		// this.currentPlasma = tag.getShort("Plasma");
 		this.currentItemBurnTime = tag.getInteger("CurrentTotal");
 		this.currentItemRemainingTime = tag.getInteger("CurrentRemain");
 		NBTTagList nbttaglist = tag.getTagList("Items", 10);
@@ -207,7 +199,6 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 	@Override
 	public boolean setParticleCount(EnumPlasmaTypes plasma,
 			ForgeDirection direction, int count) {
-		System.out.println("set plasma " + count);
 		if (this.connectsToPlasmaConnection(plasma, direction)) {
 			this.currentPlasma = count;
 			return true;
