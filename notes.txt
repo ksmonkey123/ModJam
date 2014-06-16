@@ -1,0 +1,9 @@
+NOTES TO SELF (awae)
+====================
+TILE ENTITIES MUST FEATURE AN EMPTY CONSTRUCTOR!
+MAKE SURE TO STORE ALL TILE ENTITY DATA IN NBT TAG!
+DURING WORLD LOADING THE EMPTY CONSTRUCTOR IS INVOKED AND THE NBT TAG IS PROVIDED. RECONSTRUCT DATA FROM THERE!
+
+on world load the cached blockMetadata value of TileEntities is not updated (indicated by a value of -1)
+Therefore use getBlockMetadata() instead, as this function does update the cached value if necessary. By using
+this method instead of the direct cache no further cache update techniques have to be used.
