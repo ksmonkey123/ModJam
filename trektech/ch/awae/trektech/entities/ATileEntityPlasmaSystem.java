@@ -42,8 +42,8 @@ public abstract class ATileEntityPlasmaSystem extends GenericTileEntity
 			else if (dCount < -Properties.PLASMA_TRANSFER_SPEED)
 				dCount = -Properties.PLASMA_TRANSFER_SPEED;
 			// apply particle flow
-			this.applyParticleFlow(plasma, direction, -dCount);
-			other.applyParticleFlow(plasma, opposite, dCount);
+			this.applyParticleFlow(plasma, direction, dCount);
+			other.applyParticleFlow(plasma, opposite, -dCount);
 		}
 	}
 

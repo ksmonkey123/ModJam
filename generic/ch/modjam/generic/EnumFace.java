@@ -1,5 +1,6 @@
 package ch.modjam.generic;
 
+import sun.rmi.runtime.Log;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public enum EnumFace {
@@ -22,7 +23,14 @@ public enum EnumFace {
 	 */
 	public static ForgeDirection getDirectionOfFace(EnumFace face,
 			ForgeDirection frontDirection) {
-		return ForgeDirection.values()[directionMatrix[face.ordinal()][frontDirection
-				.ordinal() - 2]];
+		try {
+			return ForgeDirection.values()[directionMatrix[face.ordinal()][frontDirection
+					.ordinal() - 2]];
+		} catch (IndexOutOfBoundsException e) {
+			System.err.println("IndexOutOfBound in getDirectionOfFace:"
+					+ frontDirection.ordinal()
+					+ "\n Taking recovery measure (NORTH)");
+			return ForgeDirection.NORTH;
+		}
 	}
 }

@@ -173,7 +173,7 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 
 	public int getPlasmaLevelScaled(int h) {
 		return currentPlasma == 0 ? 0 : (currentPlasma < PLASMA_PER_BAR
-				* MAX_BAR ? ((currentPlasma * h) / PLASMA_PER_BAR * MAX_BAR)
+				* MAX_BAR ? ((currentPlasma * h) / (PLASMA_PER_BAR * MAX_BAR))
 				: h);
 	}
 
