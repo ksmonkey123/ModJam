@@ -180,8 +180,11 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 
 	public static ForgeDirection getFaceDirectionForMeta(EnumFace face,
 			int metadata) {
+		int meta = metadata % 10;
+		if (meta == 0 | meta == 1)
+			meta = 3;
 		return EnumFace.getDirectionOfFace(face,
-				ForgeDirection.getOrientation(metadata % 10).getOpposite());
+				ForgeDirection.getOrientation(meta).getOpposite());
 	}
 
 	public static boolean isOn(int metadata) {
