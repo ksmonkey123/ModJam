@@ -29,8 +29,7 @@ public class BlockPlasmaSource extends BlockGenericDualStateDirected {
 	private IIcon iconFrontOn;
 	private IIcon iconTop;
 	private IIcon iconBack;
-	private static boolean switching;
-
+	
 	public BlockPlasmaSource() {
 		super(Material.rock);
 		setBlockTextureName(TrekTech.MODID + ":machine_basic");

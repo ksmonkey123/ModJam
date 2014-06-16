@@ -97,9 +97,7 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 			this.currentItemRemainingTime--;
 			if (this.currentPlasma < PLASMA_PER_BAR * MAX_BAR)
 				this.currentPlasma += PLASMA_PER_TICK;
-		}
-		if (this.currentItemRemainingTime == 0
-				&& this.currentPlasma < PLASMA_PER_BAR * MAX_BAR)
+		} else if (this.currentPlasma < PLASMA_PER_BAR * MAX_BAR)
 			this.refuel();
 	}
 
@@ -209,6 +207,7 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 	@Override
 	public boolean setParticleCount(EnumPlasmaTypes plasma,
 			ForgeDirection direction, int count) {
+		System.out.println("set plasma " + count);
 		if (this.connectsToPlasmaConnection(plasma, direction)) {
 			this.currentPlasma = count;
 			return true;
