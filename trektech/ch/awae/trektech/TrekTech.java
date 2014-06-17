@@ -32,9 +32,15 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/**
+ * TrekTech Core Class
+ * 
+ * @author Andreas Waelchli <andreas.waelchli@me.com>
+ */
 @Mod(modid = TrekTech.MODID, version = TrekTech.VERSION)
 public class TrekTech {
 
+	// -- MOD DATA --
 	public static final String MODID = "TrekTech";
 	public static final String VERSION = "0.1";
 

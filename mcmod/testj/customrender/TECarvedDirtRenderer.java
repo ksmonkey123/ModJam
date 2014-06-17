@@ -38,7 +38,6 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 		TECarvedDirt t = (TECarvedDirt) ent;
 		// SETUP
 		GL11.glTranslated(transX + 0.5, transY + 0.5, transZ + 0.5);
-		// draw
 		renderBlock(t);
 		GL11.glTranslated(-transX - 0.5, -transY - 0.5, -transZ - 0.5);
 	}
