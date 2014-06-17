@@ -11,6 +11,11 @@ import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+/**
+ * General Plasma Pipe
+ * 
+ * @author Andreas Waelchli <andreas.waelchli@me.com>
+ */
 public class BlockPlasmaPipe extends BlockContainer {
 
 	private EnumPlasmaTypes plasma;

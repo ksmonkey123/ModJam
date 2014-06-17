@@ -5,6 +5,10 @@ import ch.awae.trektech.entities.TileEntityPlasmaPipeCombined;
 import ch.awae.trektech.entities.renderer.TileEntityRendererBlockPipe;
 import cpw.mods.fml.client.registry.ClientRegistry;
 
+/**
+ * 
+ * @author Andreas Waelchli <andreas.waelchli@me.com>
+ */
 public class ClientProxy extends CommonProxy {
 
 	@Override

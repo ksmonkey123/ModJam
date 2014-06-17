@@ -62,6 +62,7 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 	@Override
 	public float getParticlesPerBar(EnumPlasmaTypes plasma,
 			ForgeDirection direction) {
+		// TODO: extract magical number
 		return plasma == this.plasmaType ? 100 : 0;
 	}
 
@@ -120,6 +121,7 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 		if (worldObj.isRemote) {
 			player.addChatMessage(new ChatComponentText("Plasma Type: "
 					+ this.plasmaType.toString()));
+			// TODO: extract magical number
 			float pressure = this.currentPlasma / 100f;
 			player.addChatMessage(new ChatComponentText("Plasma Level: "
 					+ pressure + " bar"));
