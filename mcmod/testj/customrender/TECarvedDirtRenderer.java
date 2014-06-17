@@ -36,7 +36,6 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 
 	public static void renderBlock(IConnecting con) {
 		Tessellator t = Tessellator.instance;
-		t.startDrawingQuads();
 		
 		float texX = 0;
 		float texY = 0;
@@ -54,9 +53,6 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 			}
 		}
 		// CLEANUP
-		
-		t.draw();
-		
 		RenderHelper.enableStandardItemLighting();
 		
 	}
@@ -67,27 +63,14 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 	}
 
 	private static void renderCore(float texX, float texY) {
-		
-		
+		renderer.setDirection(ForgeDirection.EAST);
+		renderer.begin();
 //		renderer.cubeOfRadius(0.5);
 		
 		double r=0.5;
 		double d=2*r;
 		
-		int rot = 1;
-		renderer.quad(-r, r, -r, r, r, Side.TOP,Side.TOP.getTileIndex(),rot);
-		renderer.quad(0, r, -r, r, r, Side.TOP,Side.TOP.getTileIndex(),rot);
-		renderer.quad(-r, r, 0, r, r, Side.TOP,Side.TOP.getTileIndex(),rot);
-		renderer.quad(0, r, 0, r, r, Side.TOP,Side.TOP.getTileIndex(),rot);
-		
-		
-		renderer.quad(-r,-r,-r,d,d,Side.FRONT);
-		renderer.quad(r,-r,-r,d,d,Side.LEFT);
-		renderer.quad(-r,-r,-r,d,d,Side.RIGHT);
-		renderer.quad(-r,-r,r,d,d,Side.BACK);
-		renderer.quad(-r,-r,-r,d,d,Side.BOTTOM);
-		
-		/*
+		int rot = 0;
 		renderer.quad(-0.5, 0.5, -0.5, 1, 0.3, Side.TOP,3);
 		renderer.quad(0.2, 0.5, -0.5, 1, 0.3, Side.TOP,3);
 		renderer.quad(-0.2, 0.5, -0.5, 0.3, 0.4, Side.TOP,3);
@@ -108,7 +91,9 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 		
 		
 		renderer.quad(-0.5,-0.5,-0.5,1,1,Side.BOTTOM);
-		*/
+		
+		
+		renderer.end();
 	}
 	
 	
