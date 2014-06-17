@@ -4,6 +4,7 @@ import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.Handler;
 import ch.awae.trektech.TrekTech;
 import ch.awae.trektech.entities.TileEntityPlasmaPipe;
+import ch.awae.trektech.entities.TileEntityPlasmaPipeCombined;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,14 +24,13 @@ public class BlockPlasmaPipe extends BlockContainer {
 	private float radius;
 	private boolean useRenderer;
 
-	public BlockPlasmaPipe(String id, EnumPlasmaTypes plasma, String texture,
-			float radius) {
+	public BlockPlasmaPipe(String id, EnumPlasmaTypes plasma, float radius) {
 		super(Material.rock);
 		setHardness(10);
 		setBlockName(id);
 		setCreativeTab(TrekTech.tabCustom);
 		// useNeighborBrightness = true;
-		this.texture = texture;
+		this.texture = id;
 		this.radius = radius;
 		this.plasma = plasma;
 		this.useRenderer = true;
@@ -38,7 +38,7 @@ public class BlockPlasmaPipe extends BlockContainer {
 		setLightOpacity(0);
 	}
 
-	public BlockPlasmaPipe(String id, EnumPlasmaTypes plasma, String texture) {
+	public BlockPlasmaPipe(String id, EnumPlasmaTypes plasma) {
 		super(Material.rock);
 		setHardness(15);
 		setBlockName(id);
@@ -47,11 +47,13 @@ public class BlockPlasmaPipe extends BlockContainer {
 		this.plasma = plasma;
 		this.texture = null;
 		this.radius = 0;
-		setBlockTextureName(TrekTech.MODID + ":" + texture);
+		setBlockTextureName(TrekTech.MODID + ":" + id);
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
+		if (this.plasma == EnumPlasmaTypes.MIXED)
+			return new TileEntityPlasmaPipeCombined(this.texture, this.radius);
 		return new TileEntityPlasmaPipe(this.plasma, this.texture, this.radius);
 	}
 

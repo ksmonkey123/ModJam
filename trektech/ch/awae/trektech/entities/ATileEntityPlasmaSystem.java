@@ -26,7 +26,7 @@ public abstract class ATileEntityPlasmaSystem extends GenericTileEntity
 			return;
 		IPlasmaConnection other = (IPlasmaConnection) entity;
 		ForgeDirection opposite = direction.getOpposite();
-		for (EnumPlasmaTypes plasma : EnumPlasmaTypes.values()) {
+		for (EnumPlasmaTypes plasma : EnumPlasmaTypes.VALID) {
 			if (!(this.connectsToPlasmaConnection(plasma, direction) && other
 					.connectsToPlasmaConnection(plasma, opposite)))
 				continue;
