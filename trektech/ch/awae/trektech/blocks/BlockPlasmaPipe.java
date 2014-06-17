@@ -1,10 +1,13 @@
 package ch.awae.trektech.blocks;
 
 import ch.awae.trektech.EnumPlasmaTypes;
+import ch.awae.trektech.Handler;
 import ch.awae.trektech.TrekTech;
 import ch.awae.trektech.entities.TileEntityPlasmaPipe;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -21,7 +24,7 @@ public class BlockPlasmaPipe extends BlockContainer {
 		setHardness(10);
 		setBlockName(id);
 		setCreativeTab(TrekTech.tabCustom);
-		//useNeighborBrightness = true;
+		// useNeighborBrightness = true;
 		this.texture = texture;
 		this.radius = radius;
 		this.plasma = plasma;
@@ -44,8 +47,7 @@ public class BlockPlasmaPipe extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
-		return new TileEntityPlasmaPipe(this.plasma, this.texture,
-				this.radius);
+		return new TileEntityPlasmaPipe(this.plasma, this.texture, this.radius);
 	}
 
 	@Override
@@ -63,4 +65,9 @@ public class BlockPlasmaPipe extends BlockContainer {
 		return !this.useRenderer;
 	}
 
+	@Override
+	public boolean onBlockActivated(World w, int x, int y, int z,
+			EntityPlayer player, int side, float f1, float f2, float f3) {
+		return Handler.handleToolRight(player, w, x, y, z);
+	}
 }

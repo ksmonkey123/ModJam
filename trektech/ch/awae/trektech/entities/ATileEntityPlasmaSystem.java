@@ -47,34 +47,5 @@ public abstract class ATileEntityPlasmaSystem extends GenericTileEntity
 		}
 	}
 
-	@Override
-	public void writeNBT(NBTTagCompound tag) {
-		this.writeCustomNBT(tag);
-		EnumPlasmaTypes types[] = EnumPlasmaTypes.values();
-		for (ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
-			int values[] = new int[types.length];
-			for (int i = 0; i < types.length; i++) {
-				values[i] = this.getParticleCount(types[i], d);
-			}
-			tag.setIntArray(d.name(), values);
-		}
-	}
-
-	@Override
-	public void readNBT(NBTTagCompound tag) {
-		this.readCustomNBT(tag);
-		EnumPlasmaTypes types[] = EnumPlasmaTypes.values();
-		for (ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
-			int values[] = tag.getIntArray(d.name());
-			for (int i = 0; i < types.length; i++) {
-				this.setParticleCount(types[i], d, values[i]);
-			}
-		}
-	}
-
 	public abstract void customTick();
-
-	public abstract void writeCustomNBT(NBTTagCompound tag);
-
-	public abstract void readCustomNBT(NBTTagCompound tag);
 }

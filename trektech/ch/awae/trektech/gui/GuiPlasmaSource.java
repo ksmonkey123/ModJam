@@ -49,7 +49,7 @@ public class GuiPlasmaSource extends GuiContainer {
 			this.drawTexturedModalRect(x + 81, y + 26 + 12 - i1, 176, 12 - i1,
 					14, i1 + 2);
 		}
-		i1 = this.tileEntity.getPlasmaLevelScaled(37);
-		this.drawTexturedModalRect(x + 142, y + 21 + 37 - i1, 176, 15 + 37 - i1, 8, i1);
+		i1 = this.tileEntity.getPlasmaLevelScaled(4, 44);
+		this.drawTexturedModalRect(x + 142, y + 21 + 37 - i1, 176, 15 + 44 - i1, 8, i1);
 	}
 }

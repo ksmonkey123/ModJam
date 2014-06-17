@@ -127,7 +127,7 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 	}
 
 	@Override
-	public void writeCustomNBT(NBTTagCompound tag) {
+	public void writeNBT(NBTTagCompound tag) {
 		tag.setInteger("CurrentTotal", this.currentItemBurnTime);
 		tag.setInteger("CurrentRemain", this.currentItemRemainingTime);
 		NBTTagList nbttaglist = new NBTTagList();
@@ -137,16 +137,17 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 			nbttaglist.appendTag(nbttagcompound1);
 		}
 		tag.setTag("Items", nbttaglist);
+		tag.setInteger("Plasma", this.currentPlasma);
 	}
 
 	@Override
-	public void readCustomNBT(NBTTagCompound tag) {
+	public void readNBT(NBTTagCompound tag) {
 		this.currentItemBurnTime = tag.getInteger("CurrentTotal");
 		this.currentItemRemainingTime = tag.getInteger("CurrentRemain");
 		NBTTagList nbttaglist = tag.getTagList("Items", 10);
 		NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(0);
 		this.stack = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-
+		this.currentPlasma = tag.getInteger("Plasma");
 	}
 
 	@Override
@@ -163,10 +164,11 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 				: ((h * currentItemRemainingTime) / currentItemBurnTime);
 	}
 
-	public int getPlasmaLevelScaled(int h) {
-		return currentPlasma == 0 ? 0 : (currentPlasma < PLASMA_PER_BAR
-				* MAX_BAR ? ((currentPlasma * h) / (PLASMA_PER_BAR * MAX_BAR))
-				: h);
+	public int getPlasmaLevelScaled(int pixelPerBar, int maxPixel) {
+		int pixels = this.currentPlasma * pixelPerBar / PLASMA_PER_BAR;
+		if (pixels > maxPixel)
+			return maxPixel;
+		return pixels;
 	}
 
 	@Override

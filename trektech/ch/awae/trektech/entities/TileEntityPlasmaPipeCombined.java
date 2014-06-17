@@ -124,16 +124,19 @@ public class TileEntityPlasmaPipeCombined extends ATileEntityPlasmaSystem
 	}
 
 	@Override
-	public void writeCustomNBT(NBTTagCompound tag) {
+	public void writeNBT(NBTTagCompound tag) {
 		tag.setString("Texture", this.texture);
 		tag.setFloat("Radius", this.radius);
+		tag.setInteger("Neutral", this.currentNeutralPlasma);
+		tag.setInteger("Low", this.currentLowPlasma);
 	}
 
 	@Override
-	public void readCustomNBT(NBTTagCompound tag) {
+	public void readNBT(NBTTagCompound tag) {
 		this.texture = tag.getString("Texture");
 		this.radius = tag.getFloat("Radius");
-
+		this.currentNeutralPlasma = tag.getInteger("Neutral");
+		this.currentLowPlasma = tag.getInteger("Low");
 	}
 
 }
