@@ -1,4 +1,4 @@
-package testj.customrender;
+package ch.modjam.generic;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -6,8 +6,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 /**
- * supports easy rendering for custom blocks.
- * 
+ * supports easy rendering for custom blocks.<br>
+ * Call the methods begin() and end() before calling quad(...)
  * 
  * @author j
  */
