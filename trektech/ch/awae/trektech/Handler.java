@@ -23,7 +23,7 @@ public class Handler {
 			int y, int z) {
 		if (player.getCurrentEquippedItem() != null
 				&& player.getCurrentEquippedItem().getItem()
-						.equals(Items.diamond)) {
+						.equals(Properties.WRENCH)) {
 			TileEntity te = w.getTileEntity(x, y, z);
 			if (te == null || !(te instanceof IWrenchable))
 				return false;

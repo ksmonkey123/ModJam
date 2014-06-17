@@ -127,6 +127,8 @@ public class TrekTech {
 		registerRecipes();
 		proxy.registerRenderers();
 
+		Properties.WRENCH = Items.diamond;
+
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GUIHandler());
 	}
 
