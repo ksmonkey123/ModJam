@@ -1,17 +1,26 @@
-package testj.customrender;
+package ch.modjam.generic;
 
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import org.lwjgl.opengl.GL11;
 
 /**
- * @author j TODO: rotation for textures TODO: rotation for the whole block
+ * supports easy rendering for custom blocks.<br>
+ * Call the methods begin() and end() before calling quad(...)
+ * 
+ * @author j
  */
 public class CustomRenderer {
 
 	private String tex;
 	private int tileSize;
 	private double uvPerTile;
+	private ForgeDirection direction;
 
 	/**
+	 * the front face will point to north
+	 * 
 	 * @param textureNameAndPath
 	 *            the full identifier of the texture e.g.
 	 *            "modid:textures/blocks/eg.png" <br>
@@ -19,9 +28,24 @@ public class CustomRenderer {
 	 *            to bottom right 0-15
 	 */
 	public CustomRenderer(String textureNameAndPath) {
+		this(textureNameAndPath,ForgeDirection.NORTH);
+	}
+	
+	/**
+	 * the front face will point to north
+	 * 
+	 * @param textureNameAndPath
+	 *            the full identifier of the texture e.g.
+	 *            "modid:textures/blocks/eg.png" <br>
+	 *            it is split into 4x4 tiles, these are numbered from top left
+	 *            to bottom right 0-15
+	 * @param dir front face of block will point into this direction
+	 */
+	public CustomRenderer(String textureNameAndPath,ForgeDirection dir) {
 		this.tex = textureNameAndPath;
 		this.tileSize = 4;
 		this.uvPerTile = 1. / this.tileSize;
+		this.direction = dir;
 	}
 
 	public void quad(double x, double y, double z, double width, double height,
@@ -36,52 +60,52 @@ public class CustomRenderer {
 
 	public void quad(double x, double y, double z, double width, double height,
 			Side visibleFrom, int useTextureTileIndex, int texRotation) {
-
 		double[] delta = sizeToDeltaCoords(visibleFrom, width, height);
-
-		Tessellator t = Tessellator.instance;
 
 		double xp = x + delta[0];
 		double yp = y + delta[1];
 		double zp = z + delta[2];
-
+		double[][] coord={{-xp,x},{-yp,y},{-zp,z}};
+		
 		int tx = useTextureTileIndex % 4;
 		int ty = useTextureTileIndex / 4;
 
 		double us = 0, vs = 0, dU, dV;
 
 		boolean swaped = (texRotation % 2) == 1;
+		
+		int[] uc,vc; // {value (+delta[n]/2 or -delta[n]/2), coordinate (0=x,1=y,2=z)}
 
 		switch (visibleFrom) {
 			case TOP: {
-				us = tx * uvPerTile + (0.5 + z) * uvPerTile;
-				vs = ty * uvPerTile + (0.5 - xp) * uvPerTile;
+				uc = arr(0,Coord.X.index);
+				vc = arr(0,Coord.Z.index);
 				swaped = !swaped;
 				break;
 			}
 			case FRONT: {
-				us = tx * uvPerTile + (0.5 - xp) * uvPerTile;
-				vs = ty * uvPerTile + (0.5 - yp) * uvPerTile;
+				uc = arr(0,Coord.X.index);
+				vc = arr(0,Coord.Y.index);
 				break;
 			}
 			case LEFT: {
-				us = tx * uvPerTile + (0.5 - zp) * uvPerTile;
-				vs = ty * uvPerTile + (0.5 - yp) * uvPerTile;
+				uc = arr(0,Coord.Z.index);
+				vc = arr(0,Coord.Y.index);
 				break;
 			}
 			case RIGHT: {
-				us = tx * uvPerTile + (z + 0.5) * uvPerTile;
-				vs = ty * uvPerTile + (0.5 - yp) * uvPerTile;
+				uc = arr(1,Coord.Z.index);
+				vc = arr(0,Coord.Y.index);
 				break;
 			}
 			case BACK: {
-				us = tx * uvPerTile + (x + 0.5) * uvPerTile;
-				vs = ty * uvPerTile + (0.5 - yp) * uvPerTile;
+				uc = arr(1,Coord.X.index);
+				vc = arr(0,Coord.Y.index);
 				break;
 			}
 			case BOTTOM: {
-				us = tx * uvPerTile + (0.5 - xp) * uvPerTile;
-				vs = ty * uvPerTile + (z + 0.5) * uvPerTile;
+				uc = arr(0,Coord.X.index);
+				vc = arr(1,Coord.Z.index);
 				swaped = !swaped;
 				break;
 			}
@@ -90,6 +114,17 @@ public class CustomRenderer {
 						+ visibleFrom);
 			}
 		}
+		
+		int rot=texRotation;
+		while(rot>0) {
+			rot--;
+			int[] temp = uc;
+			uc=arr(vc[0],vc[1]);
+			vc=arr(1-temp[0],temp[1]);
+		}
+		
+		us = tx * uvPerTile + (0.5 + coord[uc[1]][uc[0]]) * uvPerTile;
+		vs = ty * uvPerTile + (0.5 + coord[vc[1]][vc[0]]) * uvPerTile;
 
 		if (!swaped) {
 			dU = width * uvPerTile;
@@ -148,11 +183,51 @@ public class CustomRenderer {
 		}
 
 		for (int i = 0; i < 4; i++)
-			t.addVertexWithUV(cx[i], cy[i], cz[i], u[(i + texRotation) % 4],
+			Tessellator.instance.addVertexWithUV(cx[i], cy[i], cz[i], u[(i + texRotation) % 4],
 					v[(i + texRotation) % 4]);
-
+	}
+	
+	private void rotateQuadBasedOnBlockRotation() {
+		switch(this.direction) {
+			case WEST: {
+				GL11.glRotated(90, 0,1,0);
+				break;
+			}
+			case SOUTH: {
+				GL11.glRotated(180, 0,1,0);
+				break;
+			}
+			case EAST: {
+				GL11.glRotated(270, 0,1,0);
+				break;
+			}
+			case UP: {
+				GL11.glRotated(90, 1, 0,0);
+				break;
+			}
+			case DOWN: {
+				GL11.glRotated(-90, 1, 0, 0);
+				break;
+			}
+			case NORTH:{}
+			case UNKNOWN:{}
+			default:{}
+		}
+		
 	}
 
+	private int[] arr(int ... values) {
+		return values;
+	}
+
+	private enum Coord {
+		X(0),Y(1),Z(2);
+		private int index;
+		private Coord(int i) {
+			this.index=i;
+		}
+	}
+	
 	private void out(double... c) {
 		String[] name = {
 				"x", "xp", "y", "yp", "z", "zp", "us", "up", "vs", "vp" };
@@ -221,5 +296,20 @@ public class CustomRenderer {
 		this.quad(-r, -r, -r, d, d, Side.RIGHT);
 		this.quad(-r, -r, r, d, d, Side.BACK);
 		this.quad(-r, -r, -r, d, d, Side.BOTTOM);
+	}
+
+	public void begin() {
+		GL11.glPushMatrix();
+		rotateQuadBasedOnBlockRotation();
+		Tessellator.instance.startDrawingQuads();
+	}
+	
+	public void end() {
+		Tessellator.instance.draw();
+		GL11.glPopMatrix();
+	}
+
+	public void setDirection(ForgeDirection dir) {
+		this.direction = dir;
 	}
 }
