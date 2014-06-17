@@ -44,44 +44,47 @@ public class CustomRenderer {
 		double xp = x + delta[0];
 		double yp = y + delta[1];
 		double zp = z + delta[2];
-
+		double[][] coord={{-xp,x},{-yp,y},{-zp,z}};
+		
 		int tx = useTextureTileIndex % 4;
 		int ty = useTextureTileIndex / 4;
 
 		double us = 0, vs = 0, dU, dV;
 
 		boolean swaped = (texRotation % 2) == 1;
+		
+		int[] uc,vc; // {value (+delta[n]/2 or -delta[n]/2), coordinate (0=x,1=y,2=z)}
 
 		switch (visibleFrom) {
 			case TOP: {
-				us = tx * uvPerTile + (0.5 + z) * uvPerTile;
-				vs = ty * uvPerTile + (0.5 - xp) * uvPerTile;
+				uc = arr(0,Coord.X.index);
+				vc = arr(0,Coord.Z.index);
 				swaped = !swaped;
 				break;
 			}
 			case FRONT: {
-				us = tx * uvPerTile + (0.5 - xp) * uvPerTile;
-				vs = ty * uvPerTile + (0.5 - yp) * uvPerTile;
+				uc = arr(0,Coord.X.index);
+				vc = arr(0,Coord.Y.index);
 				break;
 			}
 			case LEFT: {
-				us = tx * uvPerTile + (0.5 - zp) * uvPerTile;
-				vs = ty * uvPerTile + (0.5 - yp) * uvPerTile;
+				uc = arr(0,Coord.Z.index);
+				vc = arr(0,Coord.Y.index);
 				break;
 			}
 			case RIGHT: {
-				us = tx * uvPerTile + (z + 0.5) * uvPerTile;
-				vs = ty * uvPerTile + (0.5 - yp) * uvPerTile;
+				uc = arr(1,Coord.Z.index);
+				vc = arr(0,Coord.Y.index);
 				break;
 			}
 			case BACK: {
-				us = tx * uvPerTile + (x + 0.5) * uvPerTile;
-				vs = ty * uvPerTile + (0.5 - yp) * uvPerTile;
+				uc = arr(1,Coord.X.index);
+				vc = arr(0,Coord.Y.index);
 				break;
 			}
 			case BOTTOM: {
-				us = tx * uvPerTile + (0.5 - xp) * uvPerTile;
-				vs = ty * uvPerTile + (z + 0.5) * uvPerTile;
+				uc = arr(0,Coord.X.index);
+				vc = arr(1,Coord.Z.index);
 				swaped = !swaped;
 				break;
 			}
@@ -90,6 +93,17 @@ public class CustomRenderer {
 						+ visibleFrom);
 			}
 		}
+		
+		int rot=texRotation;
+		while(rot>0) {
+			rot--;
+			int[] temp = uc;
+			uc=arr(vc[0],vc[1]);
+			vc=arr(1-temp[0],temp[1]);
+		}
+		
+		us = tx * uvPerTile + (0.5 + coord[uc[1]][uc[0]]) * uvPerTile;
+		vs = ty * uvPerTile + (0.5 + coord[vc[1]][vc[0]]) * uvPerTile;
 
 		if (!swaped) {
 			dU = width * uvPerTile;
@@ -150,9 +164,20 @@ public class CustomRenderer {
 		for (int i = 0; i < 4; i++)
 			t.addVertexWithUV(cx[i], cy[i], cz[i], u[(i + texRotation) % 4],
 					v[(i + texRotation) % 4]);
-
+	}
+	
+	private int[] arr(int ... values) {
+		return values;
 	}
 
+	private enum Coord {
+		X(0),Y(1),Z(2);
+		private int index;
+		private Coord(int i) {
+			this.index=i;
+		}
+	}
+	
 	private void out(double... c) {
 		String[] name = {
 				"x", "xp", "y", "yp", "z", "zp", "us", "up", "vs", "vp" };
