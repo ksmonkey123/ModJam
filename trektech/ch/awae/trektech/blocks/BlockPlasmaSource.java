@@ -29,7 +29,7 @@ public class BlockPlasmaSource extends BlockGenericDualStateDirected {
 	private IIcon iconFrontOn;
 	private IIcon iconTop;
 	private IIcon iconBack;
-	
+
 	public BlockPlasmaSource() {
 		super(Material.rock);
 		setBlockTextureName(TrekTech.MODID + ":machine_basic");
@@ -40,18 +40,6 @@ public class BlockPlasmaSource extends BlockGenericDualStateDirected {
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
 		return new TileEntityPlasmaSource();
-	}
-
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z,
-			EntityPlayer player, int metadata, float what, float these,
-			float are) {
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
-		if (tileEntity == null || player.isSneaking()) {
-			return false;
-		}
-		player.openGui(TrekTech.instance, 0, world, x, y, z);
-		return true;
 	}
 
 	@Override
@@ -118,6 +106,21 @@ public class BlockPlasmaSource extends BlockGenericDualStateDirected {
 	@Override
 	public String getDefaultIcon() {
 		return TrekTech.MODID + ":machine_basic";
+	}
+
+	@Override
+	public Object getModCoreInstance() {
+		return TrekTech.instance;
+	}
+
+	@Override
+	public int getGuiIndex() {
+		return 0;
+	}
+
+	@Override
+	public boolean hasGUI() {
+		return true;
 	}
 
 }

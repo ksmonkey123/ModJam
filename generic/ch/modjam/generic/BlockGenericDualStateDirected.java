@@ -8,7 +8,9 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -189,5 +191,34 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 
 	public static boolean isOn(int metadata) {
 		return metadata >= 10;
+	}
+
+	/**
+	 * @return the instance of the mod core to use for the GUI
+	 */
+	public abstract Object getModCoreInstance();
+
+	/**
+	 * @return the GUI index
+	 */
+	public abstract int getGuiIndex();
+
+	/**
+	 * indicates the existance of a GUI
+	 * 
+	 * @return
+	 */
+	public abstract boolean hasGUI();
+
+	@Override
+	public boolean onBlockActivated(World w, int x, int y, int z,
+			EntityPlayer player, int p_149727_6_, float p_149727_7_,
+			float p_149727_8_, float p_149727_9_) {
+		TileEntity tileEntity = w.getTileEntity(x, y, z);
+		if (tileEntity == null || player.isSneaking() || !hasGUI()) {
+			return false;
+		}
+		player.openGui(getModCoreInstance(), getGuiIndex(), w, x, y, z);
+		return true;
 	}
 }

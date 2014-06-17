@@ -97,6 +97,8 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 				this.currentPlasma += PLASMA_PER_TICK;
 		} else if (this.currentPlasma < PLASMA_PER_BAR * MAX_BAR)
 			this.refuel();
+		else
+			this.updateBlock(false);
 	}
 
 	private void refuel() {
