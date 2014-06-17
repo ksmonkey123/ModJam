@@ -1,16 +1,17 @@
-package testj.itemblockfluids;
+package ch.judos.mcmod.itemblockfluids;
 
 import java.util.ArrayList;
+
+import ch.judos.mcmod.TutorialMod;
+import ch.judos.mcmod.lib.ListedStuff;
+import ch.judos.mcmod.lib.Names;
+import ch.judos.mcmod.lib.References;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
-import testj.TutorialMod;
-import testj.lib.ListedStuff;
-import testj.lib.Names;
-import testj.lib.References;
 
 public class BlockKryptoniteOre extends Block {
 

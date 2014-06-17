@@ -1,4 +1,4 @@
-package testj.customrender;
+package ch.judos.mcmod.customrender;
 
 import net.minecraftforge.common.util.ForgeDirection;
 

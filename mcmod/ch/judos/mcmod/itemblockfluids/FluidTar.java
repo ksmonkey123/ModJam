@@ -1,7 +1,7 @@
-package testj.itemblockfluids;
+package ch.judos.mcmod.itemblockfluids;
 
+import ch.judos.mcmod.lib.Names;
 import net.minecraftforge.fluids.Fluid;
-import testj.lib.Names;
 
 public class FluidTar extends Fluid {
 

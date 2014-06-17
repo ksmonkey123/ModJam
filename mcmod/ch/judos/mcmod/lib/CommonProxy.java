@@ -1,4 +1,4 @@
-package testj.lib;
+package ch.judos.mcmod.lib;
 
 public class CommonProxy {
 

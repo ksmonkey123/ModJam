@@ -1,11 +1,11 @@
-package testj.itemblockfluids;
+package ch.judos.mcmod.itemblockfluids;
 
+import ch.judos.mcmod.TutorialMod;
+import ch.judos.mcmod.lib.Names;
+import ch.judos.mcmod.lib.References;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
-import testj.TutorialMod;
-import testj.lib.Names;
-import testj.lib.References;
 
 public class BlockFluidTar extends BlockFluidClassic {
 

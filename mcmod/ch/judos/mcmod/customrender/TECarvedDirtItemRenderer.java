@@ -1,4 +1,4 @@
-package testj.customrender;
+package ch.judos.mcmod.customrender;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderHelper;
@@ -8,8 +8,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
-import testj.TutorialMod;
-import testj.lib.ClientProxy;
+import ch.judos.mcmod.TutorialMod;
+import ch.judos.mcmod.lib.ClientProxy;
+
 
 public class TECarvedDirtItemRenderer implements IItemRenderer {
 

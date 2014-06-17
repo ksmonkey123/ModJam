@@ -1,11 +1,11 @@
-package testj.itemblockfluids;
+package ch.judos.mcmod.itemblockfluids;
 
+import ch.judos.mcmod.TutorialMod;
+import ch.judos.mcmod.lib.Names;
+import ch.judos.mcmod.lib.References;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBucket;
-import testj.TutorialMod;
-import testj.lib.Names;
-import testj.lib.References;
 
 public class ItemTarBucket extends ItemBucket {
 

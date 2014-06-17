@@ -1,12 +1,13 @@
-package testj.world;
+package ch.judos.mcmod.world;
 
 import java.util.Random;
+
+import ch.judos.mcmod.TutorialMod;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
-import testj.TutorialMod;
 import cpw.mods.fml.common.IWorldGenerator;
 
 public class WorldGenerator implements IWorldGenerator {

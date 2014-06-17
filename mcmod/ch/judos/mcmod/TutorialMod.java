@@ -1,4 +1,4 @@
-package testj;
+package ch.judos.mcmod;
 
 import java.io.IOException;
 
@@ -15,24 +15,24 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import testj.customrender.BlockCarvedDirt;
-import testj.customrender.TECarvedDirt;
-import testj.handlers.FillBucketHandler;
-import testj.handlers.FuelHandler;
-import testj.itemblockfluids.ItemKryptonite;
-import testj.itemblockfluids.BlockKryptoniteOre;
-import testj.itemblockfluids.ItemObsidianStick;
-import testj.itemblockfluids.BlockFluidTar;
-import testj.itemblockfluids.ItemTarBucket;
-import testj.itemblockfluids.FluidTar;
-import testj.lib.Names;
-import testj.lib.CommonProxy;
-import testj.lib.References;
-import testj.world.WorldGenerator;
+import ch.judos.mcmod.customrender.BlockCarvedDirt;
+import ch.judos.mcmod.customrender.TECarvedDirt;
+import ch.judos.mcmod.handlers.FillBucketHandler;
+import ch.judos.mcmod.handlers.FuelHandler;
+import ch.judos.mcmod.itemblockfluids.BlockFluidTar;
+import ch.judos.mcmod.itemblockfluids.BlockKryptoniteOre;
+import ch.judos.mcmod.itemblockfluids.FluidTar;
+import ch.judos.mcmod.itemblockfluids.ItemDirtShovel;
+import ch.judos.mcmod.itemblockfluids.ItemKryptonite;
+import ch.judos.mcmod.itemblockfluids.ItemObsidianStick;
+import ch.judos.mcmod.itemblockfluids.ItemTarBucket;
+import ch.judos.mcmod.lib.CommonProxy;
+import ch.judos.mcmod.lib.Names;
+import ch.judos.mcmod.lib.References;
+import ch.judos.mcmod.world.WorldGenerator;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -44,29 +44,29 @@ public class TutorialMod {
 	public static CommonProxy proxy;
 
 	public static CreativeTabs modTab;
-	
+
 	// Item
-	public static Item obsidianStick ;
+	public static Item itemObsidianStick;
 
 	// Tar Fluids
 	public static Block tarBlock;
 	public static Fluid tarFluid;
 	public static Material materialTar;
 	public static ItemTarBucket tarBucket;
-	
+
 	// Ores
 	public static Block oreKryptonit;
-	
+
 	// Custom rendered block
-	public static Block blockCarvedDirt ;
-	public static Class<? extends TileEntity> teCarvedDirt ;
-	
-	
+	public static Block blockCarvedDirt;
+	public static Class<? extends TileEntity> teCarvedDirt;
+
+	// Custom tool
+	public static ItemDirtShovel itemDirtShovel;
+
 	private ItemKryptonite itemKryptonit;
 
 	private FuelHandler fuelHandler;
-
-	
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) throws IOException {
@@ -77,34 +77,45 @@ public class TutorialMod {
 		addObsidianStick();
 		addKryptonitOre();
 		addSmelting();
-		
 		addCarvedDirtCustomRenderingBlock();
+		addDirtShovel();
+
 		proxy.registerRenderInformation();
 	}
 
+	private void addDirtShovel() {
+		this.itemDirtShovel = new ItemDirtShovel();
+		GameRegistry.registerItem(this.itemDirtShovel, Names.DirtShovel);
+		GameRegistry.addShapedRecipe(new ItemStack(this.itemDirtShovel, 2),
+				"XX ", "XI ", "  I", 'X', Blocks.planks, 'I', Items.stick);
+		GameRegistry.addShapedRecipe(new ItemStack(this.itemDirtShovel, 2),
+				" XX", " IX", "  I", 'X', Blocks.planks, 'I', Items.stick);
+	}
+
 	private void addCarvedDirtCustomRenderingBlock() {
-		this.blockCarvedDirt= new BlockCarvedDirt();
-		this.teCarvedDirt= TECarvedDirt.class;
-		
-		GameRegistry.registerBlock(this.blockCarvedDirt,Names.CarvedDirt);
-		GameRegistry.registerTileEntity(this.teCarvedDirt,"tile_"+Names.CarvedDirt);
+		this.blockCarvedDirt = new BlockCarvedDirt();
+		this.teCarvedDirt = TECarvedDirt.class;
+
+		GameRegistry.registerBlock(this.blockCarvedDirt, Names.CarvedDirt);
+		GameRegistry.registerTileEntity(this.teCarvedDirt, "tile_"
+				+ Names.CarvedDirt);
 	}
 
 	private void addSmelting() {
-		GameRegistry.addSmelting(this.oreKryptonit, new ItemStack(this.itemKryptonit,1), 5);
-		
-		
+		GameRegistry.addSmelting(this.oreKryptonit, new ItemStack(
+				this.itemKryptonit, 1), 5);
+
 		this.fuelHandler = new FuelHandler();
-		this.fuelHandler.addFuel(this.itemKryptonit, 200*10);
+		this.fuelHandler.addFuel(this.itemKryptonit, 200 * 10);
 		GameRegistry.registerFuelHandler(this.fuelHandler);
-		
+
 	}
 
 	private void addKryptonitOre() {
-		this.oreKryptonit=new BlockKryptoniteOre();
+		this.oreKryptonit = new BlockKryptoniteOre();
 		GameRegistry.registerWorldGenerator(new WorldGenerator(), 0);
 		GameRegistry.registerBlock(this.oreKryptonit, Names.KryptonitBlock);
-		
+
 		this.itemKryptonit = new ItemKryptonite();
 		GameRegistry.registerItem(this.itemKryptonit, Names.KryptonitItem);
 	}
@@ -120,8 +131,8 @@ public class TutorialMod {
 		GameRegistry.registerItem(this.tarBucket, Names.TarBucket);
 
 		int bucketVolume = FluidContainerRegistry.BUCKET_VOLUME;
-		FluidStack fluidStack = FluidRegistry.getFluidStack(Names.TarFluid,
-				bucketVolume);
+		FluidStack fluidStack =
+				FluidRegistry.getFluidStack(Names.TarFluid, bucketVolume);
 		FluidContainerRegistry.registerFluidContainer(fluidStack,
 				new ItemStack(this.tarBucket), new ItemStack(Items.bucket));
 		FillBucketHandler.add(tarBlock, tarBucket);
@@ -134,7 +145,7 @@ public class TutorialMod {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public Item getTabIconItem() {
-				return TutorialMod.obsidianStick;
+				return TutorialMod.itemObsidianStick;
 			}
 
 			@Override
@@ -152,8 +163,8 @@ public class TutorialMod {
 	}
 
 	private void addObsidianStick() {
-		this.obsidianStick= new ItemObsidianStick();
-		GameRegistry.registerItem(this.obsidianStick, Names.OStick);
+		this.itemObsidianStick = new ItemObsidianStick();
+		GameRegistry.registerItem(this.itemObsidianStick, Names.OStick);
 	}
 
 	private void addBoneRecipies() {

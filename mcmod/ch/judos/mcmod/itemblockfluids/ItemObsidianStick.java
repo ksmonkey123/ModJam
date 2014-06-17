@@ -1,9 +1,9 @@
-package testj.itemblockfluids;
+package ch.judos.mcmod.itemblockfluids;
 
+import ch.judos.mcmod.TutorialMod;
+import ch.judos.mcmod.lib.Names;
+import ch.judos.mcmod.lib.References;
 import net.minecraft.item.Item;
-import testj.TutorialMod;
-import testj.lib.Names;
-import testj.lib.References;
 
 public class ItemObsidianStick extends Item {
 	public ItemObsidianStick() {

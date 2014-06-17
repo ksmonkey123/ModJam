@@ -1,4 +1,4 @@
-package testj.customrender;
+package ch.judos.mcmod.customrender;
 
 public interface ICanalConnection {
 	

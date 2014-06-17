@@ -1,4 +1,4 @@
-package testj.handlers;
+package ch.judos.mcmod.handlers;
 
 import java.util.HashMap;
 

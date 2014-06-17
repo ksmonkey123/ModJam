@@ -1,16 +1,20 @@
-package testj.customrender;
+package ch.judos.mcmod.customrender;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockStaticLiquid;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import testj.lib.Names;
-import testj.lib.References;
+import ch.judos.mcmod.lib.Names;
+import ch.judos.mcmod.lib.References;
 import ch.modjam.generic.GenericTileEntity;
 
-public class TECarvedDirt extends GenericTileEntity implements IConnecting, ICanalConnection {
-	
+public class TECarvedDirt extends GenericTileEntity implements IConnecting,
+		ICanalConnection {
+
 	public TECarvedDirt() {
-		
+
 	}
 
 	@Override
@@ -26,17 +30,26 @@ public class TECarvedDirt extends GenericTileEntity implements IConnecting, ICan
 	}
 
 	public static String getTexture() {
-		return References.MOD_ID + ":textures/blocks/"+Names.CarvedDirt+".png";
+		return References.MOD_ID + ":textures/blocks/" + Names.CarvedDirt
+				+ ".png";
 	}
 
 	public boolean connectsTo(ForgeDirection dir) {
-		TileEntity t = this.worldObj.getTileEntity(this.xCoord + dir.offsetX,
-				this.yCoord + dir.offsetY, this.zCoord + dir.offsetZ);
+		int x = this.xCoord + dir.offsetX;
+		int y = this.yCoord + dir.offsetY;
+		int z = this.zCoord + dir.offsetZ;
+		TileEntity t = this.worldObj.getTileEntity(x, y, z);
+		if (t == null) {
+			Block b = this.worldObj.getBlock(x, y, z);
+			if (b instanceof BlockStaticLiquid)
+				if (b == Blocks.water) {
+					return this.worldObj.getBlockMetadata(x, y, z) == 1;
+				}
+		}
 		if (t == null || !(t instanceof ICanalConnection))
 			return false;
 		ICanalConnection te = (ICanalConnection) t;
-		return te.acceptsLiquid()
-				|| te.providesLiquid();
+		return te.acceptsLiquid() || te.providesLiquid();
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package testj.customrender;
+package ch.judos.mcmod.customrender;
 
 import static net.minecraftforge.common.util.ForgeDirection.EAST;
 import static net.minecraftforge.common.util.ForgeDirection.NORTH;
@@ -83,41 +83,33 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 	private static void render(HashSet<ForgeDirection> con2, boolean[][] arr) {
 		renderer.begin();
 		renderTop(con2, arr);
+		renderer.end();
 		renderSidesAndInsides(con2);
 
-		renderer.end();
 	}
 
-	private static void renderSidesAndInsides(HashSet<ForgeDirection> con2) {
+	private static void renderSidesAndInsides(HashSet<ForgeDirection> con) {
 		double t = 1. / 3;
-		if (!con2.contains(ForgeDirection.NORTH)) {
-			renderer.quad(-0.5, -0.5, -0.5, 1, 1, Side.FRONT);
-			renderer.quad(-0.5 + t, +0.5 - t, -0.5 + t, t, t, Side.BACK, 13);
-		} else {
-			renderer.quad(-0.5 + t, +0.5 - t, -0.5, t, t, Side.LEFT, 13);
-			renderer.quad(0.5 - t, +0.5 - t, -0.5, t, t, Side.RIGHT, 13);
+		ForgeDirection[] dir = { NORTH, EAST, SOUTH, WEST };
+		for (ForgeDirection d : dir) {
+			renderer.begin();
+			if (!con.contains(d)) {
+				renderer.quad(-0.5, -0.5, -0.5, 1, 1, Side.FRONT);
+				// inside dirt
+				renderer.quad(-0.5 + t, +0.5 - t, -0.5 + t, t, t, Side.BACK, 13);
+			} else {
+				// side dirt
+				renderer.quad(-0.5 + t, +0.5 - t, -0.5, t, t, Side.LEFT, 13);
+				renderer.quad(0.5 - t, +0.5 - t, -0.5, t, t, Side.RIGHT, 13);
+				// outside texture
+				renderer.quad(-0.5, -0.5, -0.5, 1, 1 - t, Side.FRONT, 8);
+				renderer.quad(-0.5, 0.5 - t, -0.5, t, t, Side.FRONT, 8);
+				renderer.quad(0.5 - t, 0.5 - t, -0.5, t, t, Side.FRONT, 8);
+			}
+			renderer.end();
+			GL11.glRotated(90, 0, 1, 0);
 		}
-		if (!con2.contains(ForgeDirection.EAST)) {
-			renderer.quad(0.5, -0.5, -0.5, 1, 1, Side.LEFT);
-			renderer.quad(0.5 - t, +0.5 - t, -0.5 + t, t, t, Side.RIGHT, 13);
-		} else {
-			renderer.quad(+0.5 - t, +0.5 - t, -0.5 + t, t, t, Side.BACK, 13);
-			renderer.quad(+0.5 - t, +0.5 - t, 0.5 - t, t, t, Side.FRONT, 13);
-		}
-		if (!con2.contains(ForgeDirection.SOUTH)) {
-			renderer.quad(-0.5, -0.5, 0.5, 1, 1, Side.BACK);
-			renderer.quad(-0.5 + t, +0.5 - t, 0.5 - t, t, t, Side.FRONT, 13);
-		} else {
-			renderer.quad(-0.5 + t, +0.5 - t, 0.5 - t, t, t, Side.LEFT, 13);
-			renderer.quad(0.5 - t, +0.5 - t, 0.5 - t, t, t, Side.RIGHT, 13);
-		}
-		if (!con2.contains(ForgeDirection.WEST)) {
-			renderer.quad(-0.5, -0.5, -0.5, 1, 1, Side.RIGHT);
-			renderer.quad(-0.5 + t, +0.5 - t, -0.5 + t, t, t, Side.LEFT, 13);
-		} else {
-			renderer.quad(-0.5, +0.5 - t, -0.5 + t, t, t, Side.BACK, 13);
-			renderer.quad(-0.5, +0.5 - t, 0.5 - t, t, t, Side.FRONT, 13);
-		}
+		renderer.quad(-0.5, -0.5, -0.5, 1, 1, Side.BOTTOM);
 	}
 
 	/**

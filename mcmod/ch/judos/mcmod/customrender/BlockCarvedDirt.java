@@ -1,4 +1,4 @@
-package testj.customrender;
+package ch.judos.mcmod.customrender;
 
 import java.util.Random;
 
@@ -9,9 +9,9 @@ import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import testj.TutorialMod;
-import testj.lib.Names;
-import testj.lib.References;
+import ch.judos.mcmod.TutorialMod;
+import ch.judos.mcmod.lib.Names;
+import ch.judos.mcmod.lib.References;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -24,7 +24,8 @@ public class BlockCarvedDirt extends BlockContainer {
 		this.setBlockName(Names.CarvedDirt);
 		this.setBlockTextureName(References.MOD_ID + ":" + Names.CarvedDirt);
 		this.setCreativeTab(TutorialMod.modTab);
-		this.setHardness(5);
+		this.setHardness(0.3f);
+		this.setHarvestLevel("shovel", 0);
 		setLightOpacity(0);
 	}
 
@@ -48,7 +49,6 @@ public class BlockCarvedDirt extends BlockContainer {
 
 	@Override
 	public Item getItemDropped(int p_149650_1_, Random r, int p_149650_3_) {
-		this.setHardness(0.3f);
 		return Blocks.dirt.getItemDropped(p_149650_1_, r, p_149650_3_);
 	}
 
