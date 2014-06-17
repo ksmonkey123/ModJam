@@ -98,7 +98,6 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 	@Override
 	public void customTick() {
 		// NOT NEEDED
-		System.out.println(this.plasmaType);
 	}
 
 	@Override
@@ -111,7 +110,7 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 
 	@Override
 	public void readNBT(NBTTagCompound tag) {
-		this.plasmaType = EnumPlasmaTypes.VALID[tag.getInteger("PlasmaType")];
+		this.plasmaType = EnumPlasmaTypes.values()[tag.getInteger("PlasmaType")];
 		this.texture = tag.getString("Texture");
 		this.radius = tag.getFloat("Radius");
 		this.currentPlasma = tag.getInteger("Plasma");
