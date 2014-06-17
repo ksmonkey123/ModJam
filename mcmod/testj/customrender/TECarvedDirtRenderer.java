@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -45,7 +46,7 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 
 		TextureManager render = Minecraft.getMinecraft().renderEngine;
 		render.bindTexture(new ResourceLocation(TECarvedDirt.getTexture()));
-		// RenderHelper.disableStandardItemLighting();
+		RenderHelper.disableStandardItemLighting();
 
 		HashSet<ForgeDirection> con2 = getConnections(con);
 
@@ -53,7 +54,7 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 
 		render(con2, arr);
 		// CLEANUP
-		// RenderHelper.enableStandardItemLighting();
+		RenderHelper.enableStandardItemLighting();
 
 	}
 

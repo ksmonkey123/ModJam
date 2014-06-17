@@ -59,7 +59,7 @@ public class BlockCarvedDirt extends BlockContainer {
 
 	@Override
 	public int getRenderType() {
-		return RENDER_TYPE_CUSTOM;
+		return 22;// RENDER_TYPE_CUSTOM;
 	}
 
 	@Override
