@@ -5,7 +5,6 @@ import java.util.Random;
 import test.Test;
 import ch.awae.trektech.blocks.BlockDuraniumWall;
 import ch.awae.trektech.blocks.BlockPlasmaPipe;
-import ch.awae.trektech.blocks.BlockPlasmaPipeCombined;
 import ch.awae.trektech.blocks.BlockPlasmaSource;
 import ch.awae.trektech.entities.TileEntityPlasmaPipe;
 import ch.awae.trektech.entities.TileEntityPlasmaPipeCombined;
@@ -17,11 +16,13 @@ import ch.awae.trektech.items.ItemPlasmaContainmentRing;
 import ch.awae.trektech.items.ItemStarFleetSymbol;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirectional;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.EnumPlantType;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -64,31 +65,9 @@ public class TrekTech {
 	public static Item itemPlasmaContainmentRing = new ItemPlasmaContainmentRing();
 
 	public static Block blockDuraniumWall = new BlockDuraniumWall();
-	public static Block blockPlasmaPipe = new BlockPlasmaPipe("plasmaPipe",
-			EnumPlasmaTypes.NEUTRAL, "conduit", 4);
-	public static Block blockPlasmaPipeEnergy = new BlockPlasmaPipe(
-			"plasmaPipeEnergyA", EnumPlasmaTypes.LOW, "conduit_energy", 4);
-	public static Block blockPlasmaPipeMediumEnergy = new BlockPlasmaPipe(
-			"plasmaPipeEnergyB", EnumPlasmaTypes.MEDIUM,
-			"conduit_medium_energy", 5);
-	public static Block blockPlasmaPipeHighEnergy = new BlockPlasmaPipe(
-			"plasmaPipeEnergyC", EnumPlasmaTypes.HIGH, "conduit_high_energy", 6);
-	public static Block blockPlasmaPipeEncased = new BlockPlasmaPipe(
-			"plasmaPipeEncased", EnumPlasmaTypes.NEUTRAL, "conduit_encased");
-	public static Block blockPlasmaPipeEnergyEncased = new BlockPlasmaPipe(
-			"plasmaPipeEncasedEnergyA", EnumPlasmaTypes.LOW,
-			"conduit_encased_energy");
-	public static Block blockPlasmaPipeMediumEnergyEncased = new BlockPlasmaPipe(
-			"plasmaPipeEncasedEnergyB", EnumPlasmaTypes.MEDIUM,
-			"conduit_encased_medium_energy");
-	public static Block blockPlasmaPipeHighEnergyEncased = new BlockPlasmaPipe(
-			"plasmaPipeEncasedEnergyC", EnumPlasmaTypes.HIGH,
-			"conduit_encased_high_energy");
-	public static Block blockPlasmaPipeCombined = new BlockPlasmaPipeCombined(
-			false);
-	public static Block blockPlasmaPipeCombinedEncased = new BlockPlasmaPipeCombined(
-			true);
 	public static Block blockPlasmaSource = new BlockPlasmaSource();
+
+	public static Block[][] pipes = new Block[EnumPlantType.values().length + 1][2];
 
 	@SidedProxy(clientSide = "ch.awae.trektech.ClientProxy", serverSide = "ch.awae.trektech.CommonProxy")
 	public static CommonProxy proxy;
@@ -104,23 +83,22 @@ public class TrekTech {
 				"plasmaContainmentRing");
 		// BLOCKS
 		GameRegistry.registerBlock(blockDuraniumWall, "duraniumWall");
-		GameRegistry.registerBlock(blockPlasmaPipe, "plasmaPipe");
-		GameRegistry.registerBlock(blockPlasmaPipeEnergy, "plasmaPipeEnergyA");
-		GameRegistry.registerBlock(blockPlasmaPipeMediumEnergy,
-				"plasmaPipeEnergyB");
-		GameRegistry.registerBlock(blockPlasmaPipeHighEnergy,
-				"plasmaPipeEnergyC");
-		GameRegistry.registerBlock(blockPlasmaPipeEncased, "plasmaPipeEncased");
-		GameRegistry.registerBlock(blockPlasmaPipeEnergyEncased,
-				"plasmaPipeEncasedEnergyA");
-		GameRegistry.registerBlock(blockPlasmaPipeMediumEnergyEncased,
-				"plasmaPipeEncasedEnergyB");
-		GameRegistry.registerBlock(blockPlasmaPipeHighEnergyEncased,
-				"plasmaPipeEncasedEnergyC");
-		GameRegistry.registerBlock(blockPlasmaPipeCombined,
-				"plasmaPipeCombined");
-		GameRegistry.registerBlock(blockPlasmaPipeCombinedEncased,
-				"plasmaPipeCombinedEncased");
+
+		EnumPlasmaTypes plasmaTypes[] = EnumPlasmaTypes.values();
+		for (int i = 0; i <= plasmaTypes.length; i++) {
+			if (i == plasmaTypes.length) {
+
+			} else {
+				pipes[i][0] = new BlockPlasmaPipe("pipe" + i, plasmaTypes[i],
+						i == 0 ? 6 : Math.min(Math.max(4, i + 2), 8));
+				pipes[i][1] = new BlockPlasmaPipe("pipe" + i + "c",
+						plasmaTypes[i]);
+				GameRegistry.registerBlock(pipes[i][0], "pipe" + i);
+				GameRegistry.registerBlock(pipes[i][1], "pipe" + i + "c");
+				addEncasingRecipe(i);
+			}
+		}
+
 		GameRegistry.registerBlock(blockPlasmaSource, "plasmaSource");
 		// ENTITIES
 		GameRegistry.registerTileEntity(TileEntityPlasmaPipe.class,
@@ -147,47 +125,37 @@ public class TrekTech {
 				duraniumWallStack);
 		GameRegistry.addSmelting(Items.redstone, new ItemStack(
 				itemPlasmaContainmentRing, 1), 0.5F);
-		GameRegistry.addShapedRecipe(new ItemStack(blockPlasmaPipe, 6), "III",
+		GameRegistry.addShapedRecipe(new ItemStack(pipes[1][0], 6), "III",
 				"CCC", "III", 'I', new ItemStack(Items.iron_ingot), 'C',
 				new ItemStack(itemPlasmaContainmentRing));
-		GameRegistry.addShapedRecipe(new ItemStack(blockPlasmaPipeEnergy, 6),
-				"PPP", "CCC", "PPP", 'P', new ItemStack(blockPlasmaPipe), 'C',
+		GameRegistry.addShapedRecipe(new ItemStack(pipes[2][0], 6), "PPP",
+				"CCC", "PPP", 'P', new ItemStack(pipes[1][0]), 'C',
 				new ItemStack(itemPlasmaContainmentRing));
 
 		ItemStack duraniumings = new ItemStack(itemDuraniumIngot);
-		ItemStack mk1pipestack = new ItemStack(blockPlasmaPipeEnergy);
+		ItemStack mk1pipestack = new ItemStack(pipes[2][0]);
 		ItemStack containments = new ItemStack(itemPlasmaContainmentRing);
 
-		GameRegistry.addShapelessRecipe(new ItemStack(
-				blockPlasmaPipeMediumEnergy, 3), duraniumings, duraniumings,
-				duraniumings, containments, containments, containments,
-				mk1pipestack, mk1pipestack, mk1pipestack);
+		GameRegistry.addShapelessRecipe(new ItemStack(pipes[3][0], 3),
+				duraniumings, duraniumings, duraniumings, containments,
+				containments, containments, mk1pipestack, mk1pipestack,
+				mk1pipestack);
 
-		ItemStack mk2pipestack = new ItemStack(blockPlasmaPipeMediumEnergy);
+		ItemStack mk2pipestack = new ItemStack(pipes[3][0]);
 
-		GameRegistry.addShapelessRecipe(new ItemStack(
-				blockPlasmaPipeHighEnergy, 3), duraniumings, duraniumings,
-				duraniumings, containments, containments, containments,
-				mk2pipestack, mk2pipestack, mk2pipestack);
+		GameRegistry.addShapelessRecipe(new ItemStack(pipes[4][0], 3),
+				duraniumings, duraniumings, duraniumings, containments,
+				containments, containments, mk2pipestack, mk2pipestack,
+				mk2pipestack);
 
-		GameRegistry.addShapelessRecipe(new ItemStack(blockPlasmaPipeCombined,
-				1), new ItemStack(blockPlasmaPipe), new ItemStack(
-				Items.iron_ingot), new ItemStack(blockPlasmaPipeEnergy));
-
-		addEncasingRecipe(blockPlasmaPipeEncased, blockPlasmaPipe);
-		addEncasingRecipe(blockPlasmaPipeEnergyEncased, blockPlasmaPipeEnergy);
-		addEncasingRecipe(blockPlasmaPipeMediumEnergyEncased,
-				blockPlasmaPipeMediumEnergy);
-		addEncasingRecipe(blockPlasmaPipeHighEnergyEncased,
-				blockPlasmaPipeHighEnergy);
-		addEncasingRecipe(blockPlasmaPipeCombinedEncased,
-				blockPlasmaPipeCombined);
+		GameRegistry.addShapelessRecipe(new ItemStack(pipes[0][0], 1),
+				new ItemStack(pipes[1][0]), new ItemStack(Items.iron_ingot),
+				new ItemStack(pipes[2][0]));
 	}
 
-	private static void addEncasingRecipe(Block result, Block pipe) {
-		GameRegistry.addShapedRecipe(new ItemStack(result, 4), " P ", "PDP",
-				" P ", 'D', new ItemStack(blockDuraniumWall), 'P',
-				new ItemStack(pipe));
+	private static void addEncasingRecipe(int pipeID) {
+		GameRegistry.addShapedRecipe(new ItemStack(pipes[pipeID][1], 4), " P ",
+				"PDP", " P ", 'D', new ItemStack(blockDuraniumWall), 'P',
+				new ItemStack(pipes[pipeID][0]));
 	}
-
 }
