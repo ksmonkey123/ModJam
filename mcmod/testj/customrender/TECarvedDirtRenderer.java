@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
@@ -38,7 +37,6 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 		TECarvedDirt t = (TECarvedDirt) ent;
 		// SETUP
 		GL11.glTranslated(transX + 0.5, transY + 0.5, transZ + 0.5);
-		// draw
 		renderBlock(t);
 		GL11.glTranslated(-transX - 0.5, -transY - 0.5, -transZ - 0.5);
 	}
@@ -47,7 +45,7 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 
 		TextureManager render = Minecraft.getMinecraft().renderEngine;
 		render.bindTexture(new ResourceLocation(TECarvedDirt.getTexture()));
-		RenderHelper.disableStandardItemLighting();
+		// RenderHelper.disableStandardItemLighting();
 
 		HashSet<ForgeDirection> con2 = getConnections(con);
 
@@ -55,7 +53,7 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 
 		render(con2, arr);
 		// CLEANUP
-		RenderHelper.enableStandardItemLighting();
+		// RenderHelper.enableStandardItemLighting();
 
 	}
 
