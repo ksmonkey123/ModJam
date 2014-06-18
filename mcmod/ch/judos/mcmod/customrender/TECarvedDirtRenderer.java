@@ -90,7 +90,7 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 
 	private static void renderSidesAndInsides(HashSet<ForgeDirection> con) {
 		double t = 1. / 3;
-		ForgeDirection[] dir = { NORTH, EAST, SOUTH, WEST };
+		ForgeDirection[] dir = { NORTH, WEST, SOUTH, EAST };
 		for (ForgeDirection d : dir) {
 			renderer.begin();
 			if (!con.contains(d)) {

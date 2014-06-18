@@ -5,3 +5,5 @@ tile.kryptonit_block.name=Kryptonite Ore
 item.kryptonit_item.name=Kryptonite
 tile.carved_dirt.name=Canal in Dirt
 item.dirt_shovel.name=Dirt Shovel
+potion.mcmodTest.name=Test Potion Effect
+item.potion_test.name=Test Potion

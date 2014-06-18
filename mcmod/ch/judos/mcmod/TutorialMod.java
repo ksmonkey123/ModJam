@@ -25,10 +25,13 @@ import ch.judos.mcmod.itemblockfluids.FluidTar;
 import ch.judos.mcmod.itemblockfluids.ItemDirtShovel;
 import ch.judos.mcmod.itemblockfluids.ItemKryptonite;
 import ch.judos.mcmod.itemblockfluids.ItemObsidianStick;
+import ch.judos.mcmod.itemblockfluids.ItemPotionTest;
 import ch.judos.mcmod.itemblockfluids.ItemTarBucket;
 import ch.judos.mcmod.lib.CommonProxy;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
+import ch.judos.mcmod.potions.OnEntityLivingHook;
+import ch.judos.mcmod.potions.PotionTest;
 import ch.judos.mcmod.world.WorldGenerator;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -56,6 +59,8 @@ public class TutorialMod {
 
 	// Ores
 	public static Block oreKryptonit;
+	public static ItemKryptonite itemKryptonit;
+	public static FuelHandler fuelHandler;
 
 	// Custom rendered block
 	public static Block blockCarvedDirt;
@@ -64,9 +69,9 @@ public class TutorialMod {
 	// Custom tool
 	public static ItemDirtShovel itemDirtShovel;
 
-	private ItemKryptonite itemKryptonit;
-
-	private FuelHandler fuelHandler;
+	// Potions
+	public static PotionTest potionTest;
+	public static ItemPotionTest itemPotionTest;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) throws IOException {
@@ -79,8 +84,16 @@ public class TutorialMod {
 		addSmelting();
 		addCarvedDirtCustomRenderingBlock();
 		addDirtShovel();
+		addPotion();
 
 		proxy.registerRenderInformation();
+	}
+
+	private void addPotion() {
+		MinecraftForge.EVENT_BUS.register(new OnEntityLivingHook());
+		potionTest = new PotionTest();
+		itemPotionTest = new ItemPotionTest();
+		GameRegistry.registerItem(this.itemPotionTest, Names.PotionTest);
 	}
 
 	private void addDirtShovel() {
