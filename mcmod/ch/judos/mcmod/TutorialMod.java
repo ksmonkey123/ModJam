@@ -41,6 +41,10 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/**
+ * if you need to add dependencies:<br>
+ * dependencies="required-after:"modid"@["version"]"
+ */
 @Mod(modid = References.MOD_ID, version = References.VERSION)
 public class TutorialMod {
 	@SidedProxy(clientSide = References.Client, serverSide = References.Common)
