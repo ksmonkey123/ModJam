@@ -22,9 +22,9 @@ public class ItemPotionTest extends Item {
 	@Override
 	public ItemStack onItemRightClick(ItemStack item, World world,
 			EntityPlayer player) {
-
-		player.addPotionEffect(new PotionEffect(TutorialMod.potionTest.id, 200,
-				0));
+		item.damageItem(2, player);
+		player.addPotionEffect(new PotionEffect(TutorialMod.potionTest.id,
+				10 * 20, 0));
 
 		return super.onItemRightClick(item, world, player);
 	}

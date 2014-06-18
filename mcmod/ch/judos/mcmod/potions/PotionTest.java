@@ -1,5 +1,6 @@
 package ch.judos.mcmod.potions;
 
+import net.minecraft.potion.Potion;
 import ch.modjam.generic.AbstractPotion;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -12,8 +13,13 @@ public class PotionTest extends AbstractPotion {
 
 		this.setPotionName(LanguageRegistry.instance().getStringLocalization(
 				NAME));
-		this.setIconIndex(0, 0);
+		this.setIconIndex(6, 1);
 
+	}
+
+	@Override
+	protected Potion setIconIndex(int par1, int par2) {
+		return super.setIconIndex(par1, par2);
 	}
 
 }
