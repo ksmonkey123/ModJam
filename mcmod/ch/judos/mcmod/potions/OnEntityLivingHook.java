@@ -11,6 +11,11 @@ public class OnEntityLivingHook {
 	@SubscribeEvent
 	public void onEntityUpdate(LivingUpdateEvent event) {
 
+		// if (!event.entity.worldObj.isRemote
+		// && event.entityLiving instanceof EntityPlayer) {
+		// System.out.println(event.entityLiving.getCommandSenderName());
+		// }
+
 		// entityLiving in fact refers to EntityLivingBase so to understand
 		// everything about this part go to EntityLivingBase instead
 		if (event.entityLiving.isPotionActive(TutorialMod.potionTest.id)) {
