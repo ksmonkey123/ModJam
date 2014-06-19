@@ -16,4 +16,5 @@ public class Names {
 	public static final String DirtShovel = "dirt_shovel";
 
 	public static final String PotionTest = "potion_test";
+	public static final String SlimyBoots = "slimy_boots";
 }

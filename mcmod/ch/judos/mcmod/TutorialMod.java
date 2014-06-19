@@ -8,13 +8,16 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import ch.judos.mcmod.armor.ItemSlimyBoots;
 import ch.judos.mcmod.customrender.BlockCarvedDirt;
 import ch.judos.mcmod.customrender.TECarvedDirt;
 import ch.judos.mcmod.handlers.FillBucketHandler;
@@ -77,6 +80,11 @@ public class TutorialMod {
 	public static PotionTest potionTest;
 	public static ItemPotionTest itemPotionTest;
 
+	// Slimy boots
+	public static int slimyBootsID;
+	public static ArmorMaterial armorSlimeMaterial;
+	public static Item itemSlimyBoots;
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) throws IOException {
 		System.out.println("PreInit MC Mod");
@@ -89,8 +97,18 @@ public class TutorialMod {
 		addCarvedDirtCustomRenderingBlock();
 		addDirtShovel();
 		addPotion();
+		addArmor();
 
 		proxy.registerRenderInformation();
+	}
+
+	private void addArmor() {
+		armorSlimeMaterial =
+				EnumHelper.addArmorMaterial("slimy", 5,
+						new int[] { 0, 0, 0, 2 }, 10);
+		itemSlimyBoots = new ItemSlimyBoots();
+		GameRegistry.registerItem(itemSlimyBoots, Names.SlimyBoots);
+		MinecraftForge.EVENT_BUS.register(itemSlimyBoots);
 	}
 
 	private void addPotion() {
