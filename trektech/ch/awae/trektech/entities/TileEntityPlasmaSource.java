@@ -118,7 +118,7 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 	}
 
 	private void updateBlock(boolean newState) {
-		BlockPlasmaSource.updatePlasmaSourceState(newState, this.worldObj,
+		BlockPlasmaSource.updateActiveState(newState, this.worldObj,
 				this.xCoord, this.yCoord, this.zCoord);
 	}
 

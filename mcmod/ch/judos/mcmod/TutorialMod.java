@@ -98,8 +98,14 @@ public class TutorialMod {
 		addDirtShovel();
 		addPotion();
 		addArmor();
+		addBlockWithCustomGui();
 
 		proxy.registerRenderInformation();
+	}
+
+	private void addBlockWithCustomGui() {
+		// TODO Auto-generated method stub
+
 	}
 
 	private void addArmor() {
@@ -116,6 +122,8 @@ public class TutorialMod {
 	}
 
 	private void addPotion() {
+		// adds the effect of a custom potion to any living entity who currently
+		// has the effect on it
 		MinecraftForge.EVENT_BUS.register(new OnEntityLivingHook());
 		potionTest = new PotionTest();
 		itemPotionTest = new ItemPotionTest();

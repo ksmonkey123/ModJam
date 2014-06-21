@@ -138,7 +138,7 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 		this.icons[face.ordinal()][1] = this.iconRegister.registerIcon(iconOn);
 	}
 
-	public static void updatePlasmaSourceState(boolean active, World w, int x,
+	public static void updateActiveState(boolean active, World w, int x,
 			int y, int z) {
 		int meta = w.getBlockMetadata(x, y, z);
 		int metaNew = meta % 10;
