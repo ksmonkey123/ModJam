@@ -42,8 +42,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-//XXX: use static references to static fields (e.g. this.fuelHandler --> fuelHandler / TutorialMod.fuelHandler
-
 /**
  * if you need to add dependencies:<br>
  * dependencies="required-after:"modid"@["version"]"
@@ -114,9 +112,9 @@ public class TutorialMod {
 		itemSlimyBoots = new ItemSlimyBoots();
 		GameRegistry.registerItem(itemSlimyBoots, Names.SlimyBoots);
 		MinecraftForge.EVENT_BUS.register(itemSlimyBoots);
-		GameRegistry.addShapedRecipe(new ItemStack(this.itemSlimyBoots), "L L",
+		GameRegistry.addShapedRecipe(new ItemStack(itemSlimyBoots), "L L",
 				"S S", 'L', Items.leather, 'S', Items.slime_ball);
-		GameRegistry.addShapelessRecipe(new ItemStack(this.itemSlimyBoots),
+		GameRegistry.addShapelessRecipe(new ItemStack(itemSlimyBoots),
 				Items.leather_boots, Items.slime_ball, Items.slime_ball);
 	}
 
@@ -126,68 +124,68 @@ public class TutorialMod {
 		MinecraftForge.EVENT_BUS.register(new OnEntityLivingHook());
 		potionTest = new PotionTest();
 		itemPotionTest = new ItemPotionTest();
-		GameRegistry.registerItem(this.itemPotionTest, Names.PotionTest);
+		GameRegistry.registerItem(itemPotionTest, Names.PotionTest);
 	}
 
 	private void addDirtShovel() {
-		this.itemDirtShovel = new ItemDirtShovel();
-		GameRegistry.registerItem(this.itemDirtShovel, Names.DirtShovel);
-		GameRegistry.addShapedRecipe(new ItemStack(this.itemDirtShovel, 2),
-				"XX ", "XI ", "  I", 'X', Blocks.planks, 'I', Items.stick);
-		GameRegistry.addShapedRecipe(new ItemStack(this.itemDirtShovel, 2),
-				" XX", " IX", "  I", 'X', Blocks.planks, 'I', Items.stick);
+		itemDirtShovel = new ItemDirtShovel();
+		GameRegistry.registerItem(itemDirtShovel, Names.DirtShovel);
+		GameRegistry.addShapedRecipe(new ItemStack(itemDirtShovel, 2), "XX ",
+				"XI ", "  I", 'X', Blocks.planks, 'I', Items.stick);
+		GameRegistry.addShapedRecipe(new ItemStack(itemDirtShovel, 2), " XX",
+				" IX", "  I", 'X', Blocks.planks, 'I', Items.stick);
 	}
 
 	private void addCarvedDirtCustomRenderingBlock() {
-		this.blockCarvedDirt = new BlockCarvedDirt();
-		this.teCarvedDirt = TECarvedDirt.class;
+		blockCarvedDirt = new BlockCarvedDirt();
+		teCarvedDirt = TECarvedDirt.class;
 
-		GameRegistry.registerBlock(this.blockCarvedDirt, Names.CarvedDirt);
-		GameRegistry.registerTileEntity(this.teCarvedDirt, "tile_"
+		GameRegistry.registerBlock(blockCarvedDirt, Names.CarvedDirt);
+		GameRegistry.registerTileEntity(teCarvedDirt, "tile_"
 				+ Names.CarvedDirt);
 	}
 
 	private void addSmelting() {
-		GameRegistry.addSmelting(this.oreKryptonit, new ItemStack(
-				this.itemKryptonit, 1), 5);
+		GameRegistry.addSmelting(oreKryptonit, new ItemStack(itemKryptonit, 1),
+				5);
 
-		this.fuelHandler = new FuelHandler();
-		this.fuelHandler.addFuel(this.itemKryptonit, 200 * 10);
-		GameRegistry.registerFuelHandler(this.fuelHandler);
+		fuelHandler = new FuelHandler();
+		fuelHandler.addFuel(itemKryptonit, 200 * 10);
+		GameRegistry.registerFuelHandler(fuelHandler);
 
 	}
 
 	private void addKryptonitOre() {
-		this.oreKryptonit = new BlockKryptoniteOre();
+		oreKryptonit = new BlockKryptoniteOre();
 		GameRegistry.registerWorldGenerator(new WorldGenerator(), 0);
-		GameRegistry.registerBlock(this.oreKryptonit, Names.KryptonitBlock);
+		GameRegistry.registerBlock(oreKryptonit, Names.KryptonitBlock);
 
-		this.itemKryptonit = new ItemKryptonite();
-		GameRegistry.registerItem(this.itemKryptonit, Names.KryptonitItem);
+		itemKryptonit = new ItemKryptonite();
+		GameRegistry.registerItem(itemKryptonit, Names.KryptonitItem);
 	}
 
 	private void createTarFluidAndBucket() {
-		this.tarFluid = new FluidTar();
-		FluidRegistry.registerFluid(this.tarFluid);
+		tarFluid = new FluidTar();
+		FluidRegistry.registerFluid(tarFluid);
 
-		this.tarBlock = new BlockFluidTar(this.tarFluid);
-		GameRegistry.registerBlock(this.tarBlock, Names.TarBlock);
+		tarBlock = new BlockFluidTar(tarFluid);
+		GameRegistry.registerBlock(tarBlock, Names.TarBlock);
 
-		this.tarBucket = new ItemTarBucket(this.tarBlock);
-		GameRegistry.registerItem(this.tarBucket, Names.TarBucket);
+		tarBucket = new ItemTarBucket(tarBlock);
+		GameRegistry.registerItem(tarBucket, Names.TarBucket);
 
 		int bucketVolume = FluidContainerRegistry.BUCKET_VOLUME;
 		FluidStack fluidStack = FluidRegistry.getFluidStack(Names.TarFluid,
 				bucketVolume);
 		FluidContainerRegistry.registerFluidContainer(fluidStack,
-				new ItemStack(this.tarBucket), new ItemStack(Items.bucket));
+				new ItemStack(tarBucket), new ItemStack(Items.bucket));
 		FillBucketHandler.add(tarBlock, tarBucket);
 
 		MinecraftForge.EVENT_BUS.register(FillBucketHandler.INSTANCE);
 	}
 
 	private void createCreativeTab() {
-		this.modTab = new CreativeTabs("MCMod") {
+		modTab = new CreativeTabs("MCMod") {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public Item getTabIconItem() {
@@ -209,8 +207,8 @@ public class TutorialMod {
 	}
 
 	private void addObsidianStick() {
-		this.itemObsidianStick = new ItemObsidianStick();
-		GameRegistry.registerItem(this.itemObsidianStick, Names.OStick);
+		itemObsidianStick = new ItemObsidianStick();
+		GameRegistry.registerItem(itemObsidianStick, Names.OStick);
 	}
 
 	private void addBoneRecipies() {

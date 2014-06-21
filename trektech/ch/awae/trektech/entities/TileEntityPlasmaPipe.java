@@ -11,6 +11,8 @@ import ch.awae.trektech.TrekTech;
 public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 		IPlasmaPipe, IWrenchable {
 
+	public static final float PARTICLES_PER_BAR = 100f;
+
 	private int currentPlasma = 0;
 	private EnumPlasmaTypes plasmaType;
 	private String texture;
@@ -55,8 +57,7 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 	@Override
 	public float getParticlesPerBar(EnumPlasmaTypes plasma,
 			ForgeDirection direction) {
-		// TODO: extract magical number
-		return plasma == this.plasmaType ? 100 : 0;
+		return plasma == this.plasmaType ? PARTICLES_PER_BAR : 0;
 	}
 
 	@Override
@@ -114,8 +115,7 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 		if (worldObj.isRemote) {
 			player.addChatMessage(new ChatComponentText("Plasma Type: "
 					+ this.plasmaType.toString()));
-			// TODO: extract magical number
-			float pressure = this.currentPlasma / 100f;
+			float pressure = this.currentPlasma / PARTICLES_PER_BAR;
 			player.addChatMessage(new ChatComponentText("Plasma Level: "
 					+ pressure + " bar"));
 			return true;

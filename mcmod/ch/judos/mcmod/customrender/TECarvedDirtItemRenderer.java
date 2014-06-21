@@ -9,8 +9,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import ch.judos.mcmod.TutorialMod;
-import ch.judos.mcmod.lib.ClientProxy;
-
 
 public class TECarvedDirtItemRenderer implements IItemRenderer {
 
@@ -37,8 +35,7 @@ public class TECarvedDirtItemRenderer implements IItemRenderer {
 				GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 			RenderHelper.disableStandardItemLighting();
 
-			//XXX: TECarvedDirtRenderer.renderBlock(IConnecting) is static. Use direct reference
-			ClientProxy.renderer.renderBlock(new IConnecting() {
+			TECarvedDirtRenderer.renderBlock(new IConnecting() {
 				@Override
 				public boolean connectsTo(ForgeDirection dir) {
 					if (dir == ForgeDirection.NORTH)
