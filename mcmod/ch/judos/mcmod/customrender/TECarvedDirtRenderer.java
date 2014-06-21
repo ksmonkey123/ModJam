@@ -177,6 +177,7 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 	}
 
 	//XXX: unused private method
+	@SuppressWarnings("unused")
 	private static void renderCore() {
 		renderer.begin();
 		// renderer.cubeOfRadius(0.5);

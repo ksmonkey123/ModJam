@@ -14,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 public class CustomRenderer {
 
 	// FIXME: unused private field
+	@SuppressWarnings("unused")
 	private String tex;
 	private int tileSize;
 	private double uvPerTile;
@@ -230,6 +231,7 @@ public class CustomRenderer {
 	}
 	
 	//FIXME: unused private method
+	@SuppressWarnings("unused")
 	private void out(double... c) {
 		String[] name = {
 				"x", "xp", "y", "yp", "z", "zp", "us", "up", "vs", "vp" };
