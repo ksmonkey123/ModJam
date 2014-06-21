@@ -28,5 +28,4 @@ public class ItemPotionTest extends Item {
 
 		return super.onItemRightClick(item, world, player);
 	}
-
 }

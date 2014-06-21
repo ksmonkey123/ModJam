@@ -109,6 +109,10 @@ public class TutorialMod {
 		itemSlimyBoots = new ItemSlimyBoots();
 		GameRegistry.registerItem(itemSlimyBoots, Names.SlimyBoots);
 		MinecraftForge.EVENT_BUS.register(itemSlimyBoots);
+		GameRegistry.addShapedRecipe(new ItemStack(this.itemSlimyBoots), "L L",
+				"S S", 'L', Items.leather, 'S', Items.slime_ball);
+		GameRegistry.addShapelessRecipe(new ItemStack(this.itemSlimyBoots),
+				Items.leather_boots, Items.slime_ball, Items.slime_ball);
 	}
 
 	private void addPotion() {

@@ -14,7 +14,6 @@ public class PotionTest extends AbstractPotion {
 		this.setPotionName(LanguageRegistry.instance().getStringLocalization(
 				NAME));
 		this.setIconIndex(6, 1);
-
 	}
 
 	@Override
