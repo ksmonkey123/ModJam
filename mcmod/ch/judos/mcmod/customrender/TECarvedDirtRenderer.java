@@ -176,7 +176,7 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 		}
 	}
 
-	//XXX: unused private method
+	//FIXME: unused private method
 	@SuppressWarnings("unused")
 	private static void renderCore() {
 		renderer.begin();
