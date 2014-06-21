@@ -21,6 +21,7 @@ import org.lwjgl.opengl.GL11;
 import ch.modjam.generic.CustomRenderer;
 import ch.modjam.generic.CustomRenderer.Side;
 
+@SuppressWarnings("javadoc")
 public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 
 	private static CustomRenderer renderer;

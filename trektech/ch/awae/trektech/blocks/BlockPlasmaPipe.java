@@ -23,6 +23,16 @@ public class BlockPlasmaPipe extends BlockContainer {
 	private float radius;
 	private boolean useRenderer;
 
+	/**
+	 * Constructor for normal pipes
+	 * 
+	 * @param id
+	 *            the pipe id
+	 * @param plasma
+	 *            the plasma type of the pipe
+	 * @param radius
+	 *            the render radius of the pipe
+	 */
 	public BlockPlasmaPipe(String id, EnumPlasmaTypes plasma, float radius) {
 		super(Material.rock);
 		setHardness(10);
@@ -37,6 +47,14 @@ public class BlockPlasmaPipe extends BlockContainer {
 		setLightOpacity(0);
 	}
 
+	/**
+	 * Constructor for encased pipes
+	 * 
+	 * @param id
+	 *            the pipe id
+	 * @param plasma
+	 *            the plasma type of the pipe
+	 */
 	public BlockPlasmaPipe(String id, EnumPlasmaTypes plasma) {
 		super(Material.rock);
 		setHardness(15);

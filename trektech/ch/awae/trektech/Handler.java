@@ -5,6 +5,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
+/**
+ * @author Andreas Waelchli <andreas.waelchli@me.com>
+ */
 public class Handler {
 
 	/**
@@ -27,8 +30,7 @@ public class Handler {
 			if (te == null || !(te instanceof IWrenchable))
 				return false;
 			IWrenchable wrenchable = ((IWrenchable) te);
-			return player.isSneaking() ? wrenchable.wrenchSneaking(player) : wrenchable
-					.wrench(player);
+			return wrenchable.onWrench(player);
 		}
 		return false;
 	}

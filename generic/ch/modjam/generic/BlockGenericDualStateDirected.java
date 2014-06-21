@@ -15,11 +15,25 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
+/**
+ * This Block can be placed in any of the 4 compass directions and possesses 2
+ * states. It can also possess different icons for each side and state. It does
+ * also have generic GUI support.
+ * 
+ * @author Andreas Waelchli <andreas.waelchli@me.com>
+ * @author judos_ch
+ */
 public abstract class BlockGenericDualStateDirected extends BlockContainer {
 
 	IIcon icons[][];
 	IIconRegister iconRegister;
 
+	/**
+	 * basic constructor
+	 * 
+	 * @param material
+	 * @see Block
+	 */
 	public BlockGenericDualStateDirected(Material material) {
 		super(material);
 		this.icons = new IIcon[6][2]; // 2 entries per side (on / off)
@@ -126,22 +140,51 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 	 */
 	public abstract String getDefaultIcon();
 
+	/**
+	 * Set the icon for a certain face independent from state.
+	 * 
+	 * @param face
+	 *            the face to set the icon for
+	 * @param icon
+	 *            the icon to set for the face
+	 */
 	public final void setIcon(EnumFace face, String icon) {
 		this.setIcon(face, icon, icon);
 	}
 
+	/**
+	 * Set different icons for the different states for a certain side. Both
+	 * icons must be given at once.
+	 * 
+	 * @param face
+	 *            the face to set the icon for
+	 * @param iconOff
+	 *            the "off" state icon
+	 * @param iconOn
+	 *            the "on" state icon
+	 */
 	public final void setIcon(EnumFace face, String iconOff, String iconOn) {
 		this.icons[face.ordinal()][0] = this.iconRegister.registerIcon(iconOff);
 		this.icons[face.ordinal()][1] = this.iconRegister.registerIcon(iconOn);
 	}
 
-	public static void updateActiveState(boolean active, World w, int x, int y,
+	/**
+	 * Set the current activation state for a given block
+	 * 
+	 * @param active
+	 *            whether or not the block should be rendered as active
+	 * @param world
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	public static void setActive(boolean active, World world, int x, int y,
 			int z) {
-		int meta = w.getBlockMetadata(x, y, z);
+		int meta = world.getBlockMetadata(x, y, z);
 		int metaNew = meta % 10;
 		metaNew += active ? 10 : 0;
 		if (metaNew != meta)
-			w.setBlockMetadataWithNotify(x, y, z, metaNew, 2);
+			world.setBlockMetadataWithNotify(x, y, z, metaNew, 2);
 
 	}
 
@@ -172,11 +215,20 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 		this.onBlockPlacedIntoWorldBy(w, x, y, z, entityLivingBase, p_149689_6_);
 	}
 
+	@SuppressWarnings("javadoc")
 	public void onBlockPlacedIntoWorldBy(World w, int x, int y, int z,
 			EntityLivingBase entityLivingBase, ItemStack p_149689_6_) {
 
 	}
 
+	/**
+	 * determines the ForgeDirection for a certain face given a certain metadata
+	 * value
+	 * 
+	 * @param face
+	 * @param metadata
+	 * @return the direction of the face
+	 */
 	public static ForgeDirection getFaceDirectionForMeta(EnumFace face,
 			int metadata) {
 		int meta = metadata % 10;
@@ -186,7 +238,13 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 				ForgeDirection.getOrientation(meta).getOpposite());
 	}
 
-	public static boolean isOn(int metadata) {
+	/**
+	 * indicates whether or not a block is currently active given its metadata
+	 * 
+	 * @param metadata
+	 * @return true if the block is active, false otherwise
+	 */
+	public static boolean isActive(int metadata) {
 		return metadata >= 10;
 	}
 
@@ -201,7 +259,7 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 	public abstract int getGuiIndex();
 
 	/**
-	 * indicates the existance of a GUI
+	 * indicates the existence of a GUI
 	 * 
 	 * @return
 	 */

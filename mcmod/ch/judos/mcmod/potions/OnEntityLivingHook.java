@@ -6,6 +6,7 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import ch.judos.mcmod.TutorialMod;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
+@SuppressWarnings("javadoc")
 public class OnEntityLivingHook {
 
 	@SubscribeEvent

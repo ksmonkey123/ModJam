@@ -7,6 +7,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import cpw.mods.fml.common.eventhandler.Cancelable;
 import cpw.mods.fml.common.eventhandler.Event;
 
+@SuppressWarnings("javadoc")
 @Cancelable
 @Event.HasResult
 public class DirtShovelEvent extends PlayerEvent {

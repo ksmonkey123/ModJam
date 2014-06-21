@@ -10,6 +10,7 @@ import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
 import ch.modjam.generic.GenericTileEntity;
 
+@SuppressWarnings("javadoc")
 public class TECarvedDirt extends GenericTileEntity implements IConnecting,
 		ICanalConnection {
 

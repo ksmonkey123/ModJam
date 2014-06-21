@@ -1,5 +1,6 @@
 package ch.judos.mcmod.customrender;
 
+@SuppressWarnings("javadoc")
 public interface ICanalConnection {
 	
 	public boolean acceptsLiquid();

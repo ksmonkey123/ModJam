@@ -8,6 +8,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.TrekTech;
 
+@SuppressWarnings("javadoc")
 public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 		IPlasmaPipe, IWrenchable {
 
@@ -111,7 +112,7 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 	}
 
 	@Override
-	public boolean wrench(EntityPlayer player) {
+	public boolean onWrench(EntityPlayer player) {
 		if (worldObj.isRemote) {
 			player.addChatMessage(new ChatComponentText("Plasma Type: "
 					+ this.plasmaType.toString()));
@@ -120,11 +121,6 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 					+ pressure + " bar"));
 			return true;
 		}
-		return false;
-	}
-
-	@Override
-	public boolean wrenchSneaking(EntityPlayer player) {
 		return false;
 	}
 

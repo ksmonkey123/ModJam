@@ -6,6 +6,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.TrekTech;
 
+@SuppressWarnings("javadoc")
 public class TileEntityPlasmaPipeCombined extends ATileEntityPlasmaSystem
 		implements IPlasmaPipe {
 

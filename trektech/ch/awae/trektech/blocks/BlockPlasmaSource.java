@@ -12,8 +12,14 @@ import ch.awae.trektech.entities.TileEntityPlasmaSource;
 import ch.modjam.generic.BlockGenericDualStateDirected;
 import ch.modjam.generic.EnumFace;
 
+/**
+ * @author Andreas Waelchli <andreas.waelchli@me.com>
+ */
 public class BlockPlasmaSource extends BlockGenericDualStateDirected {
 
+	/**
+	 * Basic Constructor
+	 */
 	public BlockPlasmaSource() {
 		super(Material.rock);
 		setBlockTextureName(TrekTech.MODID + ":machine_basic");

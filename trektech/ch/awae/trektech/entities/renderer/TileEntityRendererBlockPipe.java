@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL11;
 
 import ch.awae.trektech.entities.IPlasmaPipe;
 
+@SuppressWarnings("javadoc")
 public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 
 	int texturesPerRow = 4;

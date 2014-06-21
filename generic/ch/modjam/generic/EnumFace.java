@@ -2,6 +2,12 @@ package ch.modjam.generic;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
+/**
+ * This enum describes the different faces of a block.
+ * 
+ * @author Andreas Waelchli <andreas.waelchl@me.com>
+ */
+@SuppressWarnings("javadoc")
 public enum EnumFace {
 
 	BOTTOM, TOP, FRONT, BACK, RIGHT, LEFT;

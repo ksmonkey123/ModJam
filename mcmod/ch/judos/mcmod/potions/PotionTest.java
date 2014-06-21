@@ -4,6 +4,7 @@ import net.minecraft.potion.Potion;
 import ch.modjam.generic.AbstractPotion;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
+@SuppressWarnings("javadoc")
 public class PotionTest extends AbstractPotion {
 
 	public static final String NAME = "potion.mcmodTest.name";

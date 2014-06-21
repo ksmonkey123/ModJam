@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.IFuelHandler;
 
+@SuppressWarnings("javadoc")
 public class FuelHandler implements IFuelHandler {
 	
 	private HashMap<Item, Integer> map;

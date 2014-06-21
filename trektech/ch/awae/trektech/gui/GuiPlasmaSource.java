@@ -12,6 +12,7 @@ import ch.awae.trektech.TrekTech;
 import ch.awae.trektech.entities.TileEntityPlasmaSource;
 import ch.awae.trektech.gui.container.ContainerPlasmaSource;
 
+@SuppressWarnings("javadoc")
 public class GuiPlasmaSource extends GuiContainer {
 
 	private TileEntityPlasmaSource tileEntity;

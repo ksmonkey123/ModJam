@@ -10,6 +10,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+@SuppressWarnings("javadoc")
 @Mod(modid = Test.MODID, version = Test.VERSION, name = Test.MODID)
 public class Test {
 

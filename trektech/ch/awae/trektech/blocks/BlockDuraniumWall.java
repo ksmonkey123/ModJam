@@ -12,6 +12,9 @@ import net.minecraft.block.material.Material;
  */
 public class BlockDuraniumWall extends Block {
 
+	/**
+	 * Basic constructor
+	 */
 	public BlockDuraniumWall() {
 		super(Material.rock);
 		setHardness(15F);

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraftforge.oredict.OreDictionary;
 
+@SuppressWarnings("javadoc")
 public class ListedStuff {
 	private static boolean initialized;
 	private static ArrayList<String> ores;

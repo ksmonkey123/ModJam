@@ -15,6 +15,7 @@ import ch.judos.mcmod.lib.References;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+@SuppressWarnings("javadoc")
 public class BlockCarvedDirt extends BlockContainer {
 
 	public static final int RENDER_TYPE_CUSTOM = -1;

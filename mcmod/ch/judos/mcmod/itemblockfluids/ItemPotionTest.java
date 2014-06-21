@@ -9,6 +9,7 @@ import ch.judos.mcmod.TutorialMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
 
+@SuppressWarnings("javadoc")
 public class ItemPotionTest extends Item {
 
 	public ItemPotionTest() {

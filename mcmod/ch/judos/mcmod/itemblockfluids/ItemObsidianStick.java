@@ -5,6 +5,7 @@ import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
 import net.minecraft.item.Item;
 
+@SuppressWarnings("javadoc")
 public class ItemObsidianStick extends Item {
 	public ItemObsidianStick() {
 		this.setUnlocalizedName(Names.OStick);

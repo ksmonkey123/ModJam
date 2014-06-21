@@ -6,6 +6,11 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 
+/**
+ * a generic TileEntity with all the required methods directly visible
+ * 
+ * @author Andreas Waelchli <andreas.waelchli@me.com>
+ */
 public abstract class GenericTileEntity extends TileEntity {
 
 	@Override

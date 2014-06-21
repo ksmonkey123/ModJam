@@ -11,6 +11,7 @@ import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
+@SuppressWarnings("javadoc")
 public class ItemSlimyBoots extends ItemArmor {
 
 	public static final int ARMOR_HELMET_ID = 0;

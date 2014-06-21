@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBucket;
 
+@SuppressWarnings("javadoc")
 public class ItemTarBucket extends ItemBucket {
 
 	public ItemTarBucket(Block tarBlock) {

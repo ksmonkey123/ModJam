@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL11;
  * 
  * @author j
  */
+@SuppressWarnings("javadoc")
 public class CustomRenderer {
 
 	// FIXME: unused private field

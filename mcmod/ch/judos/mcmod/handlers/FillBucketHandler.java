@@ -16,6 +16,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
+@SuppressWarnings("javadoc")
 public class FillBucketHandler {
 
 	public static FillBucketHandler INSTANCE = new FillBucketHandler();

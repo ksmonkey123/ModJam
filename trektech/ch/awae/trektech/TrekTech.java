@@ -34,6 +34,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * 
  * @author Andreas Waelchli <andreas.waelchli@me.com>
  */
+@SuppressWarnings("javadoc")
 @Mod(modid = TrekTech.MODID, version = TrekTech.VERSION)
 public class TrekTech {
 

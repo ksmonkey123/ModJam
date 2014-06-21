@@ -2,6 +2,9 @@ package ch.awae.trektech.entities;
 
 import net.minecraftforge.common.util.ForgeDirection;
 
+/**
+ * @author Andreas Waelchli <andreas.waelchli@me.com>
+ */
 public interface IPlasmaPipe {
 
 	/**
@@ -21,7 +24,12 @@ public interface IPlasmaPipe {
 	 * @return the pipe radius
 	 */
 	public float getPipeRadius();
-	
+
+	/**
+	 * The texture resource
+	 * 
+	 * @return the texture resource
+	 */
 	public String getTexture();
 
 }

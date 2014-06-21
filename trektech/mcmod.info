@@ -1,0 +1,25 @@
+{
+    "modListVersion": 2,
+    "modList": [
+        {
+            "modid": "trektech",
+            "name": "TrekTech",
+            "description": "Star Trek Technologies",
+            "mcversion": "${mcversion}",
+            "version": "0.1",
+            "authorList": [
+                "ksmonkey123"
+            ],
+            "credits": "",
+            "dependants": [ ],
+            "dependencies": [ "Forge@[${minforgeversion},)" ],
+            "parent": "",
+            "requiredMods": [ "Forge@[${minforgeversion},)" ],
+            "logoFile": "",
+            "screenshots": [ ],
+            "updateUrl": "",
+            "url": "",
+            "useDependencyInformation": true
+        }
+    ]
+}

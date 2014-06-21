@@ -12,6 +12,7 @@ import ch.awae.trektech.blocks.BlockPlasmaSource;
 import ch.modjam.generic.BlockGenericDualStateDirected;
 import ch.modjam.generic.EnumFace;
 
+@SuppressWarnings("javadoc")
 public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 		IInventory {
 
@@ -101,12 +102,12 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 	private void refuel() {
 		int value = this.getFuelValue();
 		if (value <= 0 || this.stack.stackSize <= 0 || this.stack == null) {
-			if (BlockPlasmaSource.isOn(this.getBlockMetadata()))
+			if (BlockPlasmaSource.isActive(this.getBlockMetadata()))
 				this.updateBlock(false);
 		} else {
 			this.currentItemBurnTime = this.currentItemRemainingTime = value;
 			this.stack.stackSize--;
-			if (!BlockPlasmaSource.isOn(this.getBlockMetadata()))
+			if (!BlockPlasmaSource.isActive(this.getBlockMetadata()))
 				this.updateBlock(true);
 		}
 		if (this.stack != null && this.stack.stackSize <= 0) {
@@ -115,7 +116,7 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 	}
 
 	private void updateBlock(boolean newState) {
-		BlockPlasmaSource.updateActiveState(newState, this.worldObj,
+		BlockPlasmaSource.setActive(newState, this.worldObj,
 				this.xCoord, this.yCoord, this.zCoord);
 	}
 

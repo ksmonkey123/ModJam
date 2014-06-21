@@ -6,10 +6,13 @@ import ch.modjam.generic.GenericTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
+/**
+ * Generic Tile Entity for the plasma system
+ * 
+ * @author Andreas Waelchli <andreas.waelchli@me.com>
+ */
 public abstract class ATileEntityPlasmaSystem extends GenericTileEntity
 		implements IPlasmaConnection {
-
-	public static final float VERTICAL_PRESSURE_GRADIENT = 0.9f;
 
 	@Override
 	public final void tick() {
@@ -34,10 +37,10 @@ public abstract class ATileEntityPlasmaSystem extends GenericTileEntity
 			// calculate particle flow
 			int ownCount = this.getParticleCount(plasma, direction);
 			if (direction == ForgeDirection.UP)
-				ownCount *= VERTICAL_PRESSURE_GRADIENT;
+				ownCount *= Properties.VERTICAL_PRESSURE_GRADIENT;
 			int othCount = other.getParticleCount(plasma, opposite);
 			if (direction == ForgeDirection.DOWN)
-				othCount *= VERTICAL_PRESSURE_GRADIENT;
+				othCount *= Properties.VERTICAL_PRESSURE_GRADIENT;
 			float ownPpB = this.getParticlesPerBar(plasma, direction);
 			float othPpB = other.getParticlesPerBar(plasma, opposite);
 			int dCount = (int) ((ownPpB * othCount - othPpB * ownCount) / (ownPpB + othPpB));
@@ -52,5 +55,8 @@ public abstract class ATileEntityPlasmaSystem extends GenericTileEntity
 		}
 	}
 
+	/**
+	 * custom tick operations. This method is invoked at the end of each tick.
+	 */
 	public abstract void customTick();
 }

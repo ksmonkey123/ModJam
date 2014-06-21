@@ -6,6 +6,9 @@ package ch.awae.trektech;
  */
 public class CommonProxy {
 
+	/**
+	 * register renderers
+	 */
 	public void registerRenderers() {
 	}
 

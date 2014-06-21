@@ -7,6 +7,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+@SuppressWarnings("javadoc")
 public class ContainerPlasmaSource extends Container {
 
 	TileEntityPlasmaSource tileEntity;
