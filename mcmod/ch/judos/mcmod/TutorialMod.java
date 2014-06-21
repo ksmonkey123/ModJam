@@ -1,7 +1,5 @@
 package ch.judos.mcmod;
 
-import java.io.IOException;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -43,6 +41,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+//XXX: use static references to static fields (e.g. this.fuelHandler --> fuelHandler / TutorialMod.fuelHandler
 
 /**
  * if you need to add dependencies:<br>
@@ -86,7 +86,7 @@ public class TutorialMod {
 	public static Item itemSlimyBoots;
 
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent e) throws IOException {
+	public void preInit(FMLPreInitializationEvent e) {
 		System.out.println("PreInit MC Mod");
 		createCreativeTab();
 		createTarFluidAndBucket();
@@ -109,9 +109,8 @@ public class TutorialMod {
 	}
 
 	private void addArmor() {
-		armorSlimeMaterial =
-				EnumHelper.addArmorMaterial("slimy", 5,
-						new int[] { 0, 0, 0, 2 }, 10);
+		armorSlimeMaterial = EnumHelper.addArmorMaterial("slimy", 5, new int[] {
+				0, 0, 0, 2 }, 10);
 		itemSlimyBoots = new ItemSlimyBoots();
 		GameRegistry.registerItem(itemSlimyBoots, Names.SlimyBoots);
 		MinecraftForge.EVENT_BUS.register(itemSlimyBoots);
@@ -178,8 +177,8 @@ public class TutorialMod {
 		GameRegistry.registerItem(this.tarBucket, Names.TarBucket);
 
 		int bucketVolume = FluidContainerRegistry.BUCKET_VOLUME;
-		FluidStack fluidStack =
-				FluidRegistry.getFluidStack(Names.TarFluid, bucketVolume);
+		FluidStack fluidStack = FluidRegistry.getFluidStack(Names.TarFluid,
+				bucketVolume);
 		FluidContainerRegistry.registerFluidContainer(fluidStack,
 				new ItemStack(this.tarBucket), new ItemStack(Items.bucket));
 		FillBucketHandler.add(tarBlock, tarBucket);

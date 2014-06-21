@@ -3,9 +3,6 @@ package ch.awae.trektech.blocks;
 import ch.awae.trektech.TrekTech;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 
 /**
  * Duranium Wall: Highly Explosion resistant wall. A wall 1 block thick can

@@ -26,6 +26,7 @@ public abstract class GenericTileEntity extends TileEntity {
 		this.readNBT(p_145839_1_);
 	}
 
+	@Override
 	public Packet getDescriptionPacket() {
 		NBTTagCompound nbtTag = new NBTTagCompound();
 		this.writeToNBT(nbtTag);

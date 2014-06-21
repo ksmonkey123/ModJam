@@ -1,6 +1,5 @@
 package ch.awae.trektech.entities;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
 

@@ -1,16 +1,16 @@
 package ch.awae.trektech.gui;
 
-import org.lwjgl.opengl.GL11;
-
-import ch.awae.trektech.TrekTech;
-import ch.awae.trektech.entities.TileEntityPlasmaSource;
-import ch.awae.trektech.gui.container.ContainerPlasmaSource;
-import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
+
+import org.lwjgl.opengl.GL11;
+
+import ch.awae.trektech.TrekTech;
+import ch.awae.trektech.entities.TileEntityPlasmaSource;
+import ch.awae.trektech.gui.container.ContainerPlasmaSource;
 
 public class GuiPlasmaSource extends GuiContainer {
 
@@ -50,6 +50,7 @@ public class GuiPlasmaSource extends GuiContainer {
 					14, i1 + 2);
 		}
 		i1 = this.tileEntity.getPlasmaLevelScaled(4, 44);
-		this.drawTexturedModalRect(x + 142, y + 21 + 37 - i1, 176, 15 + 44 - i1, 8, i1);
+		this.drawTexturedModalRect(x + 142, y + 21 + 37 - i1, 176,
+				15 + 44 - i1, 8, i1);
 	}
 }

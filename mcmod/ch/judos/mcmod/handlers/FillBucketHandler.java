@@ -76,8 +76,8 @@ public class FillBucketHandler {
 				&& world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0) {
 			world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
 			return new ItemStack(bucket);
-		} else
-			return null;
+		}
+		return null;
 
 	}
 }

@@ -37,6 +37,7 @@ public class TECarvedDirtItemRenderer implements IItemRenderer {
 				GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 			RenderHelper.disableStandardItemLighting();
 
+			//XXX: TECarvedDirtRenderer.renderBlock(IConnecting) is static. Use direct reference
 			ClientProxy.renderer.renderBlock(new IConnecting() {
 				@Override
 				public boolean connectsTo(ForgeDirection dir) {

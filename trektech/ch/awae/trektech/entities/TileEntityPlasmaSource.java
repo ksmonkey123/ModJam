@@ -1,22 +1,19 @@
 package ch.awae.trektech.entities;
 
-import net.minecraft.block.BlockFurnace;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
-import ch.awae.trektech.Properties;
 import ch.awae.trektech.blocks.BlockPlasmaSource;
 import ch.modjam.generic.BlockGenericDualStateDirected;
 import ch.modjam.generic.EnumFace;
 
 public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
-		IPlasmaConnection, IInventory {
+		IInventory {
 
 	private static final int PLASMA_PER_TICK = 5;
 	private static final int PLASMA_PER_BAR = 1000;

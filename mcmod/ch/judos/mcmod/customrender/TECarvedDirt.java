@@ -34,6 +34,7 @@ public class TECarvedDirt extends GenericTileEntity implements IConnecting,
 				+ ".png";
 	}
 
+	@Override
 	public boolean connectsTo(ForgeDirection dir) {
 		int x = this.xCoord + dir.offsetX;
 		int y = this.yCoord + dir.offsetY;

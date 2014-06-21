@@ -2,7 +2,6 @@ package ch.judos.mcmod.lib;
 
 import java.util.ArrayList;
 
-import net.minecraft.item.Item;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class ListedStuff {

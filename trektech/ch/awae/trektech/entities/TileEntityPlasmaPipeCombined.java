@@ -1,19 +1,13 @@
 package ch.awae.trektech.entities;
 
-import ch.awae.trektech.EnumPlasmaTypes;
-import ch.awae.trektech.Properties;
-import ch.awae.trektech.TrekTech;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import ch.awae.trektech.EnumPlasmaTypes;
+import ch.awae.trektech.TrekTech;
 
 public class TileEntityPlasmaPipeCombined extends ATileEntityPlasmaSystem
-		implements IPlasmaPipe, IPlasmaConnection {
+		implements IPlasmaPipe {
 
 	private int currentNeutralPlasma = 0;
 	private int currentLowPlasma = 0;

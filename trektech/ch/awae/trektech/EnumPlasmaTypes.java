@@ -20,4 +20,9 @@ public enum EnumPlasmaTypes {
 
 	public static EnumPlasmaTypes[] VALID = { NEUTRAL, LOW, MEDIUM, HIGH };
 
+	@Override
+	public String toString() {
+		return this.desc;
+	}
+
 }

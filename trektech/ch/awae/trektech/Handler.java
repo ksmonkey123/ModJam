@@ -2,7 +2,6 @@ package ch.awae.trektech;
 
 import ch.awae.trektech.entities.IWrenchable;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 

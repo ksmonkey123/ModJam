@@ -1,6 +1,5 @@
 package ch.modjam.generic;
 
-import ch.awae.trektech.TrekTech;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -74,6 +73,7 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 		}
 	}
 
+	@Override
 	@SideOnly(Side.CLIENT)
 	public final IIcon getIcon(int side, int meta) {
 		int flag = meta >= 10 ? 1 : 0;
@@ -99,10 +99,7 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 		return EnumFace.RIGHT;
 	}
 
-	private int getOpposite(int side) {
-		return side + (side % 2 == 0 ? 1 : -1);
-	}
-
+	@Override
 	@SideOnly(Side.CLIENT)
 	public final void registerBlockIcons(IIconRegister iconRegister) {
 		this.iconRegister = iconRegister;
@@ -138,8 +135,8 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 		this.icons[face.ordinal()][1] = this.iconRegister.registerIcon(iconOn);
 	}
 
-	public static void updateActiveState(boolean active, World w, int x,
-			int y, int z) {
+	public static void updateActiveState(boolean active, World w, int x, int y,
+			int z) {
 		int meta = w.getBlockMetadata(x, y, z);
 		int metaNew = meta % 10;
 		metaNew += active ? 10 : 0;
@@ -155,7 +152,7 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 	public final void onBlockPlacedBy(World w, int x, int y, int z,
 			EntityLivingBase entityLivingBase, ItemStack p_149689_6_) {
 		int l = MathHelper
-				.floor_double((double) (entityLivingBase.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+				.floor_double(entityLivingBase.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
 		if (l == 0) {
 			w.setBlockMetadataWithNotify(x, y, z, 2, 2);

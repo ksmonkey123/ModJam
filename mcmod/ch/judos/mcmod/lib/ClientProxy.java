@@ -11,6 +11,7 @@ public class ClientProxy extends CommonProxy {
 	
 	public static TECarvedDirtRenderer renderer = new TECarvedDirtRenderer();
 	
+	@Override
 	public void registerRenderInformation() {
 //		TECarvedDirtRenderer renderer = new TECarvedDirtRenderer();
 		ClientRegistry.bindTileEntitySpecialRenderer(TutorialMod.teCarvedDirt, renderer);

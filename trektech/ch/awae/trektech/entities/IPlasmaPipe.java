@@ -1,7 +1,5 @@
 package ch.awae.trektech.entities;
 
-import ch.awae.trektech.EnumPlasmaTypes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public interface IPlasmaPipe {

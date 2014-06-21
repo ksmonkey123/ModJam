@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
  */
 public class CustomRenderer {
 
+	// FIXME: unused private field
 	private String tex;
 	private int tileSize;
 	private double uvPerTile;
@@ -222,12 +223,13 @@ public class CustomRenderer {
 
 	private enum Coord {
 		X(0),Y(1),Z(2);
-		private int index;
+		final int index;
 		private Coord(int i) {
 			this.index=i;
 		}
 	}
 	
+	//FIXME: unused private method
 	private void out(double... c) {
 		String[] name = {
 				"x", "xp", "y", "yp", "z", "zp", "us", "up", "vs", "vp" };

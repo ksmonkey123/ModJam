@@ -1,42 +1,18 @@
 package ch.awae.trektech.blocks;
 
-import java.util.Iterator;
-import java.util.List;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import test.Test;
-import ch.awae.trektech.TrekTech;
-import ch.awae.trektech.entities.IPlasmaConnection;
-import ch.awae.trektech.entities.TileEntityPlasmaSource;
-import ch.modjam.generic.BlockGenericDualStateDirected;
-import ch.modjam.generic.EnumFace;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatStyle;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import ch.awae.trektech.TrekTech;
+import ch.awae.trektech.entities.TileEntityPlasmaSource;
+import ch.modjam.generic.BlockGenericDualStateDirected;
+import ch.modjam.generic.EnumFace;
 
 public class BlockPlasmaSource extends BlockGenericDualStateDirected {
-
-	private IIcon iconFront;
-	private IIcon iconFrontOn;
-	private IIcon iconTop;
-	private IIcon iconBack;
 
 	public BlockPlasmaSource() {
 		super(Material.rock);
@@ -60,7 +36,7 @@ public class BlockPlasmaSource extends BlockGenericDualStateDirected {
 				ItemStack itemstack = tileEntity.getStackInSlot(i1);
 
 				if (itemstack != null) {
-					float f = TrekTech.rand.nextFloat() * 0.8F + 0.1F;
+					float f0 = TrekTech.rand.nextFloat() * 0.8F + 0.1F;
 					float f1 = TrekTech.rand.nextFloat() * 0.8F + 0.1F;
 					float f2 = TrekTech.rand.nextFloat() * 0.8F + 0.1F;
 
@@ -72,12 +48,10 @@ public class BlockPlasmaSource extends BlockGenericDualStateDirected {
 						}
 
 						itemstack.stackSize -= j1;
-						EntityItem entityitem = new EntityItem(world,
-								(double) ((float) x + f),
-								(double) ((float) y + f1),
-								(double) ((float) z + f2), new ItemStack(
-										itemstack.getItem(), j1,
-										itemstack.getItemDamage()));
+						EntityItem entityitem = new EntityItem(world, x + f0, y
+								+ f1, z + f2, new ItemStack(
+								itemstack.getItem(), j1,
+								itemstack.getItemDamage()));
 
 						if (itemstack.hasTagCompound()) {
 							entityitem.getEntityItem().setTagCompound(
@@ -86,12 +60,12 @@ public class BlockPlasmaSource extends BlockGenericDualStateDirected {
 						}
 
 						float f3 = 0.05F;
-						entityitem.motionX = (double) ((float) TrekTech.rand
-								.nextGaussian() * f3);
-						entityitem.motionY = (double) ((float) TrekTech.rand
-								.nextGaussian() * f3 + 0.2F);
-						entityitem.motionZ = (double) ((float) TrekTech.rand
-								.nextGaussian() * f3);
+						entityitem.motionX = (float) TrekTech.rand
+								.nextGaussian() * f3;
+						entityitem.motionY = (float) TrekTech.rand
+								.nextGaussian() * f3 + 0.2F;
+						entityitem.motionZ = (float) TrekTech.rand
+								.nextGaussian() * f3;
 						world.spawnEntityInWorld(entityitem);
 					}
 				}

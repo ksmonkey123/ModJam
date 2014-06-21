@@ -1,6 +1,5 @@
 package ch.modjam.generic;
 
-import sun.rmi.runtime.Log;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public enum EnumFace {
