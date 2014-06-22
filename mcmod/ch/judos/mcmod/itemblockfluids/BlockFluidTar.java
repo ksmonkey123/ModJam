@@ -28,22 +28,15 @@ public class BlockFluidTar extends BlockFluidClassic {
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z,
 			Entity entity) {
-
 		// if (world.isRemote)
 		// return;
 
-		if (entity instanceof EntityPlayer || entity instanceof EntityMob
-				&& !((EntityLiving) entity).isEntityUndead()) {
+		if (entity instanceof EntityPlayer || entity instanceof EntityMob && !((EntityLiving) entity)
+			.isEntityUndead()) {
 			EntityLivingBase ent = (EntityLivingBase) entity;
-			System.out.println(ent);
-			System.out.println(ent.motionX + "," + ent.motionY + ","
-					+ ent.motionZ);
 			ent.motionX *= 0.2;
 			ent.motionZ *= 0.2;
 			ent.motionY *= 0.2;
-
-			// ent.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 0,
-			// 3));
 		}
 		super.onEntityCollidedWithBlock(world, x, y, z, entity);
 

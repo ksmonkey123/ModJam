@@ -1,6 +1,9 @@
 package ch.modjam.generic;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -14,8 +17,6 @@ import org.lwjgl.opengl.GL11;
 @SuppressWarnings("javadoc")
 public class CustomRenderer {
 
-	// FIXME: unused private field
-	@SuppressWarnings("unused")
 	private String tex;
 	private int tileSize;
 	private double uvPerTile;
@@ -31,9 +32,9 @@ public class CustomRenderer {
 	 *            to bottom right 0-15
 	 */
 	public CustomRenderer(String textureNameAndPath) {
-		this(textureNameAndPath,ForgeDirection.NORTH);
+		this(textureNameAndPath, ForgeDirection.NORTH);
 	}
-	
+
 	/**
 	 * the front face will point to north
 	 * 
@@ -42,9 +43,10 @@ public class CustomRenderer {
 	 *            "modid:textures/blocks/eg.png" <br>
 	 *            it is split into 4x4 tiles, these are numbered from top left
 	 *            to bottom right 0-15
-	 * @param dir front face of block will point into this direction
+	 * @param dir
+	 *            front face of block will point into this direction
 	 */
-	public CustomRenderer(String textureNameAndPath,ForgeDirection dir) {
+	public CustomRenderer(String textureNameAndPath, ForgeDirection dir) {
 		this.tex = textureNameAndPath;
 		this.tileSize = 4;
 		this.uvPerTile = 1. / this.tileSize;
@@ -68,64 +70,65 @@ public class CustomRenderer {
 		double xp = x + delta[0];
 		double yp = y + delta[1];
 		double zp = z + delta[2];
-		double[][] coord={{-xp,x},{-yp,y},{-zp,z}};
-		
+		double[][] coord = { { -xp, x }, { -yp, y }, { -zp, z } };
+
 		int tx = useTextureTileIndex % 4;
 		int ty = useTextureTileIndex / 4;
 
 		double us = 0, vs = 0, dU, dV;
 
 		boolean swaped = (texRotation % 2) == 1;
-		
-		int[] uc,vc; // {value (+delta[n]/2 or -delta[n]/2), coordinate (0=x,1=y,2=z)}
+
+		int[] uc, vc; // {value (+delta[n]/2 or -delta[n]/2), coordinate
+						// (0=x,1=y,2=z)}
 
 		switch (visibleFrom) {
 			case TOP: {
-				uc = arr(0,Coord.X.index);
-				vc = arr(0,Coord.Z.index);
+				uc = arr(0, Coord.X.index);
+				vc = arr(0, Coord.Z.index);
 				swaped = !swaped;
 				break;
 			}
 			case FRONT: {
-				uc = arr(0,Coord.X.index);
-				vc = arr(0,Coord.Y.index);
+				uc = arr(0, Coord.X.index);
+				vc = arr(0, Coord.Y.index);
 				break;
 			}
 			case LEFT: {
-				uc = arr(0,Coord.Z.index);
-				vc = arr(0,Coord.Y.index);
+				uc = arr(0, Coord.Z.index);
+				vc = arr(0, Coord.Y.index);
 				break;
 			}
 			case RIGHT: {
-				uc = arr(1,Coord.Z.index);
-				vc = arr(0,Coord.Y.index);
+				uc = arr(1, Coord.Z.index);
+				vc = arr(0, Coord.Y.index);
 				break;
 			}
 			case BACK: {
-				uc = arr(1,Coord.X.index);
-				vc = arr(0,Coord.Y.index);
+				uc = arr(1, Coord.X.index);
+				vc = arr(0, Coord.Y.index);
 				break;
 			}
 			case BOTTOM: {
-				uc = arr(0,Coord.X.index);
-				vc = arr(1,Coord.Z.index);
+				uc = arr(0, Coord.X.index);
+				vc = arr(1, Coord.Z.index);
 				swaped = !swaped;
 				break;
 			}
 			default: {
-				throw new RuntimeException("Unhandled enum type: "
-						+ visibleFrom);
+				throw new RuntimeException(
+					"Unhandled enum type: " + visibleFrom);
 			}
 		}
-		
-		int rot=texRotation;
-		while(rot>0) {
+
+		int rot = texRotation;
+		while (rot > 0) {
 			rot--;
 			int[] temp = uc;
-			uc=arr(vc[0],vc[1]);
-			vc=arr(1-temp[0],temp[1]);
+			uc = arr(vc[0], vc[1]);
+			vc = arr(1 - temp[0], temp[1]);
 		}
-		
+
 		us = tx * uvPerTile + (0.5 + coord[uc[1]][uc[0]]) * uvPerTile;
 		vs = ty * uvPerTile + (0.5 + coord[vc[1]][vc[0]]) * uvPerTile;
 
@@ -186,56 +189,63 @@ public class CustomRenderer {
 		}
 
 		for (int i = 0; i < 4; i++)
-			Tessellator.instance.addVertexWithUV(cx[i], cy[i], cz[i], u[(i + texRotation) % 4],
-					v[(i + texRotation) % 4]);
+			Tessellator.instance.addVertexWithUV(cx[i], cy[i], cz[i],
+				u[(i + texRotation) % 4], v[(i + texRotation) % 4]);
 	}
-	
+
 	private void rotateQuadBasedOnBlockRotation() {
-		switch(this.direction) {
+		switch (this.direction) {
 			case WEST: {
-				GL11.glRotated(90, 0,1,0);
+				GL11.glRotated(90, 0, 1, 0);
 				break;
 			}
 			case SOUTH: {
-				GL11.glRotated(180, 0,1,0);
+				GL11.glRotated(180, 0, 1, 0);
 				break;
 			}
 			case EAST: {
-				GL11.glRotated(270, 0,1,0);
+				GL11.glRotated(270, 0, 1, 0);
 				break;
 			}
 			case UP: {
-				GL11.glRotated(90, 1, 0,0);
+				GL11.glRotated(90, 1, 0, 0);
 				break;
 			}
 			case DOWN: {
 				GL11.glRotated(-90, 1, 0, 0);
 				break;
 			}
-			case NORTH:{}
-			case UNKNOWN:{}
-			default:{}
+			case NORTH: {
+			}
+			case UNKNOWN: {
+			}
+			default: {
+			}
 		}
-		
+
 	}
 
-	private int[] arr(int ... values) {
+	private int[] arr(int... values) {
 		return values;
 	}
 
 	private enum Coord {
-		X(0),Y(1),Z(2);
+		X(0), Y(1), Z(2);
 		final int index;
+
 		private Coord(int i) {
-			this.index=i;
+			this.index = i;
 		}
 	}
-	
-	//FIXME: unused private method
+
+	/**
+	 * method for debugging stuff
+	 * 
+	 * @param c
+	 */
 	@SuppressWarnings("unused")
 	private void out(double... c) {
-		String[] name = {
-				"x", "xp", "y", "yp", "z", "zp", "us", "up", "vs", "vp" };
+		String[] name = { "x", "xp", "y", "yp", "z", "zp", "us", "up", "vs", "vp" };
 		StringBuffer s = new StringBuffer();
 		for (int i = 0; i < c.length; i++)
 			s.append(name[i] + ":" + c[i] + ", ");
@@ -247,8 +257,7 @@ public class CustomRenderer {
 		int sideI = visibleFrom.getIndex();
 		double[] delta = new double[3];
 		for (int i = 0; i < 3; i++)
-			delta[i] = width * widthToXYZ[i][sideI] + height
-					* heightToXYZ[i][sideI];
+			delta[i] = width * widthToXYZ[i][sideI] + height * heightToXYZ[i][sideI];
 		return delta;
 	}
 
@@ -259,13 +268,13 @@ public class CustomRenderer {
 	 */
 	private static final int[][] widthToXYZ = { //
 	{ 0, 0, 0, 1, 0, 1 }, //
-			{ 0, 0, 0, 0, 0, 0 }, //
-			{ 1, 1, 1, 0, 1, 0 } };
+	{ 0, 0, 0, 0, 0, 0 }, //
+	{ 1, 1, 1, 0, 1, 0 } };
 
 	private static final int[][] heightToXYZ = { //
 	{ 1, 1, 0, 0, 0, 0 }, //
-			{ 0, 0, 1, 1, 1, 1 }, //
-			{ 0, 0, 0, 0, 0, 0 } };
+	{ 0, 0, 1, 1, 1, 1 }, //
+	{ 0, 0, 0, 0, 0, 0 } };
 
 	public enum Side {
 		TOP(1, 0), BOTTOM(9, 1), LEFT(4, 2), FRONT(5, 3), RIGHT(6, 4), BACK(10,
@@ -304,11 +313,13 @@ public class CustomRenderer {
 	}
 
 	public void begin() {
+		TextureManager render = Minecraft.getMinecraft().renderEngine;
+		render.bindTexture(new ResourceLocation(this.tex));
 		GL11.glPushMatrix();
 		rotateQuadBasedOnBlockRotation();
 		Tessellator.instance.startDrawingQuads();
 	}
-	
+
 	public void end() {
 		Tessellator.instance.draw();
 		GL11.glPopMatrix();

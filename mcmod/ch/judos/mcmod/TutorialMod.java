@@ -104,19 +104,17 @@ public class TutorialMod {
 
 	private void addBlockWithCustomGui() {
 		// TODO Auto-generated method stub
-
 	}
 
 	private void addArmor() {
-		armorSlimeMaterial = EnumHelper.addArmorMaterial("slimy", 5, new int[] {
-				0, 0, 0, 2 }, 10);
+		armorSlimeMaterial = EnumHelper.addArmorMaterial("slimy", 5, new int[] { 0, 0, 0, 2 }, 10);
 		itemSlimyBoots = new ItemSlimyBoots();
 		GameRegistry.registerItem(itemSlimyBoots, Names.SlimyBoots);
 		MinecraftForge.EVENT_BUS.register(itemSlimyBoots);
-		GameRegistry.addShapedRecipe(new ItemStack(itemSlimyBoots), "L L",
-				"S S", 'L', Items.leather, 'S', Items.slime_ball);
-		GameRegistry.addShapelessRecipe(new ItemStack(itemSlimyBoots),
-				Items.leather_boots, Items.slime_ball, Items.slime_ball);
+		GameRegistry.addShapedRecipe(new ItemStack(itemSlimyBoots), "L L", "S S", 'L',
+			Items.leather, 'S', Items.slime_ball);
+		GameRegistry.addShapelessRecipe(new ItemStack(itemSlimyBoots), Items.leather_boots,
+			Items.slime_ball, Items.slime_ball);
 	}
 
 	private void addPotion() {
@@ -131,10 +129,10 @@ public class TutorialMod {
 	private void addDirtShovel() {
 		itemDirtShovel = new ItemDirtShovel();
 		GameRegistry.registerItem(itemDirtShovel, Names.DirtShovel);
-		GameRegistry.addShapedRecipe(new ItemStack(itemDirtShovel, 2), "XX ",
-				"XI ", "  I", 'X', Blocks.planks, 'I', Items.stick);
-		GameRegistry.addShapedRecipe(new ItemStack(itemDirtShovel, 2), " XX",
-				" IX", "  I", 'X', Blocks.planks, 'I', Items.stick);
+		GameRegistry.addShapedRecipe(new ItemStack(itemDirtShovel, 2), "XX ", "XI ", "  I", 'X',
+			Blocks.planks, 'I', Items.stick);
+		GameRegistry.addShapedRecipe(new ItemStack(itemDirtShovel, 2), " XX", " IX", "  I", 'X',
+			Blocks.planks, 'I', Items.stick);
 	}
 
 	private void addCarvedDirtCustomRenderingBlock() {
@@ -142,13 +140,11 @@ public class TutorialMod {
 		teCarvedDirt = TECarvedDirt.class;
 
 		GameRegistry.registerBlock(blockCarvedDirt, Names.CarvedDirt);
-		GameRegistry.registerTileEntity(teCarvedDirt, "tile_"
-				+ Names.CarvedDirt);
+		GameRegistry.registerTileEntity(teCarvedDirt, "tile_" + Names.CarvedDirt);
 	}
 
 	private void addSmelting() {
-		GameRegistry.addSmelting(oreKryptonit, new ItemStack(itemKryptonit, 1),
-				5);
+		GameRegistry.addSmelting(oreKryptonit, new ItemStack(itemKryptonit, 1), 5);
 
 		fuelHandler = new FuelHandler();
 		fuelHandler.addFuel(itemKryptonit, 200 * 10);
@@ -176,10 +172,9 @@ public class TutorialMod {
 		GameRegistry.registerItem(tarBucket, Names.TarBucket);
 
 		int bucketVolume = FluidContainerRegistry.BUCKET_VOLUME;
-		FluidStack fluidStack = FluidRegistry.getFluidStack(Names.TarFluid,
-				bucketVolume);
-		FluidContainerRegistry.registerFluidContainer(fluidStack,
-				new ItemStack(tarBucket), new ItemStack(Items.bucket));
+		FluidStack fluidStack = FluidRegistry.getFluidStack(Names.TarFluid, bucketVolume);
+		FluidContainerRegistry.registerFluidContainer(fluidStack, new ItemStack(tarBucket),
+			new ItemStack(Items.bucket));
 		FillBucketHandler.add(tarBlock, tarBucket);
 
 		MinecraftForge.EVENT_BUS.register(FillBucketHandler.INSTANCE);
@@ -213,27 +208,20 @@ public class TutorialMod {
 	}
 
 	private void addBoneRecipies() {
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1),
-				Items.porkchop);
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1),
-				Items.cooked_porkchop);
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1),
-				Items.beef);
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1),
-				Items.cooked_beef);
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1),
-				Items.chicken, Items.chicken);
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1),
-				Items.cooked_chicken, Items.cooked_chicken);
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1),
-				Items.cooked_chicken, Items.chicken);
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1), Items.porkchop);
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1), Items.cooked_porkchop);
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1), Items.beef);
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1), Items.cooked_beef);
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1), Items.chicken, Items.chicken);
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1), Items.cooked_chicken,
+			Items.cooked_chicken);
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1), Items.cooked_chicken,
+			Items.chicken);
 
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 3),
-				Items.cooked_fished);
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 3),
-				Items.fish);
-		GameRegistry.addShapedRecipe(new ItemStack(Blocks.command_block), "Y",
-				"X", 'X', Blocks.diamond_block, 'Y', Items.redstone);
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 3), Items.cooked_fished);
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 3), Items.fish);
+		GameRegistry.addShapedRecipe(new ItemStack(Blocks.command_block), "Y", "X", 'X',
+			Blocks.diamond_block, 'Y', Items.redstone);
 	}
 
 }
