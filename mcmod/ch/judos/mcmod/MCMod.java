@@ -18,6 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 import ch.judos.mcmod.armor.ItemSlimyBoots;
 import ch.judos.mcmod.customrender.BlockCarvedDirt;
 import ch.judos.mcmod.customrender.TECarvedDirt;
+import ch.judos.mcmod.gui.CustomBox;
 import ch.judos.mcmod.handlers.FillBucketHandler;
 import ch.judos.mcmod.handlers.FuelHandler;
 import ch.judos.mcmod.itemblockfluids.BlockFluidTar;
@@ -48,7 +49,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 @SuppressWarnings("javadoc")
 @Mod(modid = References.MOD_ID, version = References.VERSION)
-public class TutorialMod {
+public class MCMod {
 	@SidedProxy(clientSide = References.Client, serverSide = References.Common)
 	public static CommonProxy proxy;
 
@@ -84,9 +85,11 @@ public class TutorialMod {
 	public static ArmorMaterial armorSlimeMaterial;
 	public static Item itemSlimyBoots;
 
+	// Custom Gui
+	public static CustomBox customBox; // the block
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
-		System.out.println("PreInit MC Mod");
 		createCreativeTab();
 		createTarFluidAndBucket();
 		addBoneRecipies();
@@ -103,7 +106,7 @@ public class TutorialMod {
 	}
 
 	private void addBlockWithCustomGui() {
-		// TODO Auto-generated method stub
+		customBox = new CustomBox();
 	}
 
 	private void addArmor() {
@@ -185,7 +188,7 @@ public class TutorialMod {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public Item getTabIconItem() {
-				return TutorialMod.itemObsidianStick;
+				return MCMod.itemObsidianStick;
 			}
 
 			@Override

@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import ch.judos.mcmod.TutorialMod;
+import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
 import cpw.mods.fml.relauncher.Side;
@@ -24,7 +24,7 @@ public class BlockCarvedDirt extends BlockContainer {
 		super(Material.grass);
 		this.setBlockName(Names.CarvedDirt);
 		this.setBlockTextureName(References.MOD_ID + ":" + Names.CarvedDirt);
-		this.setCreativeTab(TutorialMod.modTab);
+		this.setCreativeTab(MCMod.modTab);
 		this.setHardness(0.3f);
 		this.setHarvestLevel("shovel", 0);
 		setLightOpacity(0);

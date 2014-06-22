@@ -9,7 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import ch.judos.mcmod.TutorialMod;
+import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.events.DirtShovelEvent;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
@@ -26,9 +26,9 @@ public class ItemDirtShovel extends Item {
 
 	private static void initialize() {
 		transforms = new HashMap<Block, Block>();
-		transforms.put(Blocks.dirt, TutorialMod.blockCarvedDirt);
-		transforms.put(Blocks.grass, TutorialMod.blockCarvedDirt);
-		transforms.put(TutorialMod.blockCarvedDirt, Blocks.dirt);
+		transforms.put(Blocks.dirt, MCMod.blockCarvedDirt);
+		transforms.put(Blocks.grass, MCMod.blockCarvedDirt);
+		transforms.put(MCMod.blockCarvedDirt, Blocks.dirt);
 	}
 
 	public ItemDirtShovel() {
@@ -36,7 +36,7 @@ public class ItemDirtShovel extends Item {
 		this.setMaxDamage(32);
 		this.setUnlocalizedName(Names.DirtShovel);
 		this.setTextureName(References.MOD_ID + ":" + Names.DirtShovel);
-		this.setCreativeTab(TutorialMod.modTab);
+		this.setCreativeTab(MCMod.modTab);
 	}
 
 	@Override

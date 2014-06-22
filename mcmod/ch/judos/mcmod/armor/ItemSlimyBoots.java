@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
-import ch.judos.mcmod.TutorialMod;
+import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -22,12 +22,12 @@ public class ItemSlimyBoots extends ItemArmor {
 	public static final int EQUIPPED_BOOTS_SLOT_NR = 1;
 
 	public ItemSlimyBoots() {
-		super(TutorialMod.armorSlimeMaterial, TutorialMod.slimyBootsID,
+		super(MCMod.armorSlimeMaterial, MCMod.slimyBootsID,
 				ARMOR_BOOTS_ID);
 		this.setMaxDamage(64);
 		this.setUnlocalizedName(Names.SlimyBoots);
 		this.setTextureName(References.MOD_ID + ":" + Names.SlimyBoots);
-		this.setCreativeTab(TutorialMod.modTab);
+		this.setCreativeTab(MCMod.modTab);
 	}
 
 	@Override
