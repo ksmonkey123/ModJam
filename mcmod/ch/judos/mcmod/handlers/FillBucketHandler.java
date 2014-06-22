@@ -49,7 +49,7 @@ public class FillBucketHandler {
 	 * @param event
 	 * @param player
 	 */
-	private void dontAllowReplacingFluids(FillBucketEvent event,
+	private static void dontAllowReplacingFluids(FillBucketEvent event,
 			EntityPlayer player) {
 		MovingObjectPosition target = event.target;
 		Vec3 vec = event.target.hitVec;
@@ -72,7 +72,7 @@ public class FillBucketHandler {
 
 		Block block = world.getBlock(pos.blockX, pos.blockY, pos.blockZ);
 		// System.out.println("target: " + block);
-		Item bucket = buckets.get(block);
+		Item bucket = this.buckets.get(block);
 		if (bucket != null
 				&& world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0) {
 			world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);

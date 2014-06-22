@@ -16,14 +16,13 @@ public class FuelHandler implements IFuelHandler {
 	}
 	
 	public void addFuel(Item i,int lastForXTicks) {
-		this.map.put(i, lastForXTicks);
+		this.map.put(i, Integer.valueOf(lastForXTicks));
 	}
 
 	@Override
 	public int getBurnTime(ItemStack fuel) {
 		Integer x = this.map.get(fuel.getItem());
-		if (x==null) return 0;
-		return x;
+		return x == null ? 0 : x.intValue();
 	}
 
 }

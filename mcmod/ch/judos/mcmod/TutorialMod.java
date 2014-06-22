@@ -84,6 +84,9 @@ public class TutorialMod {
 	public static ArmorMaterial armorSlimeMaterial;
 	public static Item itemSlimyBoots;
 
+	/**
+	 * @param e
+	 */
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
 		System.out.println("PreInit MC Mod");
@@ -107,7 +110,8 @@ public class TutorialMod {
 
 	}
 
-	private void addArmor() {
+	@SuppressWarnings("boxing")
+	private static void addArmor() {
 		armorSlimeMaterial = EnumHelper.addArmorMaterial("slimy", 5, new int[] {
 				0, 0, 0, 2 }, 10);
 		itemSlimyBoots = new ItemSlimyBoots();
@@ -119,7 +123,7 @@ public class TutorialMod {
 				Items.leather_boots, Items.slime_ball, Items.slime_ball);
 	}
 
-	private void addPotion() {
+	private static void addPotion() {
 		// adds the effect of a custom potion to any living entity who currently
 		// has the effect on it
 		MinecraftForge.EVENT_BUS.register(new OnEntityLivingHook());
@@ -128,7 +132,8 @@ public class TutorialMod {
 		GameRegistry.registerItem(itemPotionTest, Names.PotionTest);
 	}
 
-	private void addDirtShovel() {
+	@SuppressWarnings("boxing")
+	private static void addDirtShovel() {
 		itemDirtShovel = new ItemDirtShovel();
 		GameRegistry.registerItem(itemDirtShovel, Names.DirtShovel);
 		GameRegistry.addShapedRecipe(new ItemStack(itemDirtShovel, 2), "XX ",
@@ -137,7 +142,7 @@ public class TutorialMod {
 				" IX", "  I", 'X', Blocks.planks, 'I', Items.stick);
 	}
 
-	private void addCarvedDirtCustomRenderingBlock() {
+	private static void addCarvedDirtCustomRenderingBlock() {
 		blockCarvedDirt = new BlockCarvedDirt();
 		teCarvedDirt = TECarvedDirt.class;
 
@@ -146,7 +151,7 @@ public class TutorialMod {
 				+ Names.CarvedDirt);
 	}
 
-	private void addSmelting() {
+	private static void addSmelting() {
 		GameRegistry.addSmelting(oreKryptonit, new ItemStack(itemKryptonit, 1),
 				5);
 
@@ -156,7 +161,7 @@ public class TutorialMod {
 
 	}
 
-	private void addKryptonitOre() {
+	private static void addKryptonitOre() {
 		oreKryptonit = new BlockKryptoniteOre();
 		GameRegistry.registerWorldGenerator(new WorldGenerator(), 0);
 		GameRegistry.registerBlock(oreKryptonit, Names.KryptonitBlock);
@@ -165,7 +170,7 @@ public class TutorialMod {
 		GameRegistry.registerItem(itemKryptonit, Names.KryptonitItem);
 	}
 
-	private void createTarFluidAndBucket() {
+	private static void createTarFluidAndBucket() {
 		tarFluid = new FluidTar();
 		FluidRegistry.registerFluid(tarFluid);
 
@@ -185,7 +190,7 @@ public class TutorialMod {
 		MinecraftForge.EVENT_BUS.register(FillBucketHandler.INSTANCE);
 	}
 
-	private void createCreativeTab() {
+	private static void createCreativeTab() {
 		modTab = new CreativeTabs("MCMod") {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -207,12 +212,13 @@ public class TutorialMod {
 		};
 	}
 
-	private void addObsidianStick() {
+	private static void addObsidianStick() {
 		itemObsidianStick = new ItemObsidianStick();
 		GameRegistry.registerItem(itemObsidianStick, Names.OStick);
 	}
 
-	private void addBoneRecipies() {
+	@SuppressWarnings("boxing")
+	private static void addBoneRecipies() {
 		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1),
 				Items.porkchop);
 		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1),

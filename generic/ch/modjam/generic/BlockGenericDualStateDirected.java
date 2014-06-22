@@ -42,7 +42,7 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 	@Override
 	public final void onBlockAdded(World w, int x, int y, int z) {
 		super.onBlockAdded(w, x, y, z);
-		this.orient(w, x, y, z);
+		orient(w, x, y, z);
 		this.onBlockAddedToWorld(w, x, y, z);
 	}
 
@@ -56,9 +56,10 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 	 * @param z
 	 */
 	public void onBlockAddedToWorld(World w, int x, int y, int z) {
+		// Default: no actions required
 	}
 
-	private void orient(World w, int x, int y, int z) {
+	private static void orient(World w, int x, int y, int z) {
 		if (!w.isRemote) {
 			Block block0 = w.getBlock(x, y, z - 1);
 			Block block1 = w.getBlock(x, y, z + 1);
@@ -91,14 +92,14 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 	@SideOnly(Side.CLIENT)
 	public final IIcon getIcon(int side, int meta) {
 		int flag = meta >= 10 ? 1 : 0;
-		meta %= 10;
-		if (meta == 0)
-			meta = 3;
+		int metaRoot = meta % 10;
+		if (metaRoot == 0)
+			metaRoot = 3;
 
-		return this.icons[this.getFaceOfSide(side, meta).ordinal()][flag];
+		return this.icons[getFaceOfSide(side, metaRoot).ordinal()][flag];
 	}
 
-	private EnumFace getFaceOfSide(int side, int meta) {
+	private static EnumFace getFaceOfSide(int side, int meta) {
 		if (side == 0)
 			return EnumFace.BOTTOM;
 		if (side == 1)
@@ -115,8 +116,8 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public final void registerBlockIcons(IIconRegister iconRegister) {
-		this.iconRegister = iconRegister;
+	public final void registerBlockIcons(IIconRegister iconReg) {
+		this.iconRegister = iconReg;
 		IIcon icon = this.iconRegister.registerIcon(this.getDefaultIcon());
 		for (int i = 0; i < this.icons.length; i++) {
 			for (int j = 0; j < this.icons[i].length; j++) {
@@ -136,7 +137,7 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 	 * Returns the identifier for the string to use on all sides with no other
 	 * icon defined.
 	 * 
-	 * @return
+	 * @return the default icon
 	 */
 	public abstract String getDefaultIcon();
 
@@ -215,10 +216,19 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 		this.onBlockPlacedIntoWorldBy(w, x, y, z, entityLivingBase, p_149689_6_);
 	}
 
-	@SuppressWarnings("javadoc")
+	/**
+	 * Override this method for custom action on block placement
+	 * 
+	 * @param w
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param entityLivingBase
+	 * @param itemStack
+	 */
 	public void onBlockPlacedIntoWorldBy(World w, int x, int y, int z,
-			EntityLivingBase entityLivingBase, ItemStack p_149689_6_) {
-
+			EntityLivingBase entityLivingBase, ItemStack itemStack) {
+		// Default: no actions required
 	}
 
 	/**
@@ -261,7 +271,7 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 	/**
 	 * indicates the existence of a GUI
 	 * 
-	 * @return
+	 * @return true if a GUI exists, false otherwise
 	 */
 	public abstract boolean hasGUI();
 

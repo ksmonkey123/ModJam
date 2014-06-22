@@ -43,11 +43,11 @@ public abstract class AbstractPotion extends Potion {
 					modfield.setAccessible(true);
 					modfield.setInt(f, f.getModifiers() & ~Modifier.FINAL);
 
-					Potion[] potionTypes = (Potion[]) f.get(null);
+					Potion[] potionTypeArr = (Potion[]) f.get(null);
 					// extend the size of the array
 					final Potion[] newPotionTypes = new Potion[256];
-					System.arraycopy(potionTypes, 0, newPotionTypes, 0,
-							potionTypes.length);
+					System.arraycopy(potionTypeArr, 0, newPotionTypes, 0,
+							potionTypeArr.length);
 					f.set(null, newPotionTypes);
 				}
 			} catch (Exception e) {

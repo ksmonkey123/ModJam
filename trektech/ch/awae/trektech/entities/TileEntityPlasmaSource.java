@@ -12,7 +12,11 @@ import ch.awae.trektech.blocks.BlockPlasmaSource;
 import ch.modjam.generic.BlockGenericDualStateDirected;
 import ch.modjam.generic.EnumFace;
 
-@SuppressWarnings("javadoc")
+/**
+ * Tile Entity for the plasma source
+ * 
+ * @author Andreas Waelchli <andreas.waelchli@me.com>
+ */
 public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 		IInventory {
 
@@ -40,10 +44,10 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 		if (slot != 0 || amount <= 0)
 			return null;
 		int realAmount = Math.min(this.stack.stackSize, amount);
-		ItemStack stack = this.stack.copy();
+		ItemStack itemStack = this.stack.copy();
 		this.stack.stackSize -= realAmount;
-		stack.stackSize = realAmount;
-		return stack;
+		itemStack.stackSize = realAmount;
+		return itemStack;
 	}
 
 	@Override
@@ -74,10 +78,12 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 
 	@Override
 	public void openInventory() {
+		// not required
 	}
 
 	@Override
 	public void closeInventory() {
+		// not required
 	}
 
 	@Override
@@ -116,8 +122,8 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 	}
 
 	private void updateBlock(boolean newState) {
-		BlockPlasmaSource.setActive(newState, this.worldObj,
-				this.xCoord, this.yCoord, this.zCoord);
+		BlockPlasmaSource.setActive(newState, this.worldObj, this.xCoord,
+				this.yCoord, this.zCoord);
 	}
 
 	private int getFuelValue() {
@@ -153,15 +159,35 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 		return "container.plasmaSource";
 	}
 
+	/**
+	 * @return true if the source is burning, false otherwise
+	 */
 	public boolean isBurning() {
 		return this.currentItemRemainingTime > 0;
 	}
 
+	/**
+	 * determines the current burn time scaled so that the maximum burn time
+	 * corresponds to <tt>h</tt>.
+	 * 
+	 * @param h
+	 *            the max height
+	 * @return the scaled burn time
+	 */
 	public int getBurnTimeRemainingScaled(int h) {
-		return currentItemBurnTime == 0 ? 0
-				: ((h * currentItemRemainingTime) / currentItemBurnTime);
+		return this.currentItemBurnTime == 0 ? 0
+				: ((h * this.currentItemRemainingTime) / this.currentItemBurnTime);
 	}
 
+	/**
+	 * determines the current plasma pressure level.
+	 * 
+	 * @param pixelPerBar
+	 *            the number of pixels a bar should correspond to
+	 * @param maxPixel
+	 *            the maximum amount of pixels
+	 * @return the scaled plasma pressure
+	 */
 	public int getPlasmaLevelScaled(int pixelPerBar, int maxPixel) {
 		int pixels = this.currentPlasma * pixelPerBar / PLASMA_PER_BAR;
 		if (pixels > maxPixel)

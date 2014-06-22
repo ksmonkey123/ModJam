@@ -14,7 +14,7 @@ import ch.awae.trektech.blocks.BlockPlasmaSource;
 import ch.awae.trektech.entities.TileEntityPlasmaPipe;
 import ch.awae.trektech.entities.TileEntityPlasmaPipeCombined;
 import ch.awae.trektech.entities.TileEntityPlasmaSource;
-import ch.awae.trektech.items.DuraniumIngot;
+import ch.awae.trektech.items.ItemDuraniumIngot;
 import ch.awae.trektech.items.ItemDilithiumCrystal;
 import ch.awae.trektech.items.ItemDilithiumRaw;
 import ch.awae.trektech.items.ItemPlasmaContainmentRing;
@@ -56,7 +56,7 @@ public class TrekTech {
 	public static TrekTech instance;
 
 	public static Item itemStarFleetSymbol = new ItemStarFleetSymbol();
-	public static Item itemDuraniumIngot = new DuraniumIngot();
+	public static Item itemDuraniumIngot = new ItemDuraniumIngot();
 	public static Item itemDilithiumRaw = new ItemDilithiumRaw();
 	public static Item itemDilithiumCrystal = new ItemDilithiumCrystal();
 	public static Item itemPlasmaContainmentRing = new ItemPlasmaContainmentRing();
@@ -69,6 +69,9 @@ public class TrekTech {
 	@SidedProxy(clientSide = "ch.awae.trektech.ClientProxy", serverSide = "ch.awae.trektech.CommonProxy")
 	public static CommonProxy proxy;
 
+	/**
+	 * @param event
+	 */
 	@EventHandler
 	public void preInit(FMLInitializationEvent event) {
 		// ITEMS
@@ -84,7 +87,7 @@ public class TrekTech {
 		EnumPlasmaTypes plasmaTypes[] = EnumPlasmaTypes.values();
 		for (int i = 0; i <= plasmaTypes.length; i++) {
 			if (i == plasmaTypes.length) {
-
+				// FIXME: possible index error?
 			} else {
 				pipes[i][0] = new BlockPlasmaPipe("pipe" + i, plasmaTypes[i],
 						i == 0 ? 6 : Math.min(Math.max(4, i + 2), 8));
@@ -113,6 +116,7 @@ public class TrekTech {
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GUIHandler());
 	}
 
+	@SuppressWarnings("boxing")
 	private static void registerRecipes() {
 		GameRegistry.addSmelting(itemDilithiumRaw, new ItemStack(
 				itemDilithiumCrystal, 1), 0.5F);
@@ -152,6 +156,7 @@ public class TrekTech {
 				new ItemStack(pipes[2][0]));
 	}
 
+	@SuppressWarnings("boxing")
 	private static void addEncasingRecipe(int pipeID) {
 		GameRegistry.addShapedRecipe(new ItemStack(pipes[pipeID][1], 4), " P ",
 				"PDP", " P ", 'D', new ItemStack(blockDuraniumWall), 'P',

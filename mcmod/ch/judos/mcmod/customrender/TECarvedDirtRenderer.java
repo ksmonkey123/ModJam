@@ -153,17 +153,17 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 		HashSet<ForgeDirection> set = new HashSet<ForgeDirection>();
 		for (ForgeDirection d : dir)
 			set.add(d);
-		connectionToRotation.put(set, rotation);
-		connectionsToTextureTile.put(set, tile);
+		connectionToRotation.put(set, Integer.valueOf(rotation));
+		connectionsToTextureTile.put(set, Integer.valueOf(tile));
 	}
 
 	private static void renderTop(HashSet<ForgeDirection> con2, boolean[][] arr) {
 		int tileNr = 0;
 		if (connectionsToTextureTile.containsKey(con2))
-			tileNr = connectionsToTextureTile.get(con2);
+			tileNr = connectionsToTextureTile.get(con2).intValue();
 		int rotation = 0;
 		if (connectionToRotation.containsKey(con2))
-			rotation = connectionToRotation.get(con2);
+			rotation = connectionToRotation.get(con2).intValue();
 
 		double t = 1. / 3;
 		for (int x = 0; x < 3; x++) {

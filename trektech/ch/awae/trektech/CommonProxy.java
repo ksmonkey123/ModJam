@@ -10,6 +10,7 @@ public class CommonProxy {
 	 * register renderers
 	 */
 	public void registerRenderers() {
+		// Default: not required, since client-side only
 	}
 
 }

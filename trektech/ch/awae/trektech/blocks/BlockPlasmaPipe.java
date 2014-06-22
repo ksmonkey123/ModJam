@@ -43,7 +43,7 @@ public class BlockPlasmaPipe extends BlockContainer {
 		this.radius = radius;
 		this.plasma = plasma;
 		this.useRenderer = true;
-		setBlockTextureName(TrekTech.MODID + ":" + texture);
+		setBlockTextureName(TrekTech.MODID + ":" + this.texture);
 		setLightOpacity(0);
 	}
 

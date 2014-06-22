@@ -7,21 +7,31 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-@SuppressWarnings("javadoc")
+/**
+ * Plasma Source Container
+ * 
+ * @author Andreas Waelchli <andreas.waelchli@me.com>
+ */
 public class ContainerPlasmaSource extends Container {
 
 	TileEntityPlasmaSource tileEntity;
 
+	/**
+	 *  Basic constructor
+	 * 
+	 * @param inventoryPlayer
+	 * @param te
+	 */
 	public ContainerPlasmaSource(InventoryPlayer inventoryPlayer,
 			TileEntityPlasmaSource te) {
-		tileEntity = te;
-		addSlotToContainer(new Slot(tileEntity, 0, 80, 42));
+		this.tileEntity = te;
+		addSlotToContainer(new Slot(this.tileEntity, 0, 80, 42));
 		bindPlayerInventory(inventoryPlayer);
 	}
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return tileEntity.isUseableByPlayer(player);
+		return this.tileEntity.isUseableByPlayer(player);
 	}
 
 	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
@@ -39,7 +49,7 @@ public class ContainerPlasmaSource extends Container {
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
 		ItemStack stack = null;
-		Slot slotObject = (Slot) inventorySlots.get(slot);
+		Slot slotObject = (Slot) this.inventorySlots.get(slot);
 
 		// null checks and checks if the item can be stacked (maxStackSize > 1)
 		if (slotObject != null && slotObject.getHasStack()) {

@@ -1,9 +1,14 @@
 package ch.judos.mcmod.lib;
 
-@SuppressWarnings("javadoc")
+/**
+ * @author j
+ */
 public class CommonProxy {
 
+	/**
+	 * Register Renderers
+	 */
 	public void registerRenderInformation() {
-
+		// not required - rendering is client side
 	}
 }
