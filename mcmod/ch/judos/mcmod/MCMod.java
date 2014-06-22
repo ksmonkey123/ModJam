@@ -20,6 +20,8 @@ import ch.judos.mcmod.customrender.BlockCarvedDirt;
 import ch.judos.mcmod.customrender.TECarvedDirt;
 import ch.judos.mcmod.gui.Box;
 import ch.judos.mcmod.gui.BoxTE;
+import ch.judos.mcmod.gui.CustomBox;
+import ch.judos.mcmod.gui.CustomBoxTE;
 import ch.judos.mcmod.gui.GuiHandler;
 import ch.judos.mcmod.handlers.FillBucketHandler;
 import ch.judos.mcmod.handlers.FuelHandler;
@@ -94,6 +96,7 @@ public class MCMod {
 
 	// Custom Gui
 	public static Box box; // the block
+	public static CustomBox customBox;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
@@ -116,6 +119,10 @@ public class MCMod {
 		box = new Box();
 		GameRegistry.registerBlock(box, Names.Box);
 		GameRegistry.registerTileEntity(BoxTE.class, "tile_" + Names.Box);
+
+		customBox = new CustomBox();
+		GameRegistry.registerBlock(customBox, Names.CustomBox);
+		GameRegistry.registerTileEntity(CustomBoxTE.class, "tile_" + Names.CustomBox);
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 

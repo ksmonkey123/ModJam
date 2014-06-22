@@ -9,5 +9,6 @@ public class References {
 	public static final String Client = "ch.judos.mcmod.lib.ClientProxy";
 
 	public static final int GUI_BOX = 0;
+	public static final int GUI_CUSTOM_BOX = 1;
 
 }

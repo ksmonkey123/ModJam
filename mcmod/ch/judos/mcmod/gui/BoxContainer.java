@@ -3,15 +3,20 @@ package ch.judos.mcmod.gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 public class BoxContainer extends Container {
 
-	private BoxTE te;
+	private IInventory te;
+
+	protected BoxContainer(BoxTE te) {
+		this.te = te;
+	}
 
 	public BoxContainer(InventoryPlayer inventory, BoxTE te) {
-		this.te = te;
+		this(te);
 		addSlotToContainer(new Slot(te, 0, 80, 42));
 		bindPlayerInventory(inventory);
 	}
@@ -43,15 +48,16 @@ public class BoxContainer extends Container {
 			stack = stackInSlot.copy();
 
 			// merges the item into player inventory since its in the tileEntity
-			if (slot < 1) {
-				if (!this.mergeItemStack(stackInSlot, 29, 37, false))
-					if (!this.mergeItemStack(stackInSlot, 1, 28, false))
+			int s = this.te.getSizeInventory();
+			if (slot < s) {
+				if (!this.mergeItemStack(stackInSlot, s + 27, s + 27 + 9, false))
+					if (!this.mergeItemStack(stackInSlot, s, s + 27, false))
 						return null;
 
 			}
 			// places it into the tileEntity is possible since its in the player
 			// inventory
-			else if (!this.mergeItemStack(stackInSlot, 0, 1, false)) {
+			else if (!this.mergeItemStack(stackInSlot, 0, s, false)) {
 				return null;
 			}
 

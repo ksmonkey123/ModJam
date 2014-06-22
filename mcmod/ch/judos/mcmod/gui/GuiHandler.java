@@ -15,6 +15,8 @@ public class GuiHandler implements IGuiHandler {
 		switch (guiID) {
 			case References.GUI_BOX:
 				return new BoxContainer(player.inventory, (BoxTE) te);
+			case References.GUI_CUSTOM_BOX:
+				return new CustomBoxContainer(player.inventory, (CustomBoxTE) te);
 		}
 		return null;
 	}
@@ -26,6 +28,8 @@ public class GuiHandler implements IGuiHandler {
 		switch (guiID) {
 			case References.GUI_BOX:
 				return new BoxGuiContainer(player.inventory, (BoxTE) te);
+			case References.GUI_CUSTOM_BOX:
+				return new CustomBoxGuiContainer(player.inventory, (CustomBoxTE) te);
 		}
 		return null;
 	}
