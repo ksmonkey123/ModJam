@@ -175,14 +175,13 @@ public class CustomRenderer {
 			cz = new double[] { z, z, z, z };
 			break;
 		}
-		case BOTTOM: {
+		case BOTTOM:
+		default: {
 			cx = new double[] { xp, xp, x, x };
 			cy = new double[] { y, y, y, y };
 			cz = new double[] { z, zp, zp, z };
 			break;
 		}
-		default:
-			break;
 		}
 
 		for (int i = 0; i < 4; i++)
