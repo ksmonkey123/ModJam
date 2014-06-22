@@ -33,8 +33,40 @@ public class BoxContainer extends Container {
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2) {
-		return null;
+	public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
+		ItemStack stack = null;
+		Slot slotObject = (Slot) inventorySlots.get(slot);
+
+		// null checks and checks if the item can be stacked (maxStackSize > 1)
+		if (slotObject != null && slotObject.getHasStack()) {
+			ItemStack stackInSlot = slotObject.getStack();
+			stack = stackInSlot.copy();
+
+			// merges the item into player inventory since its in the tileEntity
+			if (slot < 1) {
+				if (!this.mergeItemStack(stackInSlot, 29, 37, false))
+					if (!this.mergeItemStack(stackInSlot, 1, 28, false))
+						return null;
+
+			}
+			// places it into the tileEntity is possible since its in the player
+			// inventory
+			else if (!this.mergeItemStack(stackInSlot, 0, 1, false)) {
+				return null;
+			}
+
+			if (stackInSlot.stackSize == 0) {
+				slotObject.putStack(null);
+			} else {
+				slotObject.onSlotChanged();
+			}
+
+			if (stackInSlot.stackSize == stack.stackSize) {
+				return null;
+			}
+			slotObject.onPickupFromSlot(player, stackInSlot);
+		}
+		return stack;
 	}
 
 }
