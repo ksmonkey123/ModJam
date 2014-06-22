@@ -1,24 +1,11 @@
 package ch.phyranja.EssenceCrops;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor.ArmorMaterial;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import ch.phyranja.EssenceCrops.*;
 import ch.phyranja.EssenceCrops.items.NeutralEssenceSeed;
-import ch.phyranja.EssenceCrops.lib.*;
-import ch.phyranja.EssenceCrops.world.*;
+import ch.phyranja.EssenceCrops.lib.CommonProxy;
+import ch.phyranja.EssenceCrops.lib.Names;
+import ch.phyranja.EssenceCrops.lib.References;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -46,6 +33,9 @@ public class EssenceCrops {
 	@Mod.Instance("essencecrops")
 	public static EssenceCrops instance;
 		
+	/**
+	 * @param e  
+	 */
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
 		System.out.println("PreInit EssenceCrops");
@@ -56,18 +46,24 @@ public class EssenceCrops {
 		proxy.registerRenderInformation();
 	}
 	
-	private void addSeeds() {
+	private static void addSeeds() {
 		neutralSeed = new NeutralEssenceSeed();
 		GameRegistry.registerItem(neutralSeed, Names.NeutralES);
 		
 	}
 
+	/**
+	 * @param e  
+	 */
 	@EventHandler
 	public void init(FMLInitializationEvent e) {
 		System.out.println("Init EssenceCrops");
 		
 	}
 
+	/**
+	 * @param e  
+	 */
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent e) {
 		System.out.println("PostInit EssenceCrops");
@@ -75,7 +71,7 @@ public class EssenceCrops {
 	}
 	
 	
-	private void createCreativeTab() {
+	private static void createCreativeTab() {
 		modTab = new CreativeTabs("EssenceCrops") {
 			@Override
 			@SideOnly(Side.CLIENT)

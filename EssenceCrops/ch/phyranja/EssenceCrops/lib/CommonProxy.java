@@ -4,6 +4,6 @@ package ch.phyranja.EssenceCrops.lib;
 public class CommonProxy {
 
 	public void registerRenderInformation() {
-
+		// not used server-side
 	}
 }
