@@ -49,16 +49,18 @@ public abstract class ATileEntityPlasmaSystem extends GenericTileEntity
 			float othPpB = other.getParticlesPerBar(plasma, opposite);
 			int dCount = (int) ((ownPpB * othCount - othPpB * ownCount) / (ownPpB + othPpB));
 			// crop transfer rate
+			// TODO: invert calculations?
 			if (dCount > 0)
 				return;
 			if (dCount < -Properties.PLASMA_TRANSFER_SPEED)
 				dCount = -Properties.PLASMA_TRANSFER_SPEED;
-			if (dCount < 0 && dCount < -ownCount)
+			if (dCount < -ownCount)
 				dCount = -ownCount;
+			if (dCount < -other.getMaxAcceptance(plasma, opposite))
+				dCount = -other.getMaxAcceptance(plasma, opposite);
 			// apply particle flow
-			if (dCount < 0)
-				this.applyParticleFlow(plasma, opposite,
-						-other.applyParticleFlow(plasma, direction, -dCount));
+			this.applyParticleFlow(plasma, direction,
+					-other.applyParticleFlow(plasma, opposite, -dCount));
 		}
 	}
 

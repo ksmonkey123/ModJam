@@ -174,4 +174,9 @@ public class TileEntityPlasmaPipeCombined extends ATileEntityPlasmaSystem
 		}
 		return false;
 	}
+
+	@Override
+	public int getMaxAcceptance(EnumPlasmaTypes plasma, ForgeDirection direction) {
+		return Integer.MAX_VALUE;
+	}
 }
