@@ -9,7 +9,6 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
-import ch.awae.trektech.blocks.BlockPlasmaSource;
 import ch.modjam.generic.BlockGenericDualStateDirected;
 import ch.modjam.generic.EnumFace;
 
@@ -109,12 +108,12 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 	private void refuel() {
 		int value = this.getFuelValue();
 		if (value <= 0 || this.stack.stackSize <= 0 || this.stack == null) {
-			if (BlockPlasmaSource.isActive(this.getBlockMetadata()))
+			if (BlockGenericDualStateDirected.isActive(this.getBlockMetadata()))
 				this.updateBlock(false);
 		} else {
 			this.currentItemBurnTime = this.currentItemRemainingTime = value;
 			this.stack.stackSize--;
-			if (!BlockPlasmaSource.isActive(this.getBlockMetadata()))
+			if (!BlockGenericDualStateDirected.isActive(this.getBlockMetadata()))
 				this.updateBlock(true);
 		}
 		if (this.stack != null && this.stack.stackSize <= 0) {
@@ -123,7 +122,7 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 	}
 
 	private void updateBlock(boolean newState) {
-		BlockPlasmaSource.setActive(newState, this.worldObj, this.xCoord,
+		BlockGenericDualStateDirected.setActive(newState, this.worldObj, this.xCoord,
 				this.yCoord, this.zCoord);
 	}
 
