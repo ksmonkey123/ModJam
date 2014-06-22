@@ -10,10 +10,16 @@ import net.minecraft.util.StatCollector;
 import ch.judos.mcmod.lib.Names;
 import ch.modjam.generic.GenericTileEntity;
 
+/**
+ * @author j
+ */
 public class BoxTE extends GenericTileEntity implements IInventory {
 
 	protected ItemStack[] stack;
 
+	/**
+	 * 
+	 */
 	public BoxTE() {
 		this.stack = new ItemStack[1];
 	}
@@ -33,10 +39,10 @@ public class BoxTE extends GenericTileEntity implements IInventory {
 		if (slot < 0 || slot > this.stack.length - 1 || amount <= 0)
 			return null;
 		int realAmount = Math.min(this.stack[slot].stackSize, amount);
-		ItemStack stack = this.stack[slot].copy();
+		ItemStack itemStack = this.stack[slot].copy();
 		this.stack[slot].stackSize -= realAmount;
-		stack.stackSize = realAmount;
-		return stack;
+		itemStack.stackSize = realAmount;
+		return itemStack;
 	}
 
 	@Override
@@ -72,10 +78,12 @@ public class BoxTE extends GenericTileEntity implements IInventory {
 
 	@Override
 	public void openInventory() {
+		// not required
 	}
 
 	@Override
 	public void closeInventory() {
+		// not required
 	}
 
 	@Override
@@ -85,6 +93,7 @@ public class BoxTE extends GenericTileEntity implements IInventory {
 
 	@Override
 	public void tick() {
+		// not required
 	}
 
 	@Override

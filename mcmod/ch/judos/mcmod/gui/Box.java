@@ -14,8 +14,14 @@ import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
 
+/**
+ * @author j
+ */
 public class Box extends BlockContainer {
 
+	/**
+	 * 
+	 */
 	public Box() {
 		super(Material.ground);
 
@@ -45,6 +51,7 @@ public class Box extends BlockContainer {
 		return References.GUI_BOX;
 	}
 
+	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
 		IInventory te = (IInventory) world.getTileEntity(x, y, z);
 		if (te != null) {

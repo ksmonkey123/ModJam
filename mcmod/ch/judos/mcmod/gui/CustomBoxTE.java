@@ -6,23 +6,36 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import ch.judos.mcmod.lib.Names;
 
+/**
+ * @author j
+ */
 public class CustomBoxTE extends BoxTE {
 
+	/**
+	 * 
+	 */
 	public CustomBoxTE() {
 		this.stack = new ItemStack[2];
 	}
 
 	@Override
 	public String getInventoryName() {
-		return StatCollector.translateToLocal("tile." + Names.CustomBox + ".name");
+		return StatCollector.translateToLocal("tile." + Names.CustomBox
+				+ ".name");
 	}
 
+	/**
+	 * 
+	 */
 	public void increaseSize() {
 		if (this.stack.length < 5) {
 			this.stack = Arrays.copyOf(this.stack, this.stack.length + 1);
 		}
 	}
 
+	/**
+	 * 
+	 */
 	public void decreaseSize() {
 		if (this.stack.length > 1) {
 			this.stack = Arrays.copyOf(this.stack, this.stack.length - 1);

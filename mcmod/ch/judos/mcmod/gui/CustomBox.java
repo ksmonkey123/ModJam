@@ -5,8 +5,14 @@ import net.minecraft.world.World;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
 
+/**
+ * @author j
+ */
 public class CustomBox extends Box {
 
+	/**
+	 * 
+	 */
 	public CustomBox() {
 		super();
 		this.setBlockName(Names.CustomBox);

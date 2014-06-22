@@ -7,6 +7,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
+/**
+ * @author j
+ */
 public class BoxContainer extends Container {
 
 	private IInventory te;
@@ -15,6 +18,11 @@ public class BoxContainer extends Container {
 		this.te = te;
 	}
 
+	/**
+	 * 
+	 * @param inventory
+	 * @param te
+	 */
 	public BoxContainer(InventoryPlayer inventory, BoxTE te) {
 		this(te);
 		addSlotToContainer(new Slot(te, 0, 80, 42));
@@ -40,7 +48,7 @@ public class BoxContainer extends Container {
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
 		ItemStack stack = null;
-		Slot slotObject = (Slot) inventorySlots.get(slot);
+		Slot slotObject = (Slot) this.inventorySlots.get(slot);
 
 		// null checks and checks if the item can be stacked (maxStackSize > 1)
 		if (slotObject != null && slotObject.getHasStack()) {

@@ -18,8 +18,8 @@ import org.lwjgl.opengl.GL11;
 public class CustomRenderer {
 
 	private String tex;
-	private int tileSize;
-	private double uvPerTile;
+	private static int tileSize = 4;
+	private static double uvPerTile = 1. / tileSize;
 	private ForgeDirection direction;
 
 	/**
@@ -48,8 +48,6 @@ public class CustomRenderer {
 	 */
 	public CustomRenderer(String textureNameAndPath, ForgeDirection dir) {
 		this.tex = textureNameAndPath;
-		this.tileSize = 4;
-		this.uvPerTile = 1. / this.tileSize;
 		this.direction = dir;
 	}
 
@@ -180,7 +178,8 @@ public class CustomRenderer {
 				cz = new double[] { z, z, z, z };
 				break;
 			}
-			case BOTTOM: {
+			case BOTTOM: // fixes potential nullpointer warning
+			default: {
 				cx = new double[] { xp, xp, x, x };
 				cy = new double[] { y, y, y, y };
 				cz = new double[] { z, zp, zp, z };
@@ -215,17 +214,15 @@ public class CustomRenderer {
 				GL11.glRotated(-90, 1, 0, 0);
 				break;
 			}
-			case NORTH: {
-			}
-			case UNKNOWN: {
-			}
-			default: {
-			}
+			case NORTH:
+			case UNKNOWN:
+			default:
+				break;
 		}
 
 	}
 
-	private int[] arr(int... values) {
+	private static int[] arr(int... values) {
 		return values;
 	}
 
@@ -244,7 +241,7 @@ public class CustomRenderer {
 	 * @param c
 	 */
 	@SuppressWarnings("unused")
-	private void out(double... c) {
+	private static void out(double... c) {
 		String[] name = { "x", "xp", "y", "yp", "z", "zp", "us", "up", "vs", "vp" };
 		StringBuffer s = new StringBuffer();
 		for (int i = 0; i < c.length; i++)
@@ -252,7 +249,7 @@ public class CustomRenderer {
 		System.out.println(s.substring(0, s.length() - 2));
 	}
 
-	private double[] sizeToDeltaCoords(Side visibleFrom, double width,
+	private static double[] sizeToDeltaCoords(Side visibleFrom, double width,
 			double height) {
 		int sideI = visibleFrom.getIndex();
 		double[] delta = new double[3];
@@ -290,11 +287,11 @@ public class CustomRenderer {
 		}
 
 		public int getTileIndex() {
-			return tileIndex;
+			return this.tileIndex;
 		}
 
 		public int getIndex() {
-			return index;
+			return this.index;
 		}
 	}
 
