@@ -1,0 +1,25 @@
+{
+    "modListVersion": 2,
+    "modList": [
+        {
+            "modid": "essencecrops",
+            "name": "EssenceCrops",
+            "description": "Get resources through plants",
+            "mcversion": "${mcversion}",
+            "version": "0.1",
+            "authorList": [
+                "Phyranja"
+            ],
+            "credits": "",
+            "dependants": [ ],
+            "dependencies": [ "Forge@[${minforgeversion},)" ],
+            "parent": "",
+            "requiredMods": [ "Forge@[${minforgeversion},)" ],
+            "logoFile": "",
+            "screenshots": [ ],
+            "updateUrl": "",
+            "url": "",
+            "useDependencyInformation": true
+        }
+    ]
+}
