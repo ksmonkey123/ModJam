@@ -15,7 +15,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import ch.judos.mcmod.TutorialMod;
 import ch.phyranja.EssenceCrops.*;
 import ch.phyranja.EssenceCrops.items.NeutralEssenceSeed;
 import ch.phyranja.EssenceCrops.lib.*;
