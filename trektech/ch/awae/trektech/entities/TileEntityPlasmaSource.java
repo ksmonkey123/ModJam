@@ -113,7 +113,8 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 		} else {
 			this.currentItemBurnTime = this.currentItemRemainingTime = value;
 			this.stack.stackSize--;
-			if (!BlockGenericDualStateDirected.isActive(this.getBlockMetadata()))
+			if (!BlockGenericDualStateDirected
+					.isActive(this.getBlockMetadata()))
 				this.updateBlock(true);
 		}
 		if (this.stack != null && this.stack.stackSize <= 0) {
@@ -122,8 +123,8 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 	}
 
 	private void updateBlock(boolean newState) {
-		BlockGenericDualStateDirected.setActive(newState, this.worldObj, this.xCoord,
-				this.yCoord, this.zCoord);
+		BlockGenericDualStateDirected.setActive(newState, this.worldObj,
+				this.xCoord, this.yCoord, this.zCoord);
 	}
 
 	private int getFuelValue() {
@@ -208,11 +209,13 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 	}
 
 	@Override
-	public void applyParticleFlow(EnumPlasmaTypes plasma,
+	public int applyParticleFlow(EnumPlasmaTypes plasma,
 			ForgeDirection direction, int particleCount) {
-		if (connectsToPlasmaConnection(plasma, direction))
+		if (connectsToPlasmaConnection(plasma, direction)) {
 			this.currentPlasma += particleCount;
-
+			return particleCount;
+		}
+		return 0;
 	}
 
 	@Override

@@ -41,8 +41,8 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 	}
 
 	/**
-	 * Generic constructor for TE reconstruction from Save-File
-	 * Only use this constructor when data is restored from NBT afterwards!
+	 * Generic constructor for TE reconstruction from Save-File Only use this
+	 * constructor when data is restored from NBT afterwards!
 	 */
 	public TileEntityPlasmaPipe() {
 		this.plasmaType = EnumPlasmaTypes.NEUTRAL;
@@ -85,10 +85,13 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 	}
 
 	@Override
-	public void applyParticleFlow(EnumPlasmaTypes plasma,
+	public int applyParticleFlow(EnumPlasmaTypes plasma,
 			ForgeDirection direction, int particleCount) {
-		if (plasma == this.plasmaType)
+		if (plasma == this.plasmaType) {
 			this.currentPlasma += particleCount;
+			return particleCount;
+		}
+		return 0;
 	}
 
 	@Override
@@ -135,8 +138,8 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 			player.addChatMessage(new ChatComponentText("Plasma Type: "
 					+ this.plasmaType.toString()));
 			float pressure = this.currentPlasma / PARTICLES_PER_BAR;
-			player.addChatMessage(new ChatComponentText("Current Plasma Pressure: "
-					+ pressure + " bar"));
+			player.addChatMessage(new ChatComponentText(
+					"Current Plasma Pressure: " + pressure + " bar"));
 			return true;
 		}
 		return false;

@@ -44,8 +44,9 @@ public interface IPlasmaConnection {
 	 *            the side to apply the change to
 	 * @param particleCount
 	 *            the amount to change by
+	 * @return the actual change
 	 */
-	public void applyParticleFlow(EnumPlasmaTypes plasma,
+	public int applyParticleFlow(EnumPlasmaTypes plasma,
 			ForgeDirection direction, int particleCount);
 
 	/**

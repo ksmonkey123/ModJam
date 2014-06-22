@@ -71,17 +71,17 @@ public class TileEntityPlasmaPipeCombined extends ATileEntityPlasmaSystem
 	}
 
 	@Override
-	public void applyParticleFlow(EnumPlasmaTypes plasma,
+	public int applyParticleFlow(EnumPlasmaTypes plasma,
 			ForgeDirection direction, int particleCount) {
 		switch (plasma) {
 		case NEUTRAL:
 			this.currentNeutralPlasma += particleCount;
-			break;
+			return particleCount;
 		case LOW:
 			this.currentLowPlasma += particleCount;
-			break;
+			return particleCount;
 		default:
-			break;
+			return 0;
 		}
 	}
 
