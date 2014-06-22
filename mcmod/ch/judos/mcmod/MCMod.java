@@ -18,7 +18,9 @@ import net.minecraftforge.fluids.FluidStack;
 import ch.judos.mcmod.armor.ItemSlimyBoots;
 import ch.judos.mcmod.customrender.BlockCarvedDirt;
 import ch.judos.mcmod.customrender.TECarvedDirt;
-import ch.judos.mcmod.gui.CustomBox;
+import ch.judos.mcmod.gui.Box;
+import ch.judos.mcmod.gui.BoxTE;
+import ch.judos.mcmod.gui.GuiHandler;
 import ch.judos.mcmod.handlers.FillBucketHandler;
 import ch.judos.mcmod.handlers.FuelHandler;
 import ch.judos.mcmod.itemblockfluids.BlockFluidTar;
@@ -39,17 +41,22 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * if you need to add dependencies:<br>
+ * if you need to add dependencies, add the following in the @Mod() tag:<br>
  * dependencies="required-after:"modid"@["version"]"
  */
 @SuppressWarnings("javadoc")
-@Mod(modid = References.MOD_ID, version = References.VERSION)
+@Mod(modid = References.MOD_ID, version = References.VERSION, name = References.NAME)
 public class MCMod {
+
+	@Mod.Instance(References.MOD_ID)
+	public static MCMod instance;
+
 	@SidedProxy(clientSide = References.Client, serverSide = References.Common)
 	public static CommonProxy proxy;
 
@@ -86,7 +93,7 @@ public class MCMod {
 	public static Item itemSlimyBoots;
 
 	// Custom Gui
-	public static CustomBox customBox; // the block
+	public static Box box; // the block
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
@@ -106,7 +113,12 @@ public class MCMod {
 	}
 
 	private void addBlockWithCustomGui() {
-		customBox = new CustomBox();
+		box = new Box();
+		GameRegistry.registerBlock(box, Names.Box);
+		GameRegistry.registerTileEntity(BoxTE.class, "tile_" + Names.Box);
+
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
+
 	}
 
 	private void addArmor() {

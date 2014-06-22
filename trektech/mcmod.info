@@ -2,7 +2,7 @@
     "modListVersion": 2,
     "modList": [
         {
-            "modid": "trektech",
+            "modid": "TrekTech",
             "name": "TrekTech",
             "description": "Star Trek Technologies",
             "mcversion": "${mcversion}",

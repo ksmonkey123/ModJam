@@ -13,8 +13,7 @@ import ch.modjam.generic.BlockGenericDualStateDirected;
 import ch.modjam.generic.EnumFace;
 
 @SuppressWarnings("javadoc")
-public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
-		IInventory {
+public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements IInventory {
 
 	private static final int PLASMA_PER_TICK = 5;
 	private static final int PLASMA_PER_BAR = 1000;
@@ -82,8 +81,7 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 
 	@Override
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {
-		return this.stack == null
-				|| this.stack.getItem().equals(var2.getItem());
+		return this.stack == null || this.stack.getItem().equals(var2.getItem());
 	}
 
 	@Override
@@ -116,8 +114,7 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 	}
 
 	private void updateBlock(boolean newState) {
-		BlockPlasmaSource.setActive(newState, this.worldObj,
-				this.xCoord, this.yCoord, this.zCoord);
+		BlockPlasmaSource.setActive(newState, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
 	}
 
 	private int getFuelValue() {
@@ -142,6 +139,7 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 	public void readNBT(NBTTagCompound tag) {
 		this.currentItemBurnTime = tag.getInteger("CurrentTotal");
 		this.currentItemRemainingTime = tag.getInteger("CurrentRemain");
+		// FIXME: 10 is a magical number, what does it mean? Thx for clarifying
 		NBTTagList nbttaglist = tag.getTagList("Items", 10);
 		NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(0);
 		this.stack = ItemStack.loadItemStackFromNBT(nbttagcompound1);
@@ -158,8 +156,7 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 	}
 
 	public int getBurnTimeRemainingScaled(int h) {
-		return currentItemBurnTime == 0 ? 0
-				: ((h * currentItemRemainingTime) / currentItemBurnTime);
+		return currentItemBurnTime == 0 ? 0 : ((h * currentItemRemainingTime) / currentItemBurnTime);
 	}
 
 	public int getPlasmaLevelScaled(int pixelPerBar, int maxPixel) {
@@ -170,37 +167,32 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 	}
 
 	@Override
-	public float getParticlesPerBar(EnumPlasmaTypes plasma,
-			ForgeDirection direction) {
+	public float getParticlesPerBar(EnumPlasmaTypes plasma, ForgeDirection direction) {
 		return plasma == EnumPlasmaTypes.NEUTRAL ? PLASMA_PER_BAR : 0;
 	}
 
 	@Override
 	public int getParticleCount(EnumPlasmaTypes plasma, ForgeDirection direction) {
-		return (this.connectsToPlasmaConnection(plasma, direction)) ? this.currentPlasma
-				: 0;
+		return (this.connectsToPlasmaConnection(plasma, direction)) ? this.currentPlasma : 0;
 	}
 
 	@Override
-	public void applyParticleFlow(EnumPlasmaTypes plasma,
-			ForgeDirection direction, int particleCount) {
+	public void applyParticleFlow(EnumPlasmaTypes plasma, ForgeDirection direction,
+			int particleCount) {
 		if (connectsToPlasmaConnection(plasma, direction))
 			this.currentPlasma += particleCount;
 
 	}
 
 	@Override
-	public boolean connectsToPlasmaConnection(EnumPlasmaTypes plasma,
-			ForgeDirection direction) {
-		return plasma == EnumPlasmaTypes.NEUTRAL
-				&& BlockGenericDualStateDirected.getFaceDirectionForMeta(
-						EnumFace.BACK, this.getBlockMetadata()) == direction
-						.getOpposite();
+	public boolean connectsToPlasmaConnection(EnumPlasmaTypes plasma, ForgeDirection direction) {
+		return plasma == EnumPlasmaTypes.NEUTRAL && BlockGenericDualStateDirected
+			.getFaceDirectionForMeta(EnumFace.BACK, this.getBlockMetadata()) == direction
+			.getOpposite();
 	}
 
 	@Override
-	public boolean setParticleCount(EnumPlasmaTypes plasma,
-			ForgeDirection direction, int count) {
+	public boolean setParticleCount(EnumPlasmaTypes plasma, ForgeDirection direction, int count) {
 		if (this.connectsToPlasmaConnection(plasma, direction)) {
 			this.currentPlasma = count;
 			return true;

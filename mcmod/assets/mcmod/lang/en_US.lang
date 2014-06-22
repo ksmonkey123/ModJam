@@ -8,3 +8,5 @@ item.dirt_shovel.name=Dirt Shovel
 potion.mcmodTest.name=Test Potion Effect
 item.potion_test.name=Test Potion
 item.slimy_boots.name=Slimy Boots
+
+tile.box.name=A Box
