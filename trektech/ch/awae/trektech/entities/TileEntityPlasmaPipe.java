@@ -14,7 +14,7 @@ import ch.awae.trektech.TrekTech;
  * @author Andreas Waelchli <andreas.waelchli@me.com>
  */
 public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
-		IPlasmaPipe, IWrenchable {
+		IPlasmaPipe {
 
 	/**
 	 * Particle amount required to reach 1 bar
@@ -131,11 +131,11 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 
 	@Override
 	public boolean onWrench(EntityPlayer player) {
-		if (this.worldObj.isRemote) {
+		if (this.worldObj.isRemote && !player.isSneaking()) {
 			player.addChatMessage(new ChatComponentText("Plasma Type: "
 					+ this.plasmaType.toString()));
 			float pressure = this.currentPlasma / PARTICLES_PER_BAR;
-			player.addChatMessage(new ChatComponentText("Plasma Level: "
+			player.addChatMessage(new ChatComponentText("Current Plasma Pressure: "
 					+ pressure + " bar"));
 			return true;
 		}

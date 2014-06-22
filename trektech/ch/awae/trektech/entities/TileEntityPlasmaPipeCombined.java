@@ -1,7 +1,9 @@
 package ch.awae.trektech.entities;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.TrekTech;
@@ -155,4 +157,21 @@ public class TileEntityPlasmaPipeCombined extends ATileEntityPlasmaSystem
 		this.currentLowPlasma = tag.getInteger("Low");
 	}
 
+	@Override
+	public boolean onWrench(EntityPlayer player) {
+		if (this.worldObj.isRemote && !player.isSneaking()) {
+			player.addChatMessage(new ChatComponentText("Plasma Type: "
+					+ EnumPlasmaTypes.NEUTRAL.toString()));
+			float pressure = this.currentNeutralPlasma / PARTICLES_PER_BAR;
+			player.addChatMessage(new ChatComponentText(
+					"Current Plasma Pressure: " + pressure + " bar"));
+			player.addChatMessage(new ChatComponentText("Plasma Type: "
+					+ EnumPlasmaTypes.LOW.toString()));
+			pressure = this.currentLowPlasma / PARTICLES_PER_BAR;
+			player.addChatMessage(new ChatComponentText(
+					"Current Plasma Pressure: " + pressure + " bar"));
+			return true;
+		}
+		return false;
+	}
 }

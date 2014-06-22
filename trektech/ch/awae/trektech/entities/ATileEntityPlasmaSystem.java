@@ -12,7 +12,7 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @author Andreas Waelchli <andreas.waelchli@me.com>
  */
 public abstract class ATileEntityPlasmaSystem extends GenericTileEntity
-		implements IPlasmaConnection {
+		implements IPlasmaConnection, IWrenchable {
 
 	@Override
 	public final void tick() {
@@ -37,10 +37,14 @@ public abstract class ATileEntityPlasmaSystem extends GenericTileEntity
 			// calculate particle flow
 			int ownCount = this.getParticleCount(plasma, direction);
 			if (direction == ForgeDirection.UP)
-				ownCount *= Properties.VERTICAL_PRESSURE_GRADIENT;
+				ownCount = applyVerticalPressureCalculation(ownCount,
+						(int) this.getParticlesPerBar(plasma, direction));
 			int othCount = other.getParticleCount(plasma, opposite);
 			if (direction == ForgeDirection.DOWN)
-				othCount *= Properties.VERTICAL_PRESSURE_GRADIENT;
+				othCount = applyVerticalPressureCalculation(
+						othCount,
+						(int) other.getParticlesPerBar(plasma,
+								direction.getOpposite()));
 			float ownPpB = this.getParticlesPerBar(plasma, direction);
 			float othPpB = other.getParticlesPerBar(plasma, opposite);
 			int dCount = (int) ((ownPpB * othCount - othPpB * ownCount) / (ownPpB + othPpB));
@@ -53,6 +57,14 @@ public abstract class ATileEntityPlasmaSystem extends GenericTileEntity
 			this.applyParticleFlow(plasma, direction, dCount);
 			other.applyParticleFlow(plasma, opposite, -dCount);
 		}
+	}
+
+	private static int applyVerticalPressureCalculation(int particleCount,
+			int ppb) {
+		return Math
+				.max((int) (particleCount
+						* Properties.VERTICAL_PRESSURE_GRADIENT - Properties.VERTICAL_PRESSURE_ARGUMENT
+						* ppb), 0);
 	}
 
 	/**

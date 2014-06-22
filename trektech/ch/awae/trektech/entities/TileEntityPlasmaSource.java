@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.blocks.BlockPlasmaSource;
@@ -229,6 +230,22 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 			ForgeDirection direction, int count) {
 		if (this.connectsToPlasmaConnection(plasma, direction)) {
 			this.currentPlasma = count;
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean onWrench(EntityPlayer player) {
+		if (!player.isSneaking()) {
+			if (this.worldObj.isRemote) {
+				String pressure = (this.currentPlasma / (float) PLASMA_PER_BAR)
+						+ "";
+				if (pressure.length() > 4)
+					pressure = pressure.substring(0, 4);
+				player.addChatMessage(new ChatComponentText(
+						"Current Plasma Pressure: " + pressure + " bar"));
+			}
 			return true;
 		}
 		return false;
