@@ -3,7 +3,7 @@ package ch.judos.mcmod.potions;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
-import ch.judos.mcmod.TutorialMod;
+import ch.judos.mcmod.MCMod;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 @SuppressWarnings("javadoc")
@@ -19,7 +19,7 @@ public class OnEntityLivingHook {
 
 		// entityLiving in fact refers to EntityLivingBase so to understand
 		// everything about this part go to EntityLivingBase instead
-		if (event.entityLiving.isPotionActive(TutorialMod.potionTest.id)) {
+		if (event.entityLiving.isPotionActive(MCMod.potionTest.id)) {
 			if (event.entityLiving.worldObj.rand.nextInt(20) == 0) {
 				if (!event.entityLiving.worldObj.isRemote) {
 					EntityChicken chicken =
@@ -31,10 +31,10 @@ public class OnEntityLivingHook {
 				event.entityLiving.attackEntityFrom(DamageSource.generic, 1);
 			}
 			if (event.entityLiving
-					.getActivePotionEffect(TutorialMod.potionTest)
+					.getActivePotionEffect(MCMod.potionTest)
 					.getDuration() == 0) {
 				event.entityLiving
-						.removePotionEffect(TutorialMod.potionTest.id);
+						.removePotionEffect(MCMod.potionTest.id);
 			}
 		}
 	}

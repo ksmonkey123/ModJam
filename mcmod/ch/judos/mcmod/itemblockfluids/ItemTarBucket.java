@@ -1,6 +1,6 @@
 package ch.judos.mcmod.itemblockfluids;
 
-import ch.judos.mcmod.TutorialMod;
+import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
 import net.minecraft.block.Block;
@@ -13,7 +13,7 @@ public class ItemTarBucket extends ItemBucket {
 	public ItemTarBucket(Block tarBlock) {
 		super(tarBlock);
 		this.setUnlocalizedName(Names.TarBucket);
-		this.setCreativeTab(TutorialMod.modTab);
+		this.setCreativeTab(MCMod.modTab);
 		this.setTextureName(References.MOD_ID + ":" + Names.TarBucket);
 		this.setContainerItem(Items.bucket);
 	}

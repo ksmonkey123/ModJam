@@ -2,10 +2,10 @@ package ch.judos.mcmod.itemblockfluids;
 
 import java.util.ArrayList;
 
-import ch.judos.mcmod.TutorialMod;
-import ch.judos.mcmod.lib.ListedStuff;
+import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
+import ch.modjam.generic.ListedStuff;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
@@ -19,7 +19,7 @@ public class BlockKryptoniteOre extends Block {
 		super(Material.rock);
 		this.setBlockName(Names.KryptonitBlock);
 		this.setBlockTextureName(References.MOD_ID + ":" + Names.KryptonitBlock);
-		this.setCreativeTab(TutorialMod.modTab);
+		this.setCreativeTab(MCMod.modTab);
 		this.blockHardness = 5;
 		this.blockResistance = 20;
 		this.setHarvestLevel("pickaxe", 2);

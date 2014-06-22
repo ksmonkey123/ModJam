@@ -2,7 +2,7 @@ package ch.judos.mcmod.world;
 
 import java.util.Random;
 
-import ch.judos.mcmod.TutorialMod;
+import ch.judos.mcmod.MCMod;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -53,9 +53,8 @@ public class WorldGenerator implements IWorldGenerator {
 			int blockX = chunkX * BLOCKS_CHUNK + random.nextInt(BLOCKS_CHUNK);
 			int blockZ = chunkZ * BLOCKS_CHUNK + random.nextInt(BLOCKS_CHUNK);
 			int blockY = random.nextInt(64);
-
-			new WorldGenMinable(TutorialMod.oreKryptonit, blockPerVeine)
-					.generate(world, random, blockX, blockY, blockZ);
+			
+			new WorldGenMinable(MCMod.oreKryptonit, blockPerVeine).generate(world, random, blockX, blockY, blockZ);
 		}
 	}
 
@@ -75,11 +74,8 @@ public class WorldGenerator implements IWorldGenerator {
 			int blockX = chunkX * BLOCKS_CHUNK + random.nextInt(BLOCKS_CHUNK);
 			int blockZ = chunkZ * BLOCKS_CHUNK + random.nextInt(BLOCKS_CHUNK);
 			int blockY = random.nextInt(64);
-			// note: Blocks.end_stone is the block you want to replace,
-			// absolutey necessary!
-			new WorldGenMinable(TutorialMod.oreKryptonit, blockPerVeine,
-					Blocks.end_stone).generate(world, random, blockX, blockY,
-					blockZ);
+			//note: Blocks.end_stone is the block you want to replace, absolutey necessary!
+			new WorldGenMinable(MCMod.oreKryptonit, blockPerVeine,Blocks.end_stone).generate(world, random, blockX, blockY, blockZ);
 		}
 	}
 

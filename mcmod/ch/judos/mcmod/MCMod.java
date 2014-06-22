@@ -18,6 +18,11 @@ import net.minecraftforge.fluids.FluidStack;
 import ch.judos.mcmod.armor.ItemSlimyBoots;
 import ch.judos.mcmod.customrender.BlockCarvedDirt;
 import ch.judos.mcmod.customrender.TECarvedDirt;
+import ch.judos.mcmod.gui.Box;
+import ch.judos.mcmod.gui.BoxTE;
+import ch.judos.mcmod.gui.CustomBox;
+import ch.judos.mcmod.gui.CustomBoxTE;
+import ch.judos.mcmod.gui.GuiHandler;
 import ch.judos.mcmod.handlers.FillBucketHandler;
 import ch.judos.mcmod.handlers.FuelHandler;
 import ch.judos.mcmod.itemblockfluids.BlockFluidTar;
@@ -38,17 +43,22 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
- * if you need to add dependencies:<br>
+ * if you need to add dependencies, add the following in the @Mod() tag:<br>
  * dependencies="required-after:"modid"@["version"]"
  */
 @SuppressWarnings("javadoc")
-@Mod(modid = References.MOD_ID, version = References.VERSION)
-public class TutorialMod {
+@Mod(modid = References.MOD_ID, version = References.VERSION, name = References.NAME)
+public class MCMod {
+
+	@Mod.Instance(References.MOD_ID)
+	public static MCMod instance;
+
 	@SidedProxy(clientSide = References.Client, serverSide = References.Common)
 	public static CommonProxy proxy;
 
@@ -84,12 +94,12 @@ public class TutorialMod {
 	public static ArmorMaterial armorSlimeMaterial;
 	public static Item itemSlimyBoots;
 
-	/**
-	 * @param e
-	 */
+	// Custom Gui
+	public static Box box; // the block
+	public static CustomBox customBox;
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
-		System.out.println("PreInit MC Mod");
 		createCreativeTab();
 		createTarFluidAndBucket();
 		addBoneRecipies();
@@ -106,24 +116,30 @@ public class TutorialMod {
 	}
 
 	private void addBlockWithCustomGui() {
-		// TODO Auto-generated method stub
+		box = new Box();
+		GameRegistry.registerBlock(box, Names.Box);
+		GameRegistry.registerTileEntity(BoxTE.class, "tile_" + Names.Box);
+
+		customBox = new CustomBox();
+		GameRegistry.registerBlock(customBox, Names.CustomBox);
+		GameRegistry.registerTileEntity(CustomBoxTE.class, "tile_" + Names.CustomBox);
+
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
 	}
 
-	@SuppressWarnings("boxing")
-	private static void addArmor() {
-		armorSlimeMaterial = EnumHelper.addArmorMaterial("slimy", 5, new int[] {
-				0, 0, 0, 2 }, 10);
+	private void addArmor() {
+		armorSlimeMaterial = EnumHelper.addArmorMaterial("slimy", 5, new int[] { 0, 0, 0, 2 }, 10);
 		itemSlimyBoots = new ItemSlimyBoots();
 		GameRegistry.registerItem(itemSlimyBoots, Names.SlimyBoots);
 		MinecraftForge.EVENT_BUS.register(itemSlimyBoots);
-		GameRegistry.addShapedRecipe(new ItemStack(itemSlimyBoots), "L L",
-				"S S", 'L', Items.leather, 'S', Items.slime_ball);
-		GameRegistry.addShapelessRecipe(new ItemStack(itemSlimyBoots),
-				Items.leather_boots, Items.slime_ball, Items.slime_ball);
+		GameRegistry.addShapedRecipe(new ItemStack(itemSlimyBoots), "L L", "S S", 'L',
+			Items.leather, 'S', Items.slime_ball);
+		GameRegistry.addShapelessRecipe(new ItemStack(itemSlimyBoots), Items.leather_boots,
+			Items.slime_ball, Items.slime_ball);
 	}
 
-	private static void addPotion() {
+	private void addPotion() {
 		// adds the effect of a custom potion to any living entity who currently
 		// has the effect on it
 		MinecraftForge.EVENT_BUS.register(new OnEntityLivingHook());
@@ -132,28 +148,25 @@ public class TutorialMod {
 		GameRegistry.registerItem(itemPotionTest, Names.PotionTest);
 	}
 
-	@SuppressWarnings("boxing")
-	private static void addDirtShovel() {
+	private void addDirtShovel() {
 		itemDirtShovel = new ItemDirtShovel();
 		GameRegistry.registerItem(itemDirtShovel, Names.DirtShovel);
-		GameRegistry.addShapedRecipe(new ItemStack(itemDirtShovel, 2), "XX ",
-				"XI ", "  I", 'X', Blocks.planks, 'I', Items.stick);
-		GameRegistry.addShapedRecipe(new ItemStack(itemDirtShovel, 2), " XX",
-				" IX", "  I", 'X', Blocks.planks, 'I', Items.stick);
+		GameRegistry.addShapedRecipe(new ItemStack(itemDirtShovel, 2), "XX ", "XI ", "  I", 'X',
+			Blocks.planks, 'I', Items.stick);
+		GameRegistry.addShapedRecipe(new ItemStack(itemDirtShovel, 2), " XX", " IX", "  I", 'X',
+			Blocks.planks, 'I', Items.stick);
 	}
 
-	private static void addCarvedDirtCustomRenderingBlock() {
+	private void addCarvedDirtCustomRenderingBlock() {
 		blockCarvedDirt = new BlockCarvedDirt();
 		teCarvedDirt = TECarvedDirt.class;
 
 		GameRegistry.registerBlock(blockCarvedDirt, Names.CarvedDirt);
-		GameRegistry.registerTileEntity(teCarvedDirt, "tile_"
-				+ Names.CarvedDirt);
+		GameRegistry.registerTileEntity(teCarvedDirt, "tile_" + Names.CarvedDirt);
 	}
 
-	private static void addSmelting() {
-		GameRegistry.addSmelting(oreKryptonit, new ItemStack(itemKryptonit, 1),
-				5);
+	private void addSmelting() {
+		GameRegistry.addSmelting(oreKryptonit, new ItemStack(itemKryptonit, 1), 5);
 
 		fuelHandler = new FuelHandler();
 		fuelHandler.addFuel(itemKryptonit, 200 * 10);
@@ -161,7 +174,7 @@ public class TutorialMod {
 
 	}
 
-	private static void addKryptonitOre() {
+	private void addKryptonitOre() {
 		oreKryptonit = new BlockKryptoniteOre();
 		GameRegistry.registerWorldGenerator(new WorldGenerator(), 0);
 		GameRegistry.registerBlock(oreKryptonit, Names.KryptonitBlock);
@@ -170,7 +183,7 @@ public class TutorialMod {
 		GameRegistry.registerItem(itemKryptonit, Names.KryptonitItem);
 	}
 
-	private static void createTarFluidAndBucket() {
+	private void createTarFluidAndBucket() {
 		tarFluid = new FluidTar();
 		FluidRegistry.registerFluid(tarFluid);
 
@@ -181,21 +194,20 @@ public class TutorialMod {
 		GameRegistry.registerItem(tarBucket, Names.TarBucket);
 
 		int bucketVolume = FluidContainerRegistry.BUCKET_VOLUME;
-		FluidStack fluidStack = FluidRegistry.getFluidStack(Names.TarFluid,
-				bucketVolume);
-		FluidContainerRegistry.registerFluidContainer(fluidStack,
-				new ItemStack(tarBucket), new ItemStack(Items.bucket));
+		FluidStack fluidStack = FluidRegistry.getFluidStack(Names.TarFluid, bucketVolume);
+		FluidContainerRegistry.registerFluidContainer(fluidStack, new ItemStack(tarBucket),
+			new ItemStack(Items.bucket));
 		FillBucketHandler.add(tarBlock, tarBucket);
 
 		MinecraftForge.EVENT_BUS.register(FillBucketHandler.INSTANCE);
 	}
 
-	private static void createCreativeTab() {
+	private void createCreativeTab() {
 		modTab = new CreativeTabs("MCMod") {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public Item getTabIconItem() {
-				return TutorialMod.itemObsidianStick;
+				return MCMod.itemObsidianStick;
 			}
 
 			@Override
@@ -212,34 +224,26 @@ public class TutorialMod {
 		};
 	}
 
-	private static void addObsidianStick() {
+	private void addObsidianStick() {
 		itemObsidianStick = new ItemObsidianStick();
 		GameRegistry.registerItem(itemObsidianStick, Names.OStick);
 	}
 
-	@SuppressWarnings("boxing")
-	private static void addBoneRecipies() {
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1),
-				Items.porkchop);
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1),
-				Items.cooked_porkchop);
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1),
-				Items.beef);
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1),
-				Items.cooked_beef);
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1),
-				Items.chicken, Items.chicken);
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1),
-				Items.cooked_chicken, Items.cooked_chicken);
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1),
-				Items.cooked_chicken, Items.chicken);
+	private void addBoneRecipies() {
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1), Items.porkchop);
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1), Items.cooked_porkchop);
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1), Items.beef);
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1), Items.cooked_beef);
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1), Items.chicken, Items.chicken);
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1), Items.cooked_chicken,
+			Items.cooked_chicken);
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1), Items.cooked_chicken,
+			Items.chicken);
 
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 3),
-				Items.cooked_fished);
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 3),
-				Items.fish);
-		GameRegistry.addShapedRecipe(new ItemStack(Blocks.command_block), "Y",
-				"X", 'X', Blocks.diamond_block, 'Y', Items.redstone);
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 3), Items.cooked_fished);
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 3), Items.fish);
+		GameRegistry.addShapedRecipe(new ItemStack(Blocks.command_block), "Y", "X", 'X',
+			Blocks.diamond_block, 'Y', Items.redstone);
 	}
 
 }

@@ -1,4 +1,4 @@
-package ch.judos.mcmod.lib;
+package ch.modjam.generic;
 
 import java.util.ArrayList;
 

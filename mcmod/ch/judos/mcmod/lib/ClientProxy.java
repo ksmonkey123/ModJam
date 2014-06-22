@@ -1,6 +1,6 @@
 package ch.judos.mcmod.lib;
 
-import ch.judos.mcmod.TutorialMod;
+import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.customrender.TECarvedDirtItemRenderer;
 import ch.judos.mcmod.customrender.TECarvedDirtRenderer;
 import net.minecraft.item.Item;
@@ -15,8 +15,8 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerRenderInformation() {
 //		TECarvedDirtRenderer renderer = new TECarvedDirtRenderer();
-		ClientRegistry.bindTileEntitySpecialRenderer(TutorialMod.teCarvedDirt, renderer);
+		ClientRegistry.bindTileEntitySpecialRenderer(MCMod.teCarvedDirt, renderer);
 		
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TutorialMod.blockCarvedDirt), new TECarvedDirtItemRenderer());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(MCMod.blockCarvedDirt), new TECarvedDirtItemRenderer());
 	}
 }

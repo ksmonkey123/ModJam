@@ -8,14 +8,14 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
-import ch.judos.mcmod.TutorialMod;
+import ch.judos.mcmod.MCMod;
 
 @SuppressWarnings("javadoc")
 public class TECarvedDirtItemRenderer implements IItemRenderer {
 
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		return Block.getBlockFromItem(item.getItem()) == TutorialMod.blockCarvedDirt;
+		return Block.getBlockFromItem(item.getItem()) == MCMod.blockCarvedDirt;
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class TECarvedDirtItemRenderer implements IItemRenderer {
 
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		if (Block.getBlockFromItem(item.getItem()) == TutorialMod.blockCarvedDirt) {
+		if (Block.getBlockFromItem(item.getItem()) == MCMod.blockCarvedDirt) {
 			GL11.glPushMatrix();
 			// GL11.glRotatef(225, 0.0F, 1.0F, 0.0F);
 			// GL11.glRotatef(45, -1.0F, 0.0F, -1.0F);

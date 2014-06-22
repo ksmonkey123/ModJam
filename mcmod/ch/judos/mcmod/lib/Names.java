@@ -18,4 +18,6 @@ public class Names {
 
 	public static final String PotionTest = "potion_test";
 	public static final String SlimyBoots = "slimy_boots";
+	public static final String Box = "box";
+	public static final String CustomBox = "custom_box";
 }

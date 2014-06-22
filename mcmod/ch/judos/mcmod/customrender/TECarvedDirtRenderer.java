@@ -8,12 +8,9 @@ import static net.minecraftforge.common.util.ForgeDirection.WEST;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -44,9 +41,6 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 	}
 
 	public static void renderBlock(IConnecting con) {
-
-		TextureManager render = Minecraft.getMinecraft().renderEngine;
-		render.bindTexture(new ResourceLocation(TECarvedDirt.getTexture()));
 		RenderHelper.disableStandardItemLighting();
 
 		HashSet<ForgeDirection> con2 = getConnections(con);
@@ -97,7 +91,8 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 			if (!con.contains(d)) {
 				renderer.quad(-0.5, -0.5, -0.5, 1, 1, Side.FRONT);
 				// inside dirt
-				renderer.quad(-0.5 + t, +0.5 - t, -0.5 + t, t, t, Side.BACK, 13);
+				renderer
+					.quad(-0.5 + t, +0.5 - t, -0.5 + t, t, t, Side.BACK, 13);
 			} else {
 				// side dirt
 				renderer.quad(-0.5 + t, +0.5 - t, -0.5, t, t, Side.LEFT, 13);
@@ -116,10 +111,8 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 	/**
 	 * texture tileNr for arbitrary number of connections
 	 */
-	static final HashMap<HashSet<ForgeDirection>, Integer> connectionsToTextureTile =
-			new HashMap<HashSet<ForgeDirection>, Integer>();
-	static final HashMap<HashSet<ForgeDirection>, Integer> connectionToRotation =
-			new HashMap<HashSet<ForgeDirection>, Integer>();
+	static final HashMap<HashSet<ForgeDirection>, Integer> connectionsToTextureTile = new HashMap<HashSet<ForgeDirection>, Integer>();
+	static final HashMap<HashSet<ForgeDirection>, Integer> connectionToRotation = new HashMap<HashSet<ForgeDirection>, Integer>();
 
 	static {
 		initialize();
@@ -172,35 +165,9 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 				if (arr[x][z])
 					y = 0.5 - CARVE_DEPTH;
 				renderer.quad(+0.5 - t - x * t, y, +0.5 - t - z * t, t, t,
-						Side.TOP, tileNr, rotation);
+					Side.TOP, tileNr, rotation);
 			}
 		}
-	}
-
-	//FIXME: unused private method
-	@SuppressWarnings("unused")
-	private static void renderCore() {
-		renderer.begin();
-		// renderer.cubeOfRadius(0.5);
-
-		renderer.quad(-0.5, 0.5, -0.5, 1, 0.3, Side.TOP, 3);
-		renderer.quad(0.2, 0.5, -0.5, 1, 0.3, Side.TOP, 3);
-		renderer.quad(-0.2, 0.5, -0.5, 0.3, 0.4, Side.TOP, 3);
-		renderer.quad(-0.2, 0.3, -0.2, 0.7, 0.4, Side.TOP, 3);
-
-		renderer.quad(-0.5, -0.5, -0.5, 1, 1, Side.FRONT);
-
-		renderer.quad(0.2, 0.3, -0.2, 0.7, 0.2, Side.RIGHT, 13);
-		renderer.quad(-0.2, 0.3, -0.2, 0.7, 0.2, Side.LEFT, 13);
-		renderer.quad(-0.2, 0.3, -0.2, 0.4, 0.2, Side.BACK, 13);
-
-		renderer.quad(-0.5, -0.5, 0.5, 1, 0.8, Side.BACK, 8);
-		renderer.quad(-0.5, 0.3, 0.5, 0.3, 0.2, Side.BACK, 8);
-		renderer.quad(0.2, 0.3, 0.5, 0.3, 0.2, Side.BACK, 8);
-
-		renderer.quad(-0.5, -0.5, -0.5, 1, 1, Side.BOTTOM);
-
-		renderer.end();
 	}
 
 }

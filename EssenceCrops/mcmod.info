@@ -2,15 +2,15 @@
     "modListVersion": 2,
     "modList": [
         {
-            "modid": "mcmod",
-            "name": "§2My Test Mod",
-            "description": "A scrambled assembly line of tutorial informational implementation content.",
+            "modid": "essencecrops",
+            "name": "EssenceCrops",
+            "description": "Get resources through plants",
             "mcversion": "${mcversion}",
-            "version": "0.2",
+            "version": "0.1",
             "authorList": [
-                "judos"
+                "Phyranja"
             ],
-            "credits": "The Forge and FML guys, for making the example mod, Lunatrius for the mcmod.info file, LexManos for answering multiple requests",
+            "credits": "",
             "dependants": [ ],
             "dependencies": [ "Forge@[${minforgeversion},)" ],
             "parent": "",
