@@ -56,6 +56,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 @Mod(modid = References.MOD_ID, version = References.VERSION, name = References.NAME)
 public class MCMod {
 
+	/**
+	 * public instance of this mod
+	 */
 	@Mod.Instance(References.MOD_ID)
 	public static MCMod instance;
 

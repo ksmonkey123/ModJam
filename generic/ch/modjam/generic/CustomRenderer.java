@@ -18,15 +18,15 @@ import org.lwjgl.opengl.GL11;
 public class CustomRenderer {
 
 	private String tex;
-	private static int tileSize = 4;
-	private static double uvPerTile = 1. / tileSize;
+	private final static int tileSize = 4;
+	private final static double uvPerTile = 1. / tileSize;
+
 	private ForgeDirection direction;
 
 	/**
 	 * the front face will point to north
 	 * 
-	 * @param textureNameAndPath
-	 *            the full identifier of the texture e.g.
+	 * @param textureNameAndPath the full identifier of the texture e.g.
 	 *            "modid:textures/blocks/eg.png" <br>
 	 *            it is split into 4x4 tiles, these are numbered from top left
 	 *            to bottom right 0-15
@@ -38,31 +38,28 @@ public class CustomRenderer {
 	/**
 	 * the front face will point to north
 	 * 
-	 * @param textureNameAndPath
-	 *            the full identifier of the texture e.g.
+	 * @param textureNameAndPath the full identifier of the texture e.g.
 	 *            "modid:textures/blocks/eg.png" <br>
 	 *            it is split into 4x4 tiles, these are numbered from top left
 	 *            to bottom right 0-15
-	 * @param dir
-	 *            front face of block will point into this direction
+	 * @param dir front face of block will point into this direction
 	 */
 	public CustomRenderer(String textureNameAndPath, ForgeDirection dir) {
 		this.tex = textureNameAndPath;
 		this.direction = dir;
 	}
 
-	public void quad(double x, double y, double z, double width, double height,
-			Side visibleFrom) {
+	public void quad(double x, double y, double z, double width, double height, Side visibleFrom) {
 		quad(x, y, z, width, height, visibleFrom, visibleFrom.getTileIndex(), 0);
 	}
 
-	public void quad(double x, double y, double z, double width, double height,
-			Side visibleFrom, int useTextureTileIndex) {
+	public void quad(double x, double y, double z, double width, double height, Side visibleFrom,
+			int useTextureTileIndex) {
 		quad(x, y, z, width, height, visibleFrom, useTextureTileIndex, 0);
 	}
 
-	public void quad(double x, double y, double z, double width, double height,
-			Side visibleFrom, int useTextureTileIndex, int texRotation) {
+	public void quad(double x, double y, double z, double width, double height, Side visibleFrom,
+			int useTextureTileIndex, int texRotation) {
 		double[] delta = sizeToDeltaCoords(visibleFrom, width, height);
 
 		double xp = x + delta[0];
@@ -114,8 +111,7 @@ public class CustomRenderer {
 				break;
 			}
 			default: {
-				throw new RuntimeException(
-					"Unhandled enum type: " + visibleFrom);
+				throw new RuntimeException("Unhandled enum type: " + visibleFrom);
 			}
 		}
 
@@ -188,8 +184,8 @@ public class CustomRenderer {
 		}
 
 		for (int i = 0; i < 4; i++)
-			Tessellator.instance.addVertexWithUV(cx[i], cy[i], cz[i],
-				u[(i + texRotation) % 4], v[(i + texRotation) % 4]);
+			Tessellator.instance.addVertexWithUV(cx[i], cy[i], cz[i], u[(i + texRotation) % 4],
+				v[(i + texRotation) % 4]);
 	}
 
 	private void rotateQuadBasedOnBlockRotation() {
@@ -249,8 +245,7 @@ public class CustomRenderer {
 		System.out.println(s.substring(0, s.length() - 2));
 	}
 
-	private static double[] sizeToDeltaCoords(Side visibleFrom, double width,
-			double height) {
+	private static double[] sizeToDeltaCoords(Side visibleFrom, double width, double height) {
 		int sideI = visibleFrom.getIndex();
 		double[] delta = new double[3];
 		for (int i = 0; i < 3; i++)
@@ -274,8 +269,7 @@ public class CustomRenderer {
 	{ 0, 0, 0, 0, 0, 0 } };
 
 	public enum Side {
-		TOP(1, 0), BOTTOM(9, 1), LEFT(4, 2), FRONT(5, 3), RIGHT(6, 4), BACK(10,
-				5);
+		TOP(1, 0), BOTTOM(9, 1), LEFT(4, 2), FRONT(5, 3), RIGHT(6, 4), BACK(10, 5);
 		private int tileIndex;
 		private int index;
 
