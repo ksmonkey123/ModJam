@@ -51,6 +51,7 @@ public class CustomBoxGuiContainer extends GuiContainer {
 		default:
 			break;
 		}
+
 		this.initGui();
 		this.inventorySlots.detectAndSendChanges();
 		// this.inventorySlots = new CustomBoxContainer(this.inventory,
