@@ -29,7 +29,6 @@ public class CustomBoxGuiContainer extends GuiContainer {
 		this.inventory = inventory;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initGui() {
 		super.initGui();
