@@ -17,7 +17,7 @@ import ch.judos.mcmod.lib.References;
 public class CustomBoxGuiContainer extends GuiContainer {
 
 	private CustomBoxTE te;
-	private InventoryPlayer inventory; // FIXME: unused
+	protected InventoryPlayer inventory;
 
 	/**
 	 * @param inventory
@@ -42,15 +42,16 @@ public class CustomBoxGuiContainer extends GuiContainer {
 	@Override
 	protected void actionPerformed(GuiButton button) {
 		switch (button.id) {
-		case 0:
-			this.te.increaseSize();
-			break;
-		case 1:
-			this.te.decreaseSize();
-			break;
-		default:
-			break;
+			case 0:
+				this.te.increaseSize();
+				break;
+			case 1:
+				this.te.decreaseSize();
+				break;
+			default:
+				break;
 		}
+
 		this.initGui();
 		this.inventorySlots.detectAndSendChanges();
 		// this.inventorySlots = new CustomBoxContainer(this.inventory,
@@ -59,22 +60,19 @@ public class CustomBoxGuiContainer extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int param1, int param2) {
-		String s = StatCollector.translateToLocal("tile." + Names.CustomBox
-				+ ".name");
+		String s = StatCollector.translateToLocal("tile." + Names.CustomBox + ".name");
 		int color = 4210752;
-		this.fontRendererObj.drawString(s, this.xSize / 2
-				- this.fontRendererObj.getStringWidth(s) / 2, 6, color);
-		this.fontRendererObj.drawString(
-				StatCollector.translateToLocal("container.inventory"), 8,
-				this.ySize - 96 + 2, color);
+		this.fontRendererObj.drawString(s,
+			this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, color);
+		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8,
+			this.ySize - 96 + 2, color);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float par1, int par2,
-			int par3) {
+	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.bindTexture(new ResourceLocation(References.MOD_ID
-				+ ":textures/gui/" + Names.CustomBox + ".png"));
+		this.mc.renderEngine.bindTexture(new ResourceLocation(
+			References.MOD_ID + ":textures/gui/" + Names.CustomBox + ".png"));
 		int x = (this.width - this.xSize) / 2;
 		int y = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);

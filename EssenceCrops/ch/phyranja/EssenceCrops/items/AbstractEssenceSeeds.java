@@ -16,7 +16,7 @@ import ch.phyranja.EssenceCrops.EssenceCrops;
  */
 public abstract class AbstractEssenceSeeds extends Item implements IPlantable{
 	
-	private Block plant;
+	protected Block plant;
     /** BlockID of the block the seeds can be planted on. */
     private Block dirt; // FIXME: unused
     

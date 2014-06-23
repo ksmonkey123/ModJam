@@ -2,11 +2,11 @@ package ch.judos.mcmod.world;
 
 import java.util.Random;
 
-import ch.judos.mcmod.MCMod;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
+import ch.judos.mcmod.MCMod;
 import cpw.mods.fml.common.IWorldGenerator;
 
 @SuppressWarnings("javadoc")
@@ -22,17 +22,17 @@ public class WorldGenerator implements IWorldGenerator {
 			IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
 
 		switch (world.provider.dimensionId) {
-		case -1:
-			genNether(world, random, chunkX, chunkZ);
-			break;
-		case 0:
-			genOverworld(world, random, chunkX, chunkZ);
-			break;
-		case 1:
-			genEnd(world, random, chunkX, chunkZ);
-			break;
-		default:
-			break;
+			case -1:
+				genNether(world, random, chunkX, chunkZ);
+				break;
+			case 0:
+				genOverworld(world, random, chunkX, chunkZ);
+				break;
+			case 1:
+				genEnd(world, random, chunkX, chunkZ);
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -53,8 +53,9 @@ public class WorldGenerator implements IWorldGenerator {
 			int blockX = chunkX * BLOCKS_CHUNK + random.nextInt(BLOCKS_CHUNK);
 			int blockZ = chunkZ * BLOCKS_CHUNK + random.nextInt(BLOCKS_CHUNK);
 			int blockY = random.nextInt(64);
-			
-			new WorldGenMinable(MCMod.oreKryptonit, blockPerVeine).generate(world, random, blockX, blockY, blockZ);
+
+			new WorldGenMinable(MCMod.oreKryptonit, blockPerVeine).generate(world, random, blockX,
+				blockY, blockZ);
 		}
 	}
 
@@ -74,8 +75,10 @@ public class WorldGenerator implements IWorldGenerator {
 			int blockX = chunkX * BLOCKS_CHUNK + random.nextInt(BLOCKS_CHUNK);
 			int blockZ = chunkZ * BLOCKS_CHUNK + random.nextInt(BLOCKS_CHUNK);
 			int blockY = random.nextInt(64);
-			//note: Blocks.end_stone is the block you want to replace, absolutey necessary!
-			new WorldGenMinable(MCMod.oreKryptonit, blockPerVeine,Blocks.end_stone).generate(world, random, blockX, blockY, blockZ);
+			// note: Blocks.end_stone is the block you want to replace,
+			// absolutey necessary!
+			new WorldGenMinable(MCMod.oreKryptonit, blockPerVeine, Blocks.end_stone).generate(
+				world, random, blockX, blockY, blockZ);
 		}
 	}
 
@@ -88,7 +91,7 @@ public class WorldGenerator implements IWorldGenerator {
 	 * @param chunkZ
 	 */
 	private static void genNether(World world, Random random, int chunkX, int chunkZ) {
-		// TODO: nether generation
+		// nothing to generate right now
 	}
 
 }

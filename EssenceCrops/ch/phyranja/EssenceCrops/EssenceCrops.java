@@ -2,10 +2,11 @@ package ch.phyranja.EssenceCrops;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import ch.phyranja.EssenceCrops.items.NeutralEssenceSeed;
-import ch.phyranja.EssenceCrops.lib.CommonProxy;
-import ch.phyranja.EssenceCrops.lib.Names;
-import ch.phyranja.EssenceCrops.lib.References;
+import ch.phyranja.EssenceCrops.items.*;
+import ch.phyranja.EssenceCrops.lib.*;
+import ch.phyranja.EssenceCrops.plants.*;
+import ch.phyranja.EssenceCrops.world.*;
+
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;
@@ -29,6 +30,8 @@ public class EssenceCrops {
 	public static CreativeTabs modTab;
 	
 	public static NeutralEssenceSeed neutralSeed;
+	public static NeutralEssencePlant neutralPlant;
+	public static NeutralEssencePetal neutralPetal;
 
 	@Mod.Instance("essencecrops")
 	public static EssenceCrops instance;
@@ -41,12 +44,27 @@ public class EssenceCrops {
 		System.out.println("PreInit EssenceCrops");
 		createCreativeTab();
 		
+		addPetals();
+		addPlants();
 		addSeeds();
+		
 
 		proxy.registerRenderInformation();
 	}
 	
-	private static void addSeeds() {
+	private void addPetals() {
+		neutralPetal = new NeutralEssencePetal();
+		GameRegistry.registerItem(neutralPetal, Names.NeutralEPetal);
+	}
+
+	private void addPlants() {
+		neutralPlant=new NeutralEssencePlant();
+		GameRegistry.registerBlock(neutralPlant, Names.NeutralEP);
+		
+	}
+
+	private void addSeeds() {
+
 		neutralSeed = new NeutralEssenceSeed();
 		GameRegistry.registerItem(neutralSeed, Names.NeutralES);
 		
