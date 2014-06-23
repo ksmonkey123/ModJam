@@ -8,5 +8,6 @@ public class Names {
 
 	public static final String NeutralES = "neutral_es";
 	public static final String NeutralEP = "neutral_ep";
+	public static final String NeutralEPetal = "neutral_e_petal";
 	
 }

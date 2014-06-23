@@ -14,8 +14,8 @@ public class NeutralEssencePlant extends AbstractEssencePlant {
 
 	
 	public NeutralEssencePlant(){
-		this.setBlockName(Names.NeutralES);
-		this.setBlockTextureName(References.MOD_ID + ":" + Names.NeutralES);
+		this.setBlockName(Names.NeutralEP);
+		this.setBlockTextureName(References.MOD_ID + ":" + Names.NeutralEP);
 	}
 
 	@Override

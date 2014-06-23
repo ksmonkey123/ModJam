@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -27,13 +28,15 @@ public abstract class AbstractEssencePlant extends BlockBush implements IGrowabl
 
     protected AbstractEssencePlant()
     {
+    	
+    	super(Material.plants);
         this.setTickRandomly(true);
         float f = 0.4F;
         this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.25F, 0.5F + f);
         this.setCreativeTab((CreativeTabs)null);
         this.setHardness(0.0F);
         this.setStepSound(soundTypeGrass);
-        this.disableStats();
+        //this.disableStats();
     }
 
     /**
@@ -86,12 +89,18 @@ public abstract class AbstractEssencePlant extends BlockBush implements IGrowabl
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta)
     {
-        if (meta < 0 || meta > 4)
+//        if (meta < 0 || meta > 4)
+//        {
+//            meta = 4;
+//        }
+        
+        if (meta >= this.icon.length)
         {
-            meta = 4;
+            meta = 0;
         }
 
         return this.icon[meta];
+
     }
 
     /**
@@ -99,7 +108,7 @@ public abstract class AbstractEssencePlant extends BlockBush implements IGrowabl
      */
     public int getRenderType()
     {
-        return 6;
+        return 1;
     }
 
     protected Item func_149866_i()
