@@ -34,23 +34,25 @@ public abstract class ATileEntityPlasmaSystem extends GenericTileEntity
 			if (!(this.connectsToPlasmaConnection(plasma, direction) && other
 					.connectsToPlasmaConnection(plasma, opposite)))
 				continue;
-			// calculate particle flow
-			int ownCount = this.getParticleCount(plasma, direction);
-			if (direction == ForgeDirection.UP)
-				ownCount = applyVerticalPressureCalculation(ownCount,
-						(int) this.getParticlesPerBar(plasma, direction));
-			int othCount = other.getParticleCount(plasma, opposite);
-			if (direction == ForgeDirection.DOWN)
-				othCount = applyVerticalPressureCalculation(
-						othCount,
-						(int) other.getParticlesPerBar(plasma,
-								direction.getOpposite()));
+			// calculate virtual particle numbers
+			int ownCount = direction == ForgeDirection.UP ? applyVerticalPressureCalculation(
+					this.getParticleCount(plasma, direction),
+					(int) this.getParticlesPerBar(plasma, direction)) : this
+					.getParticleCount(plasma, direction);
+			int othCount = direction == ForgeDirection.DOWN ? applyVerticalPressureCalculation(
+					other.getParticleCount(plasma, opposite),
+					(int) other.getParticlesPerBar(plasma,
+							direction.getOpposite())) : other.getParticleCount(
+					plasma, opposite);
 			float ownPpB = this.getParticlesPerBar(plasma, direction);
 			float othPpB = other.getParticlesPerBar(plasma, opposite);
+			// calculate transfer amount for balancing the system
 			int dCount = (int) ((othPpB * ownCount - ownPpB * othCount) / (ownPpB + othPpB));
 			// only perform "push" operation (outbound transfers)
 			if (dCount < 0)
 				return;
+			// limit transfer to transfer speed and ensure to not over-drain or
+			// over-fill tanks
 			if (dCount > Properties.PLASMA_TRANSFER_SPEED)
 				dCount = Properties.PLASMA_TRANSFER_SPEED;
 			if (dCount > ownCount)
