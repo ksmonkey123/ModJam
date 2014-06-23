@@ -18,6 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 import ch.phyranja.EssenceCrops.*;
 import ch.phyranja.EssenceCrops.items.NeutralEssenceSeed;
 import ch.phyranja.EssenceCrops.lib.*;
+import ch.phyranja.EssenceCrops.plants.NeutralEssencePlant;
 import ch.phyranja.EssenceCrops.world.*;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -42,6 +43,7 @@ public class EssenceCrops {
 	public static CreativeTabs modTab;
 	
 	public static NeutralEssenceSeed neutralSeed;
+	public static NeutralEssencePlant neutralPlant;
 
 	@Mod.Instance("essencecrops")
 	public static EssenceCrops instance;
@@ -51,11 +53,19 @@ public class EssenceCrops {
 		System.out.println("PreInit EssenceCrops");
 		createCreativeTab();
 		
+		addPlants();
 		addSeeds();
+		
 
 		proxy.registerRenderInformation();
 	}
 	
+	private void addPlants() {
+		neutralPlant=new NeutralEssencePlant();
+		GameRegistry.registerBlock(neutralPlant, Names.NeutralEP);
+		
+	}
+
 	private void addSeeds() {
 		neutralSeed = new NeutralEssenceSeed();
 		GameRegistry.registerItem(neutralSeed, Names.NeutralES);

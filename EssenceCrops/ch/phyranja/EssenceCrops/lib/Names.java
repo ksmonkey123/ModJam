@@ -7,5 +7,6 @@ public class Names {
 	 */
 
 	public static final String NeutralES = "neutral_es";
+	public static final String NeutralEP = "neutral_ep";
 	
 }
