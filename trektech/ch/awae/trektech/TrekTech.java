@@ -95,6 +95,7 @@ public class TrekTech {
 			if (i == plasmaTypes.length) {
 				// FIXME: possible index error?
 			} else {
+                // TODO: retrieve radius from plasma type
 				pipes[i][0] = new BlockPlasmaPipe("pipe" + i, plasmaTypes[i],
 						i == 0 ? 6 : Math.min(Math.max(4, i + 2), 8));
 				pipes[i][1] = new BlockPlasmaPipe("pipe" + i + "c",
