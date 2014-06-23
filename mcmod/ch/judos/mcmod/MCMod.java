@@ -54,6 +54,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * dependencies="required-after:"modid"@["version"]"
  */
 @Mod(modid = References.MOD_ID, version = References.VERSION, name = References.NAME)
+@SuppressWarnings("javadoc")
 public class MCMod {
 
 	/**
