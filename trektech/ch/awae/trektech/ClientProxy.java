@@ -16,6 +16,7 @@ public class ClientProxy extends CommonProxy {
 		TileEntityRendererBlockPipe rend = new TileEntityRendererBlockPipe();
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPlasmaPipe.class, rend);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPlasmaPipeCombined.class, rend);
+		
 	}
 	
 }
