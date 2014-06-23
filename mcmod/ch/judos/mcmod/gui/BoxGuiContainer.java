@@ -15,15 +15,12 @@ import ch.judos.mcmod.lib.References;
  */
 public class BoxGuiContainer extends GuiContainer {
 
-	private BoxTE te; //FIXME: unused
-
 	/**
 	 * @param inventory
 	 * @param te
 	 */
 	public BoxGuiContainer(InventoryPlayer inventory, BoxTE te) {
 		super(new BoxContainer(inventory, te));
-		this.te = te;
 	}
 
 	@Override
