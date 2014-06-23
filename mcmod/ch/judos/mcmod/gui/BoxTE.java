@@ -1,39 +1,48 @@
 package ch.judos.mcmod.gui;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.StatCollector;
+import ch.judos.mcmod.lib.Names;
 import ch.modjam.generic.GenericTileEntity;
 
+/**
+ * @author j
+ */
 public class BoxTE extends GenericTileEntity implements IInventory {
 
-	private ItemStack stack;
+	protected ItemStack[] stack;
 
+	/**
+	 * 
+	 */
 	public BoxTE() {
-		this.stack = null;
+		this.stack = new ItemStack[1];
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return 1;
+		return this.stack.length;
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int var1) {
-		return this.stack;
+	public ItemStack getStackInSlot(int slot) {
+		return this.stack[slot];
 	}
 
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
-		if (slot != 0 || amount <= 0)
+		if (slot < 0 || slot > this.stack.length - 1 || amount <= 0)
 			return null;
-		int realAmount = Math.min(this.stack.stackSize, amount);
-		ItemStack stack = this.stack.copy();
-		this.stack.stackSize -= realAmount;
-		stack.stackSize = realAmount;
-		return stack;
+		int realAmount = Math.min(this.stack[slot].stackSize, amount);
+		ItemStack itemStack = this.stack[slot].copy();
+		this.stack[slot].stackSize -= realAmount;
+		itemStack.stackSize = realAmount;
+		return itemStack;
 	}
 
 	@Override
@@ -44,13 +53,12 @@ public class BoxTE extends GenericTileEntity implements IInventory {
 
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack items) {
-		if (slot == 0)
-			this.stack = items;
+		this.stack[slot] = items;
 	}
 
 	@Override
 	public String getInventoryName() {
-		return "Box";
+		return StatCollector.translateToLocal("tile." + Names.Box + ".name");
 	}
 
 	@Override
@@ -70,37 +78,52 @@ public class BoxTE extends GenericTileEntity implements IInventory {
 
 	@Override
 	public void openInventory() {
+		// not required
 	}
 
 	@Override
 	public void closeInventory() {
+		// not required
 	}
 
 	@Override
-	public boolean isItemValidForSlot(int var1, ItemStack var2) {
-		return this.stack == null || this.stack.getItem().equals(var2.getItem());
+	public boolean isItemValidForSlot(int slot, ItemStack items) {
+		return this.stack[slot] == null || this.stack[slot].getItem().equals(items.getItem());
 	}
 
 	@Override
 	public void tick() {
+		// not required
 	}
 
 	@Override
 	public void writeNBT(NBTTagCompound tag) {
+		tag.setInteger("Slots", this.stack.length);
 		NBTTagList tagList = new NBTTagList();
-		if (this.stack != null) {
-			NBTTagCompound compoundTag = new NBTTagCompound();
-			this.stack.writeToNBT(compoundTag);
-			tagList.appendTag(compoundTag);
+		for (int i = 0; i < this.stack.length; i++) {
+			if (this.stack[i] != null) {
+				NBTTagCompound compoundTag = new NBTTagCompound();
+				this.stack[i].writeToNBT(compoundTag);
+				tagList.appendTag(compoundTag);
+			} else { // write a empty stack incase the slot is empty
+				ItemStack st = new ItemStack(Blocks.dirt, 0);
+				NBTTagCompound compoundTag = new NBTTagCompound();
+				st.writeToNBT(compoundTag);
+				tagList.appendTag(compoundTag);
+			}
 		}
 		tag.setTag("Items", tagList);
 	}
 
 	@Override
 	public void readNBT(NBTTagCompound tag) {
+		this.stack = new ItemStack[tag.getInteger("Slots")];
 		NBTTagList tagList = tag.getTagList("Items", 10);
-		NBTTagCompound compoundTag = tagList.getCompoundTagAt(0);
-		this.stack = ItemStack.loadItemStackFromNBT(compoundTag);
+		for (int i = 0; i < this.stack.length; i++) {
+			NBTTagCompound compoundTag = tagList.getCompoundTagAt(i);
+			this.stack[i] = ItemStack.loadItemStackFromNBT(compoundTag);
+			if (this.stack[i].stackSize == 0)
+				this.stack[i] = null;
+		}
 	}
-
 }

@@ -12,11 +12,21 @@ import ch.awae.trektech.TrekTech;
 import ch.awae.trektech.entities.TileEntityPlasmaSource;
 import ch.awae.trektech.gui.container.ContainerPlasmaSource;
 
-@SuppressWarnings("javadoc")
+/**
+ * Plasma Source GUI
+ * 
+ * @author Andreas Waelchli <andreas.waelchli@me.com>
+ */
 public class GuiPlasmaSource extends GuiContainer {
 
 	private TileEntityPlasmaSource tileEntity;
 
+	/**
+	 * Basic Constructor
+	 * 
+	 * @param inventoryPlayer
+	 * @param tileEntity
+	 */
 	public GuiPlasmaSource(InventoryPlayer inventoryPlayer,
 			TileEntityPlasmaSource tileEntity) {
 		super(new ContainerPlasmaSource(inventoryPlayer, tileEntity));
@@ -30,9 +40,9 @@ public class GuiPlasmaSource extends GuiContainer {
 				this.tileEntity.getInventoryName(), new Object[0]);
 		this.fontRendererObj.drawString(s, this.xSize / 2
 				- this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
-		fontRendererObj.drawString(
+		this.fontRendererObj.drawString(
 				StatCollector.translateToLocal("container.inventory"), 8,
-				ySize - 96 + 2, 4210752);
+				this.ySize - 96 + 2, 4210752);
 	}
 
 	@Override
@@ -41,9 +51,9 @@ public class GuiPlasmaSource extends GuiContainer {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture(new ResourceLocation(TrekTech.MODID
 				+ ":textures/gui/" + "plasmaGen" + ".png"));
-		int x = (width - xSize) / 2;
-		int y = (height - ySize) / 2;
-		this.drawTexturedModalRect(x, y, 0, 0, xSize, ySize);
+		int x = (this.width - this.xSize) / 2;
+		int y = (this.height - this.ySize) / 2;
+		this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
 		int i1;
 		if (this.tileEntity.isBurning()) {
 			i1 = this.tileEntity.getBurnTimeRemainingScaled(12);

@@ -1,25 +1,48 @@
 package ch.awae.trektech.entities;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.TrekTech;
 
-@SuppressWarnings("javadoc")
+/**
+ * TileEntity for the combined Plasma Pipe
+ * 
+ * TODO: merge into TileEntityPlasmaPipe
+ * 
+ * @author Andreas Waelchli <andreas.waelchli@me.com>
+ */
 public class TileEntityPlasmaPipeCombined extends ATileEntityPlasmaSystem
 		implements IPlasmaPipe {
+
+	/**
+	 * Particle amount required to reach 1 bar
+	 */
+	public static final float PARTICLES_PER_BAR = 100f;
 
 	private int currentNeutralPlasma = 0;
 	private int currentLowPlasma = 0;
 	private String texture = "";
 	private float radius = 0;
 
+	/**
+	 * Default Constructor
+	 * 
+	 * @param texture
+	 * @param radius
+	 */
 	public TileEntityPlasmaPipeCombined(String texture, float radius) {
 		this.texture = TrekTech.MODID + ":textures/blocks/" + texture + ".png";
 		this.radius = radius;
 	}
 
+	/**
+	 * Constructor for Entity restoring. Only use if data is restored from NBT
+	 * afterwards!
+	 */
 	public TileEntityPlasmaPipeCombined() {
 	}
 
@@ -29,7 +52,7 @@ public class TileEntityPlasmaPipeCombined extends ATileEntityPlasmaSystem
 		switch (plasma) {
 		case NEUTRAL:
 		case LOW:
-			return 100;
+			return PARTICLES_PER_BAR;
 		default:
 			return 0;
 		}
@@ -48,17 +71,17 @@ public class TileEntityPlasmaPipeCombined extends ATileEntityPlasmaSystem
 	}
 
 	@Override
-	public void applyParticleFlow(EnumPlasmaTypes plasma,
+	public int applyParticleFlow(EnumPlasmaTypes plasma,
 			ForgeDirection direction, int particleCount) {
 		switch (plasma) {
 		case NEUTRAL:
 			this.currentNeutralPlasma += particleCount;
-			break;
+			return particleCount;
 		case LOW:
 			this.currentLowPlasma += particleCount;
-			break;
+			return particleCount;
 		default:
-			break;
+			return 0;
 		}
 	}
 
@@ -134,4 +157,26 @@ public class TileEntityPlasmaPipeCombined extends ATileEntityPlasmaSystem
 		this.currentLowPlasma = tag.getInteger("Low");
 	}
 
+	@Override
+	public boolean onWrench(EntityPlayer player) {
+		if (this.worldObj.isRemote && !player.isSneaking()) {
+			player.addChatMessage(new ChatComponentText("Plasma Type: "
+					+ EnumPlasmaTypes.NEUTRAL.toString()));
+			float pressure = this.currentNeutralPlasma / PARTICLES_PER_BAR;
+			player.addChatMessage(new ChatComponentText(
+					"Current Plasma Pressure: " + pressure + " bar"));
+			player.addChatMessage(new ChatComponentText("Plasma Type: "
+					+ EnumPlasmaTypes.LOW.toString()));
+			pressure = this.currentLowPlasma / PARTICLES_PER_BAR;
+			player.addChatMessage(new ChatComponentText(
+					"Current Plasma Pressure: " + pressure + " bar"));
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public int getMaxAcceptance(EnumPlasmaTypes plasma, ForgeDirection direction) {
+		return Integer.MAX_VALUE;
+	}
 }

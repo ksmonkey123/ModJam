@@ -29,7 +29,11 @@ public class Test {
 	@Instance("Test")
 	public static Test instance;
 
+	/**
+	 * @param event
+	 */
 	@EventHandler
 	public void preInit(FMLInitializationEvent event) {
+		// no actions required atm
 	}
 }

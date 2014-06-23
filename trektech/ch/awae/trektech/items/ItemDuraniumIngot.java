@@ -3,10 +3,17 @@ package ch.awae.trektech.items;
 import ch.awae.trektech.TrekTech;
 import net.minecraft.item.Item;
 
-@SuppressWarnings("javadoc")
-public class DuraniumIngot extends Item {
+/**
+ * Duranium Ingot
+ * 
+ * @author Andreas Waelchli <andreas.waelchli@me.com>
+ */
+public class ItemDuraniumIngot extends Item {
 
-    public DuraniumIngot() {
+	/**
+	 * Basic Constructor
+	 */
+    public ItemDuraniumIngot() {
         setMaxStackSize(64);
         setUnlocalizedName("duraniumIngot");
         setTextureName(TrekTech.MODID + ":duranium_ingot");

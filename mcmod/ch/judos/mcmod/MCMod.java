@@ -20,6 +20,8 @@ import ch.judos.mcmod.customrender.BlockCarvedDirt;
 import ch.judos.mcmod.customrender.TECarvedDirt;
 import ch.judos.mcmod.gui.Box;
 import ch.judos.mcmod.gui.BoxTE;
+import ch.judos.mcmod.gui.CustomBox;
+import ch.judos.mcmod.gui.CustomBoxTE;
 import ch.judos.mcmod.gui.GuiHandler;
 import ch.judos.mcmod.handlers.FillBucketHandler;
 import ch.judos.mcmod.handlers.FuelHandler;
@@ -50,7 +52,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * if you need to add dependencies, add the following in the @Mod() tag:<br>
  * dependencies="required-after:"modid"@["version"]"
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "boxing"})
 @Mod(modid = References.MOD_ID, version = References.VERSION, name = References.NAME)
 public class MCMod {
 
@@ -94,7 +96,11 @@ public class MCMod {
 
 	// Custom Gui
 	public static Box box; // the block
+	public static CustomBox customBox;
 
+	/**
+	 * @param e 
+	 */
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
 		createCreativeTab();
@@ -112,16 +118,20 @@ public class MCMod {
 		proxy.registerRenderInformation();
 	}
 
-	private void addBlockWithCustomGui() {
+	private static void addBlockWithCustomGui() {
 		box = new Box();
 		GameRegistry.registerBlock(box, Names.Box);
 		GameRegistry.registerTileEntity(BoxTE.class, "tile_" + Names.Box);
+
+		customBox = new CustomBox();
+		GameRegistry.registerBlock(customBox, Names.CustomBox);
+		GameRegistry.registerTileEntity(CustomBoxTE.class, "tile_" + Names.CustomBox);
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 
 	}
 
-	private void addArmor() {
+	private static void addArmor() {
 		armorSlimeMaterial = EnumHelper.addArmorMaterial("slimy", 5, new int[] { 0, 0, 0, 2 }, 10);
 		itemSlimyBoots = new ItemSlimyBoots();
 		GameRegistry.registerItem(itemSlimyBoots, Names.SlimyBoots);
@@ -132,7 +142,7 @@ public class MCMod {
 			Items.slime_ball, Items.slime_ball);
 	}
 
-	private void addPotion() {
+	private static void addPotion() {
 		// adds the effect of a custom potion to any living entity who currently
 		// has the effect on it
 		MinecraftForge.EVENT_BUS.register(new OnEntityLivingHook());
@@ -141,7 +151,7 @@ public class MCMod {
 		GameRegistry.registerItem(itemPotionTest, Names.PotionTest);
 	}
 
-	private void addDirtShovel() {
+	private static void addDirtShovel() {
 		itemDirtShovel = new ItemDirtShovel();
 		GameRegistry.registerItem(itemDirtShovel, Names.DirtShovel);
 		GameRegistry.addShapedRecipe(new ItemStack(itemDirtShovel, 2), "XX ", "XI ", "  I", 'X',
@@ -150,7 +160,7 @@ public class MCMod {
 			Blocks.planks, 'I', Items.stick);
 	}
 
-	private void addCarvedDirtCustomRenderingBlock() {
+	private static void addCarvedDirtCustomRenderingBlock() {
 		blockCarvedDirt = new BlockCarvedDirt();
 		teCarvedDirt = TECarvedDirt.class;
 
@@ -158,7 +168,7 @@ public class MCMod {
 		GameRegistry.registerTileEntity(teCarvedDirt, "tile_" + Names.CarvedDirt);
 	}
 
-	private void addSmelting() {
+	private static void addSmelting() {
 		GameRegistry.addSmelting(oreKryptonit, new ItemStack(itemKryptonit, 1), 5);
 
 		fuelHandler = new FuelHandler();
@@ -167,7 +177,7 @@ public class MCMod {
 
 	}
 
-	private void addKryptonitOre() {
+	private static void addKryptonitOre() {
 		oreKryptonit = new BlockKryptoniteOre();
 		GameRegistry.registerWorldGenerator(new WorldGenerator(), 0);
 		GameRegistry.registerBlock(oreKryptonit, Names.KryptonitBlock);
@@ -176,7 +186,7 @@ public class MCMod {
 		GameRegistry.registerItem(itemKryptonit, Names.KryptonitItem);
 	}
 
-	private void createTarFluidAndBucket() {
+	private static void createTarFluidAndBucket() {
 		tarFluid = new FluidTar();
 		FluidRegistry.registerFluid(tarFluid);
 
@@ -195,7 +205,7 @@ public class MCMod {
 		MinecraftForge.EVENT_BUS.register(FillBucketHandler.INSTANCE);
 	}
 
-	private void createCreativeTab() {
+	private static void createCreativeTab() {
 		modTab = new CreativeTabs("MCMod") {
 			@Override
 			@SideOnly(Side.CLIENT)
@@ -217,12 +227,12 @@ public class MCMod {
 		};
 	}
 
-	private void addObsidianStick() {
+	private static void addObsidianStick() {
 		itemObsidianStick = new ItemObsidianStick();
 		GameRegistry.registerItem(itemObsidianStick, Names.OStick);
 	}
 
-	private void addBoneRecipies() {
+	private static void addBoneRecipies() {
 		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1), Items.porkchop);
 		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1), Items.cooked_porkchop);
 		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1), Items.beef);

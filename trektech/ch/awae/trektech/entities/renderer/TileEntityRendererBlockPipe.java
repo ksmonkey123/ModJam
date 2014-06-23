@@ -11,13 +11,17 @@ import org.lwjgl.opengl.GL11;
 
 import ch.awae.trektech.entities.IPlasmaPipe;
 
-@SuppressWarnings("javadoc")
+/**
+ * Pipe Renderer
+ * 
+ * @author Andreas Waelchli <andreas.waelchli@me.com>
+ */
 public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 
 	int texturesPerRow = 4;
 
-	float pixel = 1F / 16F;
-	float textp = 1F / 16F;
+	static float pixel = 1F / 16F;
+	static float textp = 1F / 16F;
 
 	@Override
 	public void renderTileEntityAt(TileEntity ent, double transX,
@@ -41,7 +45,7 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 				if (dir == ForgeDirection.UNKNOWN)
 					continue;
 				if (t.connectsTo(dir)) {
-					this.renderConnection(texX, texY, rad, dir);
+					renderConnection(texX, texY, rad, dir);
 				}
 			}
 		}
@@ -50,24 +54,21 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 		GL11.glTranslated(-transX - 0.5, -transY - 0.5, -transZ - 0.5);
 	}
 
-	private void renderCore(float texX, float texY, float rad) {
+	private static void renderCore(float texX, float texY, float rad) {
 		Tessellator t = Tessellator.instance;
-		// SIDES
 		for (int i = 0; i < 4; i++) {
-			this.renderCap(t, texX, texY, rad, rad);
+			renderCap(t, texX, texY, rad, rad);
 			GL11.glRotated(90, 0, 1, 0);
 		}
 		GL11.glRotated(90, 1, 0, 0);
-		this.renderCap(t, texX, texY, rad, rad);
+		renderCap(t, texX, texY, rad, rad);
 		GL11.glRotated(180, 1, 0, 0);
-		this.renderCap(t, texX, texY, rad, rad);
+		renderCap(t, texX, texY, rad, rad);
 		GL11.glRotated(90, 1, 0, 0);
-		// FINISH
 	}
 
-	private void renderConnection(float texX, float texY, float rad,
+	private static void renderConnection(float texX, float texY, float rad,
 			ForgeDirection dir) {
-		
 		GL11.glPushMatrix();
 		// rotate in place
 		switch (dir) {
@@ -92,28 +93,27 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 		Tessellator t = Tessellator.instance;
 		// draw end cap
 		GL11.glRotated(90, 0, 1, 0); // rotate to north
-		this.renderCap(t, texX, texY, rad, 8);
+		renderCap(t, texX, texY, rad, 8);
 		GL11.glRotated(90, 0, -1, 0); // rotate to west
 		// draw beams
 		for (int i = 0; i < 4; i++) {
-			this.renderBeam(t, texX, texY, rad);
+			renderBeam(t, texX, texY, rad);
 			GL11.glRotated(90, 1, 0, 0);
 		}
-		
-		GL11.glPopMatrix();// finish: rotate back
-		
+		GL11.glPopMatrix();
+
 	}
 
 	/**
-	 * renders a cap offset by <tt>-rad</tt> on the z axis facing (0, 0, 1)
+	 * renders a cap offset by <tt>-rad</tt> on the z axis facing (0, 0, 1) 8
 	 * 
 	 * @param t
 	 * @param texX
 	 * @param texY
 	 * @param rad
 	 */
-	private void renderCap(Tessellator t, float texX, float texY, float rad,
-			float offset) {
+	private static void renderCap(Tessellator t, float texX, float texY,
+			float rad, float offset) {
 		t.startDrawingQuads();
 		t.addVertexWithUV(-rad * pixel, -rad * pixel, -offset * pixel, texX
 				+ (8 + rad) * textp, texY + (8 + rad) * textp);
@@ -134,7 +134,8 @@ public class TileEntityRendererBlockPipe extends TileEntitySpecialRenderer {
 	 * @param texY
 	 * @param rad
 	 */
-	private void renderBeam(Tessellator t, float texX, float texY, float rad) {
+	private static void renderBeam(Tessellator t, float texX, float texY,
+			float rad) {
 		t.startDrawingQuads();
 		t.addVertexWithUV(-8 * pixel, -rad * pixel, -rad * pixel, texX + 16
 				* textp, texY + (8 + rad) * textp);

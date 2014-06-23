@@ -22,9 +22,13 @@ public class Properties {
 	public static Item WRENCH;
 
 	/**
-	 * The Pressure drop-off in ascending pipes. The value describes the
-	 * pressure of a pipe relative to the pipe below, given the system is
-	 * balanced.
+	 * The Pressure drop-off in ascending pipes depending on the lower pipe
+	 * pressure
 	 */
-	public static final float VERTICAL_PRESSURE_GRADIENT = 0.9f;
+	public static final float VERTICAL_PRESSURE_GRADIENT = 0.95f;
+	
+	/**
+	 * The flat pressure drop-off in ascending pipes
+	 */
+	public static final float VERTICAL_PRESSURE_ARGUMENT = 0.01f;
 }

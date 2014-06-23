@@ -20,14 +20,17 @@ public class TECarvedDirt extends GenericTileEntity implements IConnecting,
 
 	@Override
 	public void tick() {
+		// not required
 	}
 
 	@Override
 	public void writeNBT(NBTTagCompound tag) {
+		// nothing to save
 	}
 
 	@Override
 	public void readNBT(NBTTagCompound tag) {
+		// nothing to restore
 	}
 
 	public static String getTexture() {

@@ -10,3 +10,4 @@ item.potion_test.name=Test Potion
 item.slimy_boots.name=Slimy Boots
 
 tile.box.name=A Box
+tile.custom_box.name=A custom box

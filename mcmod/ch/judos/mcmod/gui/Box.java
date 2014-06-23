@@ -5,6 +5,7 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -13,8 +14,14 @@ import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
 
+/**
+ * @author j
+ */
 public class Box extends BlockContainer {
 
+	/**
+	 * 
+	 */
 	public Box() {
 		super(Material.ground);
 
@@ -22,7 +29,6 @@ public class Box extends BlockContainer {
 		this.setBlockName(Names.Box);
 		this.setBlockTextureName(References.MOD_ID + ":" + Names.Box);
 		this.setHardness(1f);
-		// this.setHarvestLevel("pickaxe", 0);
 	}
 
 	@Override
@@ -37,12 +43,17 @@ public class Box extends BlockContainer {
 		if (tileEntity == null || player.isSneaking())
 			return false;
 
-		player.openGui(MCMod.instance, References.GUI_BOX, world, x, y, z);
+		player.openGui(MCMod.instance, getGuiIndex(), world, x, y, z);
 		return true;
 	}
 
+	protected int getGuiIndex() {
+		return References.GUI_BOX;
+	}
+
+	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-		BoxTE te = (BoxTE) world.getTileEntity(x, y, z);
+		IInventory te = (IInventory) world.getTileEntity(x, y, z);
 		if (te != null) {
 			for (int i1 = 0; i1 < te.getSizeInventory(); ++i1) {
 				ItemStack itemstack = te.getStackInSlot(i1);

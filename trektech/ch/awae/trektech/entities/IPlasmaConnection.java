@@ -44,8 +44,9 @@ public interface IPlasmaConnection {
 	 *            the side to apply the change to
 	 * @param particleCount
 	 *            the amount to change by
+	 * @return the actual change
 	 */
-	public void applyParticleFlow(EnumPlasmaTypes plasma,
+	public int applyParticleFlow(EnumPlasmaTypes plasma,
 			ForgeDirection direction, int particleCount);
 
 	/**
@@ -77,5 +78,15 @@ public interface IPlasmaConnection {
 	 */
 	public boolean setParticleCount(EnumPlasmaTypes plasma,
 			ForgeDirection direction, int count);
+
+	/**
+	 * Indicates the maximum amount of plasma the entity can accept In case no
+	 * limit exists, this method should return <tt>Integer.MAX_VALUE</tt>
+	 * 
+	 * @param plasma
+	 * @param direction
+	 * @return the maximim amount of plasma to be accepted
+	 */
+	public int getMaxAcceptance(EnumPlasmaTypes plasma, ForgeDirection direction);
 
 }

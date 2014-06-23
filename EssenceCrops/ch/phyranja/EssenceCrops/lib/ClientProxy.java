@@ -1,11 +1,13 @@
 package ch.phyranja.EssenceCrops.lib;
 
-import ch.phyranja.EssenceCrops.EssenceCrops;
-import net.minecraft.item.Item;
-import net.minecraftforge.client.MinecraftForgeClient;
-import cpw.mods.fml.client.registry.ClientRegistry;
-
-@SuppressWarnings("javadoc")
+/**
+ * @author phyranja
+ */
 public class ClientProxy extends CommonProxy {
+	
+	@Override
+	public void registerRenderInformation() {
+		// no renderers present currently
+	}
 	
 }

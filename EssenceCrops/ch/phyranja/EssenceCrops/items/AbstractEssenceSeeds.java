@@ -1,9 +1,7 @@
 package ch.phyranja.EssenceCrops.items;
 
-import ch.phyranja.EssenceCrops.EssenceCrops;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
@@ -11,17 +9,24 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
+import ch.phyranja.EssenceCrops.EssenceCrops;
 
+/**
+ * @author phyranja
+ */
 public abstract class AbstractEssenceSeeds extends Item implements IPlantable{
 	
 	protected Block plant;
     /** BlockID of the block the seeds can be planted on. */
-    private Block dirt;
+    private Block dirt; // FIXME: unused
     
+    /**
+     */
     public AbstractEssenceSeeds(){
     	this.setCreativeTab(EssenceCrops.modTab);
     }
 
+	@Override
 	public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int par7, float par8, float par9, float par10)
     {
         if (par7 != 1)
@@ -32,14 +37,11 @@ public abstract class AbstractEssenceSeeds extends Item implements IPlantable{
         {
             if (world.getBlock(x, y, z).canSustainPlant(world, x, y, z, ForgeDirection.UP, this) && world.isAirBlock(x, y + 1, z))
             {
-                world.setBlock(x, y + 1, z, plant);
+                world.setBlock(x, y + 1, z, this.plant);
                 --itemStack.stackSize;
                 return true;
             }
-            else
-            {
-                return false;
-            }
+			return false;
         }
         else
         {
@@ -56,7 +58,7 @@ public abstract class AbstractEssenceSeeds extends Item implements IPlantable{
     @Override
     public Block getPlant(IBlockAccess world, int x, int y, int z)
     {
-        return plant;
+        return this.plant;
     }
 
     @Override

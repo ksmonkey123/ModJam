@@ -36,12 +36,20 @@ public class WorldGenerator implements IWorldGenerator {
 		}
 	}
 
-	private void genOverworld(World world, Random random, int chunkX, int chunkZ) {
-		
+	/**
+	 * generate in overworld
+	 * 
+	 * @param world
+	 * @param random
+	 * @param chunkX
+	 * @param chunkZ
+	 */
+	private static void genOverworld(World world, Random random, int chunkX, int chunkZ) {
+
 		int veines = 50;
 		int blockPerVeine = 10;
-		
-		for(int i=0;i<veines;i++) {
+
+		for (int i = 0; i < veines; i++) {
 			int blockX = chunkX * BLOCKS_CHUNK + random.nextInt(BLOCKS_CHUNK);
 			int blockZ = chunkZ * BLOCKS_CHUNK + random.nextInt(BLOCKS_CHUNK);
 			int blockY = random.nextInt(64);
@@ -50,11 +58,19 @@ public class WorldGenerator implements IWorldGenerator {
 		}
 	}
 
-	private void genEnd(World world, Random random, int chunkX, int chunkZ) {
+	/**
+	 * generate in end
+	 * 
+	 * @param world
+	 * @param random
+	 * @param chunkX
+	 * @param chunkZ
+	 */
+	private static void genEnd(World world, Random random, int chunkX, int chunkZ) {
 		int veines = 50;
 		int blockPerVeine = 10;
-		
-		for(int i=0;i<veines;i++) {
+
+		for (int i = 0; i < veines; i++) {
 			int blockX = chunkX * BLOCKS_CHUNK + random.nextInt(BLOCKS_CHUNK);
 			int blockZ = chunkZ * BLOCKS_CHUNK + random.nextInt(BLOCKS_CHUNK);
 			int blockY = random.nextInt(64);
@@ -63,7 +79,16 @@ public class WorldGenerator implements IWorldGenerator {
 		}
 	}
 
-	private void genNether(World world, Random random, int chunkX, int chunkZ) {
+	/**
+	 * generate in nether
+	 * 
+	 * @param world
+	 * @param random
+	 * @param chunkX
+	 * @param chunkZ
+	 */
+	private static void genNether(World world, Random random, int chunkX, int chunkZ) {
+		// TODO: nether generation
 	}
 
 }

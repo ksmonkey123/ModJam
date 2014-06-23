@@ -6,14 +6,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
-import ch.awae.trektech.blocks.BlockPlasmaSource;
 import ch.modjam.generic.BlockGenericDualStateDirected;
 import ch.modjam.generic.EnumFace;
 
-@SuppressWarnings("javadoc")
-public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements IInventory {
+/**
+ * Tile Entity for the plasma source
+ * 
+ * @author Andreas Waelchli <andreas.waelchli@me.com>
+ */
+public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
+		IInventory {
 
 	private static final int PLASMA_PER_TICK = 5;
 	private static final int PLASMA_PER_BAR = 1000;
@@ -39,10 +44,10 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements I
 		if (slot != 0 || amount <= 0)
 			return null;
 		int realAmount = Math.min(this.stack.stackSize, amount);
-		ItemStack stack = this.stack.copy();
+		ItemStack itemStack = this.stack.copy();
 		this.stack.stackSize -= realAmount;
-		stack.stackSize = realAmount;
-		return stack;
+		itemStack.stackSize = realAmount;
+		return itemStack;
 	}
 
 	@Override
@@ -73,15 +78,18 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements I
 
 	@Override
 	public void openInventory() {
+		// not required
 	}
 
 	@Override
 	public void closeInventory() {
+		// not required
 	}
 
 	@Override
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {
-		return this.stack == null || this.stack.getItem().equals(var2.getItem());
+		return this.stack == null
+				|| this.stack.getItem().equals(var2.getItem());
 	}
 
 	@Override
@@ -100,12 +108,13 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements I
 	private void refuel() {
 		int value = this.getFuelValue();
 		if (value <= 0 || this.stack.stackSize <= 0 || this.stack == null) {
-			if (BlockPlasmaSource.isActive(this.getBlockMetadata()))
+			if (BlockGenericDualStateDirected.isActive(this.getBlockMetadata()))
 				this.updateBlock(false);
 		} else {
 			this.currentItemBurnTime = this.currentItemRemainingTime = value;
 			this.stack.stackSize--;
-			if (!BlockPlasmaSource.isActive(this.getBlockMetadata()))
+			if (!BlockGenericDualStateDirected
+					.isActive(this.getBlockMetadata()))
 				this.updateBlock(true);
 		}
 		if (this.stack != null && this.stack.stackSize <= 0) {
@@ -114,7 +123,8 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements I
 	}
 
 	private void updateBlock(boolean newState) {
-		BlockPlasmaSource.setActive(newState, this.worldObj, this.xCoord, this.yCoord, this.zCoord);
+		BlockGenericDualStateDirected.setActive(newState, this.worldObj,
+				this.xCoord, this.yCoord, this.zCoord);
 	}
 
 	private int getFuelValue() {
@@ -139,7 +149,6 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements I
 	public void readNBT(NBTTagCompound tag) {
 		this.currentItemBurnTime = tag.getInteger("CurrentTotal");
 		this.currentItemRemainingTime = tag.getInteger("CurrentRemain");
-		// FIXME: 10 is a magical number, what does it mean? Thx for clarifying
 		NBTTagList nbttaglist = tag.getTagList("Items", 10);
 		NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(0);
 		this.stack = ItemStack.loadItemStackFromNBT(nbttagcompound1);
@@ -151,14 +160,35 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements I
 		return "container.plasmaSource";
 	}
 
+	/**
+	 * @return true if the source is burning, false otherwise
+	 */
 	public boolean isBurning() {
 		return this.currentItemRemainingTime > 0;
 	}
 
+	/**
+	 * determines the current burn time scaled so that the maximum burn time
+	 * corresponds to <tt>h</tt>.
+	 * 
+	 * @param h
+	 *            the max height
+	 * @return the scaled burn time
+	 */
 	public int getBurnTimeRemainingScaled(int h) {
-		return currentItemBurnTime == 0 ? 0 : ((h * currentItemRemainingTime) / currentItemBurnTime);
+		return this.currentItemBurnTime == 0 ? 0
+				: ((h * this.currentItemRemainingTime) / this.currentItemBurnTime);
 	}
 
+	/**
+	 * determines the current plasma pressure level.
+	 * 
+	 * @param pixelPerBar
+	 *            the number of pixels a bar should correspond to
+	 * @param maxPixel
+	 *            the maximum amount of pixels
+	 * @return the scaled plasma pressure
+	 */
 	public int getPlasmaLevelScaled(int pixelPerBar, int maxPixel) {
 		int pixels = this.currentPlasma * pixelPerBar / PLASMA_PER_BAR;
 		if (pixels > maxPixel)
@@ -167,36 +197,64 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements I
 	}
 
 	@Override
-	public float getParticlesPerBar(EnumPlasmaTypes plasma, ForgeDirection direction) {
+	public float getParticlesPerBar(EnumPlasmaTypes plasma,
+			ForgeDirection direction) {
 		return plasma == EnumPlasmaTypes.NEUTRAL ? PLASMA_PER_BAR : 0;
 	}
 
 	@Override
 	public int getParticleCount(EnumPlasmaTypes plasma, ForgeDirection direction) {
-		return (this.connectsToPlasmaConnection(plasma, direction)) ? this.currentPlasma : 0;
+		return (this.connectsToPlasmaConnection(plasma, direction)) ? this.currentPlasma
+				: 0;
 	}
 
 	@Override
-	public void applyParticleFlow(EnumPlasmaTypes plasma, ForgeDirection direction,
-			int particleCount) {
-		if (connectsToPlasmaConnection(plasma, direction))
+	public int applyParticleFlow(EnumPlasmaTypes plasma,
+			ForgeDirection direction, int particleCount) {
+		if (connectsToPlasmaConnection(plasma, direction)) {
 			this.currentPlasma += particleCount;
-
+			return particleCount;
+		}
+		return 0;
 	}
 
 	@Override
-	public boolean connectsToPlasmaConnection(EnumPlasmaTypes plasma, ForgeDirection direction) {
-		return plasma == EnumPlasmaTypes.NEUTRAL && BlockGenericDualStateDirected
-			.getFaceDirectionForMeta(EnumFace.BACK, this.getBlockMetadata()) == direction
-			.getOpposite();
+	public boolean connectsToPlasmaConnection(EnumPlasmaTypes plasma,
+			ForgeDirection direction) {
+		return plasma == EnumPlasmaTypes.NEUTRAL
+				&& BlockGenericDualStateDirected.getFaceDirectionForMeta(
+						EnumFace.BACK, this.getBlockMetadata()) == direction
+						.getOpposite();
 	}
 
 	@Override
-	public boolean setParticleCount(EnumPlasmaTypes plasma, ForgeDirection direction, int count) {
+	public boolean setParticleCount(EnumPlasmaTypes plasma,
+			ForgeDirection direction, int count) {
 		if (this.connectsToPlasmaConnection(plasma, direction)) {
 			this.currentPlasma = count;
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public boolean onWrench(EntityPlayer player) {
+		if (!player.isSneaking()) {
+			if (this.worldObj.isRemote) {
+				String pressure = (this.currentPlasma / (float) PLASMA_PER_BAR)
+						+ "";
+				if (pressure.length() > 4)
+					pressure = pressure.substring(0, 4);
+				player.addChatMessage(new ChatComponentText(
+						"Current Plasma Pressure: " + pressure + " bar"));
+			}
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public int getMaxAcceptance(EnumPlasmaTypes plasma, ForgeDirection direction) {
+		return Integer.MAX_VALUE;
 	}
 }

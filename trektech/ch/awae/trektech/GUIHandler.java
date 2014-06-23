@@ -23,9 +23,11 @@ public class GUIHandler implements IGuiHandler {
 						(TileEntityPlasmaSource) tileEntity);
 			}
 		}
+			break;
 		default:
 			return null;
 		}
+		return null;
 	}
 
 	@Override
@@ -39,8 +41,10 @@ public class GUIHandler implements IGuiHandler {
 						(TileEntityPlasmaSource) tileEntity);
 			}
 		}
+			break;
 		default:
 			return null;
 		}
+		return null;
 	}
 }

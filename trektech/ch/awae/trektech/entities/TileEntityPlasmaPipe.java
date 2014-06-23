@@ -8,10 +8,17 @@ import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.TrekTech;
 
-@SuppressWarnings("javadoc")
+/**
+ * Tile Entity for the pipe system
+ * 
+ * @author Andreas Waelchli <andreas.waelchli@me.com>
+ */
 public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
-		IPlasmaPipe, IWrenchable {
+		IPlasmaPipe {
 
+	/**
+	 * Particle amount required to reach 1 bar
+	 */
 	public static final float PARTICLES_PER_BAR = 100f;
 
 	private int currentPlasma = 0;
@@ -19,6 +26,13 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 	private String texture;
 	private float radius;
 
+	/**
+	 * Default constructor for TE construction
+	 * 
+	 * @param plasma
+	 * @param texture
+	 * @param radius
+	 */
 	public TileEntityPlasmaPipe(EnumPlasmaTypes plasma, String texture,
 			float radius) {
 		this.plasmaType = plasma;
@@ -26,6 +40,10 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 		this.radius = radius;
 	}
 
+	/**
+	 * Generic constructor for TE reconstruction from Save-File Only use this
+	 * constructor when data is restored from NBT afterwards!
+	 */
 	public TileEntityPlasmaPipe() {
 		this.plasmaType = EnumPlasmaTypes.NEUTRAL;
 		this.radius = 0;
@@ -67,10 +85,13 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 	}
 
 	@Override
-	public void applyParticleFlow(EnumPlasmaTypes plasma,
+	public int applyParticleFlow(EnumPlasmaTypes plasma,
 			ForgeDirection direction, int particleCount) {
-		if (plasma == this.plasmaType)
+		if (plasma == this.plasmaType) {
 			this.currentPlasma += particleCount;
+			return particleCount;
+		}
+		return 0;
 	}
 
 	@Override
@@ -113,15 +134,20 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 
 	@Override
 	public boolean onWrench(EntityPlayer player) {
-		if (worldObj.isRemote) {
+		if (this.worldObj.isRemote && !player.isSneaking()) {
 			player.addChatMessage(new ChatComponentText("Plasma Type: "
 					+ this.plasmaType.toString()));
 			float pressure = this.currentPlasma / PARTICLES_PER_BAR;
-			player.addChatMessage(new ChatComponentText("Plasma Level: "
-					+ pressure + " bar"));
+			player.addChatMessage(new ChatComponentText(
+					"Current Plasma Pressure: " + pressure + " bar"));
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public int getMaxAcceptance(EnumPlasmaTypes plasma, ForgeDirection direction) {
+		return Integer.MAX_VALUE;
 	}
 
 }
