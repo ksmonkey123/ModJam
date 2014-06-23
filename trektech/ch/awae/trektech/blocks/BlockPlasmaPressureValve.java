@@ -28,7 +28,7 @@ public class BlockPlasmaPressureValve extends BlockContainer {
 	 */
 	public BlockPlasmaPressureValve(String id, EnumPlasmaTypes plasmaType) {
 		super(Material.rock);
-		setBlockTextureName(TrekTech.MODID + ":machine_basic");
+		setBlockTextureName(TrekTech.MODID + ":" + id);
 		setBlockName(id);
 		setCreativeTab(TrekTech.tabCustom);
 		this.plasmaType = plasmaType;

@@ -103,11 +103,12 @@ public class TrekTech {
 				GameRegistry.registerBlock(pipes[i][0], "pipe" + i);
 				GameRegistry.registerBlock(pipes[i][1], "pipe" + i + "c");
 				addEncasingRecipe(i);
+				// TODO: dynamically create valves
 			}
 		}
 
 		GameRegistry.registerBlock(blockPlasmaSource, "plasmaSource");
-		GameRegistry.registerBlock(blockPlasmaValve, "valve1");
+		GameRegistry.registerBlock(blockPlasmaValve, "valve1"); // temporary
 		// ENTITIES
 		GameRegistry.registerTileEntity(TileEntityPlasmaPipe.class,
 				"tilePlasmaPipe");
