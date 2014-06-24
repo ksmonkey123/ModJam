@@ -11,3 +11,5 @@ item.slimy_boots.name=Slimy Boots
 
 tile.box.name=A Box
 tile.custom_box.name=A custom box
+
+item.bound_heart.name=Bound Heart
