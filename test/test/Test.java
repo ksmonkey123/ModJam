@@ -1,39 +1,34 @@
 package test;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
+import net.minecraft.block.Block;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SuppressWarnings("javadoc")
-@Mod(modid = Test.MODID, version = Test.VERSION, name = Test.MODID)
+@Mod(modid = Test.MODID, version = Test.VERSION)
 public class Test {
+	public static final String MODID = "examplemod";
+	public static final String VERSION = "1.0";
 
-	public static final String MODID = "Test";
-	public static final String VERSION = "0.1";
+	public static SimpleNetworkWrapper NETWORK;
 
-	public static CreativeTabs tabCustom = new CreativeTabs("tabTest") {
+	public static Block packetTest = new BlockPacketTest();
 
-		@Override
-		@SideOnly(Side.CLIENT)
-		public Item getTabIconItem() {
-			return Items.diamond;
-		}
-	};
-
-	@Instance("Test")
-	public static Test instance;
-
-	/**
-	 * @param event
-	 */
 	@EventHandler
-	public void preInit(FMLInitializationEvent event) {
-		// no actions required atm
+	public void preInit(FMLPreInitializationEvent event) {
+		GameRegistry.registerBlock(packetTest, "packetTest");
 	}
+
+	@EventHandler
+	public void init(FMLInitializationEvent event) {
+		NETWORK = new SimpleNetworkWrapper("Generic");
+		NETWORK.registerMessage(TestMessageServerHandler.class,
+				TestMessage.class, 0, Side.SERVER);
+	}
+
 }
