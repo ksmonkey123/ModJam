@@ -3,6 +3,7 @@ package test;
 import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 
+@SuppressWarnings("javadoc")
 public class TestMessage implements IMessage {
 
 	public String data;
@@ -23,7 +24,7 @@ public class TestMessage implements IMessage {
 				this.data += buf.readChar();
 			}
 		} catch (IndexOutOfBoundsException ex) {
-			System.out.println("message deconstruction finished");
+			// indicates EOL
 		}
 	}
 
