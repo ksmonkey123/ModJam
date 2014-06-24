@@ -9,7 +9,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import ch.judos.mcmod.MCMod;
@@ -69,13 +68,22 @@ public class BoundHeart extends Item {
 
 				String t = Thread.currentThread().getName();
 
-				System.out.println(t + ": origin:" + heartOriginName + "(" + heartOrigin
-					.getHealth() + ") current:" + currentName + "(" + current.getHealth() + ")");
+				// System.out.println(t + ": origin:" + heartOriginName + "(" +
+				// heartOrigin
+				// .getHealth() + ") current:" + currentName + "(" +
+				// current.getHealth() + ")");
 
-				if (current.getHealth() < heartOrigin.getHealth() - 1) {
-					heartOrigin.attackEntityFrom(DamageSource.magic, 0.5f);
-					current.attackEntityFrom(DamageSource.magic, -0.5f);
+				if (current.getHealth() <= 10 && current.getHealth() < heartOrigin.getHealth() - 3) {
+					heartOrigin.heal(-0.5f);
+					current.heal(0.5f);
+
 				}
+
+				// if (current instanceof EntityPlayer) {
+				// EntityPlayer curP = (EntityPlayer) current;
+				// XXX: i could do something with the hunger here as well
+				// System.out.println(curP.getFoodStats().getFoodLevel());
+				// }
 			}
 		}
 	}
