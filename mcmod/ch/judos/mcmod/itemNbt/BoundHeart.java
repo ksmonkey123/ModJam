@@ -50,6 +50,9 @@ public class BoundHeart extends Item {
 
 	@Override
 	public void onUpdate(ItemStack item, World world, Entity entity, int slot, boolean heldInHand) {
+		if (world.isRemote)
+			return;
+
 		if (entity instanceof EntityLivingBase) {
 			if (item.stackTagCompound != null) {
 				String heartOriginName = item.stackTagCompound.getString("owner");
