@@ -35,7 +35,7 @@ public class Test {
 
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
-		NETWORK = new SimpleNetworkWrapper("Generic");
+		NETWORK = new SimpleNetworkWrapper("Test");
 		NETWORK.registerMessage(TestMessageServerHandler.class, TestMessage.class, 0, Side.SERVER);
 	}
 

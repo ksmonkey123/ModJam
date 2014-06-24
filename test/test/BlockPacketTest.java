@@ -8,6 +8,7 @@ import ch.awae.trektech.TrekTech;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
+@SuppressWarnings("javadoc")
 public class BlockPacketTest extends Block {
 
 	public BlockPacketTest() {
