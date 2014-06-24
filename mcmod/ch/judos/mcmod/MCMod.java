@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fluids.Fluid;
@@ -25,6 +26,7 @@ import ch.judos.mcmod.gui.CustomBoxTE;
 import ch.judos.mcmod.gui.GuiHandler;
 import ch.judos.mcmod.handlers.FillBucketHandler;
 import ch.judos.mcmod.handlers.FuelHandler;
+import ch.judos.mcmod.itemNbt.BoundHeart;
 import ch.judos.mcmod.itemblockfluids.BlockFluidTar;
 import ch.judos.mcmod.itemblockfluids.BlockKryptoniteOre;
 import ch.judos.mcmod.itemblockfluids.FluidTar;
@@ -102,6 +104,9 @@ public class MCMod {
 	public static Box box; // the block
 	public static CustomBox customBox;
 
+	// Items with NBT
+	public static BoundHeart boundHeart;
+
 	/**
 	 * @param e
 	 */
@@ -119,13 +124,21 @@ public class MCMod {
 		addPotion();
 		addArmor();
 		addBlockWithCustomGui();
+		addItemWithNBTData();
 
 		proxy.registerRenderInformation();
 	}
 
+	private void addItemWithNBTData() {
+		this.boundHeart = new BoundHeart();
+		GameRegistry.registerItem(this.boundHeart, Names.BoundHeart);
+		GameRegistry.addShapelessRecipe(new ItemStack(this.boundHeart), new ItemStack(Items.skull,
+			1, 3));
+	}
+
 	private void setMetaData(ModMetadata m) {
 		m.modId = References.MOD_ID;
-		m.name = "§2" + References.NAME;
+		m.name = EnumChatFormatting.GREEN + References.NAME;
 		m.description = "A scrambled assembly line of tutorial informational implementation content.";
 		m.version = References.VERSION;
 		m.authorList.add("judos (judos@gmx.ch)");

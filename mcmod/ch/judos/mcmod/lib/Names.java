@@ -20,4 +20,5 @@ public class Names {
 	public static final String SlimyBoots = "slimy_boots";
 	public static final String Box = "box";
 	public static final String CustomBox = "custom_box";
+	public static final String BoundHeart = "bound_heart";
 }
