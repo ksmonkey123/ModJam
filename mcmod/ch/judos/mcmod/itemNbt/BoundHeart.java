@@ -56,6 +56,10 @@ public class BoundHeart extends Item {
 				MinecraftServer s = MinecraftServer.getServer();
 				EntityPlayer heartOrigin = s.getConfigurationManager().getPlayerForUsername(
 					heartOriginName);
+				if (heartOrigin == null) {
+					System.out.println("No origin found for heart (name: " + heartOriginName + ")");
+					return;
+				}
 
 				EntityLivingBase current = (EntityLivingBase) entity;
 				String currentName = current.getCommandSenderName();
