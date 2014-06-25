@@ -1,14 +1,18 @@
 itemGroup.tabTrekTech=TrekTech
 
 tile.duraniumWall.name=Duranium Wall
+
 tile.pipe0.name=Plasma Pipe (Neutral Plasma)
 tile.pipe1.name=EPS Conduit Mk. 1 (Low Power)
 tile.pipe2.name=EPS Conduit Mk. 2 (Medium Power)
 tile.pipe3.name=EPS Conduit Mk. 3 (High Power)
+
 tile.pipe0c.name=Duranium Encased Plasma Pipe
 tile.pipe1c.name=Duranium Encased EPS Conduit Mk. 1
 tile.pipe2c.name=Duranium Encased EPS Conduit Mk. 2
 tile.pipe3c.name=Duranium Encased EPS Conduit Mk. 3
+
+tile.valve0.name=Plasma Pressure Valve
 
 tile.plasmaSource.name=Exothermic Plasma Ionizer
 

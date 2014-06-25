@@ -9,10 +9,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import ch.awae.trektech.blocks.BlockDuraniumWall;
 import ch.awae.trektech.blocks.BlockPlasmaPipe;
-import ch.awae.trektech.blocks.BlockPlasmaPressureValve;
+import ch.awae.trektech.blocks.BlockPlasmaValve;
 import ch.awae.trektech.blocks.BlockPlasmaSource;
 import ch.awae.trektech.entities.TileEntityPlasmaPipe;
-import ch.awae.trektech.entities.TileEntityPlasmaPressureValve;
+import ch.awae.trektech.entities.TileEntityPlasmaValve;
 import ch.awae.trektech.entities.TileEntityPlasmaSource;
 import ch.awae.trektech.items.ItemDuraniumIngot;
 import ch.awae.trektech.items.ItemDilithiumCrystal;
@@ -65,7 +65,7 @@ public class TrekTech {
 
 	public static Block blockDuraniumWall = new BlockDuraniumWall();
 	public static Block blockPlasmaSource = new BlockPlasmaSource();
-	public static Block blockPlasmaValve = new BlockPlasmaPressureValve(
+	public static Block blockPlasmaValve = new BlockPlasmaValve(
 			"valve1", EnumPlasmaTypes.NEUTRAL);
 
 	public static Block[][] pipes = new Block[EnumPlasmaTypes.values().length][2];
@@ -100,7 +100,7 @@ public class TrekTech {
 			GameRegistry.registerBlock(pipes[i][0], "pipe" + i);
 			GameRegistry.registerBlock(pipes[i][1], "pipe" + i + "c");
 			addEncasingRecipe(i);
-			valves[i] = new BlockPlasmaPressureValve("valve" + i,
+			valves[i] = new BlockPlasmaValve("valve" + i,
 					plasmaType);
 			addValveRecipe(i);
 			GameRegistry.registerBlock(valves[i], "valve" + i);
@@ -112,7 +112,7 @@ public class TrekTech {
 				"tilePlasmaPipe");
 		GameRegistry.registerTileEntity(TileEntityPlasmaSource.class,
 				"tilePlasmaSource");
-		GameRegistry.registerTileEntity(TileEntityPlasmaPressureValve.class,
+		GameRegistry.registerTileEntity(TileEntityPlasmaValve.class,
 				"tilePlasmaValve");
 		// RECIPES
 		registerRecipes();
