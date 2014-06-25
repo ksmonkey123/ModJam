@@ -28,15 +28,19 @@ public class Test {
 		GameRegistry.registerBlock(packetTest, "packetTest");
 	}
 
-	private void setMetaData(ModMetadata modMetadata) {
+	private static void setMetaData(ModMetadata modMetadata) {
 		modMetadata.modId = MODID;
 		modMetadata.name = NAME;
 	}
 
+	/**
+	 * @param event
+	 */
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		NETWORK = new SimpleNetworkWrapper("Test");
-		NETWORK.registerMessage(TestMessageServerHandler.class, TestMessage.class, 0, Side.SERVER);
+		NETWORK.registerMessage(TestMessageServerHandler.class,
+				TestMessage.class, 0, Side.SERVER);
 	}
 
 }

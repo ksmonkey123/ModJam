@@ -2,6 +2,7 @@ package ch.modjam.generic.networking;
 
 import java.io.IOException;
 
+import ch.modjam.generic.GenericTileEntity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
@@ -19,6 +20,7 @@ public class NBTMessage implements IMessage {
 	private int xCoord;
 	private int yCoord;
 	private int zCoord;
+	private int dimens;
 	private NBTTagCompound nbt;
 
 	/**
@@ -31,6 +33,8 @@ public class NBTMessage implements IMessage {
 	/**
 	 * constructor for message construction
 	 * 
+	 * @param te
+	 *            the tile entity to update
 	 * @param xCoord
 	 *            the x coordinate of the tile entity
 	 * @param yCoord
@@ -40,16 +44,19 @@ public class NBTMessage implements IMessage {
 	 * @param nbt
 	 *            the NBT data of the tile entity
 	 */
-	public NBTMessage(int xCoord, int yCoord, int zCoord, NBTTagCompound nbt) {
+	public NBTMessage(GenericTileEntity te) {
 		super();
-		this.xCoord = xCoord;
-		this.yCoord = yCoord;
-		this.zCoord = zCoord;
-		this.nbt = nbt;
+		this.xCoord = te.xCoord;
+		this.yCoord = te.yCoord;
+		this.zCoord = te.zCoord;
+		this.dimens = te.getWorldObj().provider.dimensionId;
+		this.nbt = new NBTTagCompound();
+		te.writeToNBT(this.nbt);
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf) {
+		this.dimens = buf.readInt();
 		S35PacketUpdateTileEntity packet = new S35PacketUpdateTileEntity();
 		try {
 			packet.readPacketData(new PacketBuffer(buf));
@@ -64,6 +71,7 @@ public class NBTMessage implements IMessage {
 
 	@Override
 	public void toBytes(ByteBuf buf) {
+		buf.writeInt(this.dimens);
 		S35PacketUpdateTileEntity packet = new S35PacketUpdateTileEntity(
 				this.xCoord, this.yCoord, this.zCoord, 1, this.nbt);
 		PacketBuffer pb = new PacketBuffer(buf);
@@ -74,6 +82,39 @@ public class NBTMessage implements IMessage {
 		}
 	}
 
-	
-	
+	/**
+	 * @return the xCoord
+	 */
+	public int getXCoord() {
+		return this.xCoord;
+	}
+
+	/**
+	 * @return the yCoord
+	 */
+	public int getYCoord() {
+		return this.yCoord;
+	}
+
+	/**
+	 * @return the zCoord
+	 */
+	public int getZCoord() {
+		return this.zCoord;
+	}
+
+	/**
+	 * @return the dimension id
+	 */
+	public int getDimension() {
+		return this.dimens;
+	}
+
+	/**
+	 * @return the nbt
+	 */
+	public NBTTagCompound getNbt() {
+		return this.nbt;
+	}
+
 }

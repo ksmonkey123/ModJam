@@ -1,5 +1,6 @@
 package ch.modjam.generic;
 
+import ch.modjam.generic.networking.CommandMessage;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -62,5 +63,54 @@ public abstract class GenericTileEntity extends TileEntity {
 	 * @param tag
 	 */
 	public abstract void readNBT(NBTTagCompound tag);
+
+	/**
+	 * Sends a command to the server-side tile entity. Use client side only.
+	 * server-side usage will be ignored.
+	 * 
+	 * @param command
+	 *            the command to send
+	 * @param data
+	 *            additional data for the command
+	 */
+	public final void sendNetworkCommand(String command, byte... data) {
+		if (!this.worldObj.isRemote)
+			return;
+		CommandMessage message = new CommandMessage(this, command, data);
+		GenericMod.NETWORK.sendToServer(message);
+	}
+	
+	/**
+	 * forces the server to send the server-side TileEntity to all clients to ensure syncing
+	 */
+	public final void forceNetworkUpdate() {
+		this.sendNetworkCommand("");
+	}
+
+	/**
+	 * This method is invoked on a server-side network update. The tag contains
+	 * the server's TileEntity data. The default behavior is to apply the NBT
+	 * data to the Entity.
+	 * 
+	 * @param tag
+	 */
+	public void onNetworkUpdate(NBTTagCompound tag) {
+		this.readFromNBT(tag);
+	}
+
+	/**
+	 * This method is invoked server-side whenever a network command is
+	 * received. After the completion of execution of this method, the
+	 * server-side tileEntity NBT data is sent to all clients for
+	 * Synchronization.
+	 * 
+	 * @param command
+	 *            the command string identifying the command
+	 * @param data
+	 *            additional command data
+	 */
+	public void onNetworkCommand(String command, byte[] data) {
+		// empty ensures compatibility. may be required in future versions
+	}
 
 }

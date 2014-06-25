@@ -24,7 +24,7 @@ public class BlockPacketTest extends Block {
 			System.out.println("sending message");
 			Test.NETWORK.sendToServer(new TestMessage("Hello World"));
 		}
-		return false;
+		return true;
 	}
 
 }

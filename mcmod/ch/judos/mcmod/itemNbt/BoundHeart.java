@@ -28,7 +28,7 @@ public class BoundHeart extends Item {
 		this.setCreativeTab(MCMod.modTab);
 		this.setUnlocalizedName(Names.BoundHeart);
 		this.setTextureName(References.MOD_ID + ":" + Names.BoundHeart);
-		// this.setMaxStackSize(1); //XXX: i guess this is needed
+		// this.setMaxStackSize(1); //XXX: i guess this is needed [annot. awae: yes, default is 64]
 	}
 
 	@Override
