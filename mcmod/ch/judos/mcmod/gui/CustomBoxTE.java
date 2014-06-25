@@ -2,6 +2,9 @@ package ch.judos.mcmod.gui;
 
 import java.util.Arrays;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import ch.judos.mcmod.lib.Names;
@@ -20,8 +23,7 @@ public class CustomBoxTE extends BoxTE {
 
 	@Override
 	public String getInventoryName() {
-		return StatCollector.translateToLocal("tile." + Names.CustomBox
-				+ ".name");
+		return StatCollector.translateToLocal("tile." + Names.CustomBox + ".name");
 	}
 
 	/**
@@ -44,6 +46,16 @@ public class CustomBoxTE extends BoxTE {
 			System.out.println("TE has " + this.stack.length + " slots");
 			this.markDirty();
 		}
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+		return new CustomBoxContainer(inventory, this);
+	}
+
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+		return new CustomBoxGuiContainer(inventory, this);
 	}
 
 }

@@ -1,7 +1,10 @@
 package ch.judos.mcmod.gui;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,11 +12,12 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import ch.judos.mcmod.lib.Names;
 import ch.modjam.generic.tileEntity.GenericTileEntity;
+import ch.modjam.generic.tileEntity.IHasGui;
 
 /**
  * @author j
  */
-public class BoxTE extends GenericTileEntity implements IInventory {
+public class BoxTE extends GenericTileEntity implements IInventory, IHasGui {
 
 	protected ItemStack[] stack;
 
@@ -125,5 +129,15 @@ public class BoxTE extends GenericTileEntity implements IInventory {
 			if (this.stack[i].stackSize == 0)
 				this.stack[i] = null;
 		}
+	}
+
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+		return new BoxGuiContainer(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+		return new BoxContainer(inventory, this);
 	}
 }

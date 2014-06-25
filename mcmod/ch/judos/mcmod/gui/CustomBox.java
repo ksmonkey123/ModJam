@@ -24,9 +24,4 @@ public class CustomBox extends Box {
 		return new CustomBoxTE();
 	}
 
-	@Override
-	protected int getGuiIndex() {
-		return References.GUI_CUSTOM_BOX;
-	}
-
 }
