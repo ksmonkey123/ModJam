@@ -46,8 +46,8 @@ public class WorldGenerator implements IWorldGenerator {
 	 */
 	private static void genOverworld(World world, Random random, int chunkX, int chunkZ) {
 
-		int veines = 50;
-		int blockPerVeine = 10;
+		int veines = 2;
+		int blockPerVeine = 5;
 
 		for (int i = 0; i < veines; i++) {
 			int blockX = chunkX * BLOCKS_CHUNK + random.nextInt(BLOCKS_CHUNK);
