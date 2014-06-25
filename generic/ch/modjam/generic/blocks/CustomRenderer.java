@@ -1,4 +1,4 @@
-package ch.modjam.generic;
+package ch.modjam.generic.blocks;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;

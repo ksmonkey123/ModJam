@@ -9,8 +9,8 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
-import ch.modjam.generic.BlockGenericDualStateDirected;
-import ch.modjam.generic.EnumFace;
+import ch.modjam.generic.blocks.BlockGenericDualStateDirected;
+import ch.modjam.generic.blocks.EnumFace;
 
 /**
  * Tile Entity for the plasma source

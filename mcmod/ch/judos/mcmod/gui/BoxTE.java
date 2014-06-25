@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
 import ch.judos.mcmod.lib.Names;
-import ch.modjam.generic.GenericTileEntity;
+import ch.modjam.generic.tileEntity.GenericTileEntity;
 
 /**
  * @author j

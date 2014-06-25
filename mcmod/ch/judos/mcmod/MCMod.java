@@ -20,6 +20,7 @@ import ch.judos.mcmod.armor.ItemSlimyBoots;
 import ch.judos.mcmod.customrender.BlockCarvedDirt;
 import ch.judos.mcmod.customrender.TECarvedDirt;
 import ch.judos.mcmod.gui.Box;
+import ch.judos.mcmod.gui.BoxItem;
 import ch.judos.mcmod.gui.BoxTE;
 import ch.judos.mcmod.gui.CustomBox;
 import ch.judos.mcmod.gui.CustomBoxTE;
@@ -148,7 +149,7 @@ public class MCMod {
 
 	private static void addBlockWithCustomGui() {
 		box = new Box();
-		GameRegistry.registerBlock(box, Names.Box);
+		GameRegistry.registerBlock(box, BoxItem.class, Names.Box);
 		GameRegistry.registerTileEntity(BoxTE.class, "tile_" + Names.Box);
 
 		customBox = new CustomBox();

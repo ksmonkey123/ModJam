@@ -2,7 +2,7 @@ package ch.awae.trektech.entities;
 
 import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.Properties;
-import ch.modjam.generic.GenericTileEntity;
+import ch.modjam.generic.tileEntity.GenericTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 

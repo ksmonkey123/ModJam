@@ -8,7 +8,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
-import ch.modjam.generic.GenericTileEntity;
+import ch.modjam.generic.tileEntity.GenericTileEntity;
 
 @SuppressWarnings("javadoc")
 public class TECarvedDirt extends GenericTileEntity implements IConnecting,

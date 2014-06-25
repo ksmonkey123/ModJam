@@ -1,6 +1,6 @@
 package ch.modjam.generic.networking;
 
-import ch.modjam.generic.GenericTileEntity;
+import ch.modjam.generic.tileEntity.GenericTileEntity;
 import io.netty.buffer.ByteBuf;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 

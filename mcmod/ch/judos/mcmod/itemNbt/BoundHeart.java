@@ -28,7 +28,7 @@ public class BoundHeart extends Item {
 		this.setCreativeTab(MCMod.modTab);
 		this.setUnlocalizedName(Names.BoundHeart);
 		this.setTextureName(References.MOD_ID + ":" + Names.BoundHeart);
-		// this.setMaxStackSize(1); //XXX: i guess this is needed [annot. awae: yes, default is 64]
+		this.setMaxStackSize(2);
 	}
 
 	@Override
@@ -43,7 +43,12 @@ public class BoundHeart extends Item {
 	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {
 		if (itemStack.stackTagCompound != null) {
 			String owner = itemStack.stackTagCompound.getString("owner");
-			list.add(EnumChatFormatting.GREEN + "owner: " + owner);
+			list.add(EnumChatFormatting.GREEN + "Owner: " + owner);
+
+			MinecraftServer s = MinecraftServer.getServer();
+			EntityPlayer heartOrigin = s.getConfigurationManager().getPlayerForUsername(owner);
+			if (heartOrigin == null)
+				list.add(EnumChatFormatting.RED + "Player not found or not online.");
 		}
 	}
 
@@ -58,20 +63,12 @@ public class BoundHeart extends Item {
 				MinecraftServer s = MinecraftServer.getServer();
 				EntityPlayer heartOrigin = s.getConfigurationManager().getPlayerForUsername(
 					heartOriginName);
-				if (heartOrigin == null) {
-					System.out.println("No origin found for heart (name: " + heartOriginName + ")");
+				if (heartOrigin == null)
 					return;
-				}
 
 				EntityLivingBase current = (EntityLivingBase) entity;
-				String currentName = current.getCommandSenderName();
-
-				String t = Thread.currentThread().getName();
-
-				// System.out.println(t + ": origin:" + heartOriginName + "(" +
-				// heartOrigin
-				// .getHealth() + ") current:" + currentName + "(" +
-				// current.getHealth() + ")");
+				// String currentName = current.getCommandSenderName();
+				// String t = Thread.currentThread().getName();
 
 				if (current.getHealth() <= 10 && current.getHealth() < heartOrigin.getHealth() - 3) {
 					heartOrigin.heal(-0.5f);

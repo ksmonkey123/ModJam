@@ -1,7 +1,8 @@
-package ch.modjam.generic;
+package ch.modjam.generic.tileEntity;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ch.modjam.generic.GenericMod;
 import ch.modjam.generic.networking.CommandMessage;
 import ch.modjam.generic.networking.NBTMessage;
 import net.minecraft.nbt.NBTTagCompound;
