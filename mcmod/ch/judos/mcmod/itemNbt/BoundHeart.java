@@ -73,7 +73,6 @@ public class BoundHeart extends Item {
 				if (current.getHealth() <= 10 && current.getHealth() < heartOrigin.getHealth() - 3) {
 					heartOrigin.heal(-0.5f);
 					current.heal(0.5f);
-
 				}
 
 				// if (current instanceof EntityPlayer) {
