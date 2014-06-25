@@ -4,7 +4,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import ch.modjam.generic.GenericMod;
 import ch.modjam.generic.networking.CommandMessage;
-import ch.modjam.generic.networking.NBTMessage;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -47,6 +46,7 @@ public abstract class GenericTileEntity extends TileEntity {
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
 		this.readFromNBT(pkt.func_148857_g());
+		System.out.println("duba");
 	}
 
 	/**
@@ -78,8 +78,11 @@ public abstract class GenericTileEntity extends TileEntity {
 	 */
 	@SideOnly(Side.CLIENT)
 	public final void sendNetworkCommand(String command, byte... data) {
-		CommandMessage message = new CommandMessage(this, command, data);
-		GenericMod.NETWORK.sendToServer(message);
+		System.out.println("test");
+		if (this.worldObj.isRemote) {
+			CommandMessage message = new CommandMessage(this, command, data);
+			GenericMod.NETWORK.sendToServer(message);
+		}
 	}
 
 	/**
@@ -87,22 +90,12 @@ public abstract class GenericTileEntity extends TileEntity {
 	 * ensure syncing
 	 */
 	public final void forceNetworkUpdate() {
+		System.out.println("force");
 		if (this.worldObj.isRemote)
 			this.sendNetworkCommand("");
 		else
-			GenericMod.NETWORK.sendToAll(new NBTMessage(this));
-	}
-
-	/**
-	 * This method is invoked on a server-side network update. The tag contains
-	 * the server's TileEntity data. The default behavior is to apply the NBT
-	 * data to the Entity. <b>do not use this method server-side</b>
-	 * 
-	 * @param tag
-	 */
-	@SideOnly(Side.CLIENT)
-	public void onNetworkUpdate(NBTTagCompound tag) {
-		this.readFromNBT(tag);
+			this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord,
+					this.zCoord);
 	}
 
 	/**
@@ -116,7 +109,6 @@ public abstract class GenericTileEntity extends TileEntity {
 	 * @param data
 	 *            additional command data
 	 */
-	@SideOnly(Side.SERVER)
 	public void onNetworkCommand(String command, byte[] data) {
 		// empty ensures compatibility. may be required in future versions
 	}

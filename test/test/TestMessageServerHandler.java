@@ -10,7 +10,7 @@ public class TestMessageServerHandler implements
 
 	@Override
 	public IMessage onMessage(TestMessage message, MessageContext ctx) {
-		System.out.println("Data Received: " + message.data);
+		System.out.println("Data Received: " + message.data + " (" + ctx.side + ")");
 		return null;
 	}
 }
