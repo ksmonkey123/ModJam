@@ -8,6 +8,4 @@ public class References {
 	public static final String Common = "ch.judos.mcmod.lib.CommonProxy";
 	public static final String Client = "ch.judos.mcmod.lib.ClientProxy";
 
-	public static final int GUI_CUSTOM_BOX = 1;
-
 }
