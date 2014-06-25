@@ -4,6 +4,7 @@ import ch.modjam.generic.networking.CommandMessage;
 import ch.modjam.generic.networking.CommandMessageServerHandler;
 import ch.modjam.generic.networking.NBTMessage;
 import ch.modjam.generic.networking.NBTMessageClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -40,10 +41,12 @@ public class GenericMod {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		NETWORK = new SimpleNetworkWrapper("Generic");
-		NETWORK.registerMessage(CommandMessageServerHandler.class,
-				CommandMessage.class, 0, Side.SERVER);
-		NETWORK.registerMessage(NBTMessageClientHandler.class,
-				NBTMessage.class, 1, Side.CLIENT);
+		if (FMLCommonHandler.instance().getSide() == Side.SERVER)
+			NETWORK.registerMessage(CommandMessageServerHandler.class,
+					CommandMessage.class, 0, Side.SERVER);
+		else
+			NETWORK.registerMessage(NBTMessageClientHandler.class,
+					NBTMessage.class, 0, Side.CLIENT);
 
 	}
 }

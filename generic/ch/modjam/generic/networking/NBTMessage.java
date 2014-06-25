@@ -17,10 +17,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
  */
 public class NBTMessage implements IMessage {
 
-	private int xCoord;
-	private int yCoord;
-	private int zCoord;
-	private int dimens;
+	private int xCoord, yCoord, zCoord, dimens;
 	private NBTTagCompound nbt;
 
 	/**

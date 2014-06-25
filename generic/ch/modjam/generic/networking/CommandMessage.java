@@ -6,7 +6,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 
 /**
  * This message type is used to send commands from a client to the server.
- * Commands are identified over their TileEntity and a discri
+ * Commands are identified over their TileEntity
  * 
  * @author Andreas Waelchli <andreas.waelchli@me.com>
  */
