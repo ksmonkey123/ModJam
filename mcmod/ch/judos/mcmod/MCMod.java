@@ -28,6 +28,7 @@ import ch.judos.mcmod.gui.GuiHandler;
 import ch.judos.mcmod.handlers.FillBucketHandler;
 import ch.judos.mcmod.handlers.FuelHandler;
 import ch.judos.mcmod.itemNbt.BoundHeart;
+import ch.judos.mcmod.itemNbt.HeartCrafting;
 import ch.judos.mcmod.itemblockfluids.BlockFluidTar;
 import ch.judos.mcmod.itemblockfluids.BlockKryptoniteOre;
 import ch.judos.mcmod.itemblockfluids.FluidTar;
@@ -135,6 +136,7 @@ public class MCMod {
 		GameRegistry.registerItem(this.boundHeart, Names.BoundHeart);
 		GameRegistry.addShapelessRecipe(new ItemStack(this.boundHeart), new ItemStack(Items.skull,
 			1, 3));
+		GameRegistry.addRecipe(new HeartCrafting());
 	}
 
 	private void setMetaData(ModMetadata m) {

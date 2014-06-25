@@ -2,6 +2,7 @@ package ch.judos.mcmod.itemNbt;
 
 import java.util.List;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -45,9 +46,18 @@ public class BoundHeart extends Item {
 			String owner = itemStack.stackTagCompound.getString("owner");
 			list.add(EnumChatFormatting.GREEN + "Owner: " + owner);
 
-			MinecraftServer s = MinecraftServer.getServer();
-			EntityPlayer heartOrigin = s.getConfigurationManager().getPlayerForUsername(owner);
-			if (heartOrigin == null)
+			List entities = Minecraft.getMinecraft().theWorld.playerEntities;
+			boolean exists = false;
+			for (Object x : entities) {
+				if (x instanceof EntityPlayer) {
+					EntityPlayer xPlayer = (EntityPlayer) x;
+					if (xPlayer.getCommandSenderName().equals(owner)) {
+						exists = true;
+						break;
+					}
+				}
+			}
+			if (!exists)
 				list.add(EnumChatFormatting.RED + "Player not found or not online.");
 		}
 	}
@@ -75,13 +85,42 @@ public class BoundHeart extends Item {
 					current.heal(0.5f);
 				}
 
-				// if (current instanceof EntityPlayer) {
-				// EntityPlayer curP = (EntityPlayer) current;
-				// XXX: i could do something with the hunger here as well
-				// System.out.println(curP.getFoodStats().getFoodLevel());
-				// }
+				if (current instanceof EntityPlayer) {
+					EntityPlayer curP = (EntityPlayer) current;
+					int syncSlot = 0;
+
+					ItemStack curI = curP.inventory.mainInventory[syncSlot];
+					ItemStack remoteI = heartOrigin.inventory.mainInventory[syncSlot];
+
+					remoteI = transfer(curI, remoteI);
+					curI = transfer(remoteI, curI);
+
+					curP.inventory.mainInventory[syncSlot] = curI;
+					heartOrigin.inventory.mainInventory[syncSlot] = remoteI;
+
+					// XXX: i could do something with the hunger here as well
+					// System.out.println(curP.getFoodStats().getFoodLevel());
+				}
 			}
 		}
+	}
+
+	private ItemStack transfer(ItemStack a, ItemStack b) {
+		if (a == null)
+			return b;
+		if (b == null) {
+			b = a.copy();
+			b.stackSize /= 2;
+			a.stackSize -= b.stackSize;
+		}
+		if (a.isItemEqual(b)) {
+			int move = (a.stackSize - b.stackSize) / 2;
+			b.stackSize += move;
+			a.stackSize -= move;
+		}
+		if (b.stackSize == 0)
+			b = null;
+		return b;
 	}
 
 }
