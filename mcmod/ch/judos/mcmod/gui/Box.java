@@ -42,13 +42,9 @@ public class Box extends BlockContainer {
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
 		if (tileEntity == null || player.isSneaking())
 			return false;
-
-		player.openGui(MCMod.instance, getGuiIndex(), world, x, y, z);
+		final int dontCare = 0; // gui is determined by tileEntity, not by this id
+		player.openGui(MCMod.instance, dontCare, world, x, y, z);
 		return true;
-	}
-
-	protected int getGuiIndex() {
-		return References.GUI_BOX;
 	}
 
 	@Override
