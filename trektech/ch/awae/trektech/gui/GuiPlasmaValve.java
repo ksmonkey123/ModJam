@@ -1,5 +1,7 @@
 package ch.awae.trektech.gui;
 
+import java.awt.Color;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -8,10 +10,9 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
+import ch.awae.trektech.TrekTech;
 import ch.awae.trektech.entities.TileEntityPlasmaValve;
 import ch.awae.trektech.gui.container.ContainerPlasmaValve;
-import ch.judos.mcmod.lib.Names;
-import ch.judos.mcmod.lib.References;
 
 /**
  * @author awae
@@ -43,24 +44,27 @@ public class GuiPlasmaValve extends GuiContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int param1, int param2) {
-		String s = StatCollector.translateToLocal("tile.valve0.name");
-		int color = 4210752;
+		String s = StatCollector.translateToLocal(this.tileEntity
+				.getWorldObj()
+				.getBlock(this.tileEntity.xCoord, this.tileEntity.yCoord,
+						this.tileEntity.zCoord).getUnlocalizedName()
+				+ ".name");
+		int color = Color.darkGray.darker().hashCode();
 		this.fontRendererObj.drawString(s, this.xSize / 2
 				- this.fontRendererObj.getStringWidth(s) / 2, 6, color);
 		this.fontRendererObj.drawString(
 				StatCollector.translateToLocal("container.inventory"), 8,
 				this.ySize - 96 + 2, color);
 		this.fontRendererObj.drawString(this.tileEntity.getPressureThreshold()
-				+ "", (this.width - this.xSize) / 2 + 120,
-				(this.height - this.ySize) / 2 + 40, color);
+				+ "", 100, 47, color);
 	}
 
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2,
 			int par3) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		this.mc.renderEngine.bindTexture(new ResourceLocation(References.MOD_ID
-				+ ":textures/gui/" + Names.Box + ".png"));
+		this.mc.renderEngine.bindTexture(new ResourceLocation(TrekTech.MODID
+				+ ":textures/gui/generic.png"));
 		int x = (this.width - this.xSize) / 2;
 		int y = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
