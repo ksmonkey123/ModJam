@@ -1,36 +1,40 @@
 package ch.judos.mcmod.itemNbt;
 
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
+import ch.judos.mcmod.MCMod;
+import ch.modjam.generic.RecipiesCrafting;
 
 /**
  * @author judos
+ * 
  */
-public class HeartCrafting implements IRecipe {
+public class HeartCrafting extends RecipiesCrafting {
 
 	@Override
-	public boolean matches(InventoryCrafting var1, World var2) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean matches(InventoryCrafting inventory, World world) {
+		return isItemPresent(inventory, new ItemStack(MCMod.boundHeart)) && isItemPresent(
+			inventory, Items.diamond_sword);
 	}
 
 	@Override
-	public ItemStack getCraftingResult(InventoryCrafting var1) {
-		// TODO Auto-generated method stub
-		return null;
+	public ItemStack getCraftingResult(InventoryCrafting inventory) {
+		ItemStack heart = getItemStackFor(inventory, MCMod.boundHeart).copy();
+		int up = heart.stackTagCompound.getInteger("upgrade") + 1;
+		heart.stackTagCompound.setInteger("upgrade", up);
+		return heart;
 	}
 
 	@Override
 	public int getRecipeSize() {
-		return 1;
+		return 2;
 	}
 
 	@Override
 	public ItemStack getRecipeOutput() {
-		// TODO Auto-generated method stub
-		return null;
+		return null; // return new ItemStack(MCMod.boundHeart);
 	}
 
 }

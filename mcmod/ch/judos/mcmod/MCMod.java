@@ -16,6 +16,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.RecipeSorter;
 import ch.judos.mcmod.armor.ItemSlimyBoots;
 import ch.judos.mcmod.customrender.BlockCarvedDirt;
 import ch.judos.mcmod.customrender.TECarvedDirt;
@@ -137,6 +138,8 @@ public class MCMod {
 		GameRegistry.addShapelessRecipe(new ItemStack(this.boundHeart), new ItemStack(Items.skull,
 			1, 3));
 		GameRegistry.addRecipe(new HeartCrafting());
+		RecipeSorter.register("mcmod:shapeless", HeartCrafting.class,
+			RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 	}
 
 	private void setMetaData(ModMetadata m) {

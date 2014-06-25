@@ -34,8 +34,10 @@ public class BoundHeart extends Item {
 
 	@Override
 	public void onCreated(ItemStack itemStack, World world, EntityPlayer player) {
-		itemStack.stackTagCompound = new NBTTagCompound();
-		itemStack.stackTagCompound.setString("owner", player.getCommandSenderName());
+		if (itemStack.stackTagCompound == null) {
+			itemStack.stackTagCompound = new NBTTagCompound();
+			itemStack.stackTagCompound.setString("owner", player.getCommandSenderName());
+		}
 	}
 
 	/**
@@ -45,6 +47,9 @@ public class BoundHeart extends Item {
 		if (itemStack.stackTagCompound != null) {
 			String owner = itemStack.stackTagCompound.getString("owner");
 			list.add(EnumChatFormatting.GREEN + "Owner: " + owner);
+			if (itemStack.stackTagCompound.hasKey("upgrade"))
+				list.add(EnumChatFormatting.GREEN + "Upgrades installed: " + itemStack.stackTagCompound
+					.getInteger("upgrade"));
 
 			List entities = Minecraft.getMinecraft().theWorld.playerEntities;
 			boolean exists = false;

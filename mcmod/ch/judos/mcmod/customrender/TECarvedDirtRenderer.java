@@ -29,8 +29,8 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity ent, double transX,
-			double transY, double transZ, float f) {
+	public void renderTileEntityAt(TileEntity ent, double transX, double transY, double transZ,
+			float f) {
 		if (!(ent instanceof TECarvedDirt))
 			return;
 		TECarvedDirt t = (TECarvedDirt) ent;
@@ -91,8 +91,7 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 			if (!con.contains(d)) {
 				renderer.quad(-0.5, -0.5, -0.5, 1, 1, Side.FRONT);
 				// inside dirt
-				renderer
-					.quad(-0.5 + t, +0.5 - t, -0.5 + t, t, t, Side.BACK, 13);
+				renderer.quad(-0.5 + t, +0.5 - t, -0.5 + t, t, t, Side.BACK, 13);
 			} else {
 				// side dirt
 				renderer.quad(-0.5 + t, +0.5 - t, -0.5, t, t, Side.LEFT, 13);
@@ -105,6 +104,7 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 			renderer.end();
 			GL11.glRotated(90, 0, 1, 0);
 		}
+
 		renderer.quad(-0.5, -0.5, -0.5, 1, 1, Side.BOTTOM);
 	}
 
@@ -164,8 +164,8 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 				double y = 0.5;
 				if (arr[x][z])
 					y = 0.5 - CARVE_DEPTH;
-				renderer.quad(+0.5 - t - x * t, y, +0.5 - t - z * t, t, t,
-					Side.TOP, tileNr, rotation);
+				renderer.quad(+0.5 - t - x * t, y, +0.5 - t - z * t, t, t, Side.TOP, tileNr,
+					rotation);
 			}
 		}
 	}
