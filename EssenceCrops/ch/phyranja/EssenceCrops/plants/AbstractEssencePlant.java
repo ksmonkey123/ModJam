@@ -155,7 +155,7 @@ public abstract class AbstractEssencePlant extends BlockBush implements IGrowabl
     //checks if plant can be bonemealed
     public boolean func_149852_a(World world, Random p_149852_2_, int p_149852_3_, int p_149852_4_, int p_149852_5_)
     {
-        return false;
+        return true; //TODO actually, false (true for testing stages)
     }
 
     /**
