@@ -4,7 +4,6 @@ import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.Handler;
 import ch.awae.trektech.TrekTech;
 import ch.awae.trektech.entities.TileEntityPlasmaPipe;
-import ch.awae.trektech.entities.TileEntityPlasmaPipeCombined;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -69,8 +68,6 @@ public class BlockPlasmaPipe extends BlockContainer {
 
 	@Override
 	public TileEntity createNewTileEntity(World var1, int var2) {
-		if (this.plasma == EnumPlasmaTypes.MIXED)
-			return new TileEntityPlasmaPipeCombined(this.texture, this.radius);
 		return new TileEntityPlasmaPipe(this.plasma, this.texture, this.radius);
 	}
 

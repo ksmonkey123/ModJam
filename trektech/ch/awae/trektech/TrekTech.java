@@ -7,13 +7,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.EnumPlantType;
 import ch.awae.trektech.blocks.BlockDuraniumWall;
 import ch.awae.trektech.blocks.BlockPlasmaPipe;
 import ch.awae.trektech.blocks.BlockPlasmaPressureValve;
 import ch.awae.trektech.blocks.BlockPlasmaSource;
 import ch.awae.trektech.entities.TileEntityPlasmaPipe;
-import ch.awae.trektech.entities.TileEntityPlasmaPipeCombined;
 import ch.awae.trektech.entities.TileEntityPlasmaPressureValve;
 import ch.awae.trektech.entities.TileEntityPlasmaSource;
 import ch.awae.trektech.items.ItemDuraniumIngot;
@@ -70,7 +68,8 @@ public class TrekTech {
 	public static Block blockPlasmaValve = new BlockPlasmaPressureValve(
 			"valve1", EnumPlasmaTypes.NEUTRAL);
 
-	public static Block[][] pipes = new Block[EnumPlantType.values().length + 1][2];
+	public static Block[][] pipes = new Block[EnumPlasmaTypes.values().length][2];
+	public static Block[] valves = new Block[EnumPlasmaTypes.values().length];
 
 	@SidedProxy(clientSide = "ch.awae.trektech.ClientProxy", serverSide = "ch.awae.trektech.CommonProxy")
 	public static CommonProxy proxy;
@@ -92,29 +91,25 @@ public class TrekTech {
 		GameRegistry.registerBlock(blockDuraniumWall, "duraniumWall");
 
 		EnumPlasmaTypes plasmaTypes[] = EnumPlasmaTypes.values();
-		for (int i = 0; i <= plasmaTypes.length; i++) {
-			if (i == plasmaTypes.length) {
-				// FIXME: possible index error?
-			} else {
-                // TODO: retrieve radius from plasma type
-				pipes[i][0] = new BlockPlasmaPipe("pipe" + i, plasmaTypes[i],
-						i == 0 ? 6 : Math.min(Math.max(4, i + 2), 8));
-				pipes[i][1] = new BlockPlasmaPipe("pipe" + i + "c",
-						plasmaTypes[i]);
-				GameRegistry.registerBlock(pipes[i][0], "pipe" + i);
-				GameRegistry.registerBlock(pipes[i][1], "pipe" + i + "c");
-				addEncasingRecipe(i);
-				// TODO: dynamically create valves
-			}
+		for (int i = 0; i < plasmaTypes.length; i++) {
+			EnumPlasmaTypes plasmaType = EnumPlasmaTypes.values()[i];
+			// PIPES
+			pipes[i][0] = new BlockPlasmaPipe("pipe" + i, plasmaType,
+					plasmaType.getRadius());
+			pipes[i][1] = new BlockPlasmaPipe("pipe" + i + "c", plasmaType);
+			GameRegistry.registerBlock(pipes[i][0], "pipe" + i);
+			GameRegistry.registerBlock(pipes[i][1], "pipe" + i + "c");
+			addEncasingRecipe(i);
+			valves[i] = new BlockPlasmaPressureValve("valve" + i,
+					plasmaType);
+			addValveRecipe(i);
+			GameRegistry.registerBlock(valves[i], "valve" + i);
 		}
 
 		GameRegistry.registerBlock(blockPlasmaSource, "plasmaSource");
-		GameRegistry.registerBlock(blockPlasmaValve, "valve1"); // temporary
 		// ENTITIES
 		GameRegistry.registerTileEntity(TileEntityPlasmaPipe.class,
 				"tilePlasmaPipe");
-		GameRegistry.registerTileEntity(TileEntityPlasmaPipeCombined.class,
-				"tilePlasmaPipeCombined");
 		GameRegistry.registerTileEntity(TileEntityPlasmaSource.class,
 				"tilePlasmaSource");
 		GameRegistry.registerTileEntity(TileEntityPlasmaPressureValve.class,
@@ -140,32 +135,28 @@ public class TrekTech {
 				duraniumWallStack);
 		GameRegistry.addSmelting(Items.redstone, new ItemStack(
 				itemPlasmaContainmentRing, 1), 0.5F);
-		GameRegistry.addShapedRecipe(new ItemStack(pipes[1][0], 6), "III",
+		GameRegistry.addShapedRecipe(new ItemStack(pipes[0][0], 6), "III",
 				"CCC", "III", 'I', new ItemStack(Items.iron_ingot), 'C',
 				new ItemStack(itemPlasmaContainmentRing));
-		GameRegistry.addShapedRecipe(new ItemStack(pipes[2][0], 6), "PPP",
-				"CCC", "PPP", 'P', new ItemStack(pipes[1][0]), 'C',
+		GameRegistry.addShapedRecipe(new ItemStack(pipes[1][0], 6), "PPP",
+				"CCC", "PPP", 'P', new ItemStack(pipes[0][0]), 'C',
 				new ItemStack(itemPlasmaContainmentRing));
 
 		ItemStack duraniumings = new ItemStack(itemDuraniumIngot);
-		ItemStack mk1pipestack = new ItemStack(pipes[2][0]);
+		ItemStack mk1pipestack = new ItemStack(pipes[1][0]);
 		ItemStack containments = new ItemStack(itemPlasmaContainmentRing);
 
-		GameRegistry.addShapelessRecipe(new ItemStack(pipes[3][0], 3),
+		GameRegistry.addShapelessRecipe(new ItemStack(pipes[2][0], 3),
 				duraniumings, duraniumings, duraniumings, containments,
 				containments, containments, mk1pipestack, mk1pipestack,
 				mk1pipestack);
 
-		ItemStack mk2pipestack = new ItemStack(pipes[3][0]);
+		ItemStack mk2pipestack = new ItemStack(pipes[2][0]);
 
-		GameRegistry.addShapelessRecipe(new ItemStack(pipes[4][0], 3),
+		GameRegistry.addShapelessRecipe(new ItemStack(pipes[3][0], 3),
 				duraniumings, duraniumings, duraniumings, containments,
 				containments, containments, mk2pipestack, mk2pipestack,
 				mk2pipestack);
-
-		GameRegistry.addShapelessRecipe(new ItemStack(pipes[0][0], 1),
-				new ItemStack(pipes[1][0]), new ItemStack(Items.iron_ingot),
-				new ItemStack(pipes[2][0]));
 	}
 
 	@SuppressWarnings("boxing")
@@ -175,12 +166,15 @@ public class TrekTech {
 				new ItemStack(pipes[pipeID][0]));
 	}
 
+	private static void addValveRecipe(int pipeID) {
+		// TODO: add valve recipes
+	}
+
 	private static void setMetadata(ModMetadata meta) {
 		meta.autogenerated = false;
 		meta.authorList.add("Andreas Waelchli (andreas.waelchli@me.com)");
 		meta.name = NAME;
 		meta.version = VERSION;
 		meta.description = "Star Trek Technologies";
-		//meta.modId = TrekTech.MODID;
 	}
 }
