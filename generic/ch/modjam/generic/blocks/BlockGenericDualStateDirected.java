@@ -1,4 +1,4 @@
-package ch.modjam.generic;
+package ch.modjam.generic.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

@@ -1,7 +1,7 @@
 package ch.modjam.generic.networking;
 
 import ch.modjam.generic.GenericMod;
-import ch.modjam.generic.GenericTileEntity;
+import ch.modjam.generic.tileEntity.GenericTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
