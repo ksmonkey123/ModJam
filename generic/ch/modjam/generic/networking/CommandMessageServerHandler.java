@@ -11,31 +11,31 @@ import cpw.mods.fml.common.network.simpleimpl.MessageContext;
  * Server side handler for Command Messages. This will propagate the command and
  * its data to the correct Tile Entity.
  * 
- * @author Andreas Waelchli <andreas.waelchli@me.com>
+ * @author Andreas Waelchli (andreas.waelchli@me.com)
  */
 public class CommandMessageServerHandler implements
-		IMessageHandler<CommandMessage, IMessage> {
-
-	@Override
-	public IMessage onMessage(CommandMessage message, MessageContext ctx) {
-		// retrieve Tile Entity
-		TileEntity te = FMLCommonHandler
-				.instance()
-				.getMinecraftServerInstance()
-				.worldServerForDimension(message.getDimension())
-				.getTileEntity(message.getXCoord(), message.getYCoord(),
-						message.getZCoord());
-		if (!(te instanceof GenericTileEntity)) {
-			System.err.println("TileEntity is no GenericTileEntity");
-			return null;
-		}
-		GenericTileEntity entity = (GenericTileEntity) te;
-		// process
-		if (message.getCommand() != "")
-			entity.onNetworkCommand(message.getCommand(), message.getData());
-
-		te.getWorldObj().markBlockForUpdate(te.xCoord, te.yCoord, te.zCoord);
-		// finish
-		return null;
-	}
+        IMessageHandler<CommandMessage, IMessage> {
+    
+    @Override
+    public IMessage onMessage(CommandMessage message, MessageContext ctx) {
+        // retrieve Tile Entity
+        TileEntity te = FMLCommonHandler
+                .instance()
+                .getMinecraftServerInstance()
+                .worldServerForDimension(message.getDimension())
+                .getTileEntity(message.getXCoord(), message.getYCoord(),
+                        message.getZCoord());
+        if (!(te instanceof GenericTileEntity)) {
+            System.err.println("TileEntity is no GenericTileEntity");
+            return null;
+        }
+        GenericTileEntity entity = (GenericTileEntity) te;
+        // process
+        if (message.getCommand() != "")
+            entity.onNetworkCommand(message.getCommand(), message.getData());
+        
+        te.getWorldObj().markBlockForUpdate(te.xCoord, te.yCoord, te.zCoord);
+        // finish
+        return null;
+    }
 }

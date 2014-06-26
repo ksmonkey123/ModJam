@@ -5,12 +5,12 @@ import net.minecraft.item.Item;
 
 @SuppressWarnings("javadoc")
 public class ItemDilithiumRaw extends Item {
-
+    
     public ItemDilithiumRaw() {
         setMaxStackSize(64);
         setUnlocalizedName("dilithiumRaw");
         setTextureName(TrekTech.MODID + ":dilithium_raw");
         setCreativeTab(TrekTech.tabCustom);
     }
-
+    
 }

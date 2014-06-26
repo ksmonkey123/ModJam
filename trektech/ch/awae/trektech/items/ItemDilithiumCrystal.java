@@ -6,18 +6,18 @@ import net.minecraft.item.Item;
 /**
  * Dilithium Crystal
  * 
- * @author Andreas Waelchli <andreas.waelchli@me.com>
+ * @author Andreas Waelchli (andreas.waelchli@me.com)
  */
 public class ItemDilithiumCrystal extends Item {
-
-	/**
-	 * Basic Constructor
-	 */
-	public ItemDilithiumCrystal() {
-		setMaxStackSize(64);
-		setUnlocalizedName("dilithiumCrystal");
-		setTextureName(TrekTech.MODID + ":dilithium_crystal");
-		setCreativeTab(TrekTech.tabCustom);
-	}
-
+    
+    /**
+     * Basic Constructor
+     */
+    public ItemDilithiumCrystal() {
+        setMaxStackSize(64);
+        setUnlocalizedName("dilithiumCrystal");
+        setTextureName(TrekTech.MODID + ":dilithium_crystal");
+        setCreativeTab(TrekTech.tabCustom);
+    }
+    
 }
