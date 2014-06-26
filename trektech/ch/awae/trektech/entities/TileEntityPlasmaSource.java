@@ -1,6 +1,9 @@
 package ch.awae.trektech.entities;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,16 +12,19 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
+import ch.awae.trektech.gui.GuiPlasmaSource;
+import ch.awae.trektech.gui.container.ContainerPlasmaSource;
 import ch.modjam.generic.blocks.BlockGenericDualStateDirected;
 import ch.modjam.generic.blocks.EnumFace;
+import ch.modjam.generic.tileEntity.IHasGui;
 
 /**
  * Tile Entity for the plasma source
  * 
- * @author Andreas Waelchli <andreas.waelchli@me.com>
+ * @author Andreas Waelchli (andreas.waelchli@me.com)
  */
 public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
-		IInventory {
+		IInventory, IHasGui {
 
 	private static final int PLASMA_PER_TICK = 5;
 	private static final int PLASMA_PER_BAR = 1000;
@@ -256,5 +262,20 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
 	@Override
 	public int getMaxAcceptance(EnumPlasmaTypes plasma, ForgeDirection direction) {
 		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+		return new GuiPlasmaSource(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+		return new ContainerPlasmaSource(inventory, this);
+	}
+
+	@Override
+	public void onNetworkCommand(String command, byte[] data) {
+		// no known commands ATM
 	}
 }

@@ -46,7 +46,6 @@ public abstract class GenericTileEntity extends TileEntity {
 	@Override
 	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
 		this.readFromNBT(pkt.func_148857_g());
-		System.out.println("duba");
 	}
 
 	/**
@@ -78,7 +77,6 @@ public abstract class GenericTileEntity extends TileEntity {
 	 */
 	@SideOnly(Side.CLIENT)
 	public final void sendNetworkCommand(String command, byte... data) {
-		System.out.println("test");
 		if (this.worldObj.isRemote) {
 			CommandMessage message = new CommandMessage(this, command, data);
 			GenericMod.NETWORK.sendToServer(message);
@@ -90,7 +88,6 @@ public abstract class GenericTileEntity extends TileEntity {
 	 * ensure syncing
 	 */
 	public final void forceNetworkUpdate() {
-		System.out.println("force");
 		if (this.worldObj.isRemote)
 			this.sendNetworkCommand("");
 		else
@@ -110,7 +107,7 @@ public abstract class GenericTileEntity extends TileEntity {
 	 *            additional command data
 	 */
 	public void onNetworkCommand(String command, byte[] data) {
-		// empty ensures compatibility. may be required in future versions
+		//default: empty
 	}
 
 }

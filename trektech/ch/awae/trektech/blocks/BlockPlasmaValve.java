@@ -1,14 +1,15 @@
 package ch.awae.trektech.blocks;
 
-import ch.awae.trektech.EnumPlasmaTypes;
-import ch.awae.trektech.Handler;
-import ch.awae.trektech.TrekTech;
-import ch.awae.trektech.entities.TileEntityPlasmaValve;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import ch.awae.trektech.EnumPlasmaTypes;
+import ch.awae.trektech.Handler;
+import ch.awae.trektech.TrekTech;
+import ch.awae.trektech.entities.TileEntityPlasmaValve;
+import ch.modjam.generic.GenericGuiHandler;
 
 /**
  * Pressure Valve Block
@@ -43,10 +44,9 @@ public class BlockPlasmaValve extends BlockContainer {
 	public boolean onBlockActivated(World world, int x, int y, int z,
 			EntityPlayer player, int face, float p_149727_7_,
 			float p_149727_8_, float p_149727_9_) {
-		if (Handler.handleToolRight(player, world, x, y, z))
+		if (Handler.handleWrenching(player, world, x, y, z))
 			return true;
-		player.openGui(TrekTech.instance, 1, world, x, y, z);
-		return true;
+		return GenericGuiHandler.openGUI(player, world, x, y, z);
 	}
 
 }

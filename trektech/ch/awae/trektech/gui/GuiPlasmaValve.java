@@ -55,8 +55,11 @@ public class GuiPlasmaValve extends GuiContainer {
 		this.fontRendererObj.drawString(
 				StatCollector.translateToLocal("container.inventory"), 8,
 				this.ySize - 96 + 2, color);
-		this.fontRendererObj.drawString(this.tileEntity.getPressureThreshold()
-				+ "", 100, 47, color);
+		this.fontRendererObj.drawString(
+				"Threshold: " + this.tileEntity.getPressureThreshold(), 50, 43,
+				color);
+		this.fontRendererObj.drawString(
+				"Pressure : " + this.tileEntity.getPressure(), 50, 52, color);
 	}
 
 	@Override

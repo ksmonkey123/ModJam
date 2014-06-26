@@ -89,6 +89,6 @@ public class BlockPlasmaPipe extends BlockContainer {
 	@Override
 	public boolean onBlockActivated(World w, int x, int y, int z,
 			EntityPlayer player, int side, float f1, float f2, float f3) {
-		return Handler.handleToolRight(player, w, x, y, z);
+		return Handler.handleWrenching(player, w, x, y, z);
 	}
 }

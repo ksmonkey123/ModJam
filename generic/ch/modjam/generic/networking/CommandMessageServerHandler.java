@@ -6,7 +6,6 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import cpw.mods.fml.relauncher.Side;
 
 /**
  * Server side handler for Command Messages. This will propagate the command and
@@ -19,10 +18,7 @@ public class CommandMessageServerHandler implements
 
 	@Override
 	public IMessage onMessage(CommandMessage message, MessageContext ctx) {
-		System.out.println(ctx.side);
-		if (ctx.side == Side.CLIENT)
-			return null;
-		// retreive Tile Entity
+		// retrieve Tile Entity
 		TileEntity te = FMLCommonHandler
 				.instance()
 				.getMinecraftServerInstance()

@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 import ch.awae.trektech.Handler;
 import ch.awae.trektech.TrekTech;
 import ch.awae.trektech.entities.TileEntityPlasmaSource;
+import ch.modjam.generic.GenericGuiHandler;
 import ch.modjam.generic.blocks.BlockGenericDualStateDirected;
 import ch.modjam.generic.blocks.EnumFace;
 
@@ -99,28 +100,12 @@ public class BlockPlasmaSource extends BlockGenericDualStateDirected {
 	}
 
 	@Override
-	public Object getModCoreInstance() {
-		return TrekTech.instance;
-	}
-
-	@Override
-	public int getGuiIndex() {
-		return 0;
-	}
-
-	@Override
-	public boolean hasGUI() {
-		return true;
-	}
-
-	@Override
 	public boolean onBlockActivated(World w, int x, int y, int z,
 			EntityPlayer player, int p_149727_6_, float p_149727_7_,
 			float p_149727_8_, float p_149727_9_) {
-		if (!Handler.handleToolRight(player, w, x, y, z))
-			return super.onBlockActivated(w, x, y, z, player, p_149727_6_,
-					p_149727_7_, p_149727_8_, p_149727_9_);
-		return false;
+		if (Handler.handleWrenching(player, w, x, y, z))
+			return true;
+		return GenericGuiHandler.openGUI(player, w, x, y, z);
 	}
 
 }

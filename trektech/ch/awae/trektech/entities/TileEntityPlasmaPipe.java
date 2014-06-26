@@ -21,8 +21,8 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 	 */
 	public static final float PARTICLES_PER_BAR = 100f;
 
-	private int currentPlasma = 0;
-	private EnumPlasmaTypes plasmaType;
+	protected int currentPlasma = 0;
+	protected EnumPlasmaTypes plasmaType;
 	private String texture;
 	private float radius;
 
@@ -148,6 +148,11 @@ public class TileEntityPlasmaPipe extends ATileEntityPlasmaSystem implements
 	@Override
 	public int getMaxAcceptance(EnumPlasmaTypes plasma, ForgeDirection direction) {
 		return Integer.MAX_VALUE;
+	}
+	
+	@Override
+	public void onNetworkCommand(String command, byte[] data) {
+		// no known commands ATM
 	}
 
 }

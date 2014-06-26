@@ -6,7 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 /**
- * @author Andreas Waelchli <andreas.waelchli@me.com>
+ * @author Andreas Waelchli (andreas.waelchli@me.com)
  */
 public class Handler {
 
@@ -21,7 +21,7 @@ public class Handler {
 	 * @param z
 	 * @return true if finished, false otherwise
 	 */
-	public static boolean handleToolRight(EntityPlayer player, World w, int x,
+	public static boolean handleWrenching(EntityPlayer player, World w, int x,
 			int y, int z) {
 		if (player.getCurrentEquippedItem() != null
 				&& player.getCurrentEquippedItem().getItem()

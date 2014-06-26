@@ -6,7 +6,7 @@ import net.minecraft.item.Item;
  * This class contains several global parameters. Some of them may be extracted
  * into config-files later.
  * 
- * @author Andreas Waelchli <andreas.waelchli@me.com>
+ * @author Andreas Waelchli (andreas.waelchli@me.com)
  */
 public class Properties {
 

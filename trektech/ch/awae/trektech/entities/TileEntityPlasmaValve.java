@@ -2,13 +2,17 @@ package ch.awae.trektech.entities;
 
 import java.nio.ByteBuffer;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
+import ch.awae.trektech.gui.GuiPlasmaValve;
+import ch.awae.trektech.gui.container.ContainerPlasmaValve;
+import ch.modjam.generic.tileEntity.IHasGui;
 
 /**
  * This valve limits flow-through pressure to 10bar
@@ -17,9 +21,12 @@ import ch.awae.trektech.EnumPlasmaTypes;
  * 
  * @author Andreas Waelchli <andreas.waelchli@me.com>
  */
-public class TileEntityPlasmaValve extends TileEntityPlasmaPipe {
+public class TileEntityPlasmaValve extends TileEntityPlasmaPipe implements
+		IHasGui {
 
 	private float pressureThreshold;
+	private static float MIN_THRESHOLD = 01f;
+	private static float MAX_THRESHOLD = 20f;
 
 	/**
 	 * Full-Fledged Constructor
@@ -73,8 +80,10 @@ public class TileEntityPlasmaValve extends TileEntityPlasmaPipe {
 	 *            the new threshold
 	 */
 	public void setPressureThreshold(float threshold) {
+		if (threshold < MIN_THRESHOLD || threshold > MAX_THRESHOLD)
+			return;
 		this.pressureThreshold = threshold;
-		if (FMLCommonHandler.instance().getSide() == Side.CLIENT)
+		if (this.worldObj.isRemote)
 			this.sendNetworkCommand("set",
 					ByteBuffer.allocate(4).putFloat(this.pressureThreshold)
 							.array());
@@ -90,13 +99,32 @@ public class TileEntityPlasmaValve extends TileEntityPlasmaPipe {
 
 	@Override
 	public boolean onWrench(EntityPlayer player) {
-		if (this.worldObj.isRemote && !player.isSneaking()) {
-			player.addChatMessage(new ChatComponentText(
-					"Current Plasma Pressure Threshold: "
-							+ this.pressureThreshold + " bar"));
+		if (!player.isSneaking()) {
+			if (this.worldObj.isRemote) {
+				player.addChatMessage(new ChatComponentText(
+						"Current Plasma Pressure Threshold: "
+								+ this.pressureThreshold + " bar"));
+			}
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+		return new GuiPlasmaValve(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+		return new ContainerPlasmaValve(inventory);
+	}
+
+	/**
+	 * @return the pressure pressing on the block
+	 */
+	public float getPressure() {
+		return this.currentPlasma / PARTICLES_PER_BAR;
 	}
 
 }

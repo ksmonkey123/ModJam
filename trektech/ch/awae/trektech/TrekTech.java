@@ -25,7 +25,6 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -33,7 +32,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 /**
  * TrekTech Core Class
  * 
- * @author Andreas Waelchli <andreas.waelchli@me.com>
+ * @author Andreas Waelchli (andreas.waelchli@me.com)
  */
 @SuppressWarnings("javadoc")
 @Mod(modid = TrekTech.MODID, version = TrekTech.VERSION, name = TrekTech.NAME)
@@ -119,8 +118,6 @@ public class TrekTech {
 		proxy.registerRenderers();
 
 		Properties.WRENCH = Items.diamond;
-
-		NetworkRegistry.INSTANCE.registerGuiHandler(this, new GUIHandler());
 	}
 
 	@SuppressWarnings("boxing")

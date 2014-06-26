@@ -32,11 +32,12 @@ public abstract class RecipiesCrafting implements IRecipe {
 	}
 
 	protected boolean isItemPresent(InventoryCrafting inventory, ItemStack item, int amountNeeded) {
+		int trueAmount = amountNeeded;
 		for (int i = 0; i < inventory.getSizeInventory(); i++) {
 			ItemStack xxx = inventory.getStackInSlot(i);
 			if (xxx != null && xxx.isItemEqual(item))
-				amountNeeded--;
-			if (amountNeeded <= 0)
+				trueAmount--;
+			if (trueAmount <= 0)
 				return true;
 		}
 		return false;
