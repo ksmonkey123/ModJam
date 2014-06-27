@@ -57,8 +57,6 @@ public class BoxContainer extends Container {
 
 			// merges the item into player inventory since its in the tileEntity
 			int s = this.te.getSizeInventory();
-			System.out
-				.println(Thread.currentThread().getName() + ": shift click with slot size: " + s);
 			if (slot >= 36) {
 				if (!this.mergeItemStack(stackInSlot, 27, 36, false))
 					if (!this.mergeItemStack(stackInSlot, 0, 27, false))
@@ -67,10 +65,15 @@ public class BoxContainer extends Container {
 			}
 			// places it into the tileEntity is possible since its in the player
 			// inventory
-			else
-				// if (!this.mergeItemStack(stackInSlot, 36, 36 + s, false)) {
-				return null;
-			// }
+			else {
+				try {
+					if (!this.mergeItemStack(stackInSlot, 36, 36 + s, false))
+						return null;
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
 
 			if (stackInSlot.stackSize == 0) {
 				slotObject.putStack(null);

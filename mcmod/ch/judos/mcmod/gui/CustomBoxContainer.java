@@ -18,24 +18,21 @@ public class CustomBoxContainer extends BoxContainer {
 	 */
 	public CustomBoxContainer(InventoryPlayer inventory, CustomBoxTE te) {
 		super(te);
-		System.out.println(Thread.currentThread().getName() + ": new CustomBoxContainer()");
 		this.tileEntity = te;
+		this.tileEntity.addListenerForUpdates(this);
 		this.inventory = inventory;
 		initialize();
+	}
+
+	@Override
+	public void onContainerClosed(EntityPlayer par1EntityPlayer) {
+		this.tileEntity.closedContainer(this);
 	}
 
 	private void initialize() {
 		bindPlayerInventory(inventory);
 		for (int i = 0; i < this.tileEntity.stack.length; i++)
 			addSlotToContainer(new Slot(this.tileEntity, i, 26 + 18 * i, 42));
-	}
-
-	@Override
-	public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-		super.onContainerClosed(par1EntityPlayer);
-		this.tileEntity.closedContainer(this);
-		System.out.println(Thread.currentThread().getName() + ": onContainerClosed()");
-
 	}
 
 	/**

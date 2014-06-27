@@ -39,7 +39,6 @@ public class CustomBoxGuiContainer extends GuiContainer {
 
 	@Override
 	protected void actionPerformed(GuiButton button) {
-		System.out.println("button clicked: " + button.id);
 		switch (button.id) {
 			case 0:
 				this.te.tryIncreaseSize();
@@ -70,13 +69,6 @@ public class CustomBoxGuiContainer extends GuiContainer {
 		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
 		for (int i = 1; i < this.te.stack.length; i++)
 			this.drawTexturedModalRect(guiLeft + 25 + 18 * i, guiTop + 41, 176, 0, 18, 18);
-	}
-
-	/**
-	 * 
-	 */
-	public void reinitialize() {
-		this.inventorySlots = new CustomBoxContainer(this.inventory, this.te);
 	}
 
 }
