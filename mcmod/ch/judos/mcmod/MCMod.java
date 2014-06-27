@@ -137,6 +137,8 @@ public class MCMod {
 		GameRegistry.registerItem(this.boundHeart, Names.BoundHeart);
 		GameRegistry.addShapelessRecipe(new ItemStack(this.boundHeart), new ItemStack(Items.skull,
 			1, 3));
+
+		// custom recipie to change NBT data on the item
 		GameRegistry.addRecipe(new HeartCrafting());
 		RecipeSorter.register("mcmod:shapeless", HeartCrafting.class,
 			RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
