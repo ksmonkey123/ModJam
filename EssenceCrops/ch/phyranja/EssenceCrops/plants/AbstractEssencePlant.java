@@ -25,7 +25,7 @@ public abstract class AbstractEssencePlant extends BlockBush implements IGrowabl
 
 	@SideOnly(Side.CLIENT)
     private IIcon[] icon;
-	private boolean idealEnvironment=false;
+	private boolean idealEnvironment=true;
 
     protected AbstractEssencePlant()
     {
@@ -72,11 +72,12 @@ public abstract class AbstractEssencePlant extends BlockBush implements IGrowabl
             if (meta < 4){
             	++meta;
                 world.setBlockMetadataWithNotify(x, y, z, meta, 2);
-            }
-            
-            if(meta==4){
-            	++meta;
-                world.setBlockMetadataWithNotify(x, y, z, meta, 2);
+            }else{
+            	if(meta==4 && this.environmentIsIdeal()){
+            		++meta;
+                    world.setBlockMetadataWithNotify(x, y, z, meta, 2);
+            	}
+            	
             }
             
         }
@@ -87,7 +88,7 @@ public abstract class AbstractEssencePlant extends BlockBush implements IGrowabl
     		int p_149727_6_, float p_149727_7_, float p_149727_8_,
     		float p_149727_9_) {
     	
-    	//this.updateTick(world, x, y, z, null);
+    	this.updateTick(world, x, y, z, null);
     	return super.onBlockActivated(world, x, y,
     			z, player, p_149727_6_, p_149727_7_, p_149727_8_,
     			p_149727_9_);
@@ -203,16 +204,18 @@ public abstract class AbstractEssencePlant extends BlockBush implements IGrowabl
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune)
     {
-        ArrayList<ItemStack> ret = super.getDrops(world, x, y, z, meta, fortune);
+        ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 
         if (meta == 4)
         {
-            if(!environmentIsIdeal()){
-            	ret.add(new ItemStack(this.getEssenceDrop(), 1, 0));
-            }
+        	ret.add(new ItemStack(this.getSeedDrop(), 1, 0));
+        	ret.add(new ItemStack(this.getEssenceDrop(), 1, 0));
         }
         if (meta==5){
-        	ret.add(new ItemStack(this.getEssenceDrop(), 1, 0));
+        	if(environmentIsIdeal()){
+        		ret.add(new ItemStack(this.getSeedDrop(), 2, 0));
+            	ret.add(new ItemStack(this.getEssenceDrop(), 1, 0));
+            }
         }
 
         return ret;
