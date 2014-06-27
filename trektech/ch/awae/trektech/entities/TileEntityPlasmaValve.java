@@ -17,8 +17,6 @@ import ch.modjam.generic.tileEntity.IHasGui;
 /**
  * This valve limits flow-through pressure to 10bar
  * 
- * TODO: make pressure level customizable
- * 
  * @author Andreas Waelchli (andreas.waelchli@me.com)
  */
 public class TileEntityPlasmaValve extends TileEntityPlasmaPipe implements

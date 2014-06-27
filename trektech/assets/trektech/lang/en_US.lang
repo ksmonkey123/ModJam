@@ -13,6 +13,9 @@ tile.pipe2c.name=Duranium Encased EPS Conduit Mk. 2
 tile.pipe3c.name=Duranium Encased EPS Conduit Mk. 3
 
 tile.valve0.name=Plasma Pressure Valve
+tile.valve1.name=EPS Pressure Valve Mk. 1
+tile.valve2.name=EPS Pressure Valve Mk. 2
+tile.valve3.name=EPS Pressure Valve Mk. 3
 
 tile.plasmaSource.name=Exothermic Plasma Ionizer
 

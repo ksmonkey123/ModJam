@@ -8,15 +8,17 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import ch.awae.trektech.blocks.BlockDuraniumWall;
+import ch.awae.trektech.blocks.BlockPlasmaEnergizerLow;
 import ch.awae.trektech.blocks.BlockPlasmaPipe;
-import ch.awae.trektech.blocks.BlockPlasmaValve;
 import ch.awae.trektech.blocks.BlockPlasmaSource;
+import ch.awae.trektech.blocks.BlockPlasmaValve;
+import ch.awae.trektech.entities.TileEntityPlasmaEnergizerLow;
 import ch.awae.trektech.entities.TileEntityPlasmaPipe;
-import ch.awae.trektech.entities.TileEntityPlasmaValve;
 import ch.awae.trektech.entities.TileEntityPlasmaSource;
-import ch.awae.trektech.items.ItemDuraniumIngot;
+import ch.awae.trektech.entities.TileEntityPlasmaValve;
 import ch.awae.trektech.items.ItemDilithiumCrystal;
 import ch.awae.trektech.items.ItemDilithiumRaw;
+import ch.awae.trektech.items.ItemDuraniumIngot;
 import ch.awae.trektech.items.ItemPlasmaContainmentRing;
 import ch.awae.trektech.items.ItemStarFleetSymbol;
 import cpw.mods.fml.common.Mod;
@@ -68,6 +70,7 @@ public class TrekTech {
     public static Block        blockPlasmaValve          = new BlockPlasmaValve(
                                                                  "valve1",
                                                                  EnumPlasmaTypes.NEUTRAL);
+    public static Block        blockPlasmaEnergizerLow   = new BlockPlasmaEnergizerLow();
     
     public static Block[][]    pipes                     = new Block[EnumPlasmaTypes
                                                                  .values().length][2];
@@ -109,6 +112,8 @@ public class TrekTech {
         }
         
         GameRegistry.registerBlock(blockPlasmaSource, "plasmaSource");
+        GameRegistry.registerBlock(blockPlasmaEnergizerLow,
+                "plasmaEnergizerLow");
         // ENTITIES
         GameRegistry.registerTileEntity(TileEntityPlasmaPipe.class,
                 "tilePlasmaPipe");
@@ -116,6 +121,9 @@ public class TrekTech {
                 "tilePlasmaSource");
         GameRegistry.registerTileEntity(TileEntityPlasmaValve.class,
                 "tilePlasmaValve");
+        GameRegistry.registerTileEntity(TileEntityPlasmaEnergizerLow.class,
+                "tilePlasmaEnergizerLow");
+        
         // RECIPES
         registerRecipes();
         proxy.registerRenderers();

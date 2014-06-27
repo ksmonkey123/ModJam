@@ -34,21 +34,15 @@ public abstract class ATileEntityPlasmaSystem extends GenericTileEntity
                     .connectsToPlasmaConnection(plasma, opposite)))
                 continue;
             // calculate virtual particle numbers
-            int ownCount = direction == ForgeDirection.UP ? applyVerticalPressureCalculation(
-                    this.getParticleCount(plasma, direction) > this.getMaxOutput(
-                            plasma, direction) ? this.getMaxOutput(plasma,
-                            direction) : this.getParticleCount(plasma,
-                            direction), (int) this.getParticlesPerBar(plasma,
-                            direction))
-                    : this.getParticleCount(plasma, direction) > this
-                            .getMaxOutput(plasma, direction) ? this
-                            .getMaxOutput(plasma, direction) : this
-                            .getParticleCount(plasma, direction);
-            int othCount = direction == ForgeDirection.DOWN ? applyVerticalPressureCalculation(
-                    other.getParticleCount(plasma, opposite),
-                    (int) other.getParticlesPerBar(plasma,
-                            direction.getOpposite())) : other.getParticleCount(
-                    plasma, opposite);
+            int ownCount = Math.min(this.getParticleCount(plasma, direction),
+                    this.getMaxOutput(plasma, direction));
+            if (direction == ForgeDirection.UP)
+                ownCount = applyVerticalPressureCalculation(ownCount,
+                        (int) this.getParticlesPerBar(plasma, direction));
+            int othCount = other.getParticleCount(plasma, opposite);
+            if (direction == ForgeDirection.DOWN)
+                applyVerticalPressureCalculation(othCount,
+                        (int) other.getParticlesPerBar(plasma, opposite));
             float ownPpB = this.getParticlesPerBar(plasma, direction);
             float othPpB = other.getParticlesPerBar(plasma, opposite);
             // calculate transfer amount for balancing the system
