@@ -121,6 +121,7 @@ public class TileEntityPlasmaValve extends TileEntityPlasmaPipe implements
      * @return the pressure pressing on the block
      */
     public float getPressure() {
+        System.out.println(this.currentPlasma);
         return this.currentPlasma / PARTICLES_PER_BAR;
     }
     
