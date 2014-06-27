@@ -17,6 +17,9 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public class BoxItem extends ItemBlock {
 
+	private ItemStack	last;
+	private int			displayToolTip;
+
 	/**
 	 * @param block the block
 	 */
@@ -27,7 +30,13 @@ public class BoxItem extends ItemBlock {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack item, EntityPlayer player, List list, boolean par4) {
-		list.add(EnumChatFormatting.GRAY + "It's an ancient mystery.");
+		if (item != last)
+			displayToolTip = player.worldObj.rand.nextInt(2);
+		if (displayToolTip == 0)
+			list.add(EnumChatFormatting.GRAY + "It's an ancient mystery.");
+		else
+			list.add(EnumChatFormatting.GRAY + "What does the box say? ring ding ding ding");
+		last = item;
 	}
 
 }

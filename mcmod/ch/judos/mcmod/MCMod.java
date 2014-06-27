@@ -66,49 +66,49 @@ public class MCMod {
 	 * public instance of this mod
 	 */
 	@Mod.Instance(References.MOD_ID)
-	public static MCMod instance;
+	public static MCMod							instance;
 
 	@SidedProxy(clientSide = References.Client, serverSide = References.Common)
-	public static CommonProxy proxy;
+	public static CommonProxy					proxy;
 
-	public static CreativeTabs modTab;
+	public static CreativeTabs					modTab;
 
 	// Item
-	public static Item itemObsidianStick;
+	public static Item							itemObsidianStick;
 
 	// Tar Fluids
-	public static Block tarBlock;
-	public static Fluid tarFluid;
-	public static Material materialTar;
-	public static ItemTarBucket tarBucket;
+	public static Block							tarBlock;
+	public static Fluid							tarFluid;
+	public static Material						materialTar;
+	public static ItemTarBucket					tarBucket;
 
 	// Ores
-	public static Block oreKryptonit;
-	public static ItemKryptonite itemKryptonit;
-	public static FuelHandler fuelHandler;
+	public static Block							oreKryptonit;
+	public static ItemKryptonite				itemKryptonit;
+	public static FuelHandler					fuelHandler;
 
 	// Custom rendered block
-	public static Block blockCarvedDirt;
-	public static Class<? extends TileEntity> teCarvedDirt;
+	public static Block							blockCarvedDirt;
+	public static Class<? extends TileEntity>	teCarvedDirt;
 
 	// Custom tool
-	public static ItemDirtShovel itemDirtShovel;
+	public static ItemDirtShovel				itemDirtShovel;
 
 	// Potions
-	public static PotionTest potionTest;
-	public static ItemPotionTest itemPotionTest;
+	public static PotionTest					potionTest;
+	public static ItemPotionTest				itemPotionTest;
 
 	// Slimy boots
-	public static int slimyBootsID;
-	public static ArmorMaterial armorSlimeMaterial;
-	public static Item itemSlimyBoots;
+	public static int							slimyBootsID;
+	public static ArmorMaterial					armorSlimeMaterial;
+	public static Item							itemSlimyBoots;
 
 	// Custom Gui
-	public static Box box; // the block
-	public static CustomBox customBox;
+	public static Box							box;				// the block
+	public static CustomBox						customBox;
 
 	// Items with NBT
-	public static BoundHeart boundHeart;
+	public static BoundHeart					boundHeart;
 
 	/**
 	 * @param e
@@ -156,11 +156,11 @@ public class MCMod {
 
 	private static void addBlockWithCustomGui() {
 		box = new Box();
-		GameRegistry.registerBlock(box, BoxItem.class, Names.Box);
+		GameRegistry.registerBlock(box, Names.Box);
 		GameRegistry.registerTileEntity(BoxTE.class, "tile_" + Names.Box);
 
 		customBox = new CustomBox();
-		GameRegistry.registerBlock(customBox, Names.CustomBox);
+		GameRegistry.registerBlock(customBox, BoxItem.class, Names.CustomBox);
 		GameRegistry.registerTileEntity(CustomBoxTE.class, "tile_" + Names.CustomBox);
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());

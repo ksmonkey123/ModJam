@@ -10,20 +10,28 @@ import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 import ch.phyranja.EssenceCrops.EssenceCrops;
+import ch.phyranja.EssenceCrops.essences.*;
+import ch.phyranja.EssenceCrops.lib.Names;
+import ch.phyranja.EssenceCrops.lib.References;
 
 /**
  * @author phyranja
  */
-public abstract class AbstractEssenceSeeds extends Item implements IPlantable{
+public class EssenceSeed extends Item implements IPlantable{
 	
+	private Essence type;
 	protected Block plant;
     /** BlockID of the block the seeds can be planted on. */
     private Block dirt; // FIXME: unused
     
     /**
      */
-    public AbstractEssenceSeeds(){
+    public EssenceSeed(Essence type){
     	this.setCreativeTab(EssenceCrops.modTab);
+    	this.setUnlocalizedName(Names.seeds[type.ordinal()]);
+		this.setTextureName(References.MOD_ID + ":" + Names.seeds[type.ordinal()]);
+		this.plant=EssenceCrops.plants[type.ordinal()];
+		this.type=type;
     }
 
 	@Override
@@ -65,5 +73,9 @@ public abstract class AbstractEssenceSeeds extends Item implements IPlantable{
     public int getPlantMetadata(IBlockAccess world, int x, int y, int z)
     {
         return 0;
+    }
+    
+    public Essence getEssenceType(){
+    	return type;
     }
 }

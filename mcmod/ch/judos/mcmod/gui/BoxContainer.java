@@ -12,7 +12,7 @@ import net.minecraft.item.ItemStack;
  */
 public class BoxContainer extends Container {
 
-	private IInventory te;
+	private IInventory	te;
 
 	protected BoxContainer(BoxTE te) {
 		this.te = te;
@@ -25,8 +25,8 @@ public class BoxContainer extends Container {
 	 */
 	public BoxContainer(InventoryPlayer inventory, BoxTE te) {
 		this(te);
-		addSlotToContainer(new Slot(te, 0, 80, 42));
 		bindPlayerInventory(inventory);
+		addSlotToContainer(new Slot(te, 0, 80, 42));
 	}
 
 	@Override
@@ -57,16 +57,22 @@ public class BoxContainer extends Container {
 
 			// merges the item into player inventory since its in the tileEntity
 			int s = this.te.getSizeInventory();
-			if (slot < s) {
-				if (!this.mergeItemStack(stackInSlot, s + 27, s + 27 + 9, false))
-					if (!this.mergeItemStack(stackInSlot, s, s + 27, false))
+			if (slot >= 36) {
+				if (!this.mergeItemStack(stackInSlot, 27, 36, false))
+					if (!this.mergeItemStack(stackInSlot, 0, 27, false))
 						return null;
 
 			}
 			// places it into the tileEntity is possible since its in the player
 			// inventory
-			else if (!this.mergeItemStack(stackInSlot, 0, s, false)) {
-				return null;
+			else {
+				try {
+					if (!this.mergeItemStack(stackInSlot, 36, 36 + s, false))
+						return null;
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
 			}
 
 			if (stackInSlot.stackSize == 0) {
@@ -75,6 +81,7 @@ public class BoxContainer extends Container {
 				slotObject.onSlotChanged();
 			}
 
+			// no items were moved by mergeItemStack (since size is still the same)
 			if (stackInSlot.stackSize == stack.stackSize) {
 				return null;
 			}

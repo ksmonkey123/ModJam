@@ -2,6 +2,7 @@ package ch.phyranja.EssenceCrops;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import ch.phyranja.EssenceCrops.essences.Essence;
 import ch.phyranja.EssenceCrops.items.*;
 import ch.phyranja.EssenceCrops.lib.*;
 import ch.phyranja.EssenceCrops.plants.*;
@@ -29,9 +30,9 @@ public class EssenceCrops {
 
 	public static CreativeTabs modTab;
 	
-	public static NeutralEssenceSeed neutralSeed;
-	public static NeutralEssencePlant neutralPlant;
-	public static NeutralEssencePetal neutralPetal;
+	public static EssenceSeed[] seeds=new EssenceSeed[Essence.values().length];
+	public static EssencePlant[] plants=new EssencePlant[Essence.values().length];
+	public static EssencePetal[] petals=new EssencePetal[Essence.values().length];
 
 	@Mod.Instance("essencecrops")
 	public static EssenceCrops instance;
@@ -44,6 +45,8 @@ public class EssenceCrops {
 		System.out.println("PreInit EssenceCrops");
 		createCreativeTab();
 		
+		Names.initNames();
+		
 		addPetals();
 		addPlants();
 		addSeeds();
@@ -53,20 +56,27 @@ public class EssenceCrops {
 	}
 	
 	private void addPetals() {
-		neutralPetal = new NeutralEssencePetal();
-		GameRegistry.registerItem(neutralPetal, Names.NeutralEPetal);
+		
+		for(Essence essence: Essence.values()){
+			petals[essence.ordinal()]=new EssencePetal(essence);
+			GameRegistry.registerItem(petals[essence.ordinal()], Names.petals[essence.ordinal()]);
+		}
 	}
 
 	private void addPlants() {
-		neutralPlant=new NeutralEssencePlant();
-		GameRegistry.registerBlock(neutralPlant, Names.NeutralEP);
 		
+		for(Essence essence: Essence.values()){
+			plants[essence.ordinal()]=new EssencePlant(essence);
+			GameRegistry.registerBlock(plants[essence.ordinal()], Names.plants[essence.ordinal()]);
+		}
 	}
 
 	private void addSeeds() {
-
-		neutralSeed = new NeutralEssenceSeed();
-		GameRegistry.registerItem(neutralSeed, Names.NeutralES);
+		
+		for(Essence essence: Essence.values()){
+			seeds[essence.ordinal()]=new EssenceSeed(essence);
+			GameRegistry.registerItem(seeds[essence.ordinal()], Names.seeds[essence.ordinal()]);
+		}
 		
 	}
 
@@ -94,7 +104,7 @@ public class EssenceCrops {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public Item getTabIconItem() {
-				return EssenceCrops.neutralSeed;
+				return EssenceCrops.seeds[0];
 			}
 
 			@Override
