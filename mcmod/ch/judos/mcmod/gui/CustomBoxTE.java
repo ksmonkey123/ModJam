@@ -6,12 +6,8 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.StatCollector;
 import ch.judos.mcmod.lib.Names;
-import cpw.mods.fml.common.FMLCommonHandler;
 
 /**
  * @author j
@@ -30,38 +26,26 @@ public class CustomBoxTE extends BoxTE {
 		return StatCollector.translateToLocal("tile." + Names.CustomBox + ".name");
 	}
 
-	@Override
-	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		super.onDataPacket(net, pkt);
-		System.out.println(FMLCommonHandler.instance().getSide() + " onDataPacket");
-	}
-
-	@Override
-	public Packet getDescriptionPacket() {
-		System.out.println(FMLCommonHandler.instance().getSide() + " getDescriptionPacket");
-		return super.getDescriptionPacket();
+	/**
+	 * 
+	 */
+	public void tryIncreaseSize() {
+		if (this.stack.length < 5)
+			this.sendNetworkCommand("slotSizeChanged", (byte) (this.stack.length + 1));
 	}
 
 	/**
 	 * 
 	 */
-	public void increaseSize() {
-		if (this.stack.length < 5) {
-			this.stack = Arrays.copyOf(this.stack, this.stack.length + 1);
-			System.out.println("TE has " + this.stack.length + " slots");
-			this.markDirty();
-		}
+	public void tryDecreaseSize() {
+		if (this.stack.length > 1)
+			this.sendNetworkCommand("slotSizeChanged", (byte) (this.stack.length - 1));
 	}
 
-	/**
-	 * 
-	 */
-	public void decreaseSize() {
-		if (this.stack.length > 1) {
-			this.stack = Arrays.copyOf(this.stack, this.stack.length - 1);
-			System.out.println("TE has " + this.stack.length + " slots");
-			this.markDirty();
-		}
+	@Override
+	public void onNetworkCommand(String command, byte[] data) {
+		int newSize = (int) data[0];
+		this.stack = Arrays.copyOf(this.stack, newSize);
 	}
 
 	@Override

@@ -59,6 +59,8 @@ public class BoxTE extends GenericTileEntity implements IInventory, IHasGui {
 
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack items) {
+		if (slot >= this.stack.length)
+			return;
 		this.stack[slot] = items;
 	}
 

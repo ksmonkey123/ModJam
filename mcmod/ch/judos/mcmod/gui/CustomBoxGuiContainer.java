@@ -16,8 +16,8 @@ import ch.judos.mcmod.lib.References;
  */
 public class CustomBoxGuiContainer extends GuiContainer {
 
-	private CustomBoxTE te;
-	protected InventoryPlayer inventory;
+	private CustomBoxTE			te;
+	protected InventoryPlayer	inventory;
 
 	/**
 	 * @param inventory
@@ -43,19 +43,14 @@ public class CustomBoxGuiContainer extends GuiContainer {
 	protected void actionPerformed(GuiButton button) {
 		switch (button.id) {
 			case 0:
-				this.te.increaseSize();
+				this.te.tryIncreaseSize();
 				break;
 			case 1:
-				this.te.decreaseSize();
+				this.te.tryDecreaseSize();
 				break;
 			default:
 				break;
 		}
-
-		this.initGui();
-		this.inventorySlots.detectAndSendChanges();
-		// this.inventorySlots = new CustomBoxContainer(this.inventory,
-		// this.te);
 	}
 
 	@Override
