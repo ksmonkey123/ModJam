@@ -1,4 +1,4 @@
-package ch.phyranja.EssenceCrops.plants;
+package ch.phyranja.EssenceCrops.blocks;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -47,7 +47,6 @@ public class EssencePlant extends BlockBush implements IGrowable {
         this.type=type;
         this.setBlockName(Names.plants[type.ordinal()]);
 		this.setBlockTextureName(References.MOD_ID + ":" + Names.plants[type.ordinal()]);
-        //this.disableStats();
     }
 
     /**
@@ -159,7 +158,7 @@ public class EssencePlant extends BlockBush implements IGrowable {
     }
 
     protected Item getEssenceDrop(){
-    	return null; //TODO get right items
+    	return EssenceCrops.petals[this.type.ordinal()];
     }
 
 	/**

@@ -2,10 +2,10 @@ package ch.phyranja.EssenceCrops;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import ch.phyranja.EssenceCrops.blocks.*;
 import ch.phyranja.EssenceCrops.essences.Essence;
 import ch.phyranja.EssenceCrops.items.*;
 import ch.phyranja.EssenceCrops.lib.*;
-import ch.phyranja.EssenceCrops.plants.*;
 import ch.phyranja.EssenceCrops.world.*;
 
 import cpw.mods.fml.common.Mod;
