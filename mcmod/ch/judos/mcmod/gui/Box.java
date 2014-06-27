@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
+import ch.modjam.generic.GenericGuiHandler;
 
 /**
  * @author j
@@ -42,9 +43,7 @@ public class Box extends BlockContainer {
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
 		if (tileEntity == null || player.isSneaking())
 			return false;
-		final int dontCare = 0; // gui is determined by tileEntity, not by this id
-		player.openGui(MCMod.instance, dontCare, world, x, y, z);
-		return true;
+		return GenericGuiHandler.openGUI(player, world, x, y, z);
 	}
 
 	@Override

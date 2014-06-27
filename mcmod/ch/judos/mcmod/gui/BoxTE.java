@@ -19,7 +19,7 @@ import ch.modjam.generic.tileEntity.IHasGui;
  */
 public class BoxTE extends GenericTileEntity implements IInventory, IHasGui {
 
-	protected ItemStack[] stack;
+	protected ItemStack[]	stack;
 
 	/**
 	 * 
@@ -35,6 +35,8 @@ public class BoxTE extends GenericTileEntity implements IInventory, IHasGui {
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
+		if (slot >= this.stack.length)
+			return null;
 		return this.stack[slot];
 	}
 
