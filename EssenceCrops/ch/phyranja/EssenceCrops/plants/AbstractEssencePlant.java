@@ -74,6 +74,11 @@ public abstract class AbstractEssencePlant extends BlockBush implements IGrowabl
                 world.setBlockMetadataWithNotify(x, y, z, meta, 2);
             }
             
+            if(meta==4){
+            	++meta;
+                world.setBlockMetadataWithNotify(x, y, z, meta, 2);
+            }
+            
         }
     }
     
@@ -82,7 +87,7 @@ public abstract class AbstractEssencePlant extends BlockBush implements IGrowabl
     		int p_149727_6_, float p_149727_7_, float p_149727_8_,
     		float p_149727_9_) {
     	
-    	this.updateTick(world, x, y, z, null);
+    	//this.updateTick(world, x, y, z, null);
     	return super.onBlockActivated(world, x, y,
     			z, player, p_149727_6_, p_149727_7_, p_149727_8_,
     			p_149727_9_);
@@ -163,16 +168,16 @@ public abstract class AbstractEssencePlant extends BlockBush implements IGrowabl
         return 1;
     }
 
-    //checks if plant is fully grown
+    //checks if plant is not fully grown
     public boolean func_149851_a(World world, int x, int y, int z, boolean bool)
     {
-        return world.getBlockMetadata(x, y, z) !=4 ;
+        return world.getBlockMetadata(x, y, z) >=4 ;
     }
     
     //checks if plant can be bonemealed
     public boolean func_149852_a(World world, Random p_149852_2_, int p_149852_3_, int p_149852_4_, int p_149852_5_)
     {
-        return true; //TODO actually, false (true for testing stages)
+        return false;
     }
 
     /**
@@ -187,7 +192,7 @@ public abstract class AbstractEssencePlant extends BlockBush implements IGrowabl
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register)
     {
-        this.icon = new IIcon[5];
+        this.icon = new IIcon[6];
 
         for (int i = 0; i < this.icon.length; ++i)
         {
@@ -196,15 +201,18 @@ public abstract class AbstractEssencePlant extends BlockBush implements IGrowabl
     }
 
     @Override
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
+    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune)
     {
-        ArrayList<ItemStack> ret = super.getDrops(world, x, y, z, metadata, fortune);
+        ArrayList<ItemStack> ret = super.getDrops(world, x, y, z, meta, fortune);
 
-        if (metadata >= 4)
+        if (meta == 4)
         {
             if(!environmentIsIdeal()){
-            	ret.add(new ItemStack(this.getSeedDrop(), 1, 0));
+            	ret.add(new ItemStack(this.getEssenceDrop(), 1, 0));
             }
+        }
+        if (meta==5){
+        	ret.add(new ItemStack(this.getEssenceDrop(), 1, 0));
         }
 
         return ret;

@@ -25,7 +25,7 @@ public class NeutralEssencePlant extends AbstractEssencePlant {
 
 	@Override
 	protected Item getEssenceDrop() {
-		return null;
+		return EssenceCrops.neutralPetal;
 	}
 
 }
