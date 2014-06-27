@@ -85,8 +85,18 @@ public interface IPlasmaConnection {
      * 
      * @param plasma
      * @param direction
-     * @return the maximim amount of plasma to be accepted
+     * @return the maximum amount of plasma to be accepted
      */
-    public int getMaxAcceptance(EnumPlasmaTypes plasma, ForgeDirection direction);
+    public int getMaxInput(EnumPlasmaTypes plasma, ForgeDirection direction);
+    
+    /**
+     * Indicates the maximum amount of plasma the entity can deliver. In case no
+     * limit exists, this method should return <tt>Integer.MAX_VALUE</tt>
+     * 
+     * @param plasma
+     * @param direction
+     * @return the maximum amount of plasma to be delivered
+     */
+    public int getMaxOutput(EnumPlasmaTypes plasma, ForgeDirection direction);
     
 }

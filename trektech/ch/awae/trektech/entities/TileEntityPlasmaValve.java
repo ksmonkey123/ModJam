@@ -48,9 +48,10 @@ public class TileEntityPlasmaValve extends TileEntityPlasmaPipe implements
     public TileEntityPlasmaValve() {}
     
     @Override
-    public int getMaxAcceptance(EnumPlasmaTypes plasma, ForgeDirection direction) {
-        return (int) ((this.pressureThreshold - (this.getParticleCount(plasma,
-                direction) / PARTICLES_PER_BAR)) * PARTICLES_PER_BAR);
+    public int getMaxOutput(EnumPlasmaTypes plasma, ForgeDirection direction) {
+        int particleThreshold = (int) (this.pressureThreshold * PARTICLES_PER_BAR);
+        return (this.currentPlasma > particleThreshold) ? particleThreshold
+                : this.currentPlasma;
     }
     
     @Override
@@ -121,7 +122,6 @@ public class TileEntityPlasmaValve extends TileEntityPlasmaPipe implements
      * @return the pressure pressing on the block
      */
     public float getPressure() {
-        System.out.println(this.currentPlasma);
         return this.currentPlasma / PARTICLES_PER_BAR;
     }
     

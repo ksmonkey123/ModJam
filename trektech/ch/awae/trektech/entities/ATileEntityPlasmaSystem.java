@@ -35,9 +35,15 @@ public abstract class ATileEntityPlasmaSystem extends GenericTileEntity
                 continue;
             // calculate virtual particle numbers
             int ownCount = direction == ForgeDirection.UP ? applyVerticalPressureCalculation(
-                    this.getParticleCount(plasma, direction),
-                    (int) this.getParticlesPerBar(plasma, direction)) : this
-                    .getParticleCount(plasma, direction);
+                    this.getParticleCount(plasma, direction) > this.getMaxOutput(
+                            plasma, direction) ? this.getMaxOutput(plasma,
+                            direction) : this.getParticleCount(plasma,
+                            direction), (int) this.getParticlesPerBar(plasma,
+                            direction))
+                    : this.getParticleCount(plasma, direction) > this
+                            .getMaxOutput(plasma, direction) ? this
+                            .getMaxOutput(plasma, direction) : this
+                            .getParticleCount(plasma, direction);
             int othCount = direction == ForgeDirection.DOWN ? applyVerticalPressureCalculation(
                     other.getParticleCount(plasma, opposite),
                     (int) other.getParticlesPerBar(plasma,
@@ -47,17 +53,16 @@ public abstract class ATileEntityPlasmaSystem extends GenericTileEntity
             float othPpB = other.getParticlesPerBar(plasma, opposite);
             // calculate transfer amount for balancing the system
             int dCount = (int) ((othPpB * ownCount - ownPpB * othCount) / (ownPpB + othPpB));
-            // only perform "push" operation (outbound transfers)
-            if (dCount < 0)
-                return;
-            // limit transfer to transfer speed and ensure to not over-drain or
             // over-fill tanks
             if (dCount > Properties.PLASMA_TRANSFER_SPEED)
                 dCount = Properties.PLASMA_TRANSFER_SPEED;
             if (dCount > ownCount)
                 dCount = ownCount;
-            if (dCount > other.getMaxAcceptance(plasma, opposite))
-                dCount = other.getMaxAcceptance(plasma, opposite);
+            if (dCount > other.getMaxInput(plasma, opposite))
+                dCount = other.getMaxInput(plasma, opposite);
+            // only perform "push" operation (outbound transfers)
+            if (dCount < 0)
+                return;
             // apply particle flow
             this.applyParticleFlow(plasma, direction,
                     -other.applyParticleFlow(plasma, opposite, dCount));
@@ -70,6 +75,16 @@ public abstract class ATileEntityPlasmaSystem extends GenericTileEntity
                 .max((int) (particleCount
                         * Properties.VERTICAL_PRESSURE_GRADIENT - Properties.VERTICAL_PRESSURE_ARGUMENT
                         * ppb), 0);
+    }
+    
+    @Override
+    public int getMaxInput(EnumPlasmaTypes plasma, ForgeDirection direction) {
+        return Integer.MAX_VALUE;
+    }
+    
+    @Override
+    public int getMaxOutput(EnumPlasmaTypes plasma, ForgeDirection direction) {
+        return Integer.MAX_VALUE;
     }
     
     /**

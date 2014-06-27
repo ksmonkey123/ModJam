@@ -259,7 +259,7 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
     }
     
     @Override
-    public int getMaxAcceptance(EnumPlasmaTypes plasma, ForgeDirection direction) {
+    public int getMaxInput(EnumPlasmaTypes plasma, ForgeDirection direction) {
         return Integer.MAX_VALUE;
     }
     
