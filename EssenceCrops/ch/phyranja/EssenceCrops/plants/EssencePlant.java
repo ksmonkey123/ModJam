@@ -3,6 +3,11 @@ package ch.phyranja.EssenceCrops.plants;
 import java.util.ArrayList;
 import java.util.Random;
 
+import ch.phyranja.EssenceCrops.EssenceCrops;
+import ch.phyranja.EssenceCrops.essences.Essence;
+import ch.phyranja.EssenceCrops.lib.Names;
+import ch.phyranja.EssenceCrops.lib.References;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -21,13 +26,14 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public abstract class AbstractEssencePlant extends BlockBush implements IGrowable {
+public class EssencePlant extends BlockBush implements IGrowable {
 
 	@SideOnly(Side.CLIENT)
     private IIcon[] icon;
 	private boolean idealEnvironment=true;
+	private Essence type;
 
-    protected AbstractEssencePlant()
+    public EssencePlant(Essence type)
     {
     	
     	super(Material.plants);
@@ -37,6 +43,10 @@ public abstract class AbstractEssencePlant extends BlockBush implements IGrowabl
         this.setCreativeTab((CreativeTabs)null);
         this.setHardness(0.0F);
         this.setStepSound(soundTypeGrass);
+        
+        this.type=type;
+        this.setBlockName(Names.plants[type.ordinal()]);
+		this.setBlockTextureName(References.MOD_ID + ":" + Names.plants[type.ordinal()]);
         //this.disableStats();
     }
 
@@ -139,14 +149,18 @@ public abstract class AbstractEssencePlant extends BlockBush implements IGrowabl
         return this.getSeedDrop();
     }
 
-    protected abstract Item getSeedDrop();
+    protected Item getSeedDrop(){
+    	return EssenceCrops.seeds[type.ordinal()];
+    }
 
 	protected Item func_149865_P()
     {
         return this.getEssenceDrop();
     }
 
-    protected abstract Item getEssenceDrop();
+    protected Item getEssenceDrop(){
+    	return null; //TODO get right items
+    }
 
 	/**
      * Drops the block items with a specified chance of dropping the specified items
