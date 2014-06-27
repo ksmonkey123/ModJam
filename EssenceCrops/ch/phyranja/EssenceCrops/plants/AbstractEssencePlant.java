@@ -11,6 +11,7 @@ import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -58,17 +59,33 @@ public abstract class AbstractEssencePlant extends BlockBush implements IGrowabl
         {
             int meta = world.getBlockMetadata(x, y, z);
 
-            if (meta < 4)
-            {
-                float f = 1.0f;
-
-                if (rand.nextInt((int)(25.0F / f) + 1) == 0)
-                {
-                    ++meta;
-                    world.setBlockMetadataWithNotify(x, y, z, meta, 2);
-                }
+//            if (meta < 4)
+//            {
+//                float f = 1.0f;
+//
+//                if (rand.nextInt((int)(25.0F / f) + 1) == 0)
+//                {
+//                    ++meta;
+//                    world.setBlockMetadataWithNotify(x, y, z, meta, 2);
+//                }
+//            }
+            if (meta < 4){
+            	++meta;
+                world.setBlockMetadataWithNotify(x, y, z, meta, 2);
             }
+            
         }
+    }
+    
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
+    		int p_149727_6_, float p_149727_7_, float p_149727_8_,
+    		float p_149727_9_) {
+    	
+    	this.updateTick(world, x, y, z, null);
+    	return super.onBlockActivated(world, x, y,
+    			z, player, p_149727_6_, p_149727_7_, p_149727_8_,
+    			p_149727_9_);
     }
 
     public void func_149863_m(World world, int x, int y, int z)
