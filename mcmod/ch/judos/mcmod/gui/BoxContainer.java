@@ -6,6 +6,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import ch.modjam.generic.tileEntity.InventoryUtil;
 
 /**
  * @author j
@@ -25,7 +26,8 @@ public class BoxContainer extends Container {
 	 */
 	public BoxContainer(InventoryPlayer inventory, BoxTE te) {
 		this(te);
-		bindPlayerInventory(inventory);
+		InventoryUtil.bindPlayerInventory(this, inventory);
+		// bindPlayerInventory(inventory);
 		addSlotToContainer(new Slot(te, 0, 80, 42));
 	}
 
