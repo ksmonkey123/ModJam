@@ -8,6 +8,7 @@ public class Names {
 	 * All names must be lower case
 	 */
 
+	public static final String Extractor = "e_extractor";
 	public static String[] seeds= new String[Essence.values().length];
 	public static String[] plants= new String[Essence.values().length];
 	public static String[] petals= new String[Essence.values().length];
