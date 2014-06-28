@@ -33,6 +33,9 @@ public class EssenceCrops {
 	public static EssenceSeed[] seeds=new EssenceSeed[Essence.values().length];
 	public static EssencePlant[] plants=new EssencePlant[Essence.values().length];
 	public static EssencePetal[] petals=new EssencePetal[Essence.values().length];
+	public static BigEssenceCapsule[] bigCapsules=new BigEssenceCapsule[Essence.values().length];
+	public static SmallEssenceCapsule[] smallCapsules=new SmallEssenceCapsule[Essence.values().length];
+	
 
 	@Mod.Instance("essencecrops")
 	public static EssenceCrops instance;
@@ -47,19 +50,30 @@ public class EssenceCrops {
 		
 		Names.initNames();
 		
-		addPetals();
+		addItems();
 		addPlants();
-		addSeeds();
 		
 
 		proxy.registerRenderInformation();
 	}
 	
-	private void addPetals() {
+	private void addItems() {
 		
 		for(Essence essence: Essence.values()){
 			petals[essence.ordinal()]=new EssencePetal(essence);
 			GameRegistry.registerItem(petals[essence.ordinal()], Names.petals[essence.ordinal()]);
+		
+			seeds[essence.ordinal()]=new EssenceSeed(essence);
+			GameRegistry.registerItem(seeds[essence.ordinal()], Names.seeds[essence.ordinal()]);
+		
+			bigCapsules[essence.ordinal()]=new BigEssenceCapsule(essence);
+			GameRegistry.registerItem(bigCapsules[essence.ordinal()], Names.bigCapsules[essence.ordinal()]);
+		
+			smallCapsules[essence.ordinal()]=new SmallEssenceCapsule(essence);
+			GameRegistry.registerItem(smallCapsules[essence.ordinal()], Names.smallCapsules[essence.ordinal()]);
+		
+			
+		
 		}
 	}
 
@@ -71,14 +85,7 @@ public class EssenceCrops {
 		}
 	}
 
-	private void addSeeds() {
-		
-		for(Essence essence: Essence.values()){
-			seeds[essence.ordinal()]=new EssenceSeed(essence);
-			GameRegistry.registerItem(seeds[essence.ordinal()], Names.seeds[essence.ordinal()]);
-		}
-		
-	}
+	
 
 	/**
 	 * @param e  

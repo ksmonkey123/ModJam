@@ -2,6 +2,8 @@ package ch.phyranja.EssenceCrops.items;
 
 import ch.phyranja.EssenceCrops.EssenceCrops;
 import ch.phyranja.EssenceCrops.essences.Essence;
+import ch.phyranja.EssenceCrops.lib.Names;
+import ch.phyranja.EssenceCrops.lib.References;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,8 +16,10 @@ public class BigEssenceCapsule extends Item {
 	private Essence type;
 
     public BigEssenceCapsule(Essence type){
-    	this.setCreativeTab(EssenceCrops.modTab);
     	this.type=type;
+    	this.setCreativeTab(EssenceCrops.modTab);
+    	this.setUnlocalizedName(Names.bigCapsules[type.ordinal()]);
+		this.setTextureName(References.MOD_ID + ":" + Names.bigCapsules[type.ordinal()]);
     }
 
 	@Override
