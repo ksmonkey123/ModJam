@@ -21,7 +21,6 @@ public class CustomBoxContainer extends BoxContainer {
 		this.tileEntity = te;
 		this.tileEntity.addListenerForUpdates(this);
 		this.playerInventory = inventory;
-		init2();
 	}
 
 	@Override
@@ -30,11 +29,9 @@ public class CustomBoxContainer extends BoxContainer {
 	}
 
 	@Override
-	protected void init() {}
-
-	protected void init2() {
-		for (int i = 0; i < this.tileEntity.inventory.stack.length; i++)
-			addSlotToContainer(new Slot(this.tileEntity.inventory, i, 26 + 18 * i, 42));
+	protected void init() {
+		for (int i = 0; i < this.tileEntityInventory.getSizeInventory(); i++)
+			addSlotToContainer(new Slot(this.tileEntityInventory, i, 26 + 18 * i, 42));
 	}
 
 	/**
@@ -44,7 +41,7 @@ public class CustomBoxContainer extends BoxContainer {
 		this.inventoryItemStacks.clear();
 		this.inventorySlots.clear();
 		bindPlayerInventory(this.playerInventory);
-		init2();
+		init();
 	}
 
 }
