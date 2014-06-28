@@ -67,7 +67,7 @@ public class CustomBoxGuiContainer extends GenericGuiTEContainer {
 		this.mc.renderEngine.bindTexture(new ResourceLocation(
 			References.MOD_ID + ":textures/gui/" + Names.CustomBox + ".png"));
 		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
-		for (int i = 1; i < this.te.stack.length; i++)
+		for (int i = 1; i < this.te.inventory.stack.length; i++)
 			this.drawTexturedModalRect(guiLeft + 25 + 18 * i, guiTop + 41, 176, 0, 18, 18);
 	}
 

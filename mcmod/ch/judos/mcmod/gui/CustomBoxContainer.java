@@ -32,8 +32,8 @@ public class CustomBoxContainer extends BoxContainer {
 
 	private void initialize() {
 		InventoryUtil.bindPlayerInventory(this, inventory);
-		for (int i = 0; i < this.tileEntity.stack.length; i++)
-			addSlotToContainer(new Slot(this.tileEntity, i, 26 + 18 * i, 42));
+		for (int i = 0; i < this.tileEntity.inventory.stack.length; i++)
+			addSlotToContainer(new Slot(this.tileEntity.inventory, i, 26 + 18 * i, 42));
 	}
 
 	/**
