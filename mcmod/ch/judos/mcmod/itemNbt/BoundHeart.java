@@ -19,13 +19,13 @@ import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
 import ch.modjam.generic.GenericGuiHandler;
-import ch.modjam.generic.tileEntity.IHasGui;
+import ch.modjam.generic.tileEntity.IItemHasGui;
 
 /**
  * @author judos
  * 
  */
-public class BoundHeart extends Item implements IHasGui {
+public class BoundHeart extends Item implements IItemHasGui {
 
 	/**
 	 * creating the item and setting up configs
@@ -144,13 +144,13 @@ public class BoundHeart extends Item implements IHasGui {
 	}
 
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
-		return new BoundHeartGui(inventory);
+	public GuiContainer getGuiClient(InventoryPlayer inventory, ItemStack stack) {
+		return new BoundHeartGui(inventory, stack);
 	}
 
 	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
-		return new BoundHeartContainer(inventory);
+	public Container getGuiServer(InventoryPlayer inventory, ItemStack stack) {
+		return new BoundHeartContainer(inventory, stack);
 	}
 
 }

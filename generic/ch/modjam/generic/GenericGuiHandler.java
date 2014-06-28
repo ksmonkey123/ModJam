@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import ch.modjam.generic.tileEntity.IHasGui;
+import ch.modjam.generic.tileEntity.IItemHasGui;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 /**
@@ -86,12 +87,12 @@ public class GenericGuiHandler implements IGuiHandler {
 	private Object getItemGuiElement(EntityPlayer player, World world, int slot,
 			boolean isClientSide) {
 		ItemStack stack = player.inventory.mainInventory[slot];
-		if (!(stack.getItem() instanceof IHasGui))
+		if (!(stack.getItem() instanceof IItemHasGui))
 			return null;
-		IHasGui entity = (IHasGui) stack.getItem();
+		IItemHasGui entity = (IItemHasGui) stack.getItem();
 		if (isClientSide)
-			return entity.getGuiClient(player.inventory);
-		return entity.getGuiServer(player.inventory);
+			return entity.getGuiClient(player.inventory, stack);
+		return entity.getGuiServer(player.inventory, stack);
 	}
 
 	private static Object getGuiElement(EntityPlayer player, World world, int x, int y, int z,
