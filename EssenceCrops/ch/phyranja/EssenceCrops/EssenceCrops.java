@@ -30,6 +30,8 @@ public class EssenceCrops {
 
 	public static CreativeTabs modTab;
 	
+	public static EssenceExtractor extractor;
+	
 	public static EssenceSeed[] seeds=new EssenceSeed[Essence.values().length];
 	public static EssencePlant[] plants=new EssencePlant[Essence.values().length];
 	public static EssencePetal[] petals=new EssencePetal[Essence.values().length];
@@ -52,11 +54,19 @@ public class EssenceCrops {
 		
 		addItems();
 		addPlants();
+		addMachines();
 		
 
 		proxy.registerRenderInformation();
 	}
 	
+	private void addMachines() {
+		extractor=new EssenceExtractor();
+		GameRegistry.registerBlock(extractor, Names.Extractor);
+	
+		
+	}
+
 	private void addItems() {
 		
 		for(Essence essence: Essence.values()){

@@ -3,9 +3,12 @@ package ch.judos.mcmod.itemNbt;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,12 +18,14 @@ import net.minecraft.world.World;
 import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
+import ch.modjam.generic.GenericGuiHandler;
+import ch.modjam.generic.tileEntity.IItemHasGui;
 
 /**
  * @author judos
  * 
  */
-public class BoundHeart extends Item {
+public class BoundHeart extends Item implements IItemHasGui {
 
 	/**
 	 * creating the item and setting up configs
@@ -42,7 +47,7 @@ public class BoundHeart extends Item {
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
-		// player.op
+		GenericGuiHandler.openItemGUI(player, world, item);
 		return item;
 	}
 
@@ -136,6 +141,16 @@ public class BoundHeart extends Item {
 		if (b.stackSize == 0)
 			b = null;
 		return b;
+	}
+
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory, ItemStack stack) {
+		return new BoundHeartGui(inventory, stack);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory, ItemStack stack) {
+		return new BoundHeartContainer(inventory, stack);
 	}
 
 }

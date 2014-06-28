@@ -9,12 +9,12 @@ import org.lwjgl.opengl.GL11;
 
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
-import ch.modjam.generic.tileEntity.GenericGuiContainer;
+import ch.modjam.generic.tileEntity.GenericGuiTEContainer;
 
 /**
  * @author j
  */
-public class CustomBoxGuiContainer extends GenericGuiContainer {
+public class CustomBoxGuiContainer extends GenericGuiTEContainer {
 
 	private CustomBoxTE			te;
 	protected InventoryPlayer	inventory;

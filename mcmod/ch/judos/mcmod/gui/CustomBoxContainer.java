@@ -3,6 +3,7 @@ package ch.judos.mcmod.gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
+import ch.modjam.generic.tileEntity.InventoryUtil;
 
 /**
  * @author j
@@ -30,7 +31,7 @@ public class CustomBoxContainer extends BoxContainer {
 	}
 
 	private void initialize() {
-		bindPlayerInventory(inventory);
+		InventoryUtil.bindPlayerInventory(this, inventory);
 		for (int i = 0; i < this.tileEntity.stack.length; i++)
 			addSlotToContainer(new Slot(this.tileEntity, i, 26 + 18 * i, 42));
 	}
