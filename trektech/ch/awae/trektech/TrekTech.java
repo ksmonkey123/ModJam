@@ -9,10 +9,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import ch.awae.trektech.blocks.BlockDuraniumWall;
 import ch.awae.trektech.blocks.BlockPlasmaEnergizerLow;
+import ch.awae.trektech.blocks.BlockPlasmaFurnace;
 import ch.awae.trektech.blocks.BlockPlasmaPipe;
 import ch.awae.trektech.blocks.BlockPlasmaSource;
 import ch.awae.trektech.blocks.BlockPlasmaValve;
 import ch.awae.trektech.entities.TileEntityPlasmaEnergizerLow;
+import ch.awae.trektech.entities.TileEntityPlasmaFurnace;
 import ch.awae.trektech.entities.TileEntityPlasmaPipe;
 import ch.awae.trektech.entities.TileEntityPlasmaSource;
 import ch.awae.trektech.entities.TileEntityPlasmaValve;
@@ -21,6 +23,7 @@ import ch.awae.trektech.items.ItemDilithiumRaw;
 import ch.awae.trektech.items.ItemDuraniumIngot;
 import ch.awae.trektech.items.ItemPlasmaContainmentRing;
 import ch.awae.trektech.items.ItemStarFleetSymbol;
+import ch.modjam.generic.RegistryUtil;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -59,6 +62,7 @@ public class TrekTech {
     @Instance("TrekTech")
     public static TrekTech     instance;
     
+    // Items
     public static Item         itemStarFleetSymbol       = new ItemStarFleetSymbol();
     public static Item         itemDuraniumIngot         = new ItemDuraniumIngot();
     public static Item         itemDilithiumRaw          = new ItemDilithiumRaw();
@@ -66,12 +70,16 @@ public class TrekTech {
     public static Item         itemPlasmaContainmentRing = new ItemPlasmaContainmentRing();
     
     public static Block        blockDuraniumWall         = new BlockDuraniumWall();
+    
+    // Machines
     public static Block        blockPlasmaSource         = new BlockPlasmaSource();
     public static Block        blockPlasmaValve          = new BlockPlasmaValve(
                                                                  "valve1",
                                                                  EnumPlasmaTypes.NEUTRAL);
     public static Block        blockPlasmaEnergizerLow   = new BlockPlasmaEnergizerLow();
+    public static Block        blockPlasmaFurnace        = new BlockPlasmaFurnace();
     
+    // Pipe System
     public static Block[][]    pipes                     = new Block[EnumPlasmaTypes
                                                                  .values().length][2];
     public static Block[]      valves                    = new Block[EnumPlasmaTypes
@@ -87,14 +95,13 @@ public class TrekTech {
     public void preInit(FMLPreInitializationEvent event) {
         setMetadata(event.getModMetadata());
         // ITEMS
-        GameRegistry.registerItem(itemStarFleetSymbol, "symbolStarFleet");
-        GameRegistry.registerItem(itemDuraniumIngot, "ingotDuranium");
-        GameRegistry.registerItem(itemDilithiumRaw, "dilithiumRaw");
-        GameRegistry.registerItem(itemDilithiumCrystal, "dilithiumCrystal");
-        GameRegistry.registerItem(itemPlasmaContainmentRing,
-                "plasmaContainmentRing");
+        RegistryUtil.registerItem(itemStarFleetSymbol);
+        RegistryUtil.registerItem(itemDuraniumIngot);
+        RegistryUtil.registerItem(itemDilithiumRaw);
+        RegistryUtil.registerItem(itemDilithiumCrystal);
+        RegistryUtil.registerItem(itemPlasmaContainmentRing);
         // BLOCKS
-        GameRegistry.registerBlock(blockDuraniumWall, "duraniumWall");
+        RegistryUtil.registerBlock(blockDuraniumWall);
         
         EnumPlasmaTypes plasmaTypes[] = EnumPlasmaTypes.values();
         for (int i = 0; i < plasmaTypes.length; i++) {
@@ -103,27 +110,20 @@ public class TrekTech {
             pipes[i][0] = new BlockPlasmaPipe("pipe" + i, plasmaType,
                     plasmaType.getRadius());
             pipes[i][1] = new BlockPlasmaPipe("pipe" + i + "c", plasmaType);
-            GameRegistry.registerBlock(pipes[i][0], "pipe" + i);
-            GameRegistry.registerBlock(pipes[i][1], "pipe" + i + "c");
+            RegistryUtil.registerBlock(pipes[i][0], TileEntityPlasmaPipe.class);
+            RegistryUtil.registerBlock(pipes[i][1]);
             addEncasingRecipe(i);
             valves[i] = new BlockPlasmaValve("valve" + i, plasmaType);
             addValveRecipe(i);
-            GameRegistry.registerBlock(valves[i], "valve" + i);
+            RegistryUtil.registerBlock(valves[i], TileEntityPlasmaValve.class);
         }
         
-        GameRegistry.registerBlock(blockPlasmaSource, "plasmaSource");
-        GameRegistry.registerBlock(blockPlasmaEnergizerLow,
-                "plasmaEnergizerLow");
-        // ENTITIES
-        GameRegistry.registerTileEntity(TileEntityPlasmaPipe.class,
-                "tilePlasmaPipe");
-        GameRegistry.registerTileEntity(TileEntityPlasmaSource.class,
-                "tilePlasmaSource");
-        GameRegistry.registerTileEntity(TileEntityPlasmaValve.class,
-                "tilePlasmaValve");
-        GameRegistry.registerTileEntity(TileEntityPlasmaEnergizerLow.class,
-                "tilePlasmaEnergizerLow");
-        
+        RegistryUtil.registerBlock(blockPlasmaSource,
+                TileEntityPlasmaSource.class);
+        RegistryUtil.registerBlock(blockPlasmaEnergizerLow,
+                TileEntityPlasmaEnergizerLow.class);
+        RegistryUtil.registerBlock(blockPlasmaFurnace,
+                TileEntityPlasmaFurnace.class);
         // RECIPES
         registerRecipes();
         proxy.registerRenderers();
