@@ -39,6 +39,15 @@ public class InventoryUtil {
 		}
 	}
 
+	/** the above method is the same as using the following inside the container: */
+	// private void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
+	// for (int i = 0; i < 3; i++)
+	// for (int j = 0; j < 9; j++)
+	// addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+	// for (int i = 0; i < 9; i++)
+	// addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 142));
+	// }
+
 	private static void init() throws NoSuchMethodException, SecurityException {
 		boolean deobfsc = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 		if (deobfsc)
