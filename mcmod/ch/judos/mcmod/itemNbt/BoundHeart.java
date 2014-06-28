@@ -73,7 +73,11 @@ public class BoundHeart extends Item {
 			return;
 
 		if (entity instanceof EntityLivingBase) {
-			if (item.stackTagCompound != null) {
+			if (item.stackTagCompound == null) {
+				if (entity instanceof EntityPlayer) {
+					onCreated(item, world, (EntityPlayer) entity);
+				}
+			} else {
 				String heartOriginName = item.stackTagCompound.getString("owner");
 				MinecraftServer s = MinecraftServer.getServer();
 				EntityPlayer heartOrigin = s.getConfigurationManager().getPlayerForUsername(

@@ -10,6 +10,7 @@ public class EssencePetal extends Item {
 	
 	private Essence type;
 	public EssencePetal(Essence type){
+		this.type=type;
     	this.setCreativeTab(EssenceCrops.modTab);
     	this.setUnlocalizedName(Names.petals[type.ordinal()]);
 		this.setTextureName(References.MOD_ID + ":" + Names.petals[type.ordinal()]);
