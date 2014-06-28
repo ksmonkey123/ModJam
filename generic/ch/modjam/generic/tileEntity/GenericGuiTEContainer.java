@@ -9,7 +9,7 @@ import net.minecraft.tileentity.TileEntity;
  * @author judos
  * 
  */
-public abstract class GenericGuiContainer extends GuiContainer {
+public abstract class GenericGuiTEContainer extends GuiContainer {
 
 	protected TileEntity		te;
 	protected InventoryPlayer	inventory;
@@ -19,7 +19,7 @@ public abstract class GenericGuiContainer extends GuiContainer {
 	 * @param te tileentity (for checking whether it was destroyed and gui should be closed)
 	 * @param inventory
 	 */
-	public GenericGuiContainer(Container container, TileEntity te, InventoryPlayer inventory) {
+	public GenericGuiTEContainer(Container container, TileEntity te, InventoryPlayer inventory) {
 		super(container);
 		this.te = te;
 		this.inventory = inventory;

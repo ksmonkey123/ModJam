@@ -8,12 +8,12 @@ import org.lwjgl.opengl.GL11;
 
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
-import ch.modjam.generic.tileEntity.GenericGuiContainer;
+import ch.modjam.generic.tileEntity.GenericGuiTEContainer;
 
 /**
  * @author j
  */
-public class BoxGuiContainer extends GenericGuiContainer {
+public class BoxGuiContainer extends GenericGuiTEContainer {
 
 	/**
 	 * @param inventory

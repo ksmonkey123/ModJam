@@ -145,12 +145,12 @@ public class BoundHeart extends Item implements IHasGui {
 
 	@Override
 	public GuiContainer getGuiClient(InventoryPlayer inventory) {
-		return null;
+		return new BoundHeartGui(inventory);
 	}
 
 	@Override
 	public Container getGuiServer(InventoryPlayer inventory) {
-		return null;
+		return new BoundHeartContainer(inventory);
 	}
 
 }

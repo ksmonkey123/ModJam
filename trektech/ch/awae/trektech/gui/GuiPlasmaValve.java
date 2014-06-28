@@ -13,12 +13,12 @@ import org.lwjgl.opengl.GL11;
 import ch.awae.trektech.TrekTech;
 import ch.awae.trektech.entities.TileEntityPlasmaValve;
 import ch.awae.trektech.gui.container.ContainerPlasmaValve;
-import ch.modjam.generic.tileEntity.GenericGuiContainer;
+import ch.modjam.generic.tileEntity.GenericGuiTEContainer;
 
 /**
  * @author Andreas Waelchli (andreas.waelchli@me.com)
  */
-public class GuiPlasmaValve extends GenericGuiContainer {
+public class GuiPlasmaValve extends GenericGuiTEContainer {
     
     TileEntityPlasmaValve tileEntity;
     
