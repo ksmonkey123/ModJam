@@ -16,7 +16,7 @@ public class BoxContainer extends Container {
 	private IInventory	te;
 
 	protected BoxContainer(BoxTE te) {
-		this.te = te;
+		this.te = te.inventory;
 	}
 
 	/**
@@ -27,7 +27,7 @@ public class BoxContainer extends Container {
 	public BoxContainer(InventoryPlayer inventory, BoxTE te) {
 		this(te);
 		InventoryUtil.bindPlayerInventory(this, inventory);
-		addSlotToContainer(new Slot(te, 0, 80, 42));
+		addSlotToContainer(new Slot(te.inventory, 0, 80, 42));
 	}
 
 	@Override

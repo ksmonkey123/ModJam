@@ -10,7 +10,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.util.StatCollector;
+import ch.judos.mcmod.GenericInventory;
 import ch.judos.mcmod.lib.Names;
 
 /**
@@ -24,37 +24,32 @@ public class CustomBoxTE extends BoxTE {
 	 * 
 	 */
 	public CustomBoxTE() {
-		this.stack = new ItemStack[2];
+		this.inventory = new GenericInventory(2, Names.CustomBox);
 		this.containers = new ArrayList<CustomBoxContainer>();
-	}
-
-	@Override
-	public String getInventoryName() {
-		return StatCollector.translateToLocal("tile." + Names.CustomBox + ".name");
 	}
 
 	/**
 	 * 
 	 */
 	public void tryIncreaseSize() {
-		if (this.stack.length < 5)
-			this.sendNetworkCommand("slotSizeChanged", (byte) (this.stack.length + 1));
+		if (this.inventory.stack.length < 5)
+			this.sendNetworkCommand("slotSizeChanged", (byte) (this.inventory.stack.length + 1));
 	}
 
 	/**
 	 * 
 	 */
 	public void tryDecreaseSize() {
-		if (this.stack.length > 1)
-			this.sendNetworkCommand("slotSizeChanged", (byte) (this.stack.length - 1));
+		if (this.inventory.stack.length > 1)
+			this.sendNetworkCommand("slotSizeChanged", (byte) (this.inventory.stack.length - 1));
 	}
 
 	@Override
 	public void onNetworkCommand(String command, byte[] data) {
 		int newSize = (int) data[0];
-		if (newSize < this.stack.length)
-			dropItemsOnTheFloor(this.stack[this.stack.length - 1]);
-		this.stack = Arrays.copyOf(this.stack, newSize);
+		if (newSize < this.inventory.stack.length)
+			dropItemsOnTheFloor(this.inventory.stack[this.inventory.stack.length - 1]);
+		this.inventory.stack = Arrays.copyOf(this.inventory.stack, newSize);
 		for (CustomBoxContainer c : this.containers)
 			c.reinitialize();
 	}
