@@ -29,7 +29,7 @@ public class BoundHeart extends Item {
 		this.setCreativeTab(MCMod.modTab);
 		this.setUnlocalizedName(Names.BoundHeart);
 		this.setTextureName(References.MOD_ID + ":" + Names.BoundHeart);
-		this.setMaxStackSize(2);
+		this.setMaxStackSize(1);
 	}
 
 	@Override
@@ -38,6 +38,12 @@ public class BoundHeart extends Item {
 			itemStack.stackTagCompound = new NBTTagCompound();
 			itemStack.stackTagCompound.setString("owner", player.getCommandSenderName());
 		}
+	}
+
+	@Override
+	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
+		// player.op
+		return item;
 	}
 
 	/**

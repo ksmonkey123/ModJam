@@ -1,7 +1,6 @@
 package ch.judos.mcmod.gui;
 
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -10,11 +9,12 @@ import org.lwjgl.opengl.GL11;
 
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
+import ch.modjam.generic.tileEntity.GenericGuiContainer;
 
 /**
  * @author j
  */
-public class CustomBoxGuiContainer extends GuiContainer {
+public class CustomBoxGuiContainer extends GenericGuiContainer {
 
 	private CustomBoxTE			te;
 	protected InventoryPlayer	inventory;
@@ -24,7 +24,7 @@ public class CustomBoxGuiContainer extends GuiContainer {
 	 * @param te
 	 */
 	public CustomBoxGuiContainer(InventoryPlayer inventory, CustomBoxTE te) {
-		super(new CustomBoxContainer(inventory, te));
+		super(new CustomBoxContainer(inventory, te), te, inventory);
 		this.te = te;
 		this.inventory = inventory;
 	}
