@@ -2,82 +2,39 @@ package ch.judos.mcmod.gui;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import ch.modjam.generic.tileEntity.InventoryUtil;
+import ch.modjam.generic.tileEntity.GenericContainer;
 
 /**
  * @author j
  */
-public class BoxContainer extends Container {
+public class BoxContainer extends GenericContainer {
 
-	private IInventory	te;
-
-	protected BoxContainer(BoxTE te) {
-		this.te = te.inventory;
-	}
+	protected IInventory	tileEntityInventory;
 
 	/**
-	 * 
 	 * @param inventory
 	 * @param te
 	 */
 	public BoxContainer(InventoryPlayer inventory, BoxTE te) {
-		this(te);
-		InventoryUtil.bindPlayerInventory(this, inventory);
-		addSlotToContainer(new Slot(te.inventory, 0, 80, 42));
+		super(inventory);
+		this.tileEntityInventory = te.inventory;
+		init();
+	}
+
+	protected void init() {
+		addSlotToContainer(new Slot(tileEntityInventory, 0, 80, 42));
 	}
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		return this.te.isUseableByPlayer(player);
+		return this.tileEntityInventory.isUseableByPlayer(player);
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
-		ItemStack stack = null;
-		Slot slotObject = (Slot) this.inventorySlots.get(slot);
-
-		// null checks and checks if the item can be stacked (maxStackSize > 1)
-		if (slotObject != null && slotObject.getHasStack()) {
-			ItemStack stackInSlot = slotObject.getStack();
-			stack = stackInSlot.copy();
-
-			// merges the item into player inventory since its in the tileEntity
-			int s = this.te.getSizeInventory();
-			if (slot >= 36) {
-				if (!this.mergeItemStack(stackInSlot, 27, 36, false))
-					if (!this.mergeItemStack(stackInSlot, 0, 27, false))
-						return null;
-
-			}
-			// places it into the tileEntity is possible since its in the player
-			// inventory
-			else {
-				try {
-					if (!this.mergeItemStack(stackInSlot, 36, 36 + s, false))
-						return null;
-				} catch (Exception e) {
-					e.printStackTrace();
-					return null;
-				}
-			}
-
-			if (stackInSlot.stackSize == 0) {
-				slotObject.putStack(null);
-			} else {
-				slotObject.onSlotChanged();
-			}
-
-			// no items were moved by mergeItemStack (since size is still the same)
-			if (stackInSlot.stackSize == stack.stackSize) {
-				return null;
-			}
-			slotObject.onPickupFromSlot(player, stackInSlot);
-		}
-		return stack;
+	public int getSizeInventory() {
+		return this.tileEntityInventory.getSizeInventory();
 	}
 
 }

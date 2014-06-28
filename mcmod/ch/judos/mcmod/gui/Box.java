@@ -5,11 +5,11 @@ import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import ch.judos.mcmod.GenericInventory;
 import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
@@ -48,10 +48,11 @@ public class Box extends BlockContainer {
 
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-		IInventory te = (IInventory) world.getTileEntity(x, y, z);
+		BoxTE te = (BoxTE) world.getTileEntity(x, y, z);
 		if (te != null) {
-			for (int i1 = 0; i1 < te.getSizeInventory(); ++i1) {
-				ItemStack itemstack = te.getStackInSlot(i1);
+			GenericInventory inv = te.inventory;
+			for (int i1 = 0; i1 < inv.getSizeInventory(); ++i1) {
+				ItemStack itemstack = inv.getStackInSlot(i1);
 				if (itemstack != null) {
 					EntityItem entityitem = new EntityItem(world, x + 0.5, y + 1, z + 0.5,
 						new ItemStack(itemstack.getItem(), itemstack.stackSize, itemstack

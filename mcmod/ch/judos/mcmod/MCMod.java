@@ -44,6 +44,7 @@ import ch.judos.mcmod.lib.References;
 import ch.judos.mcmod.potions.OnEntityLivingHook;
 import ch.judos.mcmod.potions.PotionTest;
 import ch.judos.mcmod.world.WorldGenerator;
+import ch.modjam.generic.RegistryUtil;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.ModMetadata;
@@ -184,7 +185,7 @@ public class MCMod {
 		MinecraftForge.EVENT_BUS.register(new OnEntityLivingHook());
 		potionTest = new PotionTest();
 		itemPotionTest = new ItemPotionTest();
-		GameRegistry.registerItem(itemPotionTest, Names.PotionTest);
+		RegistryUtil.registerItem(itemPotionTest);
 	}
 
 	private static void addDirtShovel() {
