@@ -13,11 +13,8 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.gui.GuiPlasmaEnergizerLow;
-import ch.awae.trektech.gui.GuiPlasmaSource;
 import ch.awae.trektech.gui.container.ContainerPlasmaEnergizerLow;
-import ch.awae.trektech.gui.container.ContainerPlasmaSource;
 import ch.modjam.generic.blocks.BlockGenericDualStateDirected;
-import ch.modjam.generic.blocks.EnumFace;
 import ch.modjam.generic.tileEntity.IHasGui;
 
 /**
@@ -103,16 +100,20 @@ public class TileEntityPlasmaEnergizerLow extends ATileEntityPlasmaSystem
     
     @Override
     public void customTick() {
-        
         if (this.currentItemRemainingTime > 0) {
             this.currentItemRemainingTime--;
             if (this.currentLow < PLASMA_PER_BAR * MAX_BAR
                     && this.currentNeutral >= PLASMA_PER_TICK) {
-                this.currentNeutral -= PLASMA_PER_TICK;
-                this.currentLow += PLASMA_PER_TICK;
+                int transfer = PLASMA_PER_TICK;
+                if (this.currentLow + transfer > MAX_BAR * PLASMA_PER_BAR)
+                    transfer = MAX_BAR * PLASMA_PER_BAR - this.currentLow;
+                if (transfer > this.currentNeutral)
+                    transfer = this.currentNeutral;
+                this.currentNeutral -= transfer;
+                this.currentLow += transfer;
             }
         } else if (this.currentLow < PLASMA_PER_BAR * MAX_BAR
-                && this.currentNeutral >= PLASMA_PER_TICK)
+                && this.currentNeutral > 0)
             this.refuel();
         else
             this.updateBlock(false);
@@ -201,6 +202,9 @@ public class TileEntityPlasmaEnergizerLow extends ATileEntityPlasmaSystem
      *            the number of pixels a bar should correspond to
      * @param maxPixel
      *            the maximum amount of pixels
+     * @param isLowPlasmaMeant
+     *            <tt>true</tt> is low plasma is meant, <tt>false</tt> if
+     *            neutralPlasma is meant
      * @return the scaled plasma pressure
      */
     public int getPlasmaLevelScaled(int pixelPerBar, int maxPixel,

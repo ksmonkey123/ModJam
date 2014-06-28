@@ -1,12 +1,11 @@
 package ch.awae.trektech.gui.container;
 
-import ch.awae.trektech.entities.TileEntityPlasmaEnergizerLow;
-import ch.awae.trektech.entities.TileEntityPlasmaSource;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import ch.awae.trektech.entities.TileEntityPlasmaEnergizerLow;
 
 /**
  * Plasma Source Container

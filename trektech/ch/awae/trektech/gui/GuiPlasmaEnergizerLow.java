@@ -10,9 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 import ch.awae.trektech.TrekTech;
 import ch.awae.trektech.entities.TileEntityPlasmaEnergizerLow;
-import ch.awae.trektech.entities.TileEntityPlasmaSource;
 import ch.awae.trektech.gui.container.ContainerPlasmaEnergizerLow;
-import ch.awae.trektech.gui.container.ContainerPlasmaSource;
 
 /**
  * Plasma Source GUI
@@ -63,10 +61,8 @@ public class GuiPlasmaEnergizerLow extends GuiContainer {
                     14, i1 + 2);
         }
         i1 = this.tileEntity.getPlasmaLevelScaled(4, 44, false);
-        this.drawTexturedModalRect(x + 26, y + 65 - i1, 176,
-                59 - i1, 8, i1);
+        this.drawTexturedModalRect(x + 26, y + 65 - i1, 176, 59 - i1, 8, i1);
         i1 = this.tileEntity.getPlasmaLevelScaled(4, 44, true);
-        this.drawTexturedModalRect(x + 142, y + 65 - i1, 184,
-                59 - i1, 8, i1);
+        this.drawTexturedModalRect(x + 142, y + 65 - i1, 184, 59 - i1, 8, i1);
     }
 }

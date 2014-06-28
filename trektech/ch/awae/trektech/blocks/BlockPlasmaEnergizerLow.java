@@ -11,7 +11,6 @@ import net.minecraft.world.World;
 import ch.awae.trektech.Handler;
 import ch.awae.trektech.TrekTech;
 import ch.awae.trektech.entities.TileEntityPlasmaEnergizerLow;
-import ch.awae.trektech.entities.TileEntityPlasmaSource;
 import ch.modjam.generic.GenericGuiHandler;
 import ch.modjam.generic.blocks.BlockGenericDualStateDirected;
 import ch.modjam.generic.blocks.EnumFace;
