@@ -93,6 +93,7 @@ public abstract class AbstractInventory implements IInventory {
 				int real = Math.min(push.stackSize, s.getMaxStackSize() - s.stackSize);
 				push.stackSize -= real;
 				s.stackSize += real;
+				setInventorySlotContents(i, s);
 				if (push.stackSize == 0)
 					return true;
 			}

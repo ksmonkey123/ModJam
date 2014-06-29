@@ -38,6 +38,8 @@ public class GenericNBTInventory extends AbstractInventory {
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 		NBTTagCompound tag = (NBTTagCompound) this.nbt().getTag("Slot" + slot);
+		if (tag == null)
+			return null;
 		return ItemStack.loadItemStackFromNBT(tag);
 	}
 

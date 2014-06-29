@@ -124,8 +124,9 @@ public class BoundHeart extends Item implements IItemHasGui {
 					GenericNBTInventory heart = new GenericNBTInventory(pr, "boundheart_inventory");
 					ItemStack push = heart.getAndRemoveFirstItem();
 					if (push != null) {
-						if (!heartOrigin.inventory.addItemStackToInventory(push))
+						if (!heartOrigin.inventory.addItemStackToInventory(push)) {
 							heart.addItemStackToInventory(push);
+						}
 					}
 				}
 
