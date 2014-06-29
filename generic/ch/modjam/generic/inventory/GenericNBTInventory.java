@@ -1,14 +1,12 @@
 package ch.modjam.generic.inventory;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * @author judos
  */
-public class GenericNBTInventory implements IInventory {
+public class GenericNBTInventory extends AbstractInventory {
 
 	protected NBTTagCompound	nbt;
 
@@ -31,69 +29,29 @@ public class GenericNBTInventory implements IInventory {
 	}
 
 	@Override
-	public ItemStack decrStackSize(int var1, int var2) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ItemStack getStackInSlotOnClosing(int var1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setInventorySlotContents(int var1, ItemStack var2) {
-		// TODO Auto-generated method stub
-
+	public void setInventorySlotContents(int slot, ItemStack stack) {
+		NBTTagCompound tag = new NBTTagCompound();
+		if (stack != null)
+			stack.writeToNBT(tag);
+		this.nbt.setTag("Slot" + slot, tag);
 	}
 
 	@Override
 	public String getInventoryName() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean hasCustomInventoryName() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
-	public int getInventoryStackLimit() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void markDirty() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer var1) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void openInventory() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void closeInventory() {
-		// TODO Auto-generated method stub
-
-	}
+	public void markDirty() {}
 
 	@Override
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }

@@ -15,11 +15,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
-import ch.judos.mcmod.GenericInventory;
 import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
 import ch.modjam.generic.gui.GenericGuiHandler;
+import ch.modjam.generic.inventory.GenericInventory;
 import ch.modjam.generic.inventory.IItemHasGui;
 
 /**

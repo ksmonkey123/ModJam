@@ -9,11 +9,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import ch.judos.mcmod.GenericInventory;
 import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
 import ch.modjam.generic.gui.GenericGuiHandler;
+import ch.modjam.generic.inventory.GenericInventory;
 
 /**
  * @author j
