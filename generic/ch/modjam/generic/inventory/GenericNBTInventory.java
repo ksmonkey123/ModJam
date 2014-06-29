@@ -53,7 +53,7 @@ public class GenericNBTInventory extends AbstractInventory {
 
 	@Override
 	public String getInventoryName() {
-		return StatCollector.translateToLocal("tile." + tileName + ".name");
+		return StatCollector.translateToLocal("tile." + this.tileName + ".name");
 	}
 
 	@Override
@@ -62,7 +62,9 @@ public class GenericNBTInventory extends AbstractInventory {
 	}
 
 	@Override
-	public void markDirty() {}
+	public void markDirty() {
+	    // not implemented
+	}
 
 	@Override
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {

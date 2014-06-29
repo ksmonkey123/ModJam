@@ -44,9 +44,8 @@ public class GenericInventory extends AbstractInventory {
 		if (slot >= this.stack.length)
 			return;
 		this.stack[slot] = items;
-		for (InventorySlotChangedListener l : this.listeners) {
-			l.slotChanged(slot, items);
-		}
+		for (InventorySlotChangedListener l : this.listeners)
+            l.slotChanged(slot, items);
 	}
 
 	/**
@@ -74,7 +73,9 @@ public class GenericInventory extends AbstractInventory {
 	}
 
 	@Override
-	public void markDirty() {}
+	public void markDirty() {
+	    // not implemented
+	}
 
 	/**
 	 * resizes the amount of slots

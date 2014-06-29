@@ -5,15 +5,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
+import ch.awae.trektech.EnumUpgrade;
 import ch.awae.trektech.TrekTech;
 import ch.awae.trektech.gui.GuiPlasmaFurnace;
 import ch.awae.trektech.gui.container.ContainerPlasmaFurnace;
+import ch.awae.trektech.items.ItemUpgrade;
 import ch.modjam.generic.ListedStuff;
 import ch.modjam.generic.blocks.BlockGenericDualStateDirected;
 import ch.modjam.generic.inventory.IHasGui;
@@ -293,6 +296,8 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
     }
     
     private void smelt() {
+        if (this.worldObj.isRemote)
+            return;
         if (this.currentL < this.getPlasmaConsumptionPerItem())
             return;
         this.currentL -= this.getPlasmaConsumptionPerItem();
@@ -313,6 +318,7 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
         this.stacks[0].stackSize--;
         if (this.stacks[0].stackSize <= 0)
             this.stacks[0] = null;
+        this.markDirty(); 
         this.forceServerPush();
     }
     
@@ -328,28 +334,27 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
     }
     
     private int getPlasmaConsumptionPerItem() {
-        return TileEntityPlasmaFurnace.BASE_PLASMA_PER_ITEM;
-        // TODO: calculate plasma consumption
+        return (int) (TileEntityPlasmaFurnace.BASE_PLASMA_PER_ITEM * (1 - 0.125f * this
+                .getUpgradeCount(EnumUpgrade.EFFICIENCY)));
     }
     
     private int getSmeltTimePerItem() {
-        return TileEntityPlasmaFurnace.BASE_BURN_TIME;
-        // TODO: calculate item smelt time
+        return (int) (TileEntityPlasmaFurnace.BASE_BURN_TIME * (1 - 0.1875f * this
+                .getUpgradeCount(EnumUpgrade.SPEED)));
     }
     
     private float getPlasmaRegain() {
-        return TileEntityPlasmaFurnace.BASE_PLASMA_REGAIN;
-        // TODO: calculate plasma regain
+        return TileEntityPlasmaFurnace.BASE_PLASMA_REGAIN + 0.125f
+                * this.getUpgradeCount(EnumUpgrade.REGAIN);
     }
     
     private float getOreDoublingChange() {
-        return TileEntityPlasmaFurnace.BASE_ORE_DOUBLING_CHANCE;
-        // TODO: calculate ore doubling chance
+        return TileEntityPlasmaFurnace.BASE_ORE_DOUBLING_CHANCE + 0.2f
+                * this.getUpgradeCount(EnumUpgrade.SPECIAL);
     }
     
     private boolean makesScrap() {
-        return true;
-        // TODO: calculate
+        return this.getUpgradeCount(EnumUpgrade.SECURITY) == 0;
     }
     
     /**
@@ -378,4 +383,18 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
     public Container getGuiServer(InventoryPlayer inventory) {
         return new ContainerPlasmaFurnace(inventory, this);
     }
+    
+    private int getUpgradeCount(EnumUpgrade type) {
+        int count = 0;
+        for (int i = 2; i < this.stacks.length; i++) {
+            Item item = this.stacks[i] == null ? null : this.stacks[i]
+                    .getItem();
+            if (item == null || !(item instanceof ItemUpgrade))
+                continue;
+            if (((ItemUpgrade) item).getUpgradeType() == type)
+                count++;
+        }
+        return count;
+    }
+    
 }

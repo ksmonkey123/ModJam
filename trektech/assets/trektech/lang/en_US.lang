@@ -24,4 +24,12 @@ item.dilithiumRaw.name=Raw Dilithium Crystal
 item.dilithiumCrystal.name=Refined Dilithium Crystal
 item.plasmaContainmentRing.name=Plasma Containment Ring
 
+item.upgrade0.name=Efficiency Upgrade
+item.upgrade1.name=Plasma Regain Upgrade
+item.upgrade2.name=Speed Upgrade
+item.upgrade3.name=Specialisation Upgrade
+item.upgrade4.name=Security Upgrade
+
+item.scrap.name=Scrap
+
 container.plasmaSource=Exothermic Plasma Ionizer
