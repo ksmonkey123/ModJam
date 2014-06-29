@@ -96,6 +96,14 @@ public abstract class GenericTileEntity extends TileEntity {
     }
     
     /**
+     * force serverside to send TE to all clients. ignored client side
+     */
+    public final void forceServerPush() {
+        if (!this.worldObj.isRemote)
+            this.forceNetworkUpdate();
+    }
+    
+    /**
      * This method is invoked server-side whenever a network command is
      * received. After the completion of execution of this method, the
      * server-side tileEntity NBT data is sent to all clients for

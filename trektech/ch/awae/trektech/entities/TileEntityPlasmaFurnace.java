@@ -279,7 +279,10 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
         ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(
                 this.stacks[0]);
         if (itemstack == null)
-            return false;
+            if (this.makesScrap())
+                itemstack = new ItemStack(TrekTech.itemScrap, 1);
+            else
+                return false;
         if (this.stacks[1] == null)
             return true;
         if (!this.stacks[1].isItemEqual(itemstack))
@@ -299,7 +302,8 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
             return;
         ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(
                 this.stacks[0]);
-        // IDEA: add scrap item for items without recipe
+        if (itemstack == null)
+            itemstack = new ItemStack(TrekTech.itemScrap, 1);
         if (this.stacks[1] == null || this.stacks[1].stackSize == 0) {
             this.stacks[1] = itemstack.copy();
             this.stacks[1].stackSize = 0;
@@ -310,11 +314,11 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
         if (this.stacks[0].stackSize <= 0) {
             this.stacks[0] = null;
         }
+        this.forceServerPush();
     }
     
     private int getRealOutputCount(ItemStack input, ItemStack output,
             int maxCount) {
-        System.out.println(input.getItem().getUnlocalizedName().substring(5));
         if (ListedStuff.getOreNames().contains(
                 input.getItem().getUnlocalizedName().substring(5))) {
             float chance = this.getOreDoublingChange();
@@ -342,6 +346,11 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
     private float getOreDoublingChange() {
         return BASE_ORE_DOUBLING_CHANCE;
         // TODO: calculate ore doubling chance
+    }
+    
+    private boolean makesScrap() {
+        return true;
+        // TODO: calculate
     }
     
     public int getPlasmaLevelScaled(int pixelPerBar, int maxPixel,

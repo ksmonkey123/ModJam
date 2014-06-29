@@ -22,6 +22,7 @@ import ch.awae.trektech.items.ItemDilithiumCrystal;
 import ch.awae.trektech.items.ItemDilithiumRaw;
 import ch.awae.trektech.items.ItemDuraniumIngot;
 import ch.awae.trektech.items.ItemPlasmaContainmentRing;
+import ch.awae.trektech.items.ItemScrap;
 import ch.awae.trektech.items.ItemStarFleetSymbol;
 import ch.modjam.generic.RegistryUtil;
 import cpw.mods.fml.common.Mod;
@@ -68,6 +69,7 @@ public class TrekTech {
     public static Item         itemDilithiumRaw          = new ItemDilithiumRaw();
     public static Item         itemDilithiumCrystal      = new ItemDilithiumCrystal();
     public static Item         itemPlasmaContainmentRing = new ItemPlasmaContainmentRing();
+    public static Item         itemScrap                 = new ItemScrap();
     
     public static Block        blockDuraniumWall         = new BlockDuraniumWall();
     
@@ -100,6 +102,7 @@ public class TrekTech {
         RegistryUtil.registerItem(itemDilithiumRaw);
         RegistryUtil.registerItem(itemDilithiumCrystal);
         RegistryUtil.registerItem(itemPlasmaContainmentRing);
+        RegistryUtil.registerItem(itemScrap);
         // BLOCKS
         RegistryUtil.registerBlock(blockDuraniumWall);
         

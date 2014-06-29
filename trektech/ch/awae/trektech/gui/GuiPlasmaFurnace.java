@@ -9,9 +9,7 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 import ch.awae.trektech.TrekTech;
-import ch.awae.trektech.entities.TileEntityPlasmaEnergizerLow;
 import ch.awae.trektech.entities.TileEntityPlasmaFurnace;
-import ch.awae.trektech.gui.container.ContainerPlasmaEnergizerLow;
 import ch.awae.trektech.gui.container.ContainerPlasmaFurnace;
 
 /**
