@@ -14,7 +14,8 @@ public class Names {
 	public static String[] petals= new String[EssenceType.values().length];
 	public static String[] smallCapsules= new String[EssenceType.values().length];
 	public static String[] bigCapsules= new String[EssenceType.values().length];
-	public static String[] essences= new String[EssenceType.values().length];
+	public static String[] essenceFluids= new String[EssenceType.values().length];
+	public static String[] essenceFluidBlocks= new String[EssenceType.values().length];
 	
 	
 	public static void initNames(){
@@ -25,7 +26,8 @@ public class Names {
 			petals[essence.ordinal()]=essence.toString() + "_e_petal";
 			smallCapsules[essence.ordinal()]=essence.toString() + "_small_ec";
 			bigCapsules[essence.ordinal()]=essence.toString() + "_big_ec";
-			essences[essence.ordinal()]=essence.toString() + "_essence";
+			essenceFluids[essence.ordinal()]=essence.toString() + "_essence";
+			essenceFluidBlocks[essence.ordinal()]=essence.toString() + "_efb";
 		}
 		
 		
