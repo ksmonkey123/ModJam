@@ -32,7 +32,7 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
     private static final float BASE_PLASMA_REGAIN       = 0.5f;
     private static final float BASE_ORE_DOUBLING_CHANCE = 0.2f;
     
-    private ItemStack[]        stacks                   = new ItemStack[2];
+    private ItemStack[]        stacks                   = new ItemStack[6];
     private int                currentL                 = 0;
     private int                currentN                 = 0;
     private int                remainingBurnTime        = 0;
@@ -167,7 +167,7 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
         switch (plasma) {
             case NEUTRAL:
             case LOW:
-                return PLASMA_PER_BAR;
+                return TileEntityPlasmaFurnace.PLASMA_PER_BAR;
             default:
                 return 0;
         }
@@ -231,12 +231,14 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
     public boolean onWrench(EntityPlayer player) {
         if (!player.isSneaking()) {
             if (this.worldObj.isRemote) {
-                String pressure = (this.currentN / (float) PLASMA_PER_BAR) + "";
+                String pressure = this.currentN
+                        / (float) TileEntityPlasmaFurnace.PLASMA_PER_BAR + "";
                 if (pressure.length() > 4)
                     pressure = pressure.substring(0, 4);
                 player.addChatMessage(new ChatComponentText(
                         "Current Plasma Pressure (N): " + pressure + " bar"));
-                pressure = (this.currentL / (float) PLASMA_PER_BAR) + "";
+                pressure = this.currentL
+                        / (float) TileEntityPlasmaFurnace.PLASMA_PER_BAR + "";
                 if (pressure.length() > 4)
                     pressure = pressure.substring(0, 4);
                 player.addChatMessage(new ChatComponentText(
@@ -251,9 +253,9 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
     public void customTick() {
         if (this.currentL >= this.getPlasmaConsumptionPerItem()) {
             this.remainingBurnTime--;
-            if (this.remainingBurnTime == 0) {
+            if (this.remainingBurnTime == 0)
                 this.smelt();
-            } else if (this.remainingBurnTime < 0)
+            else if (this.remainingBurnTime < 0)
                 if (this.canSmelt()) {
                     this.remainingBurnTime = this.getSmeltTimePerItem();
                     this.setActive(true);
@@ -261,9 +263,8 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
                     this.remainingBurnTime = 0;
                     this.setActive(false);
                 }
-        } else {
+        } else
             this.setActive(false);
-        }
         this.markDirty();
     }
     
@@ -273,9 +274,8 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
     }
     
     private boolean canSmelt() {
-        if (this.stacks[0] == null) {
+        if (this.stacks[0] == null)
             return false;
-        }
         ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(
                 this.stacks[0]);
         if (itemstack == null)
@@ -288,7 +288,7 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
         if (!this.stacks[1].isItemEqual(itemstack))
             return false;
         int result = this.stacks[1].stackSize + itemstack.stackSize;
-        return result <= getInventoryStackLimit()
+        return result <= this.getInventoryStackLimit()
                 && result <= this.stacks[1].getMaxStackSize();
     }
     
@@ -311,9 +311,8 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
         this.stacks[1].stackSize += this.getRealOutputCount(this.stacks[0],
                 itemstack, 64 - this.stacks[1].stackSize);
         this.stacks[0].stackSize--;
-        if (this.stacks[0].stackSize <= 0) {
+        if (this.stacks[0].stackSize <= 0)
             this.stacks[0] = null;
-        }
         this.forceServerPush();
     }
     
@@ -322,29 +321,29 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
         if (ListedStuff.getOreNames().contains(
                 input.getItem().getUnlocalizedName().substring(5))) {
             float chance = this.getOreDoublingChange();
-            int factor = (TrekTech.rand.nextFloat() < chance) ? 2 : 1;
+            int factor = TrekTech.rand.nextFloat() < chance ? 2 : 1;
             return Math.min(output.stackSize * factor, maxCount);
         }
         return output.stackSize;
     }
     
     private int getPlasmaConsumptionPerItem() {
-        return BASE_PLASMA_PER_ITEM;
+        return TileEntityPlasmaFurnace.BASE_PLASMA_PER_ITEM;
         // TODO: calculate plasma consumption
     }
     
     private int getSmeltTimePerItem() {
-        return BASE_BURN_TIME;
+        return TileEntityPlasmaFurnace.BASE_BURN_TIME;
         // TODO: calculate item smelt time
     }
     
     private float getPlasmaRegain() {
-        return BASE_PLASMA_REGAIN;
+        return TileEntityPlasmaFurnace.BASE_PLASMA_REGAIN;
         // TODO: calculate plasma regain
     }
     
     private float getOreDoublingChange() {
-        return BASE_ORE_DOUBLING_CHANCE;
+        return TileEntityPlasmaFurnace.BASE_ORE_DOUBLING_CHANCE;
         // TODO: calculate ore doubling chance
     }
     
@@ -364,7 +363,7 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
     public int getPlasmaLevelScaled(int pixelPerBar, int maxPixel,
             boolean isLowPlasmaMeant) {
         int pixels = (isLowPlasmaMeant ? this.currentL : this.currentN)
-                * pixelPerBar / PLASMA_PER_BAR;
+                * pixelPerBar / TileEntityPlasmaFurnace.PLASMA_PER_BAR;
         if (pixels > maxPixel)
             return maxPixel;
         return pixels;

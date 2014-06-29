@@ -24,6 +24,7 @@ import ch.awae.trektech.items.ItemDuraniumIngot;
 import ch.awae.trektech.items.ItemPlasmaContainmentRing;
 import ch.awae.trektech.items.ItemScrap;
 import ch.awae.trektech.items.ItemStarFleetSymbol;
+import ch.awae.trektech.items.ItemUpgrade;
 import ch.modjam.generic.RegistryUtil;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -70,6 +71,7 @@ public class TrekTech {
     public static Item         itemDilithiumCrystal      = new ItemDilithiumCrystal();
     public static Item         itemPlasmaContainmentRing = new ItemPlasmaContainmentRing();
     public static Item         itemScrap                 = new ItemScrap();
+    public static Item[]       upgrades;
     
     public static Block        blockDuraniumWall         = new BlockDuraniumWall();
     
@@ -119,6 +121,12 @@ public class TrekTech {
             valves[i] = new BlockPlasmaValve("valve" + i, plasmaType);
             addValveRecipe(i);
             RegistryUtil.registerBlock(valves[i], TileEntityPlasmaValve.class);
+        }
+        
+        upgrades = new ItemUpgrade[EnumUpgrade.values().length];
+        for (EnumUpgrade upgrade : EnumUpgrade.values()) {
+            upgrades[upgrade.ordinal()] = new ItemUpgrade(upgrade);
+            RegistryUtil.registerItem(upgrades[upgrade.ordinal()]);
         }
         
         RegistryUtil.registerBlock(blockPlasmaSource,
