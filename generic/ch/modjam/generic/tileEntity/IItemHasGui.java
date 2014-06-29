@@ -14,15 +14,17 @@ public interface IItemHasGui {
 	/**
 	 * @param inventory
 	 * @param stack the item upon which the gui is opened
+	 * @param slot the slot number of the player inventory where the stack is located
 	 * @return GuiContainer for this item gui
 	 */
-	GuiContainer getGuiClient(InventoryPlayer inventory, ItemStack stack);
+	GuiContainer getGuiClient(InventoryPlayer inventory, ItemStack stack, int slot);
 
 	/**
 	 * @param inventory
 	 * @param stack the item upon which the gui is opened
+	 * @param slot the slot number of the player inventory where the stack is located
 	 * @return Container the server uses to interact with the gui
 	 */
-	Container getGuiServer(InventoryPlayer inventory, ItemStack stack);
+	Container getGuiServer(InventoryPlayer inventory, ItemStack stack, int slot);
 
 }

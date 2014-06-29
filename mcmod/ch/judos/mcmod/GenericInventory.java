@@ -1,14 +1,15 @@
 package ch.judos.mcmod;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.StatCollector;
+import ch.modjam.generic.tileEntity.InventorySlotChangedListener;
 
 /**
  * @author judos
@@ -19,11 +20,12 @@ public class GenericInventory implements IInventory {
 	/**
 	 * amount of stacks / slots
 	 */
-	public ItemStack[]	stack;
+	public ItemStack[]							stack;
 	/**
 	 * name of the tileEntity
 	 */
-	public String		tileName;
+	public String								tileName;
+	private List<InventorySlotChangedListener>	listeners;
 
 	/**
 	 * @param slots
@@ -32,6 +34,7 @@ public class GenericInventory implements IInventory {
 	public GenericInventory(int slots, String tileName) {
 		this.stack = new ItemStack[slots];
 		this.tileName = tileName;
+		this.listeners = new ArrayList<InventorySlotChangedListener>();
 	}
 
 	@Override
@@ -68,6 +71,9 @@ public class GenericInventory implements IInventory {
 		if (slot >= this.stack.length)
 			return;
 		this.stack[slot] = items;
+		for (InventorySlotChangedListener l : this.listeners) {
+			l.slotChanged(slot, items);
+		}
 	}
 
 	@Override
@@ -110,20 +116,12 @@ public class GenericInventory implements IInventory {
 	 */
 	public void writeNBT(NBTTagCompound tag) {
 		tag.setInteger("Slots", this.stack.length);
-		NBTTagList tagList = new NBTTagList();
 		for (int i = 0; i < this.stack.length; i++) {
-			if (this.stack[i] != null) {
-				NBTTagCompound compoundTag = new NBTTagCompound();
-				this.stack[i].writeToNBT(compoundTag);
-				tagList.appendTag(compoundTag);
-			} else { // write a empty stack incase the slot is empty
-				ItemStack st = new ItemStack(Blocks.dirt, 0);
-				NBTTagCompound compoundTag = new NBTTagCompound();
-				st.writeToNBT(compoundTag);
-				tagList.appendTag(compoundTag);
-			}
+			NBTTagCompound nbtStack = new NBTTagCompound();
+			if (this.stack[i] != null)
+				this.stack[i].writeToNBT(nbtStack);
+			tag.setTag("Slot" + i, nbtStack);
 		}
-		tag.setTag("Items", tagList);
 	}
 
 	/**
@@ -131,12 +129,9 @@ public class GenericInventory implements IInventory {
 	 */
 	public void readNBT(NBTTagCompound tag) {
 		this.stack = new ItemStack[tag.getInteger("Slots")];
-		NBTTagList tagList = tag.getTagList("Items", 10);
 		for (int i = 0; i < this.stack.length; i++) {
-			NBTTagCompound compoundTag = tagList.getCompoundTagAt(i);
-			this.stack[i] = ItemStack.loadItemStackFromNBT(compoundTag);
-			if (this.stack[i].stackSize == 0)
-				this.stack[i] = null;
+			NBTTagCompound nbtStack = (NBTTagCompound) tag.getTag("Slot" + i);
+			this.stack[i] = ItemStack.loadItemStackFromNBT(nbtStack);
 		}
 	}
 
@@ -150,6 +145,13 @@ public class GenericInventory implements IInventory {
 	 */
 	public void resizeInventory(int newSlotCount) {
 		this.stack = Arrays.copyOf(this.stack, newSlotCount);
+	}
+
+	/**
+	 * @param list
+	 */
+	public void addListener(InventorySlotChangedListener list) {
+		this.listeners.add(list);
 	}
 
 }

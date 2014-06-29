@@ -4,46 +4,61 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import ch.judos.mcmod.GenericInventory;
 import ch.modjam.generic.tileEntity.GenericContainer;
+import ch.modjam.generic.tileEntity.InventorySlotChangedListener;
 
 /**
  * @author judos
  * 
  */
-public class BoundHeartContainer extends GenericContainer {
+public class BoundHeartContainer extends GenericContainer implements InventorySlotChangedListener {
 
 	/**
 	 * the item stack of the heart
 	 */
-	private ItemStack			stack;
+	private ItemStack			stackBefore;
 	private GenericInventory	heart;
+	private int					heartSlot;
+	private InventoryPlayer		playerInventory;
 
 	/**
 	 * @param inventory
 	 * @param stack
+	 * @param slot
 	 */
-	public BoundHeartContainer(InventoryPlayer inventory, ItemStack stack) {
+	public BoundHeartContainer(InventoryPlayer inventory, ItemStack stack, int slot) {
 		super(inventory);
-		this.stack = stack;
+		this.playerInventory = inventory;
+		this.heartSlot = slot;
+		this.stackBefore = stack;
 		this.heart = new GenericInventory(5, "boundheart_inventory");
 		this.heart.readNBT(stack.stackTagCompound);
-		System.out.println("constructed container for " + this.stack.stackTagCompound);
-		for (ItemStack s : this.heart.stack)
-			System.out.println(s);
 		this.heart.resizeInventory(5);
+		this.heart.addListener((InventorySlotChangedListener) this);
 		init();
 	}
 
 	@Override
-	public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-		this.heart.writeNBT(this.stack.stackTagCompound);
-		System.out.println(Thread.currentThread().getName() + ": closed and saved " + this.stack);
-		System.out.println(this.stack.stackTagCompound);
-		super.onContainerClosed(par1EntityPlayer);
+	protected boolean isPlayerSlotAFakeSlot(int slot) {
+		return slot == this.heartSlot;
+	}
+
+	@Override
+	public void onContainerClosed(EntityPlayer player) {
+		super.onContainerClosed(player);
+		ItemStack newHeart = this.stackBefore.copy();
+		this.heart.writeNBT(newHeart.stackTagCompound);
+
+		ItemStack[] inventory = player.inventory.mainInventory;
+		inventory[this.heartSlot].setTagCompound(newHeart.stackTagCompound);
+
 	}
 
 	private void init() {
+		unbindPlayerInventory();
+		bindPlayerInventory(this.playerInventory);
 		for (int i = 0; i < this.heart.getSizeInventory(); i++)
 			addSlotToContainer(new Slot(heart, i, 44 + 18 * i, 53));
 	}
@@ -56,6 +71,14 @@ public class BoundHeartContainer extends GenericContainer {
 	@Override
 	public int getSizeInventory() {
 		return this.heart.getSizeInventory();
+	}
+
+	@Override
+	public void slotChanged(int slot, ItemStack items) {
+		NBTTagCompound tag = new NBTTagCompound();
+		if (items != null)
+			items.writeToNBT(tag);
+		this.stackBefore.stackTagCompound.setTag("Slot" + slot, tag);
 	}
 
 }

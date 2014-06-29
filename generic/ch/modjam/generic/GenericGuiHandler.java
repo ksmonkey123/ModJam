@@ -91,8 +91,8 @@ public class GenericGuiHandler implements IGuiHandler {
 			return null;
 		IItemHasGui entity = (IItemHasGui) stack.getItem();
 		if (isClientSide)
-			return entity.getGuiClient(player.inventory, stack);
-		return entity.getGuiServer(player.inventory, stack);
+			return entity.getGuiClient(player.inventory, stack, slot);
+		return entity.getGuiServer(player.inventory, stack, slot);
 	}
 
 	private static Object getGuiElement(EntityPlayer player, World world, int x, int y, int z,
