@@ -9,10 +9,10 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntityFurnace;
 import ch.awae.trektech.entities.TileEntityPlasmaFurnace;
 
+@SuppressWarnings("javadoc")
 public class ContainerPlasmaFurnace extends Container {
     
     private TileEntityPlasmaFurnace tileFurnace;
-    private static final String     __OBFID = "CL_00001748";
     
     public ContainerPlasmaFurnace(InventoryPlayer par1InventoryPlayer,
             TileEntityPlasmaFurnace te) {

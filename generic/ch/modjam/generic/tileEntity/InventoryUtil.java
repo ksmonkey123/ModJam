@@ -49,7 +49,7 @@ public class InventoryUtil {
 	// }
 
 	private static void init() throws NoSuchMethodException, SecurityException {
-		boolean deobfsc = (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+		boolean deobfsc = ((Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")).booleanValue();
 		if (deobfsc)
 			addSlotMethod = Container.class.getDeclaredMethod("addSlotToContainer", Slot.class);
 		else

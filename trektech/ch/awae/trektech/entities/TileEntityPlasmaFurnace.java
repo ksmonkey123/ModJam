@@ -8,25 +8,28 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
+import ch.awae.trektech.TrekTech;
+import ch.modjam.generic.ListedStuff;
 import ch.modjam.generic.blocks.BlockGenericDualStateDirected;
 
 /**
- * 
+ * Plasma Furnace
  * 
  * @author Andreas Waelchli (andreas.waelchli@me.com)
  */
 public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
         ISidedInventory {
-    private static final int   PLASMA_PER_BAR       = 1000;
+    private static final int   PLASMA_PER_BAR           = 1000;
     
-    private static final int   BASE_PLASMA_PER_ITEM = 500;
-    private static final int   BASE_BURN_TIME       = 200;
-    private static final float BASE_PLASMA_REGAIN   = 0.5f;
+    private static final int   BASE_PLASMA_PER_ITEM     = 500;
+    private static final int   BASE_BURN_TIME           = 200;
+    private static final float BASE_PLASMA_REGAIN       = 0.5f;
+    private static final float BASE_ORE_DOUBLING_CHANCE = 1.0f;
     
-    private ItemStack[]        stacks               = new ItemStack[2];
-    private int                currentL             = 0;
-    private int                currentN             = 0;
-    private int                remainingBurnTime    = 0;
+    private ItemStack[]        stacks                   = new ItemStack[2];
+    private int                currentL                 = 0;
+    private int                currentN                 = 0;
+    private int                remainingBurnTime        = 0;
     
     // -- ISidedInventory --
     
@@ -289,15 +292,28 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
         ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(
                 this.stacks[0]);
         // IDEA: add scrap item for items without recipe
-        if (this.stacks[1] == null) {
+        if (this.stacks[1] == null || this.stacks[1].stackSize == 0) {
             this.stacks[1] = itemstack.copy();
-        } else if (this.stacks[1].getItem() == itemstack.getItem()) {
-            this.stacks[1].stackSize += itemstack.stackSize;
+            this.stacks[1].stackSize = 0;
+            this.stacks[1].stackSize += this.getRealOutputCount(this.stacks[0],
+                    itemstack, 64 - this.stacks[1].stackSize);
+            this.stacks[0].stackSize--;
+            if (this.stacks[0].stackSize <= 0) {
+                this.stacks[0] = null;
+            }
         }
-        this.stacks[0].stackSize--;
-        if (this.stacks[0].stackSize <= 0) {
-            this.stacks[0] = null;
+    }
+    
+    private int getRealOutputCount(ItemStack input, ItemStack output,
+            int maxCount) {
+        System.out.println(input.getItem().getUnlocalizedName().substring(5));
+        if (ListedStuff.getOreNames().contains(
+                input.getItem().getUnlocalizedName().substring(5))) {
+            float chance = this.getOreDoublingChange();
+            int factor = (TrekTech.rand.nextFloat() < chance) ? 2 : 1;
+            return Math.min(output.stackSize * factor, maxCount);
         }
+        return output.stackSize;
     }
     
     private int getPlasmaConsumptionPerItem() {
@@ -315,4 +331,8 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
         // TODO: calculate plasma regain
     }
     
+    private float getOreDoublingChange() {
+        return BASE_ORE_DOUBLING_CHANCE;
+        // TODO: calculate ore doubling chance
+    }
 }
