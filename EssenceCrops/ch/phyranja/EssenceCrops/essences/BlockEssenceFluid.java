@@ -28,18 +28,16 @@ public class BlockEssenceFluid extends BlockFluidClassic {
 		this.setResistance(0.5f);
 	}
 
-	@Override
-	public void onEntityCollidedWithBlock(World world, int x, int y, int z,
-			Entity entity) {
-		
-		super.onEntityCollidedWithBlock(world, x, y, z, entity);
-
-	}
 	
 	@Override
 	public void registerBlockIcons(IIconRegister ir)
 	{
-		icon = ir.registerIcon(References.MOD_ID + getUnlocalizedName());
+		icon = ir.registerIcon(References.MOD_ID +":"+ getUnlocalizedName());
 		
 	}
+	
+	@Override
+    public IIcon getIcon(int side, int meta) {
+            return icon;
+    }
 }

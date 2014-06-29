@@ -209,7 +209,7 @@ public class MCMod {
 		GameRegistry.addSmelting(oreKryptonit, new ItemStack(itemKryptonit, 1), 5);
 
 		fuelHandler = new FuelHandler();
-		fuelHandler.addFuel(itemKryptonit, 200 * 10);
+		fuelHandler.addFuel(itemKryptonit, 10000);
 		GameRegistry.registerFuelHandler(fuelHandler);
 
 	}
