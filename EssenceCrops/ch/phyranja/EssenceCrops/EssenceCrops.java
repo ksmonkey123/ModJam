@@ -2,8 +2,9 @@ package ch.phyranja.EssenceCrops;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraftforge.fluids.FluidRegistry;
 import ch.phyranja.EssenceCrops.blocks.*;
-import ch.phyranja.EssenceCrops.essences.EssenceType;
+import ch.phyranja.EssenceCrops.essences.*;
 import ch.phyranja.EssenceCrops.items.*;
 import ch.phyranja.EssenceCrops.lib.*;
 import ch.phyranja.EssenceCrops.world.*;
@@ -37,7 +38,8 @@ public class EssenceCrops {
 	public static EssencePetal[] petals=new EssencePetal[EssenceType.values().length];
 	public static BigEssenceCapsule[] bigCapsules=new BigEssenceCapsule[EssenceType.values().length];
 	public static SmallEssenceCapsule[] smallCapsules=new SmallEssenceCapsule[EssenceType.values().length];
-	
+	public static EssenceFluid[] fluids=new EssenceFluid[EssenceType.values().length];
+	public static BlockEssenceFluid[] fluidBlocks=new BlockEssenceFluid[EssenceType.values().length];
 
 	@Mod.Instance("essencecrops")
 	public static EssenceCrops instance;
@@ -55,11 +57,25 @@ public class EssenceCrops {
 		addItems();
 		addPlants();
 		addMachines();
+		addFluids();
 		
 
 		proxy.registerRenderInformation();
 	}
 	
+	private void addFluids() {
+		for(EssenceType essence: EssenceType.values()){
+			fluids[essence.ordinal()]=new EssenceFluid(Names.essenceFluids[essence.ordinal()], essence);
+			FluidRegistry.registerFluid(fluids[essence.ordinal()]);
+		
+			fluidBlocks[essence.ordinal()]=new BlockEssenceFluid(fluids[essence.ordinal()], essence);
+			GameRegistry.registerBlock(fluidBlocks[essence.ordinal()], Names.essenceFluidBlocks[essence.ordinal()]);
+			
+		
+		}
+		
+	}
+
 	private void addMachines() {
 		extractor=new EssenceExtractor();
 		GameRegistry.registerBlock(extractor, Names.Extractor);
