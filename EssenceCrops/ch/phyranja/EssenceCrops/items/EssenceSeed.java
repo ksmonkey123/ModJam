@@ -19,14 +19,14 @@ import ch.phyranja.EssenceCrops.lib.References;
  */
 public class EssenceSeed extends Item implements IPlantable{
 	
-	private Essence type;
+	private EssenceType type;
 	protected Block plant;
     /** BlockID of the block the seeds can be planted on. */
     private Block dirt; // FIXME: unused
     
     /**
      */
-    public EssenceSeed(Essence type){
+    public EssenceSeed(EssenceType type){
     	this.setCreativeTab(EssenceCrops.modTab);
     	this.setUnlocalizedName(Names.seeds[type.ordinal()]);
 		this.setTextureName(References.MOD_ID + ":" + Names.seeds[type.ordinal()]);
@@ -75,7 +75,7 @@ public class EssenceSeed extends Item implements IPlantable{
         return 0;
     }
     
-    public Essence getEssenceType(){
+    public EssenceType getEssenceType(){
     	return type;
     }
 }

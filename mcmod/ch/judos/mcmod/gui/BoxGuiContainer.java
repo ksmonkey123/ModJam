@@ -25,7 +25,7 @@ public class BoxGuiContainer extends GenericGuiTEContainer {
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int param1, int param2) {
-		String s = StatCollector.translateToLocal("tile.box.name");
+		String s = StatCollector.translateToLocal("tile." + Names.Box + ".name");
 		int color = 4210752;
 		this.fontRendererObj.drawString(s,
 			this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, color);

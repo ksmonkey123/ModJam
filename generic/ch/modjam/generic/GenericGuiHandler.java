@@ -56,7 +56,7 @@ public class GenericGuiHandler implements IGuiHandler {
 		int slot = player.inventory.currentItem;
 		if (player.inventory.mainInventory[slot] != item)
 			new Exception("Item provided was not found correctly").printStackTrace();
-		if (!(item.getItem() instanceof IHasGui))
+		if (!(item.getItem() instanceof IItemHasGui))
 			return false;
 		player.openGui(GenericMod.instance, GUI_ID_ITEM, world, slot, 0, 0);
 		return true;
