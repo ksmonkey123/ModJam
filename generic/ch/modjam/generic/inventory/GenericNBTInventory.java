@@ -2,29 +2,42 @@ package ch.modjam.generic.inventory;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 
 /**
  * @author judos
  */
 public class GenericNBTInventory extends AbstractInventory {
 
-	protected NBTTagCompound	nbt;
+	/**
+	 * nbt provider where inventory is stored in
+	 */
+	private NBTProvider	provider;
 
 	/**
-	 * @param nbt
+	 * @param provider
+	 * @param tileName
 	 */
-	public GenericNBTInventory(NBTTagCompound nbt) {
-		this.nbt = nbt;
+	public GenericNBTInventory(NBTProvider provider, String tileName) {
+		super(tileName);
+		this.provider = provider;
+	}
+
+	/**
+	 * @return the current nbt
+	 */
+	protected NBTTagCompound nbt() {
+		return this.provider.getNBT();
 	}
 
 	@Override
 	public int getSizeInventory() {
-		return this.nbt.getInteger("Slots");
+		return this.nbt().getInteger("Slots");
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		NBTTagCompound tag = (NBTTagCompound) this.nbt.getTag("Slot" + slot);
+		NBTTagCompound tag = (NBTTagCompound) this.nbt().getTag("Slot" + slot);
 		return ItemStack.loadItemStackFromNBT(tag);
 	}
 
@@ -33,12 +46,12 @@ public class GenericNBTInventory extends AbstractInventory {
 		NBTTagCompound tag = new NBTTagCompound();
 		if (stack != null)
 			stack.writeToNBT(tag);
-		this.nbt.setTag("Slot" + slot, tag);
+		this.nbt().setTag("Slot" + slot, tag);
 	}
 
 	@Override
 	public String getInventoryName() {
-		return null;
+		return StatCollector.translateToLocal("tile." + tileName + ".name");
 	}
 
 	@Override

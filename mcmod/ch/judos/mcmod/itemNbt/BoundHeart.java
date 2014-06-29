@@ -19,8 +19,9 @@ import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
 import ch.modjam.generic.gui.GenericGuiHandler;
-import ch.modjam.generic.inventory.GenericInventory;
+import ch.modjam.generic.inventory.GenericNBTInventory;
 import ch.modjam.generic.inventory.IItemHasGui;
+import ch.modjam.generic.inventory.NBTProvider;
 
 /**
  * @author judos
@@ -43,6 +44,8 @@ public class BoundHeart extends Item implements IItemHasGui {
 		if (itemStack.stackTagCompound == null) {
 			itemStack.stackTagCompound = new NBTTagCompound();
 			itemStack.stackTagCompound.setString("owner", player.getCommandSenderName());
+			itemStack.stackTagCompound.setInteger("Slots", 5);
+			itemStack.stackTagCompound.setInteger("counter", 0);
 		}
 	}
 
@@ -76,11 +79,13 @@ public class BoundHeart extends Item implements IItemHasGui {
 			}
 			if (!exists)
 				list.add(EnumChatFormatting.RED + "Player not found or not online.");
+			list.add("counter: " + itemStack.stackTagCompound.getInteger("counter"));
 		}
 	}
 
 	@Override
-	public void onUpdate(ItemStack item, World world, Entity entity, int slot, boolean heldInHand) {
+	public void onUpdate(final ItemStack item, World world, Entity entity, int slot,
+			boolean heldInHand) {
 		if (world.isRemote)
 			return;
 
@@ -90,6 +95,8 @@ public class BoundHeart extends Item implements IItemHasGui {
 					onCreated(item, world, (EntityPlayer) entity);
 				}
 			} else {
+				int counter = item.stackTagCompound.getInteger("counter") + 1;
+
 				String heartOriginName = item.stackTagCompound.getString("owner");
 				MinecraftServer s = MinecraftServer.getServer();
 				EntityPlayer heartOrigin = s.getConfigurationManager().getPlayerForUsername(
@@ -106,37 +113,25 @@ public class BoundHeart extends Item implements IItemHasGui {
 					current.heal(0.5f);
 				}
 
-				if (current instanceof EntityPlayer) {
-					GenericInventory heart = new GenericInventory(5, "boundheart_inventory");
-					heart.readNBT(item.stackTagCompound);
-					heart.resizeInventory(5);
+				if (current instanceof EntityPlayer && counter >= 20) {
+					counter = 0;
+					NBTProvider pr = new NBTProvider() {
+						@Override
+						public NBTTagCompound getNBT() {
+							return item.stackTagCompound;
+						}
+					};
+					GenericNBTInventory heart = new GenericNBTInventory(pr, "boundheart_inventory");
 					ItemStack push = heart.getAndRemoveFirstItem();
-					if (push != null)
+					if (push != null) {
 						if (!heartOrigin.inventory.addItemStackToInventory(push))
 							heart.addItemStackToInventory(push);
-
-					heart.writeNBT(item.stackTagCompound);
+					}
 				}
+
+				item.stackTagCompound.setInteger("counter", counter);
 			}
 		}
-	}
-
-	private ItemStack transfer(ItemStack a, ItemStack b) {
-		if (a == null)
-			return b;
-		if (b == null) {
-			b = a.copy();
-			b.stackSize /= 2;
-			a.stackSize -= b.stackSize;
-		}
-		if (a.isItemEqual(b)) {
-			int move = (a.stackSize - b.stackSize) / 2;
-			b.stackSize += move;
-			a.stackSize -= move;
-		}
-		if (b.stackSize == 0)
-			b = null;
-		return b;
 	}
 
 	@Override

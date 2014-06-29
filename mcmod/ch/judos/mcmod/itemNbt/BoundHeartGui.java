@@ -44,5 +44,4 @@ public class BoundHeartGui extends GuiContainer {
 		int y = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(x, y + 33, 0, 0, this.xSize, this.ySize);
 	}
-
 }

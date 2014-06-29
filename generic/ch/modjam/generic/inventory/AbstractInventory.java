@@ -3,11 +3,34 @@ package ch.modjam.generic.inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 /**
  * @author judos
  */
 public abstract class AbstractInventory implements IInventory {
+
+	/**
+	 * name of the tileEntity
+	 */
+	public String	tileName;
+
+	/**
+	 * @param tileEntityName
+	 */
+	public AbstractInventory(String tileEntityName) {
+		this.tileName = tileEntityName;
+	}
+
+	@Override
+	public String getInventoryName() {
+		return StatCollector.translateToLocal("tile." + tileName + ".name");
+	}
+
+	@Override
+	public boolean hasCustomInventoryName() {
+		return true;
+	}
 
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
@@ -20,6 +43,8 @@ public abstract class AbstractInventory implements IInventory {
 		stack.stackSize -= realAmount;
 		if (stack.stackSize == 0)
 			setInventorySlotContents(slot, null);
+		else
+			setInventorySlotContents(slot, stack);
 		itemStack.stackSize = realAmount;
 		return itemStack;
 	}

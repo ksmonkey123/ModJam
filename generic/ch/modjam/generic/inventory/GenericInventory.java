@@ -6,7 +6,6 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 
 /**
  * @author judos
@@ -18,10 +17,6 @@ public class GenericInventory extends AbstractInventory {
 	 * amount of stacks / slots
 	 */
 	public ItemStack[]							stack;
-	/**
-	 * name of the tileEntity
-	 */
-	public String								tileName;
 	private List<InventorySlotChangedListener>	listeners;
 
 	/**
@@ -29,8 +24,8 @@ public class GenericInventory extends AbstractInventory {
 	 * @param tileName used to translate with "tile." + tileName + ".name"
 	 */
 	public GenericInventory(int slots, String tileName) {
+		super(tileName);
 		this.stack = new ItemStack[slots];
-		this.tileName = tileName;
 		this.listeners = new ArrayList<InventorySlotChangedListener>();
 	}
 
@@ -52,16 +47,6 @@ public class GenericInventory extends AbstractInventory {
 		for (InventorySlotChangedListener l : this.listeners) {
 			l.slotChanged(slot, items);
 		}
-	}
-
-	@Override
-	public String getInventoryName() {
-		return StatCollector.translateToLocal("tile." + tileName + ".name");
-	}
-
-	@Override
-	public boolean hasCustomInventoryName() {
-		return true;
 	}
 
 	/**

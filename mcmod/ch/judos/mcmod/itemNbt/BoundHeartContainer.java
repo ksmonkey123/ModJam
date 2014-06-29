@@ -6,22 +6,16 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import ch.modjam.generic.gui.GenericContainer;
-import ch.modjam.generic.inventory.GenericInventory;
-import ch.modjam.generic.inventory.InventorySlotChangedListener;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import ch.modjam.generic.inventory.GenericNBTInventory;
+import ch.modjam.generic.inventory.NBTProvider;
 
 /**
  * @author judos
  * 
  */
-public class BoundHeartContainer extends GenericContainer implements InventorySlotChangedListener {
+public class BoundHeartContainer extends GenericContainer {
 
-	/**
-	 * the item stack of the heart
-	 */
-	private ItemStack			stackBefore;
-	private GenericInventory	heart;
+	private GenericNBTInventory	heart;
 	private int					heartSlot;
 	private InventoryPlayer		playerInventory;
 
@@ -30,15 +24,19 @@ public class BoundHeartContainer extends GenericContainer implements InventorySl
 	 * @param stack
 	 * @param slot
 	 */
-	public BoundHeartContainer(InventoryPlayer inventory, ItemStack stack, int slot) {
+	public BoundHeartContainer(final InventoryPlayer inventory, ItemStack stack, final int slot) {
 		super(inventory);
 		this.playerInventory = inventory;
 		this.heartSlot = slot;
-		this.stackBefore = stack;
-		this.heart = new GenericInventory(5, "boundheart_inventory");
-		this.heart.readNBT(stack.stackTagCompound);
-		this.heart.resizeInventory(5);
-		this.heart.addListener((InventorySlotChangedListener) this);
+
+		NBTProvider pr = new NBTProvider() {
+			@Override
+			public NBTTagCompound getNBT() {
+				return inventory.mainInventory[slot].stackTagCompound;
+			}
+		};
+
+		this.heart = new GenericNBTInventory(pr, "boundheart_inventory");
 		init();
 	}
 
@@ -50,12 +48,6 @@ public class BoundHeartContainer extends GenericContainer implements InventorySl
 	@Override
 	public void onContainerClosed(EntityPlayer player) {
 		super.onContainerClosed(player);
-		ItemStack newHeart = this.stackBefore.copy();
-		this.heart.writeNBT(newHeart.stackTagCompound);
-
-		ItemStack[] inventory = player.inventory.mainInventory;
-		inventory[this.heartSlot].setTagCompound(newHeart.stackTagCompound);
-
 	}
 
 	private void init() {
@@ -73,21 +65,6 @@ public class BoundHeartContainer extends GenericContainer implements InventorySl
 	@Override
 	public int getSizeInventory() {
 		return this.heart.getSizeInventory();
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void updateProgressBar(int par1, int par2) {
-		System.out.println("update");
-	}
-
-	@Override
-	public void slotChanged(int slot, ItemStack items) {
-		NBTTagCompound tag = new NBTTagCompound();
-		if (items != null)
-			items.writeToNBT(tag);
-		this.playerInventory.mainInventory[this.heartSlot].stackTagCompound.setTag("Slot" + slot,
-			tag);
 	}
 
 }
