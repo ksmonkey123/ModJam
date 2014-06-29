@@ -1,6 +1,9 @@
 package ch.awae.trektech.entities;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -9,8 +12,11 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.TrekTech;
+import ch.awae.trektech.gui.GuiPlasmaFurnace;
+import ch.awae.trektech.gui.container.ContainerPlasmaFurnace;
 import ch.modjam.generic.ListedStuff;
 import ch.modjam.generic.blocks.BlockGenericDualStateDirected;
+import ch.modjam.generic.tileEntity.IHasGui;
 
 /**
  * Plasma Furnace
@@ -18,13 +24,13 @@ import ch.modjam.generic.blocks.BlockGenericDualStateDirected;
  * @author Andreas Waelchli (andreas.waelchli@me.com)
  */
 public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
-        ISidedInventory {
+        ISidedInventory, IHasGui {
     private static final int   PLASMA_PER_BAR           = 1000;
     
     private static final int   BASE_PLASMA_PER_ITEM     = 500;
     private static final int   BASE_BURN_TIME           = 200;
     private static final float BASE_PLASMA_REGAIN       = 0.5f;
-    private static final float BASE_ORE_DOUBLING_CHANCE = 1.0f;
+    private static final float BASE_ORE_DOUBLING_CHANCE = 0.2f;
     
     private ItemStack[]        stacks                   = new ItemStack[2];
     private int                currentL                 = 0;
@@ -289,18 +295,20 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
         this.currentL -= this.getPlasmaConsumptionPerItem();
         this.currentN += this.getPlasmaConsumptionPerItem()
                 * this.getPlasmaRegain();
+        if (this.stacks[0] == null)
+            return;
         ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(
                 this.stacks[0]);
         // IDEA: add scrap item for items without recipe
         if (this.stacks[1] == null || this.stacks[1].stackSize == 0) {
             this.stacks[1] = itemstack.copy();
             this.stacks[1].stackSize = 0;
-            this.stacks[1].stackSize += this.getRealOutputCount(this.stacks[0],
-                    itemstack, 64 - this.stacks[1].stackSize);
-            this.stacks[0].stackSize--;
-            if (this.stacks[0].stackSize <= 0) {
-                this.stacks[0] = null;
-            }
+        }
+        this.stacks[1].stackSize += this.getRealOutputCount(this.stacks[0],
+                itemstack, 64 - this.stacks[1].stackSize);
+        this.stacks[0].stackSize--;
+        if (this.stacks[0].stackSize <= 0) {
+            this.stacks[0] = null;
         }
     }
     
@@ -334,5 +342,24 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
     private float getOreDoublingChange() {
         return BASE_ORE_DOUBLING_CHANCE;
         // TODO: calculate ore doubling chance
+    }
+    
+    public int getPlasmaLevelScaled(int pixelPerBar, int maxPixel,
+            boolean isLowPlasmaMeant) {
+        int pixels = (isLowPlasmaMeant ? this.currentL : this.currentN)
+                * pixelPerBar / PLASMA_PER_BAR;
+        if (pixels > maxPixel)
+            return maxPixel;
+        return pixels;
+    }
+    
+    @Override
+    public GuiContainer getGuiClient(InventoryPlayer inventory) {
+        return new GuiPlasmaFurnace(inventory, this);
+    }
+    
+    @Override
+    public Container getGuiServer(InventoryPlayer inventory) {
+        return new ContainerPlasmaFurnace(inventory, this);
     }
 }
