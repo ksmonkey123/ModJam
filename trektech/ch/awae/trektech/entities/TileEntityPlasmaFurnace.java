@@ -37,11 +37,7 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
     
     @Override
     public ItemStack getStackInSlot(int var1) {
-        try {
-            return this.stacks[var1];
-        } catch (IndexOutOfBoundsException ex) {
-            return null;
-        }
+        return this.stacks[var1];
     }
     
     @Override
@@ -54,6 +50,8 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
         ItemStack returnStack = this.stacks[slot].copy();
         returnStack.stackSize = trueAmount;
         this.stacks[slot].stackSize -= trueAmount;
+        if (this.stacks[slot].stackSize == 0)
+            this.stacks[slot] = null;
         return returnStack;
     }
     
@@ -63,10 +61,10 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
     }
     
     @Override
-    public void setInventorySlotContents(int slot, ItemStack var2) {
+    public void setInventorySlotContents(int slot, ItemStack stack) {
         if (slot < 0 && slot > this.stacks.length)
             return;
-        
+        this.stacks[slot] = stack;
     }
     
     @Override
@@ -101,8 +99,7 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
     
     @Override
     public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        return (slot > 0 && slot < 4 && stack.getItem().equals(
-                this.stacks[slot]));
+        return slot == 0;
     }
     
     @Override
@@ -119,14 +116,12 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
     
     @Override
     public boolean canInsertItem(int slot, ItemStack stack, int side) {
-        return side == 0
-                && ((slot == 0 && stack.getItem().equals(this.stacks[0])));
+        return side == 1 && slot == 0;
     }
     
     @Override
     public boolean canExtractItem(int slot, ItemStack stack, int side) {
-        return side == 1
-                && ((slot == 1 && stack.getItem().equals(this.stacks[2])));
+        return side == 0 && slot == 1;
     }
     
     // -- GenericTileEntity --
@@ -135,9 +130,13 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
     public void writeNBT(NBTTagCompound tag) {
         for (int i = 0; i < this.stacks.length; i++) {
             NBTTagCompound internal = new NBTTagCompound();
-            this.stacks[i].writeToNBT(internal);
+            if (this.stacks[i] != null)
+                this.stacks[i].writeToNBT(internal);
             tag.setTag("Slot" + i, internal);
         }
+        tag.setInteger("plasmaN", this.currentN);
+        tag.setInteger("plasmaL", this.currentL);
+        tag.setInteger("remaining", this.remainingBurnTime);
     }
     
     @Override
@@ -146,6 +145,9 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
             NBTTagCompound internal = (NBTTagCompound) tag.getTag("Slot" + i);
             this.stacks[i] = ItemStack.loadItemStackFromNBT(internal);
         }
+        this.currentN = tag.getInteger("plasmaN");
+        this.currentL = tag.getInteger("plasmaL");
+        this.remainingBurnTime = tag.getInteger("remaining");
     }
     
     // -- Plasma System --
@@ -253,6 +255,7 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
         } else {
             this.setActive(false);
         }
+        this.markDirty();
     }
     
     private void setActive(boolean newState) {
