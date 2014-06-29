@@ -15,13 +15,13 @@ public class HeartCrafting extends RecipiesCrafting {
 
 	@Override
 	public boolean matches(InventoryCrafting inventory, World world) {
-		return isItemPresent(inventory, new ItemStack(MCMod.boundHeart)) && isItemPresent(
+		return isItemPresent(inventory, new ItemStack(MCMod.itemBoundHeart)) && isItemPresent(
 			inventory, Items.diamond_sword);
 	}
 
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting inventory) {
-		ItemStack heart = getItemStackFor(inventory, MCMod.boundHeart).copy();
+		ItemStack heart = getItemStackFor(inventory, MCMod.itemBoundHeart).copy();
 		int up = heart.stackTagCompound.getInteger("upgrade") + 1;
 		heart.stackTagCompound.setInteger("upgrade", up);
 		return heart;
