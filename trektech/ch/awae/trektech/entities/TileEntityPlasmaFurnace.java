@@ -353,6 +353,14 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
         // TODO: calculate
     }
     
+    /**
+     * returns the plasma level scaled
+     * 
+     * @param pixelPerBar
+     * @param maxPixel
+     * @param isLowPlasmaMeant
+     * @return the scaled plasma level
+     */
     public int getPlasmaLevelScaled(int pixelPerBar, int maxPixel,
             boolean isLowPlasmaMeant) {
         int pixels = (isLowPlasmaMeant ? this.currentL : this.currentN)
