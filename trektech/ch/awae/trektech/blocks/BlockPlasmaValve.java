@@ -9,7 +9,7 @@ import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.Handler;
 import ch.awae.trektech.TrekTech;
 import ch.awae.trektech.entities.TileEntityPlasmaValve;
-import ch.modjam.generic.GenericGuiHandler;
+import ch.modjam.generic.gui.GenericGuiHandler;
 
 /**
  * Pressure Valve Block

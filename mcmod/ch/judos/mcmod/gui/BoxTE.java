@@ -6,8 +6,8 @@ import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import ch.judos.mcmod.GenericInventory;
 import ch.judos.mcmod.lib.Names;
+import ch.modjam.generic.inventory.IHasGui;
 import ch.modjam.generic.tileEntity.GenericTileEntity;
-import ch.modjam.generic.tileEntity.IHasGui;
 
 /**
  * @author j

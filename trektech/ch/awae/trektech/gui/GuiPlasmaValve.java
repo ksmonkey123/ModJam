@@ -12,7 +12,7 @@ import org.lwjgl.opengl.GL11;
 import ch.awae.trektech.TrekTech;
 import ch.awae.trektech.entities.TileEntityPlasmaValve;
 import ch.awae.trektech.gui.container.ContainerPlasmaValve;
-import ch.modjam.generic.tileEntity.GenericGuiTEContainer;
+import ch.modjam.generic.gui.GenericGuiTEContainer;
 
 /**
  * @author Andreas Waelchli (andreas.waelchli@me.com)

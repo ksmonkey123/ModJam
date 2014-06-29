@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
-import ch.modjam.generic.tileEntity.GenericGuiTEContainer;
+import ch.modjam.generic.gui.GenericGuiTEContainer;
 
 /**
  * @author j

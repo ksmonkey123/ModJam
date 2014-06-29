@@ -6,8 +6,10 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import ch.judos.mcmod.GenericInventory;
-import ch.modjam.generic.tileEntity.GenericContainer;
-import ch.modjam.generic.tileEntity.InventorySlotChangedListener;
+import ch.modjam.generic.gui.GenericContainer;
+import ch.modjam.generic.inventory.InventorySlotChangedListener;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * @author judos
@@ -74,11 +76,18 @@ public class BoundHeartContainer extends GenericContainer implements InventorySl
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
+	public void updateProgressBar(int par1, int par2) {
+		System.out.println("update");
+	}
+
+	@Override
 	public void slotChanged(int slot, ItemStack items) {
 		NBTTagCompound tag = new NBTTagCompound();
 		if (items != null)
 			items.writeToNBT(tag);
-		this.stackBefore.stackTagCompound.setTag("Slot" + slot, tag);
+		this.playerInventory.mainInventory[this.heartSlot].stackTagCompound.setTag("Slot" + slot,
+			tag);
 	}
 
 }

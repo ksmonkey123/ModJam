@@ -1,4 +1,4 @@
-package ch.modjam.generic.tileEntity;
+package ch.modjam.generic.inventory;
 
 import net.minecraft.item.ItemStack;
 

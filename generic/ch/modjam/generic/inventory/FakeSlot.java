@@ -1,4 +1,4 @@
-package ch.modjam.generic;
+package ch.modjam.generic.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

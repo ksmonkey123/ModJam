@@ -1,4 +1,4 @@
-package ch.modjam.generic.tileEntity;
+package ch.modjam.generic.gui;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;

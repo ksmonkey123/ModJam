@@ -15,11 +15,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
+import ch.judos.mcmod.GenericInventory;
 import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
-import ch.modjam.generic.GenericGuiHandler;
-import ch.modjam.generic.tileEntity.IItemHasGui;
+import ch.modjam.generic.gui.GenericGuiHandler;
+import ch.modjam.generic.inventory.IItemHasGui;
 
 /**
  * @author judos
@@ -106,20 +107,15 @@ public class BoundHeart extends Item implements IItemHasGui {
 				}
 
 				if (current instanceof EntityPlayer) {
-					EntityPlayer curP = (EntityPlayer) current;
-					int syncSlot = 0;
+					GenericInventory heart = new GenericInventory(5, "boundheart_inventory");
+					heart.readNBT(item.stackTagCompound);
+					heart.resizeInventory(5);
+					ItemStack push = heart.getAndRemoveFirstItem();
+					if (push != null)
+						if (!heartOrigin.inventory.addItemStackToInventory(push))
+							heart.addItemStackToInventory(push);
 
-					ItemStack curI = curP.inventory.mainInventory[syncSlot];
-					ItemStack remoteI = heartOrigin.inventory.mainInventory[syncSlot];
-
-					remoteI = transfer(curI, remoteI);
-					curI = transfer(remoteI, curI);
-
-					curP.inventory.mainInventory[syncSlot] = curI;
-					heartOrigin.inventory.mainInventory[syncSlot] = remoteI;
-
-					// XXX: i could do something with the hunger here as well
-					// System.out.println(curP.getFoodStats().getFoodLevel());
+					heart.writeNBT(item.stackTagCompound);
 				}
 			}
 		}

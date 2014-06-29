@@ -16,7 +16,7 @@ import ch.awae.trektech.gui.GuiPlasmaFurnace;
 import ch.awae.trektech.gui.container.ContainerPlasmaFurnace;
 import ch.modjam.generic.ListedStuff;
 import ch.modjam.generic.blocks.BlockGenericDualStateDirected;
-import ch.modjam.generic.tileEntity.IHasGui;
+import ch.modjam.generic.inventory.IHasGui;
 
 /**
  * Plasma Furnace

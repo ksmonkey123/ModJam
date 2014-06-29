@@ -13,7 +13,7 @@ import ch.judos.mcmod.GenericInventory;
 import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
-import ch.modjam.generic.GenericGuiHandler;
+import ch.modjam.generic.gui.GenericGuiHandler;
 
 /**
  * @author j

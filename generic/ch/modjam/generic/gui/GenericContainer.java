@@ -1,11 +1,11 @@
-package ch.modjam.generic.tileEntity;
+package ch.modjam.generic.gui;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import ch.modjam.generic.FakeSlot;
+import ch.modjam.generic.inventory.FakeSlot;
 
 /**
  * @author judos

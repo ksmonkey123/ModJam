@@ -8,8 +8,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import ch.modjam.generic.inventory.IHasGui;
 import ch.modjam.generic.tileEntity.GenericTileEntity;
-import ch.modjam.generic.tileEntity.IHasGui;
 import ch.phyranja.EssenceCrops.guis.ContainerExtractor;
 import ch.phyranja.EssenceCrops.guis.ExtractorGui;
 

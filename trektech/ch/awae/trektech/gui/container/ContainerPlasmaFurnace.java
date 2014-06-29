@@ -5,7 +5,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
 import ch.awae.trektech.entities.TileEntityPlasmaFurnace;
-import ch.modjam.generic.tileEntity.GenericContainer;
+import ch.modjam.generic.gui.GenericContainer;
 
 @SuppressWarnings("javadoc")
 public class ContainerPlasmaFurnace extends GenericContainer {

@@ -7,7 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import ch.awae.trektech.TrekTech;
 import ch.awae.trektech.entities.TileEntityPlasmaFurnace;
-import ch.modjam.generic.GenericGuiHandler;
+import ch.modjam.generic.gui.GenericGuiHandler;
 
 /**
  * @author andreas

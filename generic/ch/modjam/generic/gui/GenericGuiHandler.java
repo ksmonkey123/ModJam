@@ -1,11 +1,12 @@
-package ch.modjam.generic;
+package ch.modjam.generic.gui;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import ch.modjam.generic.tileEntity.IHasGui;
-import ch.modjam.generic.tileEntity.IItemHasGui;
+import ch.modjam.generic.GenericMod;
+import ch.modjam.generic.inventory.IHasGui;
+import ch.modjam.generic.inventory.IItemHasGui;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 /**

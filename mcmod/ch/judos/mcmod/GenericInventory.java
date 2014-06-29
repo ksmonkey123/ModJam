@@ -9,7 +9,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
-import ch.modjam.generic.tileEntity.InventorySlotChangedListener;
+import ch.modjam.generic.inventory.InventorySlotChangedListener;
 
 /**
  * @author judos
@@ -56,6 +56,8 @@ public class GenericInventory implements IInventory {
 		int realAmount = Math.min(this.stack[slot].stackSize, amount);
 		ItemStack itemStack = this.stack[slot].copy();
 		this.stack[slot].stackSize -= realAmount;
+		if (this.stack[slot].stackSize == 0)
+			this.stack[slot] = null;
 		itemStack.stackSize = realAmount;
 		return itemStack;
 	}
@@ -152,6 +154,37 @@ public class GenericInventory implements IInventory {
 	 */
 	public void addListener(InventorySlotChangedListener list) {
 		this.listeners.add(list);
+	}
+
+	/**
+	 * @return the first item that can be removed from the
+	 */
+	public ItemStack getAndRemoveFirstItem() {
+		for (int i = 0; i < this.getSizeInventory(); i++)
+			if (this.stack[i] != null)
+				return this.decrStackSize(i, 1);
+		return null;
+	}
+
+	/**
+	 * @param push the stack to be pushed into the inventory (note the stacksize of this object is
+	 *            changed!)
+	 * @return true if everything could be pushed into the inventory
+	 */
+	public boolean addItemStackToInventory(ItemStack push) {
+		if (push == null || push.stackSize <= 0)
+			return true;
+		for (int i = 0; i < this.getSizeInventory(); i++) {
+			ItemStack s = this.stack[i];
+			if (s.isItemEqual(push)) {
+				int real = Math.min(push.stackSize, s.getMaxStackSize() - s.stackSize);
+				push.stackSize -= real;
+				s.stackSize += real;
+				if (push.stackSize == 0)
+					return true;
+			}
+		}
+		return false;
 	}
 
 }

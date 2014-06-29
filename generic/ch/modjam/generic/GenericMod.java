@@ -1,5 +1,6 @@
 package ch.modjam.generic;
 
+import ch.modjam.generic.gui.GenericGuiHandler;
 import ch.modjam.generic.networking.CommandMessage;
 import ch.modjam.generic.networking.CommandMessageServerHandler;
 import cpw.mods.fml.common.Mod;
