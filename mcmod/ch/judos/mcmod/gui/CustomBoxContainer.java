@@ -3,7 +3,6 @@ package ch.judos.mcmod.gui;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
-import ch.modjam.generic.tileEntity.InventoryUtil;
 
 /**
  * @author j
@@ -11,18 +10,17 @@ import ch.modjam.generic.tileEntity.InventoryUtil;
 public class CustomBoxContainer extends BoxContainer {
 
 	private CustomBoxTE		tileEntity;
-	private InventoryPlayer	inventory;
+	private InventoryPlayer	playerInventory;
 
 	/**
 	 * @param inventory
 	 * @param te
 	 */
 	public CustomBoxContainer(InventoryPlayer inventory, CustomBoxTE te) {
-		super(te);
+		super(inventory, te);
 		this.tileEntity = te;
 		this.tileEntity.addListenerForUpdates(this);
-		this.inventory = inventory;
-		initialize();
+		this.playerInventory = inventory;
 	}
 
 	@Override
@@ -30,10 +28,10 @@ public class CustomBoxContainer extends BoxContainer {
 		this.tileEntity.closedContainer(this);
 	}
 
-	private void initialize() {
-		InventoryUtil.bindPlayerInventory(this, inventory);
-		for (int i = 0; i < this.tileEntity.inventory.stack.length; i++)
-			addSlotToContainer(new Slot(this.tileEntity.inventory, i, 26 + 18 * i, 42));
+	@Override
+	protected void init() {
+		for (int i = 0; i < this.tileEntityInventory.getSizeInventory(); i++)
+			addSlotToContainer(new Slot(this.tileEntityInventory, i, 26 + 18 * i, 42));
 	}
 
 	/**
@@ -42,7 +40,8 @@ public class CustomBoxContainer extends BoxContainer {
 	public void reinitialize() {
 		this.inventoryItemStacks.clear();
 		this.inventorySlots.clear();
-		initialize();
+		bindPlayerInventory(this.playerInventory);
+		init();
 	}
 
 }
