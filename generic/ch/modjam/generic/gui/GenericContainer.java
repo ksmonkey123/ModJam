@@ -5,7 +5,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import ch.modjam.generic.inventory.FakeSlot;
+import ch.modjam.generic.inventory.slot.FakeSlot;
 
 /**
  * @author judos

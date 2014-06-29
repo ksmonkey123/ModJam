@@ -6,6 +6,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
 import ch.awae.trektech.entities.TileEntityPlasmaFurnace;
 import ch.modjam.generic.gui.GenericContainer;
+import ch.modjam.generic.inventory.slot.InputSlot;
+import ch.modjam.generic.inventory.slot.OutputSlot;
 
 @SuppressWarnings("javadoc")
 public class ContainerPlasmaFurnace extends GenericContainer {
@@ -15,8 +17,8 @@ public class ContainerPlasmaFurnace extends GenericContainer {
 	public ContainerPlasmaFurnace(InventoryPlayer inventory, TileEntityPlasmaFurnace te) {
 		super(inventory);
 		this.tileFurnace = te;
-		this.addSlotToContainer(new Slot(te, 0, 44, 42));
-		this.addSlotToContainer(new SlotFurnace(inventory.player, te, 1, 116, 42));
+		this.addSlotToContainer(new InputSlot(te, 0, 44, 42));
+		this.addSlotToContainer(new OutputSlot(te, 1, 116, 42));
 	}
 
 	@Override
