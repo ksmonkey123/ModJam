@@ -1,5 +1,7 @@
 package ch.judos.mcmod;
 
+import java.util.Arrays;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -140,5 +142,14 @@ public class GenericInventory implements IInventory {
 
 	@Override
 	public void markDirty() {}
+
+	/**
+	 * resizes the amount of slots
+	 * 
+	 * @param newSlotCount
+	 */
+	public void resizeInventory(int newSlotCount) {
+		this.stack = Arrays.copyOf(this.stack, newSlotCount);
+	}
 
 }
