@@ -10,8 +10,8 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import ch.judos.mcmod.GenericInventory;
 import ch.judos.mcmod.lib.Names;
+import ch.modjam.generic.inventory.GenericInventory;
 
 /**
  * @author j
