@@ -144,15 +144,13 @@ public class BoundHeart extends Item implements IItemHasGui {
 	}
 
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory, ItemStack stack) {
-		System.out.println("getGuiClient");
-		return new BoundHeartGui(inventory, stack);
+	public GuiContainer getGuiClient(InventoryPlayer inventory, ItemStack stack, int slot) {
+		return new BoundHeartGui(inventory, stack, slot);
 	}
 
 	@Override
-	public Container getGuiServer(InventoryPlayer inventory, ItemStack stack) {
-		System.out.println("getGuiServer");
-		return new BoundHeartContainer(inventory, stack);
+	public Container getGuiServer(InventoryPlayer inventory, ItemStack stack, int slot) {
+		return new BoundHeartContainer(inventory, stack, slot);
 	}
 
 }

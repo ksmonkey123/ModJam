@@ -19,9 +19,10 @@ public class BoundHeartGui extends GuiContainer {
 	/**
 	 * @param inventory
 	 * @param stack
+	 * @param slot
 	 */
-	public BoundHeartGui(InventoryPlayer inventory, ItemStack stack) {
-		super(new BoundHeartContainer(inventory, stack));
+	public BoundHeartGui(InventoryPlayer inventory, ItemStack stack, int slot) {
+		super(new BoundHeartContainer(inventory, stack, slot));
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import ch.modjam.generic.FakeSlot;
 
 /**
  * @author judos
@@ -25,11 +26,31 @@ public abstract class GenericContainer extends Container {
 	 * @param inventoryPlayer inventory of the player
 	 */
 	protected void bindPlayerInventory(InventoryPlayer inventoryPlayer) {
-		for (int i = 0; i < 3; i++)
-			for (int j = 0; j < 9; j++)
-				addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-		for (int i = 0; i < 9; i++)
-			addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 142));
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 9; j++) {
+				if (!isPlayerSlotAFakeSlot(j + i * 9 + 9))
+					addSlotToContainer(new Slot(inventoryPlayer, j + i * 9 + 9, 8 + j * 18,
+						84 + i * 18));
+				else
+					addSlotToContainer(new FakeSlot(inventoryPlayer, j + i * 9 + 9, 8 + j * 18,
+						84 + i * 18));
+			}
+		}
+		for (int i = 0; i < 9; i++) {
+			if (!isPlayerSlotAFakeSlot(i))
+				addSlotToContainer(new Slot(inventoryPlayer, i, 8 + i * 18, 142));
+			else
+				addSlotToContainer(new FakeSlot(inventoryPlayer, i, 8 + i * 18, 142));
+		}
+	}
+
+	protected void unbindPlayerInventory() {
+		this.inventorySlots.clear();
+		this.inventoryItemStacks.clear();
+	}
+
+	protected boolean isPlayerSlotAFakeSlot(int slot) {
+		return false;
 	}
 
 	/**
