@@ -1,6 +1,7 @@
 package ch.awae.trektech.gui;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
@@ -65,5 +66,26 @@ public class GuiPlasmaFurnace extends GuiContainer {
         this.drawTexturedModalRect(x + 142, y + 65 - i1, 176, 59 - i1, 8, i1);
         i1 = this.tileEntity.getPlasmaLevelScaled(4, 44, true);
         this.drawTexturedModalRect(x + 26, y + 65 - i1, 184, 59 - i1, 8, i1);
+        this.mc.renderEngine.bindTexture(new ResourceLocation(TrekTech.MODID
+                + ":textures/gui/elements/" + "chip_mask" + ".png"));
+        this.renderQuad(x + 152, y + 8, 16, 16, 0, 0, 1, 1);
+        this.renderQuad(x + 152, y + 26, 16, 16, 0, 0, 1, 1);
+        this.renderQuad(x + 152, y + 44, 16, 16, 0, 0, 1, 1);
+        this.renderQuad(x + 152, y + 62, 16, 16, 0, 0, 1, 1);
+    }
+    
+    private void renderQuad(int x, int y, int w, int h, int u, int v, int tw,
+            int th) {
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV(x + 0, y + h, this.zLevel, u + 0,
+                v + th);
+        tessellator.addVertexWithUV(x + w, y + h, this.zLevel, u + tw,
+                v + th);
+        tessellator.addVertexWithUV(x + w, y + 0, this.zLevel, u + tw,
+                v + 0);
+        tessellator.addVertexWithUV(x + 0, y + 0, this.zLevel, u + 0,
+                v + 0);
+        tessellator.draw();
     }
 }

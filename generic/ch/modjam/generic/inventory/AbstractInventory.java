@@ -24,7 +24,7 @@ public abstract class AbstractInventory implements IInventory {
 
 	@Override
 	public String getInventoryName() {
-		return StatCollector.translateToLocal("tile." + tileName + ".name");
+		return StatCollector.translateToLocal("tile." + this.tileName + ".name");
 	}
 
 	@Override
@@ -34,17 +34,17 @@ public abstract class AbstractInventory implements IInventory {
 
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
-		if (slot < 0 || slot >= getSizeInventory() || amount <= 0)
+		if (slot < 0 || slot >= this.getSizeInventory() || amount <= 0)
 			return null;
 
-		ItemStack stack = getStackInSlot(slot);
+		ItemStack stack = this.getStackInSlot(slot);
 		int realAmount = Math.min(stack.stackSize, amount);
 		ItemStack itemStack = stack.copy();
 		stack.stackSize -= realAmount;
 		if (stack.stackSize == 0)
-			setInventorySlotContents(slot, null);
+			this.setInventorySlotContents(slot, null);
 		else
-			setInventorySlotContents(slot, stack);
+			this.setInventorySlotContents(slot, stack);
 		itemStack.stackSize = realAmount;
 		return itemStack;
 	}
@@ -57,7 +57,7 @@ public abstract class AbstractInventory implements IInventory {
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack items) {
-		return getStackInSlot(slot) == null || getStackInSlot(slot).getItem().equals(
+		return this.getStackInSlot(slot) == null || this.getStackInSlot(slot).getItem().equals(
 			items.getItem());
 	}
 
@@ -65,9 +65,9 @@ public abstract class AbstractInventory implements IInventory {
 	 * @return the first item that can be removed from the
 	 */
 	public ItemStack getAndRemoveFirstItem() {
-		for (int i = 0; i < getSizeInventory(); i++)
-			if (getStackInSlot(i) != null)
-				return decrStackSize(i, 1);
+		for (int i = 0; i < this.getSizeInventory(); i++)
+			if (this.getStackInSlot(i) != null)
+				return this.decrStackSize(i, 1);
 		return null;
 	}
 
@@ -80,20 +80,20 @@ public abstract class AbstractInventory implements IInventory {
 		if (push == null || push.stackSize <= 0)
 			return true;
 		for (int i = 0; i < this.getSizeInventory(); i++) {
-			ItemStack s = getStackInSlot(i);
+			ItemStack s = this.getStackInSlot(i);
 			if (s == null) {
 				ItemStack newStack = push.copy();
 				int real = Math.min(push.stackSize, push.getMaxStackSize());
 				newStack.stackSize = real;
 				push.stackSize -= real;
-				setInventorySlotContents(i, newStack);
+				this.setInventorySlotContents(i, newStack);
 				if (push.stackSize == 0)
 					return true;
 			} else if (s.isItemEqual(push)) {
 				int real = Math.min(push.stackSize, s.getMaxStackSize() - s.stackSize);
 				push.stackSize -= real;
 				s.stackSize += real;
-				setInventorySlotContents(i, s);
+				this.setInventorySlotContents(i, s);
 				if (push.stackSize == 0)
 					return true;
 			}
