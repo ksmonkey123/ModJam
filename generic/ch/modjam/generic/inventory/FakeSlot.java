@@ -6,6 +6,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 /**
+ * no interaction possible at all
+ * 
  * @author judos
  * 
  */

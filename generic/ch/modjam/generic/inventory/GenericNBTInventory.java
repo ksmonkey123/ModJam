@@ -3,26 +3,31 @@ package ch.modjam.generic.inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * @author judos
  */
 public class GenericNBTInventory implements IInventory {
 
-	public GenericNBTInventory() {
+	protected NBTTagCompound	nbt;
 
+	/**
+	 * @param nbt
+	 */
+	public GenericNBTInventory(NBTTagCompound nbt) {
+		this.nbt = nbt;
 	}
 
 	@Override
 	public int getSizeInventory() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.nbt.getInteger("Slots");
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int var1) {
-		// TODO Auto-generated method stub
-		return null;
+	public ItemStack getStackInSlot(int slot) {
+		NBTTagCompound tag = (NBTTagCompound) this.nbt.getTag("Slot" + slot);
+		return ItemStack.loadItemStackFromNBT(tag);
 	}
 
 	@Override

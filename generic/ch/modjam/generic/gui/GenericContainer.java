@@ -71,8 +71,8 @@ public abstract class GenericContainer extends Container {
 			// merges the item into player inventory since its in the tileEntity
 			int s = this.getSizeInventory();
 			if (slot >= 36) {
-				if (!this.mergeItemStack(stackInSlot, 27, 36, false))
-					if (!this.mergeItemStack(stackInSlot, 0, 27, false))
+				if (!this.mergeItemStack2(stackInSlot, 27, 36))
+					if (!this.mergeItemStack2(stackInSlot, 0, 27))
 						return null;
 
 			}
@@ -80,7 +80,7 @@ public abstract class GenericContainer extends Container {
 			// inventory
 			else {
 				try {
-					if (!this.mergeItemStack(stackInSlot, 36, 36 + s, false))
+					if (!this.mergeItemStack2(stackInSlot, 36, 36 + s))
 						return null;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -101,5 +101,16 @@ public abstract class GenericContainer extends Container {
 			slotObject.onPickupFromSlot(player, stackInSlot);
 		}
 		return stack;
+	}
+
+	protected boolean mergeItemStack2(ItemStack stack, int slotStart, int slotEnd) {
+		for (int slot = slotStart; slot < slotEnd; slot++) {
+			Slot s = (Slot) this.inventorySlots.get(slot);
+			if (s.isItemValid(stack)) {
+				if (this.mergeItemStack(stack, slot, slot + 1, false))
+					return true;
+			}
+		}
+		return false;
 	}
 }
