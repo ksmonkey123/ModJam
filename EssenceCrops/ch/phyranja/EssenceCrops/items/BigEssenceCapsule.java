@@ -1,7 +1,7 @@
 package ch.phyranja.EssenceCrops.items;
 
 import ch.phyranja.EssenceCrops.EssenceCrops;
-import ch.phyranja.EssenceCrops.essences.Essence;
+import ch.phyranja.EssenceCrops.essences.EssenceType;
 import ch.phyranja.EssenceCrops.lib.Names;
 import ch.phyranja.EssenceCrops.lib.References;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,9 +13,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class BigEssenceCapsule extends Item {
 
-	private Essence type;
+	private EssenceType type;
 
-    public BigEssenceCapsule(Essence type){
+    public BigEssenceCapsule(EssenceType type){
     	this.type=type;
     	this.setCreativeTab(EssenceCrops.modTab);
     	this.setUnlocalizedName(Names.bigCapsules[type.ordinal()]);
@@ -29,7 +29,7 @@ public class BigEssenceCapsule extends Item {
     }
 	
 	
-    public Essence getEssenceType(){
+    public EssenceType getEssenceType(){
     	return type;
     }
 }

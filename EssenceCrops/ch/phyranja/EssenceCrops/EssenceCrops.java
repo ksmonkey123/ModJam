@@ -3,7 +3,7 @@ package ch.phyranja.EssenceCrops;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import ch.phyranja.EssenceCrops.blocks.*;
-import ch.phyranja.EssenceCrops.essences.Essence;
+import ch.phyranja.EssenceCrops.essences.EssenceType;
 import ch.phyranja.EssenceCrops.items.*;
 import ch.phyranja.EssenceCrops.lib.*;
 import ch.phyranja.EssenceCrops.world.*;
@@ -32,11 +32,11 @@ public class EssenceCrops {
 	
 	public static EssenceExtractor extractor;
 	
-	public static EssenceSeed[] seeds=new EssenceSeed[Essence.values().length];
-	public static EssencePlant[] plants=new EssencePlant[Essence.values().length];
-	public static EssencePetal[] petals=new EssencePetal[Essence.values().length];
-	public static BigEssenceCapsule[] bigCapsules=new BigEssenceCapsule[Essence.values().length];
-	public static SmallEssenceCapsule[] smallCapsules=new SmallEssenceCapsule[Essence.values().length];
+	public static EssenceSeed[] seeds=new EssenceSeed[EssenceType.values().length];
+	public static EssencePlant[] plants=new EssencePlant[EssenceType.values().length];
+	public static EssencePetal[] petals=new EssencePetal[EssenceType.values().length];
+	public static BigEssenceCapsule[] bigCapsules=new BigEssenceCapsule[EssenceType.values().length];
+	public static SmallEssenceCapsule[] smallCapsules=new SmallEssenceCapsule[EssenceType.values().length];
 	
 
 	@Mod.Instance("essencecrops")
@@ -69,7 +69,7 @@ public class EssenceCrops {
 
 	private void addItems() {
 		
-		for(Essence essence: Essence.values()){
+		for(EssenceType essence: EssenceType.values()){
 			petals[essence.ordinal()]=new EssencePetal(essence);
 			GameRegistry.registerItem(petals[essence.ordinal()], Names.petals[essence.ordinal()]);
 		
@@ -89,7 +89,7 @@ public class EssenceCrops {
 
 	private void addPlants() {
 		
-		for(Essence essence: Essence.values()){
+		for(EssenceType essence: EssenceType.values()){
 			plants[essence.ordinal()]=new EssencePlant(essence);
 			GameRegistry.registerBlock(plants[essence.ordinal()], Names.plants[essence.ordinal()]);
 		}

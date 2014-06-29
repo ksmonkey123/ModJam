@@ -4,7 +4,7 @@ package ch.phyranja.EssenceCrops.essences;
  * @author phyranja
  */
 @SuppressWarnings("javadoc")
-public enum Essence {
+public enum EssenceType {
 	NEUTRAL, COAL;
 	//REDSTONE, GLOWSTONE, IRON, COPPER, GOLD, DIAMOND, EMERALD;
 	

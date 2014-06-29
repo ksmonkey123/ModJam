@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import ch.phyranja.EssenceCrops.EssenceCrops;
-import ch.phyranja.EssenceCrops.essences.Essence;
+import ch.phyranja.EssenceCrops.essences.EssenceType;
 import ch.phyranja.EssenceCrops.lib.Names;
 import ch.phyranja.EssenceCrops.lib.References;
 
@@ -31,9 +31,9 @@ public class EssencePlant extends BlockBush implements IGrowable {
 	@SideOnly(Side.CLIENT)
     private IIcon[] icon;
 	private boolean idealEnvironment=true;
-	private Essence type;
+	private EssenceType type;
 
-    public EssencePlant(Essence type)
+    public EssencePlant(EssenceType type)
     {
     	
     	super(Material.plants);
