@@ -11,9 +11,13 @@ import ch.judos.mcmod.lib.References;
  */
 public class LivingFlesh extends Item {
 
+	/**
+	 * 
+	 */
 	public LivingFlesh() {
 		this.setUnlocalizedName(Names.LivingFlesh);
 		this.setCreativeTab(MCMod.modTab);
 		this.setTextureName(References.MOD_ID + ":" + Names.LivingFlesh);
 	}
+
 }

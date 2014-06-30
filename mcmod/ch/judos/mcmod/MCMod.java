@@ -139,13 +139,18 @@ public class MCMod {
 	private void addLivingFleshItem() {
 		livingFlesh = new LivingFlesh();
 		RegistryUtil.registerItem(livingFlesh);
+		for (int meta = 0; meta <= 4; meta++)
+			GameRegistry.addShapedRecipe(new ItemStack(livingFlesh), " X ", "XYX", " X ", 'X',
+				itemKryptonit, 'Y', new ItemStack(Items.skull, 1, meta));
+		GameRegistry.addShapedRecipe(new ItemStack(itemBoundHeart), "GLG", "LHL", "GLG", 'G',
+			Items.gold_ingot, 'L', livingFlesh, 'H', new ItemStack(Items.skull, 1, 3));
 	}
 
 	private void addItemWithNBTData() {
 		this.itemBoundHeart = new BoundHeart();
 		GameRegistry.registerItem(this.itemBoundHeart, Names.BoundHeart);
-		GameRegistry.addShapelessRecipe(new ItemStack(this.itemBoundHeart), new ItemStack(
-			Items.skull, 1, 3));
+		// GameRegistry.addShapelessRecipe(new ItemStack(this.itemBoundHeart), new ItemStack(
+		// Items.skull, 1, 3));
 
 		// custom recipie to change NBT data on the item
 		GameRegistry.addRecipe(new HeartCrafting());
