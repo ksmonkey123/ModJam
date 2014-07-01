@@ -1,58 +1,63 @@
 package ch.modjam.generic;
 
+import java.util.ArrayList;
+
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.RecipeSorter;
+import cpw.mods.fml.common.Loader;
 
 /**
  * @author judos
  */
 public abstract class RecipiesCrafting implements IRecipe {
 
-	@Override
-	public abstract boolean matches(InventoryCrafting inventory, World world);
+	/**
+	 * 
+	 */
+	protected ArrayList<NBTItemRecipe>	listShapeless	= new ArrayList<NBTItemRecipe>();
 
-	@Override
-	public abstract ItemStack getCraftingResult(InventoryCrafting inventory);
-
-	@Override
-	public abstract int getRecipeSize();
-
-	@Override
-	public abstract ItemStack getRecipeOutput();
-
-	protected boolean isItemPresent(InventoryCrafting inventory, Item item) {
-		return isItemPresent(inventory, new ItemStack(item));
+	/**
+	 * 
+	 */
+	public RecipiesCrafting() {
+		String modId = Loader.instance().activeModContainer().getModId();
+		RecipeSorter.register(modId + ":shapeless", this.getClass(),
+			RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 	}
 
-	protected boolean isItemPresent(InventoryCrafting inventory, ItemStack item) {
-		return isItemPresent(inventory, item, 1);
+	protected void addRecipe(NBTItemRecipe tileEntityRecipe) {
+		this.listShapeless.add(tileEntityRecipe);
 	}
 
-	protected boolean isItemPresent(InventoryCrafting inventory, ItemStack item, int amountNeeded) {
-		int trueAmount = amountNeeded;
-		for (int i = 0; i < inventory.getSizeInventory(); i++) {
-			ItemStack xxx = inventory.getStackInSlot(i);
-			if (xxx != null && xxx.isItemEqual(item))
-				trueAmount--;
-			if (trueAmount <= 0)
+	@Override
+	public boolean matches(InventoryCrafting inventory, World world) {
+		for (NBTItemRecipe r : listShapeless) {
+			if (r.matches(inventory))
 				return true;
 		}
 		return false;
 	}
 
-	protected ItemStack getItemStackFor(InventoryCrafting inventory, Item item) {
-		return getItemStackFor(inventory, new ItemStack(item));
-	}
-
-	protected ItemStack getItemStackFor(InventoryCrafting inventory, ItemStack item) {
-		for (int i = 0; i < inventory.getSizeInventory(); i++) {
-			ItemStack xxx = inventory.getStackInSlot(i);
-			if (xxx != null && xxx.isItemEqual(item))
-				return inventory.getStackInSlot(i);
+	@Override
+	public ItemStack getCraftingResult(InventoryCrafting inventory) {
+		for (NBTItemRecipe r : listShapeless) {
+			if (r.matches(inventory))
+				return r.getCraftingResult(inventory);
 		}
 		return null;
 	}
+
+	@Override
+	public int getRecipeSize() {
+		return 3;
+	}
+
+	@Override
+	public ItemStack getRecipeOutput() {
+		return null;
+	}
+
 }

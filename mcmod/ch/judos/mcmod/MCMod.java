@@ -16,7 +16,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.RecipeSorter;
 import ch.judos.mcmod.armor.ItemSlimyBoots;
 import ch.judos.mcmod.customrender.BlockCarvedDirt;
 import ch.judos.mcmod.customrender.TECarvedDirt;
@@ -35,10 +34,10 @@ import ch.judos.mcmod.itemblockfluids.BlockKryptoniteOre;
 import ch.judos.mcmod.itemblockfluids.FluidTar;
 import ch.judos.mcmod.itemblockfluids.ItemDirtShovel;
 import ch.judos.mcmod.itemblockfluids.ItemKryptonite;
+import ch.judos.mcmod.itemblockfluids.ItemLivingFlesh;
 import ch.judos.mcmod.itemblockfluids.ItemObsidianStick;
 import ch.judos.mcmod.itemblockfluids.ItemPotionTest;
 import ch.judos.mcmod.itemblockfluids.ItemTarBucket;
-import ch.judos.mcmod.itemblockfluids.LivingFlesh;
 import ch.judos.mcmod.lib.CommonProxy;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
@@ -111,7 +110,7 @@ public class MCMod {
 
 	// Items with NBT
 	public static BoundHeart					itemBoundHeart;
-	public static LivingFlesh					livingFlesh;
+	public static ItemLivingFlesh				livingFlesh;
 
 	/**
 	 * @param e
@@ -137,11 +136,11 @@ public class MCMod {
 	}
 
 	private void addLivingFleshItem() {
-		livingFlesh = new LivingFlesh();
+		livingFlesh = new ItemLivingFlesh();
 		RegistryUtil.registerItem(livingFlesh);
 		for (int meta = 0; meta <= 4; meta++)
-			GameRegistry.addShapedRecipe(new ItemStack(livingFlesh), " X ", "XYX", " X ", 'X',
-				itemKryptonit, 'Y', new ItemStack(Items.skull, 1, meta));
+			GameRegistry.addShapedRecipe(new ItemStack(livingFlesh), "RRR", "RKR", "RRR", 'R',
+				Items.rotten_flesh, 'K', itemKryptonit);
 		GameRegistry.addShapedRecipe(new ItemStack(itemBoundHeart), "GLG", "LHL", "GLG", 'G',
 			Items.gold_ingot, 'L', livingFlesh, 'H', new ItemStack(Items.skull, 1, 3));
 	}
@@ -149,13 +148,10 @@ public class MCMod {
 	private void addItemWithNBTData() {
 		this.itemBoundHeart = new BoundHeart();
 		GameRegistry.registerItem(this.itemBoundHeart, Names.BoundHeart);
-		// GameRegistry.addShapelessRecipe(new ItemStack(this.itemBoundHeart), new ItemStack(
-		// Items.skull, 1, 3));
 
 		// custom recipie to change NBT data on the item
 		GameRegistry.addRecipe(new HeartCrafting());
-		RecipeSorter.register("mcmod:shapeless", HeartCrafting.class,
-			RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
+
 	}
 
 	private void setMetaData(ModMetadata m) {

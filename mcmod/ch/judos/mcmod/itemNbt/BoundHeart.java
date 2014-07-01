@@ -79,6 +79,9 @@ public class BoundHeart extends Item implements IItemHasGui {
 			}
 			if (!exists)
 				list.add(EnumChatFormatting.RED + "Player not found or not online.");
+
+			list.add(EnumChatFormatting.GRAY + "Add a hopper and redstone to");
+			list.add(EnumChatFormatting.GRAY + "create inventory.");
 		}
 	}
 
