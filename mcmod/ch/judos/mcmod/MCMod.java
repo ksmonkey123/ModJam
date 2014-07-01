@@ -38,6 +38,7 @@ import ch.judos.mcmod.itemblockfluids.ItemKryptonite;
 import ch.judos.mcmod.itemblockfluids.ItemObsidianStick;
 import ch.judos.mcmod.itemblockfluids.ItemPotionTest;
 import ch.judos.mcmod.itemblockfluids.ItemTarBucket;
+import ch.judos.mcmod.itemblockfluids.LivingFlesh;
 import ch.judos.mcmod.lib.CommonProxy;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
@@ -109,7 +110,8 @@ public class MCMod {
 	public static CustomBox						customBox;
 
 	// Items with NBT
-	public static BoundHeart					boundHeart;
+	public static BoundHeart					itemBoundHeart;
+	public static LivingFlesh					livingFlesh;
 
 	/**
 	 * @param e
@@ -129,15 +131,26 @@ public class MCMod {
 		addArmor();
 		addBlockWithCustomGui();
 		addItemWithNBTData();
+		addLivingFleshItem();
 
 		proxy.registerRenderInformation();
 	}
 
+	private void addLivingFleshItem() {
+		livingFlesh = new LivingFlesh();
+		RegistryUtil.registerItem(livingFlesh);
+		for (int meta = 0; meta <= 4; meta++)
+			GameRegistry.addShapedRecipe(new ItemStack(livingFlesh), " X ", "XYX", " X ", 'X',
+				itemKryptonit, 'Y', new ItemStack(Items.skull, 1, meta));
+		GameRegistry.addShapedRecipe(new ItemStack(itemBoundHeart), "GLG", "LHL", "GLG", 'G',
+			Items.gold_ingot, 'L', livingFlesh, 'H', new ItemStack(Items.skull, 1, 3));
+	}
+
 	private void addItemWithNBTData() {
-		this.boundHeart = new BoundHeart();
-		GameRegistry.registerItem(this.boundHeart, Names.BoundHeart);
-		GameRegistry.addShapelessRecipe(new ItemStack(this.boundHeart), new ItemStack(Items.skull,
-			1, 3));
+		this.itemBoundHeart = new BoundHeart();
+		GameRegistry.registerItem(this.itemBoundHeart, Names.BoundHeart);
+		// GameRegistry.addShapelessRecipe(new ItemStack(this.itemBoundHeart), new ItemStack(
+		// Items.skull, 1, 3));
 
 		// custom recipie to change NBT data on the item
 		GameRegistry.addRecipe(new HeartCrafting());
