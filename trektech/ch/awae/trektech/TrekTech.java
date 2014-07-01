@@ -97,92 +97,101 @@ public class TrekTech {
      */
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        setMetadata(event.getModMetadata());
+        TrekTech.setMetadata(event.getModMetadata());
         // ITEMS
-        RegistryUtil.registerItem(itemStarFleetSymbol);
-        RegistryUtil.registerItem(itemDuraniumIngot);
-        RegistryUtil.registerItem(itemDilithiumRaw);
-        RegistryUtil.registerItem(itemDilithiumCrystal);
-        RegistryUtil.registerItem(itemPlasmaContainmentRing);
-        RegistryUtil.registerItem(itemScrap);
+        RegistryUtil.registerItem(TrekTech.itemStarFleetSymbol);
+        RegistryUtil.registerItem(TrekTech.itemDuraniumIngot);
+        RegistryUtil.registerItem(TrekTech.itemDilithiumRaw);
+        RegistryUtil.registerItem(TrekTech.itemDilithiumCrystal);
+        RegistryUtil.registerItem(TrekTech.itemPlasmaContainmentRing);
+        RegistryUtil.registerItem(TrekTech.itemScrap);
         // BLOCKS
-        RegistryUtil.registerBlock(blockDuraniumWall);
+        RegistryUtil.registerBlock(TrekTech.blockDuraniumWall);
         
         EnumPlasmaTypes plasmaTypes[] = EnumPlasmaTypes.values();
         for (int i = 0; i < plasmaTypes.length; i++) {
             EnumPlasmaTypes plasmaType = EnumPlasmaTypes.values()[i];
             // PIPES
-            pipes[i][0] = new BlockPlasmaPipe("pipe" + i, plasmaType,
+            TrekTech.pipes[i][0] = new BlockPlasmaPipe("pipe" + i, plasmaType,
                     plasmaType.getRadius());
-            pipes[i][1] = new BlockPlasmaPipe("pipe" + i + "c", plasmaType);
-            RegistryUtil.registerBlock(pipes[i][0], TileEntityPlasmaPipe.class);
-            RegistryUtil.registerBlock(pipes[i][1]);
-            addEncasingRecipe(i);
-            valves[i] = new BlockPlasmaValve("valve" + i, plasmaType);
-            addValveRecipe(i);
-            RegistryUtil.registerBlock(valves[i], TileEntityPlasmaValve.class);
+            TrekTech.pipes[i][1] = new BlockPlasmaPipe("pipe" + i + "c",
+                    plasmaType);
+            RegistryUtil.registerBlock(TrekTech.pipes[i][0],
+                    TileEntityPlasmaPipe.class);
+            RegistryUtil.registerBlock(TrekTech.pipes[i][1]);
+            TrekTech.addEncasingRecipe(i);
+            TrekTech.valves[i] = new BlockPlasmaValve("valve" + i, plasmaType);
+            TrekTech.addValveRecipe(i);
+            RegistryUtil.registerBlock(TrekTech.valves[i],
+                    TileEntityPlasmaValve.class);
         }
         
-        upgrades = new ItemUpgrade[EnumUpgrade.values().length];
+        TrekTech.upgrades = new ItemUpgrade[EnumUpgrade.values().length];
         for (EnumUpgrade upgrade : EnumUpgrade.values()) {
-            upgrades[upgrade.ordinal()] = new ItemUpgrade(upgrade);
-            RegistryUtil.registerItem(upgrades[upgrade.ordinal()]);
+            TrekTech.upgrades[upgrade.ordinal()] = new ItemUpgrade(upgrade);
+            RegistryUtil.registerItem(TrekTech.upgrades[upgrade.ordinal()]);
         }
         
-        RegistryUtil.registerBlock(blockPlasmaSource,
+        RegistryUtil.registerBlock(TrekTech.blockPlasmaSource,
                 TileEntityPlasmaSource.class);
-        RegistryUtil.registerBlock(blockPlasmaEnergizerLow,
+        RegistryUtil.registerBlock(TrekTech.blockPlasmaEnergizerLow,
                 TileEntityPlasmaEnergizerLow.class);
-        RegistryUtil.registerBlock(blockPlasmaFurnace,
+        RegistryUtil.registerBlock(TrekTech.blockPlasmaFurnace,
                 TileEntityPlasmaFurnace.class);
         // RECIPES
-        registerRecipes();
-        proxy.registerRenderers();
+        TrekTech.registerRecipes();
+        TrekTech.proxy.registerRenderers();
         
         Properties.WRENCH = Items.diamond;
     }
     
     @SuppressWarnings("boxing")
     private static void registerRecipes() {
-        GameRegistry.addSmelting(itemDilithiumRaw, new ItemStack(
-                itemDilithiumCrystal, 1), 0.5F);
-        GameRegistry.addShapedRecipe(new ItemStack(blockDuraniumWall, 4),
-                "DDD", "DDD", 'D', new ItemStack(itemDuraniumIngot));
-        ItemStack duraniumWallStack = new ItemStack(blockDuraniumWall);
-        GameRegistry.addShapelessRecipe(new ItemStack(itemDuraniumIngot, 6),
-                duraniumWallStack, duraniumWallStack, duraniumWallStack,
-                duraniumWallStack);
+        GameRegistry.addSmelting(TrekTech.itemDilithiumRaw, new ItemStack(
+                TrekTech.itemDilithiumCrystal, 1), 0.5F);
+        GameRegistry.addShapedRecipe(new ItemStack(TrekTech.blockDuraniumWall,
+                4), "DDD", "DDD", 'D',
+                new ItemStack(TrekTech.itemDuraniumIngot));
+        ItemStack duraniumWallStack = new ItemStack(TrekTech.blockDuraniumWall);
+        GameRegistry.addShapelessRecipe(new ItemStack(
+                TrekTech.itemDuraniumIngot, 6), duraniumWallStack,
+                duraniumWallStack, duraniumWallStack, duraniumWallStack);
         GameRegistry.addSmelting(Items.redstone, new ItemStack(
-                itemPlasmaContainmentRing, 1), 0.5F);
-        GameRegistry.addShapedRecipe(new ItemStack(pipes[0][0], 6), "III",
-                "CCC", "III", 'I', new ItemStack(Items.iron_ingot), 'C',
-                new ItemStack(itemPlasmaContainmentRing));
-        GameRegistry.addShapedRecipe(new ItemStack(pipes[1][0], 6), "PPP",
-                "CCC", "PPP", 'P', new ItemStack(pipes[0][0]), 'C',
-                new ItemStack(itemPlasmaContainmentRing));
+                TrekTech.itemPlasmaContainmentRing, 1), 0.5F);
+        GameRegistry.addShapedRecipe(new ItemStack(TrekTech.pipes[0][0], 6),
+                "III", "CCC", "III", 'I', new ItemStack(Items.iron_ingot), 'C',
+                new ItemStack(TrekTech.itemPlasmaContainmentRing));
+        GameRegistry.addShapedRecipe(new ItemStack(TrekTech.pipes[1][0], 6),
+                "PPP", "CCC", "PPP", 'P', new ItemStack(TrekTech.pipes[0][0]),
+                'C', new ItemStack(TrekTech.itemPlasmaContainmentRing));
         
-        ItemStack duraniumings = new ItemStack(itemDuraniumIngot);
-        ItemStack mk1pipestack = new ItemStack(pipes[1][0]);
-        ItemStack containments = new ItemStack(itemPlasmaContainmentRing);
+        ItemStack duraniumings = new ItemStack(TrekTech.itemDuraniumIngot);
+        ItemStack mk1pipestack = new ItemStack(TrekTech.pipes[1][0]);
+        ItemStack containments = new ItemStack(
+                TrekTech.itemPlasmaContainmentRing);
         
-        GameRegistry.addShapelessRecipe(new ItemStack(pipes[2][0], 3),
+        GameRegistry.addShapelessRecipe(new ItemStack(TrekTech.pipes[2][0], 3),
                 duraniumings, duraniumings, duraniumings, containments,
                 containments, containments, mk1pipestack, mk1pipestack,
                 mk1pipestack);
         
-        ItemStack mk2pipestack = new ItemStack(pipes[2][0]);
+        ItemStack mk2pipestack = new ItemStack(TrekTech.pipes[2][0]);
         
-        GameRegistry.addShapelessRecipe(new ItemStack(pipes[3][0], 3),
+        GameRegistry.addShapelessRecipe(new ItemStack(TrekTech.pipes[3][0], 3),
                 duraniumings, duraniumings, duraniumings, containments,
                 containments, containments, mk2pipestack, mk2pipestack,
                 mk2pipestack);
+        
+        TTRegistry.registerAdditionalFurnaceRecipe(Items.ender_pearl,
+                new ItemStack(Items.ender_eye, 1));
     }
     
     @SuppressWarnings("boxing")
     private static void addEncasingRecipe(int pipeID) {
-        GameRegistry.addShapedRecipe(new ItemStack(pipes[pipeID][1], 4), " P ",
-                "PDP", " P ", 'D', new ItemStack(blockDuraniumWall), 'P',
-                new ItemStack(pipes[pipeID][0]));
+        GameRegistry.addShapedRecipe(
+                new ItemStack(TrekTech.pipes[pipeID][1], 4), " P ", "PDP",
+                " P ", 'D', new ItemStack(TrekTech.blockDuraniumWall), 'P',
+                new ItemStack(TrekTech.pipes[pipeID][0]));
     }
     
     private static void addValveRecipe(int pipeID) {
@@ -192,8 +201,8 @@ public class TrekTech {
     private static void setMetadata(ModMetadata meta) {
         meta.autogenerated = false;
         meta.authorList.add("Andreas Waelchli (andreas.waelchli@me.com)");
-        meta.name = NAME;
-        meta.version = VERSION;
+        meta.name = TrekTech.NAME;
+        meta.version = TrekTech.VERSION;
         meta.description = "Star Trek Technologies";
     }
 }

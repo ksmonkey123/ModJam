@@ -31,6 +31,9 @@ public class ItemUpgrade extends Item {
             stringList.add(line);
     }
     
+    /**
+     * @return the upgrade type
+     */
     public final EnumUpgrade getUpgradeType() {
         return this.type;
     }

@@ -11,8 +11,11 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
+import ch.awae.trektech.BasicUpgrade;
 import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.EnumUpgrade;
+import ch.awae.trektech.IUpgradable;
+import ch.awae.trektech.TTRegistry;
 import ch.awae.trektech.TrekTech;
 import ch.awae.trektech.gui.GuiPlasmaFurnace;
 import ch.awae.trektech.gui.container.ContainerPlasmaFurnace;
@@ -27,7 +30,7 @@ import ch.modjam.generic.inventory.IHasGui;
  * @author Andreas Waelchli (andreas.waelchli@me.com)
  */
 public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
-        ISidedInventory, IHasGui {
+        ISidedInventory, IHasGui, IUpgradable {
     private static final int   PLASMA_PER_BAR           = 1000;
     
     private static final int   BASE_PLASMA_PER_ITEM     = 500;
@@ -39,6 +42,10 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
     private int                currentL                 = 0;
     private int                currentN                 = 0;
     private int                remainingBurnTime        = 0;
+    
+    private boolean            upgradesCached           = false;
+    private BasicUpgrade       upgradeCache             = new BasicUpgrade(0,
+                                                                0, 0);
     
     // -- ISidedInventory --
     
@@ -282,6 +289,9 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
         ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(
                 this.stacks[0]);
         if (itemstack == null)
+            itemstack = TTRegistry.getAdditionalFurnaceRecipe(this.stacks[0]
+                    .getItem());
+        if (itemstack == null)
             if (this.makesScrap())
                 itemstack = new ItemStack(TrekTech.itemScrap, 1);
             else
@@ -308,6 +318,9 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
         ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(
                 this.stacks[0]);
         if (itemstack == null)
+            itemstack = TTRegistry.getAdditionalFurnaceRecipe(this.stacks[0]
+                    .getItem());
+        if (itemstack == null)
             itemstack = new ItemStack(TrekTech.itemScrap, 1);
         if (this.stacks[1] == null || this.stacks[1].stackSize == 0) {
             this.stacks[1] = itemstack.copy();
@@ -318,7 +331,7 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
         this.stacks[0].stackSize--;
         if (this.stacks[0].stackSize <= 0)
             this.stacks[0] = null;
-        this.markDirty(); 
+        this.markDirty();
         this.forceServerPush();
     }
     
@@ -339,13 +352,13 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
     }
     
     private int getSmeltTimePerItem() {
-        return (int) (TileEntityPlasmaFurnace.BASE_BURN_TIME * (1 - 0.1875f * this
-                .getUpgradeCount(EnumUpgrade.SPEED)));
+        return (int) (TileEntityPlasmaFurnace.BASE_BURN_TIME * (1 + this
+                .getCache().getSpeed_increase()));
     }
     
     private float getPlasmaRegain() {
-        return TileEntityPlasmaFurnace.BASE_PLASMA_REGAIN + 0.125f
-                * this.getUpgradeCount(EnumUpgrade.REGAIN);
+        return TileEntityPlasmaFurnace.BASE_PLASMA_REGAIN
+                + this.getCache().getRegain_increase();
     }
     
     private float getOreDoublingChange() {
@@ -355,6 +368,26 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
     
     private boolean makesScrap() {
         return this.getUpgradeCount(EnumUpgrade.SECURITY) == 0;
+    }
+    
+    private BasicUpgrade getCache() {
+        if (!this.upgradesCached)
+            this.buildUpgradeCache();
+        return this.upgradeCache;
+    }
+    
+    private void buildUpgradeCache() {
+        BasicUpgrade upgrades[] = new BasicUpgrade[4];
+        for (int i = 2; i < this.stacks.length; i++) {
+            Item item = this.stacks[i] == null ? null : this.stacks[i]
+                    .getItem();
+            if (item == null || !(item instanceof ItemUpgrade))
+                continue;
+            upgrades[i - 2] = ((ItemUpgrade) item).getUpgradeType()
+                    .getUpgrade();
+        }
+        this.upgradeCache = BasicUpgrade.combineUpgrades(upgrades);
+        this.upgradesCached = true;
     }
     
     /**
@@ -395,6 +428,11 @@ public class TileEntityPlasmaFurnace extends ATileEntityPlasmaSystem implements
                 count++;
         }
         return count;
+    }
+    
+    @Override
+    public void onUpgradeChange() {
+        this.upgradesCached = false;
     }
     
 }

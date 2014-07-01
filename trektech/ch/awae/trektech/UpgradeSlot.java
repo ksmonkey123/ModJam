@@ -20,4 +20,11 @@ public class UpgradeSlot extends Slot {
         return false;
     }
     
+    @Override
+    public void onSlotChanged() {
+        super.onSlotChanged();
+        if (this.inventory instanceof IUpgradable)
+            ((IUpgradable) this.inventory).onUpgradeChange();
+    }
+    
 }
