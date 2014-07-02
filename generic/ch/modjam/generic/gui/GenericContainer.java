@@ -49,6 +49,12 @@ public abstract class GenericContainer extends Container {
 		this.inventoryItemStacks.clear();
 	}
 
+	/**
+	 * can be overridden by child class
+	 * 
+	 * @param slot number in the player inventory
+	 * @return
+	 */
 	protected boolean isPlayerSlotAFakeSlot(int slot) {
 		return false;
 	}

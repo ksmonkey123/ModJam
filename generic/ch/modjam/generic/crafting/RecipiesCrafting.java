@@ -34,7 +34,7 @@ public abstract class RecipiesCrafting implements IRecipe {
 
 	@Override
 	public boolean matches(InventoryCrafting inventory, World world) {
-		for (NbtItemRecipe r : listShapeless) {
+		for (NbtItemRecipe r : this.listShapeless) {
 			if (r.matches(inventory))
 				return true;
 		}
@@ -43,7 +43,7 @@ public abstract class RecipiesCrafting implements IRecipe {
 
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting inventory) {
-		for (NbtItemRecipe r : listShapeless) {
+		for (NbtItemRecipe r : this.listShapeless) {
 			if (r.matches(inventory))
 				return r.getCraftingResult(inventory);
 		}
