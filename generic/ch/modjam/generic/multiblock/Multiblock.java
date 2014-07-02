@@ -97,13 +97,24 @@ public class Multiblock {
         return points.toArray(new MultiblockPoint[0]);
     }
     
+    /**
+     * @return all points of a structure
+     */
     public MultiblockPoint[] getMultiblockPoints() {
         return this.blockMap.keySet().toArray(new MultiblockPoint[0]);
     }
     
+    private boolean isBlockValidForPosition(Block block, MultiblockPoint point) {
+        Block blocks[] = this.blockMap.get(point);
+        for (Block block1 : blocks)
+            if (block1.equals(block))
+                return true;
+        return false;
+    }
+    
     /**
-     * indicates if there exists a valid MultiBlock structure overlapping with
-     * the given coordinates
+     * indicates if there exists a valid MultiBlock structure with the given
+     * root coordinates
      * 
      * @param w
      * @param x
@@ -113,8 +124,14 @@ public class Multiblock {
      *         otherwise
      */
     public boolean isValidStructure(World w, int x, int y, int z) {
-        return false;
-        // TODO: implement
+        MultiblockPoint points[] = this.getMultiblockPoints();
+        for (MultiblockPoint point : points) {
+            int px = point.getX(x);
+            int py = point.getY(y);
+            int pz = point.getZ(z);
+            if (!this.isBlockValidForPosition(w.getBlock(px, py, pz), point))
+                return false;
+        }
+        return true;
     }
-    
 }

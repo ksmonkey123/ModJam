@@ -7,12 +7,16 @@ import ch.modjam.generic.tileEntity.GenericTileEntity;
 /**
  * @author Andreas Waelchli (andreas.waelchli@me.com)
  */
-public abstract class MultiBlockTileEntity extends GenericTileEntity {
+public abstract class MultiblockTileEntity extends GenericTileEntity {
     
     private EnumTileEntityState state;
     private int                 structureID;
+    private boolean             isRegistered = false;
     
-    public MultiBlockTileEntity() {
+    /**
+     * instantiate a new MultiblockTileEntity
+     */
+    public MultiblockTileEntity() {
         this.state = EnumTileEntityState.IDLE;
         this.structureID = -1;
     }
@@ -21,14 +25,21 @@ public abstract class MultiBlockTileEntity extends GenericTileEntity {
     public final void tick() {
         switch (this.state) {
             case MASTER:
+                if (!this.isRegistered)
+                    this.register();
                 this.masterTick();
                 break;
             case SLAVE:
                 this.slaveTick();
                 break;
             default:
+                if (!this.isRegistered)
+                    this.isRegistered = false;
                 break;
         }
+    }
+    
+    private void register() {
     }
     
     /**
@@ -73,8 +84,10 @@ public abstract class MultiBlockTileEntity extends GenericTileEntity {
      * activate this TileEntity as a slave of a given MultiBlock
      * 
      * @param StructureID
-     *            the MultiBlock's registration ID
+     *            the MultiBlock's instance ID
      * @throws AlreadyOwnedByMultiblockException
+     *             whenever a TileEntity that is already registered to a
+     *             structre is attempted to be registered to a new one
      */
     public final void activateAsSlave(int StructureID)
             throws AlreadyOwnedByMultiblockException {
@@ -84,11 +97,37 @@ public abstract class MultiBlockTileEntity extends GenericTileEntity {
         this.structureID = StructureID;
     }
     
+    /**
+     * resets the multiblock's internal state to idle and removes its
+     * tile-entity registration.
+     */
     public final void resetToIdle() {
         this.state = EnumTileEntityState.IDLE;
         this.structureID = -1;
     }
     
+    /**
+     * @return <tt>true</tt> if the tile-entity is idle and free to be
+     *         registered, <tt>false</tt> otherwise
+     */
+    public boolean isIdle() {
+        return this.state == EnumTileEntityState.IDLE;
+    }
+    
+    /**
+     * activates the tile-entity as the master of the multiblock instance with
+     * the given ID. This also registers all the multiblock slaves to this
+     * entity. In case the multiblock can not be completely registered (e.g.
+     * because one of its TileEntities is already registered to another
+     * structure), the slave registration is reverted. However this is not
+     * protected against multiple access. The <i>later</i> master will simply
+     * fail to register overlapping Entities, even if the <i>first</i> fails
+     * too, which would make the <i>later</i> one valid.
+     * 
+     * @param StructureID
+     * @return <tt>true</tt> if structure registration was successful,
+     *         <tt>false</tt> otherwise.
+     */
     public boolean activateAsMaster(int StructureID) {
         if (this.state != EnumTileEntityState.IDLE)
             return false;
@@ -101,8 +140,8 @@ public abstract class MultiBlockTileEntity extends GenericTileEntity {
                 int y = pt.getY(this.yCoord);
                 int z = pt.getZ(this.zCoord);
                 TileEntity te = this.worldObj.getTileEntity(x, y, z);
-                if (te instanceof MultiBlockTileEntity)
-                    ((MultiBlockTileEntity) te).activateAsSlave(StructureID);
+                if (te instanceof MultiblockTileEntity)
+                    ((MultiblockTileEntity) te).activateAsSlave(StructureID);
                 counter++;
             }
             this.state = EnumTileEntityState.MASTER;
@@ -117,8 +156,8 @@ public abstract class MultiBlockTileEntity extends GenericTileEntity {
                 int y = pt.getY(this.yCoord);
                 int z = pt.getZ(this.zCoord);
                 TileEntity te = this.worldObj.getTileEntity(x, y, z);
-                if (te instanceof MultiBlockTileEntity)
-                    ((MultiBlockTileEntity) te).resetToIdle();
+                if (te instanceof MultiblockTileEntity)
+                    ((MultiblockTileEntity) te).resetToIdle();
                 counter--;
             }
         }

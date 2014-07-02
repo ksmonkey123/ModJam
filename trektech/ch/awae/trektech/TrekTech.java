@@ -13,8 +13,6 @@ import ch.awae.trektech.blocks.BlockPlasmaFurnace;
 import ch.awae.trektech.blocks.BlockPlasmaPipe;
 import ch.awae.trektech.blocks.BlockPlasmaSource;
 import ch.awae.trektech.blocks.BlockPlasmaValve;
-import ch.awae.trektech.blocks.TestBlock;
-import ch.awae.trektech.entities.TestEntity;
 import ch.awae.trektech.entities.TileEntityPlasmaEnergizerLow;
 import ch.awae.trektech.entities.TileEntityPlasmaFurnace;
 import ch.awae.trektech.entities.TileEntityPlasmaPipe;
@@ -109,7 +107,6 @@ public class TrekTech {
         RegistryUtil.registerItem(TrekTech.itemScrap);
         // BLOCKS
         RegistryUtil.registerBlock(TrekTech.blockDuraniumWall);
-        RegistryUtil.registerBlock(new TestBlock(), TestEntity.class);
         
         EnumPlasmaTypes plasmaTypes[] = EnumPlasmaTypes.values();
         for (int i = 0; i < plasmaTypes.length; i++) {
