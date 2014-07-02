@@ -10,7 +10,7 @@ import ch.modjam.generic.inventory.IHasGui;
 import ch.modjam.generic.tileEntity.GenericTileEntity;
 
 /**
- * @author j
+ * @author judos
  */
 public class BoxTE extends GenericTileEntity implements IHasGui {
 
@@ -32,13 +32,13 @@ public class BoxTE extends GenericTileEntity implements IHasGui {
 	}
 
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
-		return new BoxGuiContainer(inventory, this);
+	public GuiContainer getGuiClient(InventoryPlayer inventoryPlayer) {
+		return new BoxGuiContainer(inventoryPlayer, this);
 	}
 
 	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
-		return new BoxContainer(inventory, this);
+	public Container getGuiServer(InventoryPlayer inventoryPlayer) {
+		return new BoxContainer(inventoryPlayer, this);
 	}
 
 	@Override

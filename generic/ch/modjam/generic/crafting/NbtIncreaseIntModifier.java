@@ -6,7 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * modifies one tag of the nbt data. It increases the integer value for the provided tag or sets the
  * default value if it was not set before.
  * 
- * @author j
+ * @author judos
  *
  */
 public class NbtIncreaseIntModifier implements NbtModifier {

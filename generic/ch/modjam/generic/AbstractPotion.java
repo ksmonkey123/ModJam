@@ -6,10 +6,10 @@ import java.lang.reflect.Modifier;
 import net.minecraft.potion.Potion;
 
 /**
- * improves creation of potions, automatically generates a new ID unique for
- * every new potion you add
+ * improves creation of potions, automatically generates a new ID unique for every new potion you
+ * add
  * 
- * @author j
+ * @author judos
  * 
  */
 @SuppressWarnings("javadoc")

@@ -1,7 +1,7 @@
 package ch.judos.mcmod.lib;
 
 /**
- * @author j
+ * @author judos
  */
 public class CommonProxy {
 

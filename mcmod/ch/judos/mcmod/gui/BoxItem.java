@@ -30,13 +30,13 @@ public class BoxItem extends ItemBlock {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack item, EntityPlayer player, List list, boolean par4) {
-		if (item != last)
-			displayToolTip = player.worldObj.rand.nextInt(2);
-		if (displayToolTip == 0)
+		if (item != this.last)
+			this.displayToolTip = player.worldObj.rand.nextInt(2);
+		if (this.displayToolTip == 0)
 			list.add(EnumChatFormatting.GRAY + "It's an ancient mystery.");
 		else
 			list.add(EnumChatFormatting.GRAY + "What does the box say? ring ding ding ding");
-		last = item;
+		this.last = item;
 	}
 
 }

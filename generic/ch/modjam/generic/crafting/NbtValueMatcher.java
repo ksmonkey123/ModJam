@@ -6,7 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * provides a method to check whether the nbt data matches a given assumption.<br>
  * Can be used to add maximal values for nbt item recipes
  * 
- * @author j
+ * @author judos
  *
  */
 public interface NbtValueMatcher {

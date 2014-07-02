@@ -14,7 +14,7 @@ import ch.judos.mcmod.lib.Names;
 import ch.modjam.generic.inventory.GenericInventory;
 
 /**
- * @author j
+ * @author judos
  */
 public class CustomBoxTE extends BoxTE {
 
@@ -46,7 +46,7 @@ public class CustomBoxTE extends BoxTE {
 
 	@Override
 	public void onNetworkCommand(String command, byte[] data) {
-		int newSize = (int) data[0];
+		int newSize = data[0];
 		if (newSize < this.inventory.stack.length)
 			dropItemsOnTheFloor(this.inventory.stack[this.inventory.stack.length - 1]);
 		this.inventory.stack = Arrays.copyOf(this.inventory.stack, newSize);
@@ -73,13 +73,13 @@ public class CustomBoxTE extends BoxTE {
 	}
 
 	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
-		return new CustomBoxContainer(inventory, this);
+	public Container getGuiServer(InventoryPlayer inventoryPlayer) {
+		return new CustomBoxContainer(inventoryPlayer, this);
 	}
 
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
-		return new CustomBoxGuiContainer(inventory, this);
+	public GuiContainer getGuiClient(InventoryPlayer inventoryPlayer) {
+		return new CustomBoxGuiContainer(inventoryPlayer, this);
 	}
 
 	/**

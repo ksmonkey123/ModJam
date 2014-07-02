@@ -16,6 +16,9 @@ import ch.judos.mcmod.lib.References;
  */
 public class BoundHeartGui extends GuiContainer {
 
+	private ItemStack	heart;
+	private int			slot;
+
 	/**
 	 * @param inventory
 	 * @param stack
@@ -23,6 +26,20 @@ public class BoundHeartGui extends GuiContainer {
 	 */
 	public BoundHeartGui(InventoryPlayer inventory, ItemStack stack, int slot) {
 		super(new BoundHeartContainer(inventory, stack, slot));
+		this.slot = slot;
+		this.heart = stack;
+	}
+
+	@Override
+	protected void keyTyped(char par1, int par2) {
+		try {
+			int slotForKey = Integer.parseInt("" + par1) - 1;
+			if (slotForKey == this.slot)
+				return;
+		} catch (Exception e) {
+			// escape or some other key was typed, do nothing.
+		}
+		super.keyTyped(par1, par2);
 	}
 
 	@Override
@@ -43,5 +60,11 @@ public class BoundHeartGui extends GuiContainer {
 		int x = (this.width - this.xSize) / 2;
 		int y = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(x, y + 33, 0, 0, this.xSize, this.ySize);
+
+		int slots = this.heart.stackTagCompound.getInteger(BoundHeart.NBT_SLOTS);
+		for (int i = 0; i < 5; i++) {
+			if (slots - 1 < i)
+				this.drawTexturedModalRect(x + 43 + 18 * i, y + 33 + 19, 176, 0, 18, 18);
+		}
 	}
 }

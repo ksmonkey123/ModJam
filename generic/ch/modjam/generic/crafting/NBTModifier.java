@@ -3,7 +3,7 @@ package ch.modjam.generic.crafting;
 import net.minecraft.nbt.NBTTagCompound;
 
 /**
- * @author j
+ * @author judos
  *
  */
 public interface NbtModifier {

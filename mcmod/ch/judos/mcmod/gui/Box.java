@@ -16,7 +16,7 @@ import ch.modjam.generic.gui.GenericGuiHandler;
 import ch.modjam.generic.inventory.GenericInventory;
 
 /**
- * @author j
+ * @author judos
  */
 public class Box extends BlockContainer {
 

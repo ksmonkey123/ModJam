@@ -1,5 +1,6 @@
 package ch.modjam.generic.inventory;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StatCollector;
@@ -69,7 +70,11 @@ public class GenericNBTInventory extends AbstractInventory {
 
 	@Override
 	public void markDirty() {
+		if (!Minecraft.getMinecraft().theWorld.isRemote)
+			new Exception("inventory marked as dirty: ").printStackTrace();
+
 		// not implemented
+		// System.out.println("inventory marked as dirty");
 	}
 
 	@Override

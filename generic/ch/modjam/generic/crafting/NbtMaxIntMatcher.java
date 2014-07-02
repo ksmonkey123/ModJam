@@ -5,7 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 /**
  * matches if one tag is smaller than a maximal set value
  * 
- * @author j
+ * @author judos
  *
  */
 public class NbtMaxIntMatcher implements NbtValueMatcher {
@@ -24,7 +24,7 @@ public class NbtMaxIntMatcher implements NbtValueMatcher {
 
 	@Override
 	public boolean matchesNBT(NBTTagCompound c) {
-		return c.getInteger(this.tag) < this.maxValue;
+		return c.getInteger(this.tag) <= this.maxValue;
 	}
 
 }

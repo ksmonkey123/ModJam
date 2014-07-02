@@ -5,7 +5,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 
 /**
- * @author j
+ * @author judos
  */
 public class CustomBoxContainer extends BoxContainer {
 

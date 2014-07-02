@@ -5,7 +5,7 @@ import net.minecraft.world.World;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 /**
- * @author j
+ * @author judos
  */
 public class GuiHandler implements IGuiHandler {
 

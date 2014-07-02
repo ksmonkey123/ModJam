@@ -6,7 +6,7 @@ import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
 
 /**
- * @author j
+ * @author judos
  */
 public class CustomBox extends Box {
 

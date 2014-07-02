@@ -53,9 +53,9 @@ public abstract class GenericContainer extends Container {
 	 * can be overridden by child class
 	 * 
 	 * @param slot number in the player inventory
-	 * @return
+	 * @return true for fake slots which should not allow any interaction
 	 */
-	protected boolean isPlayerSlotAFakeSlot(int slot) {
+	public boolean isPlayerSlotAFakeSlot(int slot) {
 		return false;
 	}
 
@@ -118,5 +118,80 @@ public abstract class GenericContainer extends Container {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * merges provided ItemStack with the first avaliable one in the container/player inventory
+	 */
+	@Override
+	protected boolean mergeItemStack(ItemStack stack, int slotStart, int slotEnd, boolean backward) {
+		boolean wasMerged = false;
+		int curSlot = slotStart;
+
+		if (backward) {
+			curSlot = slotEnd - 1;
+		}
+
+		Slot slot;
+		ItemStack itemstack1;
+
+		if (stack.isStackable()) {
+			while (stack.stackSize > 0 && (!backward && curSlot < slotEnd || backward && curSlot >= slotStart)) {
+				slot = (Slot) this.inventorySlots.get(curSlot);
+				itemstack1 = slot.getStack();
+
+				if (itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack
+					.getHasSubtypes() || stack.getItemDamage() == itemstack1.getItemDamage()) && ItemStack
+					.areItemStackTagsEqual(stack, itemstack1)) {
+					int l = itemstack1.stackSize + stack.stackSize;
+
+					if (l <= stack.getMaxStackSize()) {
+						stack.stackSize = 0;
+						itemstack1.stackSize = l;
+						slot.putStack(itemstack1);
+						wasMerged = true;
+					} else if (itemstack1.stackSize < stack.getMaxStackSize()) {
+						stack.stackSize -= stack.getMaxStackSize() - itemstack1.stackSize;
+						itemstack1.stackSize = stack.getMaxStackSize();
+						slot.putStack(itemstack1);
+						wasMerged = true;
+					}
+				}
+
+				if (backward) {
+					--curSlot;
+				} else {
+					++curSlot;
+				}
+			}
+		}
+
+		if (stack.stackSize > 0) {
+			if (backward) {
+				curSlot = slotEnd - 1;
+			} else {
+				curSlot = slotStart;
+			}
+
+			while (!backward && curSlot < slotEnd || backward && curSlot >= slotStart) {
+				slot = (Slot) this.inventorySlots.get(curSlot);
+				itemstack1 = slot.getStack();
+
+				if (itemstack1 == null) {
+					slot.putStack(stack.copy());
+					stack.stackSize = 0;
+					wasMerged = true;
+					break;
+				}
+
+				if (backward) {
+					--curSlot;
+				} else {
+					++curSlot;
+				}
+			}
+		}
+
+		return wasMerged;
 	}
 }

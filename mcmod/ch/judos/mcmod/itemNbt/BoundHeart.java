@@ -31,6 +31,10 @@ public class BoundHeart extends Item implements IItemHasGui {
 	 * transfer speed of the hopper functionality ( items per 10s )
 	 */
 	public static final String	NBT_TRANSFER_SPEED	= "ItemTransferSpeed";
+	/**
+	 * the number of available slots in this heart (capacity of inventory)
+	 */
+	public static final String	NBT_SLOTS			= "Slots";
 
 	/**
 	 * creating the item and setting up configs
@@ -47,14 +51,15 @@ public class BoundHeart extends Item implements IItemHasGui {
 		if (itemStack.stackTagCompound == null) {
 			itemStack.stackTagCompound = new NBTTagCompound();
 			itemStack.stackTagCompound.setString("owner", player.getCommandSenderName());
-			itemStack.stackTagCompound.setInteger("Slots", 5);
+			itemStack.stackTagCompound.setInteger(NBT_SLOTS, 0);
 			itemStack.stackTagCompound.setInteger("counter", 0);
 		}
 	}
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
-		GenericGuiHandler.openItemGUI(player, world, item);
+		if (item.stackTagCompound.getInteger(NBT_SLOTS) > 0)
+			GenericGuiHandler.openItemGUI(player, world, item);
 		return item;
 	}
 
@@ -71,12 +76,15 @@ public class BoundHeart extends Item implements IItemHasGui {
 				owner = EnumChatFormatting.RED + "Owner: " + owner + " (not online)";
 
 			list.add(owner);
-			if (itemStack.stackTagCompound.hasKey("Slots"))
+			if (itemStack.stackTagCompound.hasKey(NBT_SLOTS))
 				list.add("Slots installed: " + EnumChatFormatting.GREEN + itemStack.stackTagCompound
-					.getInteger("Slots"));
-			if (itemStack.stackTagCompound.hasKey(BoundHeart.NBT_TRANSFER_SPEED))
-				list.add("Item transfer speed: " + EnumChatFormatting.GREEN + itemStack.stackTagCompound
-					.getInteger(BoundHeart.NBT_TRANSFER_SPEED) + "i / 10s");
+					.getInteger(NBT_SLOTS));
+			if (itemStack.stackTagCompound.hasKey(BoundHeart.NBT_TRANSFER_SPEED)) {
+				int speed = itemStack.stackTagCompound.getInteger(BoundHeart.NBT_TRANSFER_SPEED);
+				list.add("Item transfer speed: " + EnumChatFormatting.GREEN + ((float) speed / 10) + "i /s");
+			}
+
+			// list.add("counter: " + itemStack.stackTagCompound.getInteger("counter"));
 
 			list.add(EnumChatFormatting.GRAY + "Add a hopper and redstone to");
 			list.add(EnumChatFormatting.GRAY + "create inventory.");
@@ -118,7 +126,8 @@ public class BoundHeart extends Item implements IItemHasGui {
 		if (speed == 0)
 			return;
 		if (counter >= 200 / speed) {
-			item.stackTagCompound.setInteger("counter", 0);
+			counter = 0;
+
 			NBTProvider pr = new NBTProvider() {
 				@Override
 				public NBTTagCompound getNBT() {
@@ -132,6 +141,7 @@ public class BoundHeart extends Item implements IItemHasGui {
 					heart.addItemStackToInventory(push);
 			}
 		}
+		item.stackTagCompound.setInteger("counter", counter);
 	}
 
 	@Override

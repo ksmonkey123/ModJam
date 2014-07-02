@@ -11,7 +11,7 @@ import ch.judos.mcmod.lib.References;
 import ch.modjam.generic.gui.GenericGuiTEContainer;
 
 /**
- * @author j
+ * @author judos
  */
 public class BoxGuiContainer extends GenericGuiTEContainer {
 

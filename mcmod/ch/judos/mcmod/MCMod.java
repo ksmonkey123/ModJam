@@ -135,7 +135,7 @@ public class MCMod {
 		proxy.registerRenderInformation();
 	}
 
-	private void addLivingFleshItem() {
+	private static void addLivingFleshItem() {
 		livingFlesh = new ItemLivingFlesh();
 		RegistryUtil.registerItem(livingFlesh);
 		for (int meta = 0; meta <= 4; meta++)
@@ -145,16 +145,16 @@ public class MCMod {
 			Items.gold_ingot, 'L', livingFlesh, 'H', new ItemStack(Items.skull, 1, 3));
 	}
 
-	private void addItemWithNBTData() {
-		this.itemBoundHeart = new BoundHeart();
-		GameRegistry.registerItem(this.itemBoundHeart, Names.BoundHeart);
+	private static void addItemWithNBTData() {
+		itemBoundHeart = new BoundHeart();
+		GameRegistry.registerItem(itemBoundHeart, Names.BoundHeart);
 
 		// custom recipie to change NBT data on the item
 		GameRegistry.addRecipe(new HeartCrafting());
 
 	}
 
-	private void setMetaData(ModMetadata m) {
+	private static void setMetaData(ModMetadata m) {
 		m.modId = References.MOD_ID;
 		m.name = EnumChatFormatting.GREEN + References.NAME;
 		m.description = "A scrambled assembly line of tutorial informational implementation content.";

@@ -12,12 +12,11 @@ import ch.judos.mcmod.lib.References;
 import ch.modjam.generic.gui.GenericGuiTEContainer;
 
 /**
- * @author j
+ * @author judos
  */
 public class CustomBoxGuiContainer extends GenericGuiTEContainer {
 
-	private CustomBoxTE			te;
-	protected InventoryPlayer	inventory;
+	private CustomBoxTE	customBoxTE;
 
 	/**
 	 * @param inventory
@@ -25,26 +24,25 @@ public class CustomBoxGuiContainer extends GenericGuiTEContainer {
 	 */
 	public CustomBoxGuiContainer(InventoryPlayer inventory, CustomBoxTE te) {
 		super(new CustomBoxContainer(inventory, te), te, inventory);
-		this.te = te;
-		this.inventory = inventory;
+		this.customBoxTE = te;
 	}
 
 	@Override
 	public void initGui() {
 		super.initGui();
 		this.buttonList.clear();
-		this.buttonList.add(new GuiButton(0, guiLeft + 140, guiTop + 30, 30, 20, "+"));
-		this.buttonList.add(new GuiButton(1, guiLeft + 140, guiTop + 50, 30, 20, "-"));
+		this.buttonList.add(new GuiButton(0, this.guiLeft + 140, this.guiTop + 30, 30, 20, "+"));
+		this.buttonList.add(new GuiButton(1, this.guiLeft + 140, this.guiTop + 50, 30, 20, "-"));
 	}
 
 	@Override
 	protected void actionPerformed(GuiButton button) {
 		switch (button.id) {
 			case 0:
-				this.te.tryIncreaseSize();
+				this.customBoxTE.tryIncreaseSize();
 				break;
 			case 1:
-				this.te.tryDecreaseSize();
+				this.customBoxTE.tryDecreaseSize();
 				break;
 			default:
 				break;
@@ -66,9 +64,9 @@ public class CustomBoxGuiContainer extends GenericGuiTEContainer {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		this.mc.renderEngine.bindTexture(new ResourceLocation(
 			References.MOD_ID + ":textures/gui/" + Names.CustomBox + ".png"));
-		this.drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
-		for (int i = 1; i < this.te.inventory.stack.length; i++)
-			this.drawTexturedModalRect(guiLeft + 25 + 18 * i, guiTop + 41, 176, 0, 18, 18);
+		this.drawTexturedModalRect(this.guiLeft, this.guiTop, 0, 0, this.xSize, this.ySize);
+		for (int i = 1; i < this.customBoxTE.inventory.stack.length; i++)
+			this.drawTexturedModalRect(this.guiLeft + 25 + 18 * i, this.guiTop + 41, 176, 0, 18, 18);
 	}
 
 }

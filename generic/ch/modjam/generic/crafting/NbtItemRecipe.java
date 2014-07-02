@@ -8,7 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 /**
- * @author j
+ * @author judos
  *
  */
 public class NbtItemRecipe {
@@ -37,9 +37,11 @@ public class NbtItemRecipe {
 	public boolean matches(InventoryCrafting inventory) {
 		if (getItemStackFor(inventory, this.nbtItem) == null)
 			return false;
-		for (NbtValueMatcher condition : this.conditions)
-			if (!condition.matchesNBT(getItemStackFor(inventory, this.nbtItem).stackTagCompound))
+		for (NbtValueMatcher condition : this.conditions) {
+			ItemStack result = getCraftingResult(inventory);
+			if (!condition.matchesNBT(result.stackTagCompound))
 				return false;
+		}
 		for (ItemStack i : this.ingredients)
 			if (!isItemPresent(inventory, i))
 				return false;

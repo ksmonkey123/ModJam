@@ -7,7 +7,7 @@ import net.minecraft.inventory.Slot;
 import ch.modjam.generic.gui.GenericContainer;
 
 /**
- * @author j
+ * @author judos
  */
 public class BoxContainer extends GenericContainer {
 
@@ -24,7 +24,7 @@ public class BoxContainer extends GenericContainer {
 	}
 
 	protected void init() {
-		addSlotToContainer(new Slot(tileEntityInventory, 0, 80, 42));
+		addSlotToContainer(new Slot(this.tileEntityInventory, 0, 80, 42));
 	}
 
 	@Override

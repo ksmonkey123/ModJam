@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 
 /**
- * @author j
+ * @author judos
  *
  */
 public class PlayerUtils {

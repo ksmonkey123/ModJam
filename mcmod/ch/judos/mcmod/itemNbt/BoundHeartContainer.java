@@ -47,7 +47,7 @@ public class BoundHeartContainer extends GenericContainer {
 	}
 
 	@Override
-	protected boolean isPlayerSlotAFakeSlot(int slot) {
+	public boolean isPlayerSlotAFakeSlot(int slot) {
 		return slot == this.heartSlot;
 	}
 
@@ -59,8 +59,10 @@ public class BoundHeartContainer extends GenericContainer {
 	private void init() {
 		unbindPlayerInventory();
 		bindPlayerInventory(this.playerInventory);
-		for (int i = 0; i < this.heart.getSizeInventory(); i++)
+		for (int i = 0; i < this.heart.getSizeInventory(); i++) {
+			// addSlotToContainer(new BackFeedingSlot(this.heart, i, 44 + 18 * i, 53));
 			addSlotToContainer(new Slot(this.heart, i, 44 + 18 * i, 53));
+		}
 	}
 
 	@Override
