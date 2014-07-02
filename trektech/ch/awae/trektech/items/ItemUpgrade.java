@@ -8,12 +8,20 @@ import net.minecraft.item.ItemStack;
 import ch.awae.trektech.EnumUpgrade;
 import ch.awae.trektech.TrekTech;
 
+/**
+ * This Item is used for TrekTech upgrades
+ * 
+ * @author Andreas Waelchli (andreas.waelchli@me.com)
+ */
 public class ItemUpgrade extends Item {
     
     private EnumUpgrade type;
     
     /**
      * Basic Constructor
+     * 
+     * @param type
+     *            the upgrade type for this upgrade
      */
     public ItemUpgrade(EnumUpgrade type) {
         this.type = type;
