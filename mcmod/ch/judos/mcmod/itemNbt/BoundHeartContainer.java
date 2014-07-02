@@ -24,7 +24,8 @@ public class BoundHeartContainer extends GenericContainer {
 	 * @param stack
 	 * @param slot
 	 */
-	public BoundHeartContainer(final InventoryPlayer inventory, ItemStack stack, final int slot) {
+	public BoundHeartContainer(final InventoryPlayer inventory, final ItemStack stack,
+			final int slot) {
 		super(inventory);
 		this.playerInventory = inventory;
 		this.heartSlot = slot;
@@ -32,6 +33,11 @@ public class BoundHeartContainer extends GenericContainer {
 		NBTProvider pr = new NBTProvider() {
 			@Override
 			public NBTTagCompound getNBT() {
+				if (inventory.mainInventory[slot] == null || !stack
+					.isItemEqual(inventory.mainInventory[slot])) {
+					inventory.player.closeScreen();
+					return null;
+				}
 				return inventory.mainInventory[slot].stackTagCompound;
 			}
 		};
@@ -54,7 +60,7 @@ public class BoundHeartContainer extends GenericContainer {
 		unbindPlayerInventory();
 		bindPlayerInventory(this.playerInventory);
 		for (int i = 0; i < this.heart.getSizeInventory(); i++)
-			addSlotToContainer(new Slot(heart, i, 44 + 18 * i, 53));
+			addSlotToContainer(new Slot(this.heart, i, 44 + 18 * i, 53));
 	}
 
 	@Override

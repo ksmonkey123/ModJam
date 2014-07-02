@@ -32,11 +32,15 @@ public class GenericNBTInventory extends AbstractInventory {
 
 	@Override
 	public int getSizeInventory() {
+		if (this.nbt() == null)
+			return 0;
 		return this.nbt().getInteger("Slots");
 	}
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
+		if (this.nbt() == null)
+			return null;
 		NBTTagCompound tag = (NBTTagCompound) this.nbt().getTag("Slot" + slot);
 		if (tag == null)
 			return null;
@@ -45,6 +49,8 @@ public class GenericNBTInventory extends AbstractInventory {
 
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
+		if (this.nbt() == null)
+			return;
 		NBTTagCompound tag = new NBTTagCompound();
 		if (stack != null)
 			stack.writeToNBT(tag);
@@ -63,7 +69,7 @@ public class GenericNBTInventory extends AbstractInventory {
 
 	@Override
 	public void markDirty() {
-	    // not implemented
+		// not implemented
 	}
 
 	@Override
