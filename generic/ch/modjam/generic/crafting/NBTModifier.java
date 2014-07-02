@@ -6,7 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
  * @author j
  *
  */
-public interface NBTModifier {
+public interface NbtModifier {
 
 	/**
 	 * @param c the data of the itemStack

@@ -1,4 +1,4 @@
-package ch.modjam.generic;
+package ch.modjam.generic.crafting;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,7 @@ public abstract class RecipiesCrafting implements IRecipe {
 	/**
 	 * 
 	 */
-	protected ArrayList<NBTItemRecipe>	listShapeless	= new ArrayList<NBTItemRecipe>();
+	protected ArrayList<NbtItemRecipe>	listShapeless	= new ArrayList<NbtItemRecipe>();
 
 	/**
 	 * 
@@ -28,13 +28,13 @@ public abstract class RecipiesCrafting implements IRecipe {
 			RecipeSorter.Category.SHAPELESS, "after:minecraft:shapeless");
 	}
 
-	protected void addRecipe(NBTItemRecipe tileEntityRecipe) {
+	protected void addRecipe(NbtItemRecipe tileEntityRecipe) {
 		this.listShapeless.add(tileEntityRecipe);
 	}
 
 	@Override
 	public boolean matches(InventoryCrafting inventory, World world) {
-		for (NBTItemRecipe r : listShapeless) {
+		for (NbtItemRecipe r : listShapeless) {
 			if (r.matches(inventory))
 				return true;
 		}
@@ -43,7 +43,7 @@ public abstract class RecipiesCrafting implements IRecipe {
 
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting inventory) {
-		for (NBTItemRecipe r : listShapeless) {
+		for (NbtItemRecipe r : listShapeless) {
 			if (r.matches(inventory))
 				return r.getCraftingResult(inventory);
 		}
