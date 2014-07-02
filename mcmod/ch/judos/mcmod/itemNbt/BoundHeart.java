@@ -2,22 +2,20 @@ package ch.judos.mcmod.itemNbt;
 
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
+import ch.modjam.generic.PlayerUtils;
 import ch.modjam.generic.gui.GenericGuiHandler;
 import ch.modjam.generic.inventory.GenericNBTInventory;
 import ch.modjam.generic.inventory.IItemHasGui;
@@ -28,6 +26,11 @@ import ch.modjam.generic.inventory.NBTProvider;
  * 
  */
 public class BoundHeart extends Item implements IItemHasGui {
+
+	/**
+	 * transfer speed of the hopper functionality ( items per 10s )
+	 */
+	public static final String	NBT_TRANSFER_SPEED	= "ItemTransferSpeed";
 
 	/**
 	 * creating the item and setting up configs
@@ -58,27 +61,25 @@ public class BoundHeart extends Item implements IItemHasGui {
 	/**
 	 * adds another information line on the item
 	 */
+	@Override
 	public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {
 		if (itemStack.stackTagCompound != null) {
 			String owner = itemStack.stackTagCompound.getString("owner");
-			list.add(EnumChatFormatting.GREEN + "Owner: " + owner);
-			if (itemStack.stackTagCompound.hasKey("upgrade"))
-				list.add(EnumChatFormatting.GREEN + "Upgrades installed: " + itemStack.stackTagCompound
-					.getInteger("upgrade"));
+			if (PlayerUtils.isPlayerOnlineInWorld(owner))
+				owner = EnumChatFormatting.GREEN + "Owner: " + owner;
+			else
+				owner = EnumChatFormatting.RED + "Owner: " + owner + " (not online)";
 
-			List entities = Minecraft.getMinecraft().theWorld.playerEntities;
-			boolean exists = false;
-			for (Object x : entities) {
-				if (x instanceof EntityPlayer) {
-					EntityPlayer xPlayer = (EntityPlayer) x;
-					if (xPlayer.getCommandSenderName().equals(owner)) {
-						exists = true;
-						break;
-					}
-				}
-			}
-			if (!exists)
-				list.add(EnumChatFormatting.RED + "Player not found or not online.");
+			list.add(owner);
+			if (itemStack.stackTagCompound.hasKey("Slots"))
+				list.add("Slots installed: " + EnumChatFormatting.GREEN + itemStack.stackTagCompound
+					.getInteger("Slots"));
+			if (itemStack.stackTagCompound.hasKey(BoundHeart.NBT_TRANSFER_SPEED))
+				list.add("Item transfer speed: " + EnumChatFormatting.GREEN + itemStack.stackTagCompound
+					.getInteger(BoundHeart.NBT_TRANSFER_SPEED) + "i / 10s");
+
+			list.add(EnumChatFormatting.GRAY + "Add a hopper and redstone to");
+			list.add(EnumChatFormatting.GRAY + "create inventory.");
 		}
 	}
 
@@ -88,48 +89,47 @@ public class BoundHeart extends Item implements IItemHasGui {
 		if (world.isRemote)
 			return;
 
-		if (entity instanceof EntityLivingBase) {
+		if (entity instanceof EntityPlayer) {
 			if (item.stackTagCompound == null) {
 				if (entity instanceof EntityPlayer) {
 					onCreated(item, world, (EntityPlayer) entity);
 				}
 			} else {
-				int counter = item.stackTagCompound.getInteger("counter") + 1;
-
-				String heartOriginName = item.stackTagCompound.getString("owner");
-				MinecraftServer s = MinecraftServer.getServer();
-				EntityPlayer heartOrigin = s.getConfigurationManager().getPlayerForUsername(
-					heartOriginName);
+				EntityPlayer current = (EntityPlayer) entity;
+				EntityPlayer heartOrigin = PlayerUtils
+					.getPlayerByNameOnServer(item.stackTagCompound.getString("owner"));
 				if (heartOrigin == null)
 					return;
 
-				EntityLivingBase current = (EntityLivingBase) entity;
-				// String currentName = current.getCommandSenderName();
-				// String t = Thread.currentThread().getName();
+				if (item.stackTagCompound.hasKey(NBT_TRANSFER_SPEED))
+					transferItems(item, heartOrigin);
 
 				if (current.getHealth() <= 10 && current.getHealth() < heartOrigin.getHealth() - 3) {
 					heartOrigin.heal(-0.5f);
 					current.heal(0.5f);
 				}
+			}
+		}
+	}
 
-				if (current instanceof EntityPlayer && counter >= 20) {
-					counter = 0;
-					NBTProvider pr = new NBTProvider() {
-						@Override
-						public NBTTagCompound getNBT() {
-							return item.stackTagCompound;
-						}
-					};
-					GenericNBTInventory heart = new GenericNBTInventory(pr, "boundheart_inventory");
-					ItemStack push = heart.getAndRemoveFirstItem();
-					if (push != null) {
-						if (!heartOrigin.inventory.addItemStackToInventory(push)) {
-							heart.addItemStackToInventory(push);
-						}
-					}
+	private static void transferItems(final ItemStack item, EntityPlayer origin) {
+		int counter = item.stackTagCompound.getInteger("counter") + 1;
+		int speed = item.stackTagCompound.getInteger(NBT_TRANSFER_SPEED);
+		if (speed == 0)
+			return;
+		if (counter >= 200 / speed) {
+			item.stackTagCompound.setInteger("counter", 0);
+			NBTProvider pr = new NBTProvider() {
+				@Override
+				public NBTTagCompound getNBT() {
+					return item.stackTagCompound;
 				}
-
-				item.stackTagCompound.setInteger("counter", counter);
+			};
+			GenericNBTInventory heart = new GenericNBTInventory(pr, "boundheart_inventory");
+			ItemStack push = heart.getAndRemoveFirstItem();
+			if (push != null) {
+				if (!origin.inventory.addItemStackToInventory(push))
+					heart.addItemStackToInventory(push);
 			}
 		}
 	}
