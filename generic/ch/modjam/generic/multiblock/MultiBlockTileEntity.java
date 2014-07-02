@@ -10,15 +10,18 @@ import ch.modjam.generic.tileEntity.GenericTileEntity;
 public abstract class MultiblockTileEntity extends GenericTileEntity {
     
     private EnumTileEntityState state;
-    private int                 structureID;
-    private boolean             isRegistered = false;
+    private long                instanceID;
+    private String              multiblockID;
+    private boolean             isRegistered;
     
     /**
      * instantiate a new MultiblockTileEntity
      */
     public MultiblockTileEntity() {
         this.state = EnumTileEntityState.IDLE;
-        this.structureID = -1;
+        this.instanceID = -1;
+        this.multiblockID = null;
+        this.isRegistered = false;
     }
     
     @Override
@@ -40,6 +43,8 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
     }
     
     private void register() {
+        MultiblockRegistry.instance().registerMultiblockInstance(
+                this.instanceID, this.multiblockID, this);
     }
     
     /**
@@ -69,32 +74,33 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
     @Override
     public final void writeNBT(NBTTagCompound tag) {
         tag.setInteger("EntityState", this.state.ordinal());
-        tag.setInteger("StructureID", this.structureID);
+        tag.setLong("InstanceID", this.instanceID);
         this.writeCustomNBT(tag);
     }
     
     @Override
     public final void readNBT(NBTTagCompound tag) {
         this.state = EnumTileEntityState.values()[tag.getInteger("EntityState")];
-        this.structureID = tag.getInteger("StructureID");
+        this.instanceID = tag.getLong("InstanceID");
         this.readCustomNBT(tag);
     }
     
     /**
      * activate this TileEntity as a slave of a given MultiBlock
      * 
-     * @param StructureID
+     * @param instanceID
      *            the MultiBlock's instance ID
      * @throws AlreadyOwnedByMultiblockException
      *             whenever a TileEntity that is already registered to a
-     *             structre is attempted to be registered to a new one
+     *             structure is attempted to be registered to a new one
      */
-    public final void activateAsSlave(int StructureID)
+    @SuppressWarnings("hiding")
+    public final void activateAsSlave(long instanceID)
             throws AlreadyOwnedByMultiblockException {
         if (this.state != EnumTileEntityState.IDLE)
             throw new AlreadyOwnedByMultiblockException();
         this.state = EnumTileEntityState.SLAVE;
-        this.structureID = StructureID;
+        this.instanceID = instanceID;
     }
     
     /**
@@ -103,7 +109,7 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
      */
     public final void resetToIdle() {
         this.state = EnumTileEntityState.IDLE;
-        this.structureID = -1;
+        this.instanceID = -1;
     }
     
     /**
@@ -124,15 +130,17 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
      * fail to register overlapping Entities, even if the <i>first</i> fails
      * too, which would make the <i>later</i> one valid.
      * 
-     * @param StructureID
+     * @param instanceID
+     * @param multiblockID
      * @return <tt>true</tt> if structure registration was successful,
      *         <tt>false</tt> otherwise.
      */
-    public boolean activateAsMaster(int StructureID) {
+    @SuppressWarnings("hiding")
+    public boolean activateAsMaster(long instanceID, String multiblockID) {
         if (this.state != EnumTileEntityState.IDLE)
             return false;
         MultiblockPoint points[] = MultiblockRegistry.instance()
-                .getMultiblockByInstanceID(StructureID).getMultiblockPoints();
+                .getMultiblockByInstanceID(instanceID).getMultiblockPoints();
         int counter = 0;
         try {
             for (MultiblockPoint pt : points) {
@@ -141,11 +149,13 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
                 int z = pt.getZ(this.zCoord);
                 TileEntity te = this.worldObj.getTileEntity(x, y, z);
                 if (te instanceof MultiblockTileEntity)
-                    ((MultiblockTileEntity) te).activateAsSlave(StructureID);
+                    ((MultiblockTileEntity) te).activateAsSlave(instanceID);
                 counter++;
             }
             this.state = EnumTileEntityState.MASTER;
-            this.structureID = StructureID;
+            this.instanceID = instanceID;
+            this.multiblockID = multiblockID;
+            this.isRegistered = true;
             return true;
         } catch (AlreadyOwnedByMultiblockException ex) {
             // reset previously set slaves

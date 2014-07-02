@@ -3,10 +3,12 @@ package ch.awae.trektech;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import ch.awae.trektech.blocks.BlockDuraniumWall;
 import ch.awae.trektech.blocks.BlockPlasmaEnergizerLow;
 import ch.awae.trektech.blocks.BlockPlasmaFurnace;
@@ -26,6 +28,8 @@ import ch.awae.trektech.items.ItemScrap;
 import ch.awae.trektech.items.ItemStarFleetSymbol;
 import ch.awae.trektech.items.ItemUpgrade;
 import ch.modjam.generic.RegistryUtil;
+import ch.modjam.generic.multiblock.MultiblockBlock;
+import ch.modjam.generic.multiblock.MultiblockTileEntity;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -98,6 +102,27 @@ public class TrekTech {
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         TrekTech.setMetadata(event.getModMetadata());
+        
+        RegistryUtil.registerBlock(new MultiblockBlock(Material.rock) {
+            
+            @Override
+            public void onDeactivation(World w, int x, int y, int z) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public void onActivation(World w, int x, int y, int z) {
+                // TODO Auto-generated method stub
+                
+            }
+            
+            @Override
+            public MultiblockTileEntity getCustomTileEntity(World var1, int var2) {
+                // TODO Auto-generated method stub
+                return null;
+            }
+        }.setBlockName("testBlock").setCreativeTab(TrekTech.tabCustom));
         // ITEMS
         RegistryUtil.registerItem(TrekTech.itemStarFleetSymbol);
         RegistryUtil.registerItem(TrekTech.itemDuraniumIngot);
@@ -194,6 +219,7 @@ public class TrekTech {
                 new ItemStack(TrekTech.pipes[pipeID][0]));
     }
     
+    @SuppressWarnings("unused")
     private static void addValveRecipe(int pipeID) {
         // TODO: add valve recipes
     }

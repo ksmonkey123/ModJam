@@ -1,5 +1,6 @@
 package ch.modjam.generic.multiblock;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
@@ -78,4 +79,14 @@ public abstract class MultiblockBlock extends BlockContainer {
      */
     public abstract void onDeactivation(World w, int x, int y, int z);
     
+    @Override
+    public void onPostBlockPlaced(World w, int x, int y, int z, int meta) {
+        MultiblockHelper.constructMultiblock(w, x, y, z);
+    }
+    
+    @Override
+    public void breakBlock(World w, int x, int y, int z, Block b, int par6) {
+        MultiblockHelper.deconstructMultiblock(w, x, y, z);
+        super.breakBlock(w, x, y, z, b, par6);
+    }
 }

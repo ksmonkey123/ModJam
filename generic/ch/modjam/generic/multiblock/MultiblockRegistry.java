@@ -94,6 +94,11 @@ public class MultiblockRegistry {
             this.maxActiveID = instanceID;
     }
     
+    @SuppressWarnings("javadoc")
+    public Multiblock[] getRegisteredMultiblocks() {
+        return this.multiblocks.values().toArray(new Multiblock[0]);
+    }
+    
     class ActiveSet {
         private String               multiblock;
         private MultiblockTileEntity tileEntity;

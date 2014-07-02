@@ -3,6 +3,7 @@ package ch.modjam.generic.multiblock;
 /**
  * @author Andreas Waelchli (andreas.waelchli@me.com)
  */
+@SuppressWarnings("javadoc")
 public class MultiblockPoint {
     private short x;
     private short y;

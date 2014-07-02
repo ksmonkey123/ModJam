@@ -82,7 +82,7 @@ public class Multiblock {
         return this.usedBlocks.contains(block);
     }
     
-    private MultiblockPoint[] getValidBlockPositions(Block block) {
+    public MultiblockPoint[] getValidBlockPositions(Block block) {
         if (!this.isBlockPresent(block))
             return new MultiblockPoint[0];
         ArrayList<MultiblockPoint> points = new ArrayList<MultiblockPoint>();
