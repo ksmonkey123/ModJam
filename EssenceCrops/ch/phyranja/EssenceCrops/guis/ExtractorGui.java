@@ -46,13 +46,13 @@ private TileEntityExtractor tileEntity;
         int x = (this.width - this.xSize) / 2;
         int y = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
-        int i1;
-//        if (this.tileEntity.isBurning()) {
-//            i1 = this.tileEntity.getBurnTimeRemainingScaled(12);
-//            this.drawTexturedModalRect(x + 81, y + 26 + 12 - i1, 176, 12 - i1,
+//        int i1;
+//        
+//        i1 =20;
+//        this.drawTexturedModalRect(x, y - i1, 176, i1,
 //                    14, i1 + 2);
-//        }
-//        i1 = this.tileEntity.getPlasmaLevelScaled(4, 44, false);
+//       
+//        i1 = 10;
 //        this.drawTexturedModalRect(x + 142, y + 21 + 37 - i1, 176,
 //                15 + 44 - i1, 8, i1);
     }
