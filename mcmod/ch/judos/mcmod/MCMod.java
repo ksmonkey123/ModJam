@@ -202,7 +202,7 @@ public class MCMod {
 		GameRegistry.registerItem(itemDirtShovel, Names.DirtShovel);
 		GameRegistry.addShapedRecipe(new ItemStack(itemDirtShovel, 2), "XX ", "XI ", "  I", 'X',
 			Blocks.planks, 'I', Items.stick);
-		GameRegistry.addShapedRecipe(new ItemStack(itemDirtShovel, 2), " XX", " IX", "  I", 'X',
+		GameRegistry.addShapedRecipe(new ItemStack(itemDirtShovel, 2), " XX", " IX", "I  ", 'X',
 			Blocks.planks, 'I', Items.stick);
 	}
 

@@ -15,7 +15,7 @@ import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.gui.GuiPlasmaEnergizerLow;
 import ch.awae.trektech.gui.container.ContainerPlasmaEnergizerLow;
 import ch.modjam.generic.blocks.BlockGenericDualStateDirected;
-import ch.modjam.generic.inventory.IHasGui;
+import ch.modjam.generic.gui.IHasGui;
 
 /**
  * Tile Entity for the plasma source

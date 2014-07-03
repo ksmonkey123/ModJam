@@ -22,7 +22,7 @@ import ch.awae.trektech.gui.container.ContainerPlasmaFurnace;
 import ch.awae.trektech.items.ItemUpgrade;
 import ch.modjam.generic.ListedStuff;
 import ch.modjam.generic.blocks.BlockGenericDualStateDirected;
-import ch.modjam.generic.inventory.IHasGui;
+import ch.modjam.generic.gui.IHasGui;
 
 /**
  * Plasma Furnace
