@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 /**
@@ -28,7 +27,7 @@ public class Multiblock {
      * @param tileEntity
      *            the MultiBlock's core TileEntity Class
      */
-    public Multiblock(Class<? extends TileEntity> tileEntity) {
+    public Multiblock() {
         this.usedBlocks = new ArrayList<Block>();
         this.blockMap = new HashMap<MultiblockPoint, Block[]>();
     }
@@ -51,8 +50,9 @@ public class Multiblock {
     public void addBlock(short x, short y, short z, Block... blocks) {
         this.blockMap.put(new MultiblockPoint(x, y, z), blocks);
         for (Block block : blocks)
-            if (!this.usedBlocks.contains(block))
+            if (!this.usedBlocks.contains(block)) {
                 this.usedBlocks.add(block);
+            }
     }
     
     /**
@@ -91,8 +91,9 @@ public class Multiblock {
         while (it.hasNext()) {
             Map.Entry<MultiblockPoint, Block[]> pairs = it.next();
             for (Block b : pairs.getValue())
-                if (b.equals(block))
+                if (b.equals(block)) {
                     points.add(pairs.getKey());
+                }
         }
         return points.toArray(new MultiblockPoint[0]);
     }

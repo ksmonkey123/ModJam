@@ -33,6 +33,7 @@ public class MultiblockRegistry {
      * @param id
      */
     public void registerMultiblock(Multiblock structure, String id) {
+        // FIXME: prevent duplicate structure ID's
         this.multiblocks.put(id, structure);
     }
     
@@ -78,6 +79,21 @@ public class MultiblockRegistry {
     }
     
     /**
+     * @param id
+     * @return the multiblock registered under the given ID
+     */
+    public Multiblock getMultiblockByStructureID(String id) {
+        return this.multiblocks.get(id);
+    }
+    
+    /**
+     * @return an array containing all registered multiblock structure IDs
+     */
+    public String[] getMultiblockStructureIDs() {
+        return this.multiblocks.keySet().toArray(new String[0]);
+    }
+    
+    /**
      * register a multiblock structure instance with a predefined key. This is
      * used for world reload to restore the registry. new instances should never
      * be registered with a preset ID!
@@ -90,8 +106,9 @@ public class MultiblockRegistry {
             MultiblockTileEntity te) {
         this.activeMultiblocks.put(Long.valueOf(instanceID), new ActiveSet(
                 structure, te));
-        if (this.maxActiveID < instanceID)
+        if (this.maxActiveID < instanceID) {
             this.maxActiveID = instanceID;
+        }
     }
     
     @SuppressWarnings("javadoc")

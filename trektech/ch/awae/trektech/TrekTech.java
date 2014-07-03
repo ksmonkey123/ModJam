@@ -28,7 +28,9 @@ import ch.awae.trektech.items.ItemScrap;
 import ch.awae.trektech.items.ItemStarFleetSymbol;
 import ch.awae.trektech.items.ItemUpgrade;
 import ch.modjam.generic.RegistryUtil;
+import ch.modjam.generic.multiblock.Multiblock;
 import ch.modjam.generic.multiblock.MultiblockBlock;
+import ch.modjam.generic.multiblock.MultiblockRegistry;
 import ch.modjam.generic.multiblock.MultiblockTileEntity;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -102,27 +104,26 @@ public class TrekTech {
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         TrekTech.setMetadata(event.getModMetadata());
-        
-        RegistryUtil.registerBlock(new MultiblockBlock(Material.rock) {
+        MultiblockBlock myMBB = (MultiblockBlock) new MultiblockBlock(
+                Material.rock) {
+            @Override
+            public void onDeactivation(World w, int x, int y, int z) {}
             
             @Override
-            public void onDeactivation(World w, int x, int y, int z) {
-                // TODO Auto-generated method stub
-                
-            }
-            
-            @Override
-            public void onActivation(World w, int x, int y, int z) {
-                // TODO Auto-generated method stub
-                
-            }
+            public void onActivation(World w, int x, int y, int z) {}
             
             @Override
             public MultiblockTileEntity getCustomTileEntity(World var1, int var2) {
-                // TODO Auto-generated method stub
                 return null;
             }
-        }.setBlockName("testBlock").setCreativeTab(TrekTech.tabCustom));
+        }.setBlockName("testBlock").setCreativeTab(TrekTech.tabCustom);
+        RegistryUtil.registerBlock(myMBB);
+        
+        Multiblock mb = new Multiblock();
+        mb.addBlock((short) 0, (short) 0, (short) 0, myMBB);
+        mb.addBlock((short) 0, (short) 1, (short) 0, myMBB);
+        MultiblockRegistry.instance().registerMultiblock(mb, "testStructure");
+        
         // ITEMS
         RegistryUtil.registerItem(TrekTech.itemStarFleetSymbol);
         RegistryUtil.registerItem(TrekTech.itemDuraniumIngot);

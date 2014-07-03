@@ -20,9 +20,11 @@ public class MultiblockHelper {
     public static void constructMultiblock(World w, int x, int y, int z) {
         if (w.isRemote)
             return;
-        Multiblock[] structures = MultiblockRegistry.instance()
-                .getRegisteredMultiblocks();
-        for (Multiblock structure : structures) {
+        String[] structureIDs = MultiblockRegistry.instance()
+                .getMultiblockStructureIDs();
+        for (String structureID : structureIDs) {
+            Multiblock structure = MultiblockRegistry.instance()
+                    .getMultiblockByStructureID(structureID);
             MultiblockPoint[] blockPoints = structure.getValidBlockPositions(w
                     .getBlock(x, y, z));
             for (MultiblockPoint blockPoint : blockPoints) {
@@ -30,19 +32,21 @@ public class MultiblockHelper {
                 int rootY = y - blockPoint.getY();
                 int rootZ = z - blockPoint.getZ();
                 if (structure.isValidStructure(w, rootX, rootY, rootZ)) {
-                    MultiblockHelper.registerMB(structure, w, rootX, rootY,
+                    MultiblockHelper.registerMB(structureID, w, rootX, rootY,
                             rootZ);
                     return;
                 }
             }
         }
-        // XXX: debugging
-        System.out.println(Thread.currentThread().getName() + ": construct");
     }
     
-    private static void registerMB(Multiblock structure, World w, int x, int y,
+    private static void registerMB(String structureID, World w, int x, int y,
             int z) {
+        System.out.println("register new MultiBlock:\n Type: " + structureID
+                + "\nPosX: " + x + "\nPosY: " + y + "\nPosY: " + z + "\nDim:  "
+                + w.provider.dimensionId);
         // TODO: implement
+        
     }
     
     /**
