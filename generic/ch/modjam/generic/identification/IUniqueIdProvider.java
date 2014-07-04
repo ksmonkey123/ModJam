@@ -9,8 +9,9 @@ public interface IUniqueIdProvider {
      * retrieve any free ID
      * 
      * @return any free ID
+     * @throws IllegalStateException
      */
-    public int getFreeID();
+    public int getFreeID() throws IllegalStateException;
     
     /**
      * set ID to be used
@@ -24,9 +25,8 @@ public interface IUniqueIdProvider {
      * set ID to be unused
      * 
      * @param id
-     * @throws IllegalStateException
      */
-    public void freeID(int id) throws IllegalStateException;
+    public void freeID(int id);
     
     /**
      * indicates whether or not an ID is free.
