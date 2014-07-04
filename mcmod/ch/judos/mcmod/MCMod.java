@@ -19,6 +19,7 @@ import net.minecraftforge.fluids.FluidStack;
 import ch.judos.mcmod.armor.ItemSlimyBoots;
 import ch.judos.mcmod.customrender.BlockCarvedDirt;
 import ch.judos.mcmod.customrender.TECarvedDirt;
+import ch.judos.mcmod.gas.Gas;
 import ch.judos.mcmod.gui.Box;
 import ch.judos.mcmod.gui.BoxItem;
 import ch.judos.mcmod.gui.BoxTE;
@@ -112,6 +113,8 @@ public class MCMod {
 	public static BoundHeart					itemBoundHeart;
 	public static ItemLivingFlesh				livingFlesh;
 
+	public static Gas							gas;
+
 	/**
 	 * @param e
 	 */
@@ -131,8 +134,14 @@ public class MCMod {
 		addBlockWithCustomGui();
 		addItemWithNBTData();
 		addLivingFleshItem();
+		addGas();
 
 		proxy.registerRenderInformation();
+	}
+
+	private void addGas() {
+		gas = new Gas();
+		RegistryUtil.registerBlock(gas);
 	}
 
 	private static void addLivingFleshItem() {
