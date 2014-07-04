@@ -72,10 +72,11 @@ public class MultiblockRegistry {
             MultiblockTileEntity te) {
         int id;
         synchronized (MultiblockRegistry.SYNC_TOKEN) {
-            id = ++this.maxActiveID;
-            this.registerMultiblockInstance(id, structure, te);
+            //id = ++this.maxActiveID;
+            //this.registerMultiblockInstance(id, structure, te);
         }
-        return id;
+        //return id;
+        return 0;
     }
     
     /**
