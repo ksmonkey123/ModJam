@@ -22,4 +22,5 @@ public class Names {
 	public static final String	CustomBox		= "custom_box";
 	public static final String	BoundHeart		= "bound_heart";
 	public static final String	LivingFlesh		= "living_flesh";
+	public static final String	Gas				= "gas";
 }
