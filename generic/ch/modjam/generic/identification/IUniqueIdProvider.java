@@ -25,4 +25,13 @@ public interface IUniqueIdProvider {
      * @param id
      */
     public void freeID(int id);
+    
+    /**
+     * indicates whether or not an ID is free.
+     * 
+     * @param id
+     * @return <tt>true</tt> if an ID is not used, <tt>false</tt> otherwise
+     */
+    public boolean isFreeID(int id);
+    
 }

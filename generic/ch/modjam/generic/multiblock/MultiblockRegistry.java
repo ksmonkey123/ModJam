@@ -68,15 +68,14 @@ public class MultiblockRegistry {
      *            the multiblock's master tile-entity
      * @return the generated instance id. use this ID for multiblock references
      */
-    public long registerMultiblockInstance(String structure,
+    public int registerMultiblockInstance(String structure,
             MultiblockTileEntity te) {
         int id;
         synchronized (MultiblockRegistry.SYNC_TOKEN) {
             //id = ++this.maxActiveID;
             //this.registerMultiblockInstance(id, structure, te);
         }
-        //return id;
-        return 0;
+        return id;
     }
     
     /**
