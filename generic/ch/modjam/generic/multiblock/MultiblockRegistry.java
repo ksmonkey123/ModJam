@@ -22,7 +22,7 @@ public class MultiblockRegistry {
     
     private HashMap<String, Multiblock> multiblocks       = new HashMap<String, Multiblock>();
     
-    private HashMap<Long, ActiveSet>    activeMultiblocks = new HashMap<Long, ActiveSet>();
+    private HashMap<Integer, ActiveSet>    activeMultiblocks = new HashMap<Integer, ActiveSet>();
     
     private long                        maxActiveID       = 0;
     
@@ -70,7 +70,7 @@ public class MultiblockRegistry {
      */
     public long registerMultiblockInstance(String structure,
             MultiblockTileEntity te) {
-        long id;
+        int id;
         synchronized (MultiblockRegistry.SYNC_TOKEN) {
             id = ++this.maxActiveID;
             this.registerMultiblockInstance(id, structure, te);
@@ -102,17 +102,16 @@ public class MultiblockRegistry {
      * @param structure
      * @param te
      */
-    public void registerMultiblockInstance(long instanceID, String structure,
+    public void registerMultiblockInstance(int instanceID, String structure,
             MultiblockTileEntity te) {
-        this.activeMultiblocks.put(Long.valueOf(instanceID), new ActiveSet(
+        this.activeMultiblocks.put(Integer.valueOf(instanceID), new ActiveSet(
                 structure, te));
-        if (this.maxActiveID < instanceID) {
+        if (this.maxActiveID < instanceID)
             this.maxActiveID = instanceID;
-        }
     }
     
-    public long getNextID() {
-        return this.maxActiveID + 1;
+    public int getNextID() {
+        return 0; //this.maxActiveID + 1;
     }
     
     @SuppressWarnings("javadoc")
@@ -139,5 +138,4 @@ public class MultiblockRegistry {
         }
         
     }
-    
 }

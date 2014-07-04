@@ -49,7 +49,6 @@ public class MultiblockHelper {
                 + w.provider.dimensionId);
         // TODO: implement
         synchronized (MultiblockHelper.SYNC_KEY) {
-            long id = MultiblockRegistry.instance().getNextID();
             
         }
     }
