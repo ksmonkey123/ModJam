@@ -41,10 +41,11 @@ public abstract class MultiblockBlock extends BlockContainer {
             boolean isActive) {
         w.setBlockMetadataWithNotify(x, y, z, isActive ? 1 : 0, 0);
         MultiblockBlock block = (MultiblockBlock) w.getBlock(x, y, z);
-        if (isActive)
+        if (isActive) {
             block.onActivation(w, x, y, z);
-        else
+        } else {
             block.onDeactivation(w, x, y, z);
+        }
     }
     
     /**

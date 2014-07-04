@@ -40,13 +40,18 @@ public class MultiblockHelper {
         }
     }
     
+    private static final Object SYNC_KEY = new Object();
+    
     private static void registerMB(String structureID, World w, int x, int y,
             int z) {
         System.out.println("register new MultiBlock:\n Type: " + structureID
                 + "\nPosX: " + x + "\nPosY: " + y + "\nPosY: " + z + "\nDim:  "
                 + w.provider.dimensionId);
         // TODO: implement
-        
+        synchronized (MultiblockHelper.SYNC_KEY) {
+            long id = MultiblockRegistry.instance().getNextID();
+            
+        }
     }
     
     /**

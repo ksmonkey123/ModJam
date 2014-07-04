@@ -111,6 +111,10 @@ public class MultiblockRegistry {
         }
     }
     
+    public long getNextID() {
+        return this.maxActiveID + 1;
+    }
+    
     @SuppressWarnings("javadoc")
     public Multiblock[] getRegisteredMultiblocks() {
         return this.multiblocks.values().toArray(new Multiblock[0]);
