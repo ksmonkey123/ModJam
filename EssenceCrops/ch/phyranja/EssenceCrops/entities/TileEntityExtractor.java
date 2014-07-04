@@ -8,7 +8,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import ch.modjam.generic.inventory.IHasGui;
+import ch.modjam.generic.gui.IHasGui;
 import ch.modjam.generic.tileEntity.GenericTileEntity;
 import ch.phyranja.EssenceCrops.guis.ContainerExtractor;
 import ch.phyranja.EssenceCrops.guis.ExtractorGui;
@@ -31,11 +31,14 @@ public class TileEntityExtractor extends GenericTileEntity implements IInventory
 		tag.setInteger("timer", this.extractTimer);
         
         for (int i=0; i<this.items.length; i++) {
-        	NBTTagList nbttaglist = new NBTTagList();
-            NBTTagCompound nbttagcompound = new NBTTagCompound();
-            this.items[i].writeToNBT(nbttagcompound);
-            nbttaglist.appendTag(nbttagcompound);
-            tag.setTag("slot"+i, nbttaglist);
+        	if(this.items[i]!=null){
+        		NBTTagList nbttaglist = new NBTTagList();
+                NBTTagCompound nbttagcompound = new NBTTagCompound();
+                this.items[i].writeToNBT(nbttagcompound);
+                nbttaglist.appendTag(nbttagcompound);
+                tag.setTag("slot"+i, nbttaglist);
+        	}
+        	
         }
 
 		
@@ -69,8 +72,9 @@ public class TileEntityExtractor extends GenericTileEntity implements IInventory
 
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
-		if (slot != 0 || amount <= 0)
-            return null;
+		if (slot < 0 || slot > 1 || amount <= 0){
+			return null;
+		}
         int realAmount = Math.min(this.items[slot].stackSize, amount);
         ItemStack itemStack = this.items[slot].copy();
         this.items[slot].stackSize -= realAmount;
@@ -85,6 +89,7 @@ public class TileEntityExtractor extends GenericTileEntity implements IInventory
 
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
+		System.out.println(slot);
 		if(slot==0){
 			items[slot]=stack;
 		}

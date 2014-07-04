@@ -18,6 +18,7 @@ import net.minecraftforge.fluids.Fluid;
 public class BlockEssenceFluid extends BlockFluidClassic {
 	
 	private IIcon icon;
+	private EssenceType type;
 
 	public BlockEssenceFluid(Fluid fluid, EssenceType type) {
 		super(fluid, Material.water);
@@ -26,13 +27,14 @@ public class BlockEssenceFluid extends BlockFluidClassic {
 		this.setBlockTextureName(References.MOD_ID + ":" + Names.essenceFluidBlocks[type.ordinal()]);
 		this.setHardness(0.5f);
 		this.setResistance(0.5f);
+		this.type=type;
 	}
 
 	
 	@Override
 	public void registerBlockIcons(IIconRegister ir)
 	{
-		icon = ir.registerIcon(References.MOD_ID +":"+ getUnlocalizedName());
+		icon = ir.registerIcon(References.MOD_ID +":"+ Names.essenceFluidBlocks[type.ordinal()]);
 		
 	}
 	

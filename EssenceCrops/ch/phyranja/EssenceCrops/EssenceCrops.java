@@ -3,7 +3,9 @@ package ch.phyranja.EssenceCrops;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.fluids.FluidRegistry;
+import ch.modjam.generic.RegistryUtil;
 import ch.phyranja.EssenceCrops.blocks.*;
+import ch.phyranja.EssenceCrops.entities.TileEntityExtractor;
 import ch.phyranja.EssenceCrops.essences.*;
 import ch.phyranja.EssenceCrops.items.*;
 import ch.phyranja.EssenceCrops.lib.*;
@@ -78,7 +80,7 @@ public class EssenceCrops {
 
 	private void addMachines() {
 		extractor=new EssenceExtractor();
-		GameRegistry.registerBlock(extractor, Names.Extractor);
+		RegistryUtil.registerBlock(extractor, TileEntityExtractor.class);
 	
 		
 	}

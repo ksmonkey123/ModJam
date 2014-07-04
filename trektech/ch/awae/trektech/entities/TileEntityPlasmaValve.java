@@ -12,7 +12,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.gui.GuiPlasmaValve;
 import ch.awae.trektech.gui.container.ContainerPlasmaValve;
-import ch.modjam.generic.inventory.IHasGui;
+import ch.modjam.generic.gui.IHasGui;
 
 /**
  * This valve limits flow-through pressure to 10bar
