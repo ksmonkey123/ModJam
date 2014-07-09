@@ -21,8 +21,8 @@ import ch.modjam.generic.blocks.CustomRenderer.Side;
 @SuppressWarnings("javadoc")
 public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 
-	private static CustomRenderer renderer;
-	public static double CARVE_DEPTH = 1. / 3;
+	private static CustomRenderer	renderer;
+	public static double			CARVE_DEPTH	= 1. / 3;
 
 	public TECarvedDirtRenderer() {
 		renderer = new CustomRenderer(TECarvedDirt.getTexture());
@@ -79,8 +79,9 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 		renderer.begin();
 		renderTop(con2, arr);
 		renderer.end();
-		renderSidesAndInsides(con2);
 
+		// separately starts and ends the renderer
+		renderSidesAndInsides(con2);
 	}
 
 	private static void renderSidesAndInsides(HashSet<ForgeDirection> con) {
@@ -111,8 +112,8 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 	/**
 	 * texture tileNr for arbitrary number of connections
 	 */
-	static final HashMap<HashSet<ForgeDirection>, Integer> connectionsToTextureTile = new HashMap<HashSet<ForgeDirection>, Integer>();
-	static final HashMap<HashSet<ForgeDirection>, Integer> connectionToRotation = new HashMap<HashSet<ForgeDirection>, Integer>();
+	static final HashMap<HashSet<ForgeDirection>, Integer>	connectionsToTextureTile	= new HashMap<HashSet<ForgeDirection>, Integer>();
+	static final HashMap<HashSet<ForgeDirection>, Integer>	connectionToRotation		= new HashMap<HashSet<ForgeDirection>, Integer>();
 
 	static {
 		initialize();

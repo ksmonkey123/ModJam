@@ -11,8 +11,7 @@ import ch.judos.mcmod.lib.References;
 import ch.modjam.generic.tileEntity.GenericTileEntity;
 
 @SuppressWarnings("javadoc")
-public class TECarvedDirt extends GenericTileEntity implements IConnecting,
-		ICanalConnection {
+public class TECarvedDirt extends GenericTileEntity implements IConnecting, ICanalConnection {
 
 	public TECarvedDirt() {
 
@@ -34,8 +33,7 @@ public class TECarvedDirt extends GenericTileEntity implements IConnecting,
 	}
 
 	public static String getTexture() {
-		return References.MOD_ID + ":textures/blocks/" + Names.CarvedDirt
-				+ ".png";
+		return References.MOD_ID + ":textures/blocks/" + Names.CarvedDirt + ".png";
 	}
 
 	@Override

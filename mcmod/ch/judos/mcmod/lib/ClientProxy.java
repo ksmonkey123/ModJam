@@ -1,22 +1,28 @@
 package ch.judos.mcmod.lib;
 
+import net.minecraft.item.Item;
+import net.minecraftforge.client.MinecraftForgeClient;
 import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.customrender.TECarvedDirtItemRenderer;
 import ch.judos.mcmod.customrender.TECarvedDirtRenderer;
-import net.minecraft.item.Item;
-import net.minecraftforge.client.MinecraftForgeClient;
+import ch.judos.mcmod.gas.GasCO2TileEntity;
+import ch.judos.mcmod.gas.GasRenderer;
 import cpw.mods.fml.client.registry.ClientRegistry;
 
 @SuppressWarnings("javadoc")
 public class ClientProxy extends CommonProxy {
-	
-	public static TECarvedDirtRenderer renderer = new TECarvedDirtRenderer();
-	
+
+	public static TECarvedDirtRenderer	teCarvedDirtRenderer	= new TECarvedDirtRenderer();
+	public static GasRenderer			gasRenderer				= new GasRenderer();
+
 	@Override
 	public void registerRenderInformation() {
-//		TECarvedDirtRenderer renderer = new TECarvedDirtRenderer();
-		ClientRegistry.bindTileEntitySpecialRenderer(MCMod.teCarvedDirt, renderer);
-		
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(MCMod.blockCarvedDirt), new TECarvedDirtItemRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(MCMod.teCarvedDirt, teCarvedDirtRenderer);
+
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(MCMod.blockCarvedDirt),
+			new TECarvedDirtItemRenderer());
+
+		ClientRegistry.bindTileEntitySpecialRenderer(GasCO2TileEntity.class, gasRenderer);
+
 	}
 }

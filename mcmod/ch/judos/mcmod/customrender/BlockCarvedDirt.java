@@ -18,7 +18,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SuppressWarnings("javadoc")
 public class BlockCarvedDirt extends BlockContainer {
 
-	public static final int RENDER_TYPE_CUSTOM = -1;
+	public static final int	RENDER_TYPE_CUSTOM	= -1;
 
 	public BlockCarvedDirt() {
 		super(Material.grass);
@@ -27,7 +27,7 @@ public class BlockCarvedDirt extends BlockContainer {
 		this.setCreativeTab(MCMod.modTab);
 		this.setHardness(0.3f);
 		this.setHarvestLevel("shovel", 0);
-		setLightOpacity(0);
+		this.setLightOpacity(0);
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class BlockCarvedDirt extends BlockContainer {
 
 	@Override
 	public int getRenderType() {
-		return 22;// RENDER_TYPE_CUSTOM;
+		return RENDER_TYPE_CUSTOM;
 	}
 
 	@Override
