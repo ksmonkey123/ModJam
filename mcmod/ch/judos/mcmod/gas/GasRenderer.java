@@ -33,11 +33,9 @@ public class GasRenderer extends TileEntitySpecialRenderer {
 		int frameCount = 4;
 		float vStep = 1f / frameCount;
 
-		int hash = new Integer(te.xCoord).hashCode();
-		int time = (int) (te.getWorldObj().getTotalWorldTime() / 20);
-		float vStart = (float) (Math.abs(time + hash) % frameCount) / frameCount;
-		System.out
-			.println(time + ", " + hash + ", " + (Math.abs(hash + time) % frameCount) + " , " + vStart);
+		int hash = te.xCoord ^ te.yCoord ^ te.zCoord;
+		int time = (int) (te.getWorldObj().getTotalWorldTime());
+		float vStart = (float) (Math.abs(time / 20 + hash) % frameCount) / frameCount;
 
 		GasCO2TileEntity teA = (GasCO2TileEntity) te;
 
@@ -47,7 +45,7 @@ public class GasRenderer extends TileEntitySpecialRenderer {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 		GL11.glDepthMask(false);
 
-		this.r.begin();
+		this.r.begin(false);
 
 		// this.r.quad(0, 0, 0, 1, 1, Side.TOP);
 		this.r.drawSpriteTile(teA.xCoord, teA.yCoord, teA.zCoord, 1f, 1f, 0, vStart, 1,
@@ -61,10 +59,11 @@ public class GasRenderer extends TileEntitySpecialRenderer {
 		for (int[] off : offset) {
 			if (teA.connectsTo(off[0], off[1], off[2]))
 				this.r.drawSprite(teA.xCoord, teA.yCoord, teA.zCoord, 1f, 1f, off[0] / 2f,
-					off[1] / 2f, off[2] / 2f, 0, vStart, 1, vStart + vStep);
+					off[1] / 2f + (float) Math.sin((float) time / 20) / 20, off[2] / 2f, 0, vStart,
+					1, vStart + vStep);
 		}
 
-		this.r.end();
+		this.r.end(false);
 		GL11.glDepthMask(true);
 		GL11.glTranslated(-x - 0.5, -y - 0.5, -z - 0.5);
 		GL11.glDisable(GL11.GL_BLEND); // Turn off blending

@@ -373,19 +373,44 @@ public class CustomRenderer {
 		Vec3 diff = pos.subtract(mc.theWorld.getWorldVec3Pool().getVecFromPool(x + 0.5, y + 0.5,
 			z + 0.5));
 
-		double axz = Math.atan2(diff.xCoord, diff.zCoord);
-		// System.out.println(axz / Math.PI * 180);
-		double xmin = width / 2. * Math.cos(axz);
-		double xmax = -xmin;
-		double zmax = width / 2. * Math.sin(axz);
-		double zmin = -zmax;
-		Tessellator t = Tessellator.instance;
+		double axz = Math.atan2(diff.xCoord, diff.zCoord) / Math.PI * 180;
+		double ay = Math.atan2(diff.yCoord, Math.hypot(diff.xCoord, diff.zCoord)) / Math.PI * 180;
 
-		t.addTranslation(xOffset, yOffset, zOffset);
-		t.addVertexWithUV(xmin, height / 2, zmin, u1, v1);
-		t.addVertexWithUV(xmin, -height / 2, zmin, u1, v2);
-		t.addVertexWithUV(xmax, -height / 2, zmax, u2, v2);
-		t.addVertexWithUV(xmax, height / 2, zmax, u2, v1);
-		t.addTranslation(-xOffset, -yOffset, -zOffset);
+		GL11.glPushMatrix();
+		GL11.glTranslated(xOffset, yOffset, zOffset);
+
+		GL11.glRotated(axz + 180, 0, 1, 0);
+
+		// DoubleBuffer m = DoubleBuffer.; //TODO: implement
+
+		GL11.glPushMatrix();
+		// GL11.glLoadMatrix(m); ///TODO: what does this do ?
+
+		GL11.glRotated(ay, 1, 0, 0);
+
+		Tessellator t = Tessellator.instance;
+		t.startDrawingQuads();
+		t.addVertexWithUV(-width / 2, height / 2, 0, u1, v1);
+		t.addVertexWithUV(-width / 2, -height / 2, 0, u1, v2);
+		t.addVertexWithUV(width / 2, -height / 2, 0, u2, v2);
+		t.addVertexWithUV(width / 2, height / 2, 0, u2, v1);
+
+		t.draw();
+
+		GL11.glPopMatrix();
+
+		// System.out.println(axz / Math.PI * 180);
+		// double xmin = width / 2. * Math.cos(axz);
+		// double xmax = -xmin;
+		// double zmax = width / 2. * Math.sin(axz);
+		// double zmin = -zmax;
+		// Tessellator t = Tessellator.instance;
+		//
+		// t.addTranslation(xOffset, yOffset, zOffset);
+		// t.addVertexWithUV(xmin, height / 2, zmin, u1, v1);
+		// t.addVertexWithUV(xmin, -height / 2, zmin, u1, v2);
+		// t.addVertexWithUV(xmax, -height / 2, zmax, u2, v2);
+		// t.addVertexWithUV(xmax, height / 2, zmax, u2, v1);
+		// t.addTranslation(-xOffset, -yOffset, -zOffset);
 	}
 }
