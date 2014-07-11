@@ -36,9 +36,22 @@ public class DuplicateFilter implements IUniqueIdProvider {
 	}
 
 	@Override
-	public int getFreeID() {
-		// TODO:
-		return 0;
+	public int getFreeID() throws IllegalStateException {
+		for (int i = this.lowestFreeSlot; i < MAX_SLOTS; i++) {
+			try {
+				if (this.groups[i] == null) {
+					this.lowestFreeSlot = i;
+					return i * this.divisor;
+				}
+				int slot = this.groups[i].getFreeID(); // throws exception
+				this.lowestFreeSlot = i;
+				return i * this.divisor + slot;
+			} catch (IllegalStateException e) {
+				// continue in for loop
+				continue;
+			}
+		}
+		throw new IllegalStateException("No free slot found");
 	}
 
 	@Override
@@ -47,11 +60,25 @@ public class DuplicateFilter implements IUniqueIdProvider {
 	}
 
 	@Override
-	public void useID(int id) {
-		// since integers start at -2^31
-		// gIndex += 128;
+	public void useID(int id) throws IllegalStateException {
 		int gIndex = id / divisor;
+		// since integers start at -2^31
+		if (this.lvl == 3)
+			gIndex += 128;
+
 		int lowerIndex = id % divisor;
+
+		if (this.groups[gIndex] == null) {
+			if (this.lvl > 1)
+				this.groups[gIndex] = new DuplicateFilter(this.lvl - 1);
+			else
+				this.groups[gIndex] = new DuplicateByteFilter();
+		}
+
+		this.groups[gIndex].useID(lowerIndex); // might throw exception in case id is already in use
+
+		if (!this.groups[gIndex].hasFreeID() && this.lowestFreeSlot == gIndex)
+			this.lowestFreeSlot++;
 	}
 
 	@Override
