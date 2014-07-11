@@ -76,18 +76,23 @@ public class BoundHeart extends Item implements IItemHasGui {
 				owner = EnumChatFormatting.RED + "Owner: " + owner + " (not online)";
 
 			list.add(owner);
-			if (itemStack.stackTagCompound.hasKey(NBT_SLOTS))
+			if (itemStack.stackTagCompound.getInteger(NBT_SLOTS) > 0)
 				list.add("Slots installed: " + EnumChatFormatting.GREEN + itemStack.stackTagCompound
 					.getInteger(NBT_SLOTS));
+			else {
+				list.add(EnumChatFormatting.GRAY + "Add 4xWool, a chest and a gold");
+				list.add(EnumChatFormatting.GRAY + "ingot to create inventory.");
+			}
+
 			if (itemStack.stackTagCompound.hasKey(BoundHeart.NBT_TRANSFER_SPEED)) {
 				int speed = itemStack.stackTagCompound.getInteger(BoundHeart.NBT_TRANSFER_SPEED);
 				list.add("Item transfer speed: " + EnumChatFormatting.GREEN + ((float) speed / 10) + "i /s");
+			} else if (itemStack.stackTagCompound.getInteger(NBT_SLOTS) == 5) {
+				list.add(EnumChatFormatting.GRAY + "Add some redstone and a hopper.");
 			}
 
 			// list.add("counter: " + itemStack.stackTagCompound.getInteger("counter"));
 
-			list.add(EnumChatFormatting.GRAY + "Add a hopper and redstone to");
-			list.add(EnumChatFormatting.GRAY + "create inventory.");
 		}
 	}
 

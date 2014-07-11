@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.EnumHelper;
@@ -17,10 +18,12 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import ch.judos.mcmod.armor.ItemSlimyBoots;
+import ch.judos.mcmod.basemod.TileEntityHooks;
 import ch.judos.mcmod.customrender.BlockCarvedDirt;
 import ch.judos.mcmod.customrender.TECarvedDirt;
 import ch.judos.mcmod.gas.GasCO2;
 import ch.judos.mcmod.gas.GasCO2TileEntity;
+import ch.judos.mcmod.gas.GasCreator;
 import ch.judos.mcmod.gui.Box;
 import ch.judos.mcmod.gui.BoxItem;
 import ch.judos.mcmod.gui.BoxTE;
@@ -136,8 +139,13 @@ public class MCMod {
 		addItemWithNBTData();
 		addLivingFleshItem();
 		addGas();
+		addFurnaceHook();
 
 		proxy.registerRenderInformation();
+	}
+
+	private void addFurnaceHook() {
+		TileEntityHooks.registerUpdateListenerForTE(TileEntityFurnace.class, new GasCreator());
 	}
 
 	private static void addGas() {
