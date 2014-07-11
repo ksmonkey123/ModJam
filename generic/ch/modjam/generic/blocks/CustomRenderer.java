@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
@@ -307,25 +306,15 @@ public class CustomRenderer {
 	 * binds the texture, adds matrix on stack and sets the state of the tesselator
 	 */
 	public void begin() {
-		begin(true);
-	}
-
-	public void begin(boolean startTesselator) {
 		TextureManager render = Minecraft.getMinecraft().renderEngine;
 		render.bindTexture(new ResourceLocation(this.tex));
 		GL11.glPushMatrix();
 		rotateQuadBasedOnBlockRotation();
-		if (startTesselator)
-			Tessellator.instance.startDrawingQuads();
+		Tessellator.instance.startDrawingQuads();
 	}
 
 	public void end() {
-		end(true);
-	}
-
-	public void end(boolean endTesselator) {
-		if (endTesselator)
-			Tessellator.instance.draw();
+		Tessellator.instance.draw();
 		GL11.glPopMatrix();
 	}
 
@@ -333,84 +322,4 @@ public class CustomRenderer {
 		this.direction = dir;
 	}
 
-	/**
-	 * @param x block coordinates
-	 * @param y block coordinates
-	 * @param z block coordinates
-	 * @param width
-	 * @param height
-	 */
-	public void drawSpriteWH(double x, double y, double z, double width, double height) {
-		drawSprite(x, y, z, width, height, 0, 0, 0, 0, 0, 1, 1);
-	}
-
-	/**
-	 * @param x block coordinates
-	 * @param y block coordinates
-	 * @param z block coordinates
-	 * @param width
-	 * @param height
-	 */
-	public void drawSpriteTile(double x, double y, double z, double width, double height, float u1,
-			float v1, float u2, float v2) {
-		drawSprite(x, y, z, width, height, 0, 0, 0, u1, v1, u2, v2);
-	}
-
-	/**
-	 * @param x block coordinates
-	 * @param y block coordinates
-	 * @param z block coordinates
-	 * @param width
-	 * @param height
-	 * @param xOffset
-	 * @param yOffset
-	 * @param zOffset
-	 */
-	public void drawSprite(double x, double y, double z, double width, double height,
-			float xOffset, float yOffset, float zOffset, float u1, float v1, float u2, float v2) {
-		Minecraft mc = Minecraft.getMinecraft();
-		Vec3 pos = mc.thePlayer.getPosition(1);
-		Vec3 diff = pos.subtract(mc.theWorld.getWorldVec3Pool().getVecFromPool(x + 0.5, y + 0.5,
-			z + 0.5));
-
-		double axz = Math.atan2(diff.xCoord, diff.zCoord) / Math.PI * 180;
-		double ay = Math.atan2(diff.yCoord, Math.hypot(diff.xCoord, diff.zCoord)) / Math.PI * 180;
-
-		GL11.glPushMatrix();
-		GL11.glTranslated(xOffset, yOffset, zOffset);
-
-		GL11.glRotated(axz + 180, 0, 1, 0);
-
-		// DoubleBuffer m = DoubleBuffer.; //TODO: implement
-
-		GL11.glPushMatrix();
-		// GL11.glLoadMatrix(m); ///TODO: what does this do ?
-
-		GL11.glRotated(ay, 1, 0, 0);
-
-		Tessellator t = Tessellator.instance;
-		t.startDrawingQuads();
-		t.addVertexWithUV(-width / 2, height / 2, 0, u1, v1);
-		t.addVertexWithUV(-width / 2, -height / 2, 0, u1, v2);
-		t.addVertexWithUV(width / 2, -height / 2, 0, u2, v2);
-		t.addVertexWithUV(width / 2, height / 2, 0, u2, v1);
-
-		t.draw();
-
-		GL11.glPopMatrix();
-
-		// System.out.println(axz / Math.PI * 180);
-		// double xmin = width / 2. * Math.cos(axz);
-		// double xmax = -xmin;
-		// double zmax = width / 2. * Math.sin(axz);
-		// double zmin = -zmax;
-		// Tessellator t = Tessellator.instance;
-		//
-		// t.addTranslation(xOffset, yOffset, zOffset);
-		// t.addVertexWithUV(xmin, height / 2, zmin, u1, v1);
-		// t.addVertexWithUV(xmin, -height / 2, zmin, u1, v2);
-		// t.addVertexWithUV(xmax, -height / 2, zmax, u2, v2);
-		// t.addVertexWithUV(xmax, height / 2, zmax, u2, v1);
-		// t.addTranslation(-xOffset, -yOffset, -zOffset);
-	}
 }
