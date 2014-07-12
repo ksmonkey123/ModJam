@@ -61,12 +61,12 @@ public class DuplicateFilter implements IUniqueIdProvider {
 
 	@Override
 	public void useID(int id) throws IllegalStateException {
-		int gIndex = id / divisor;
+		int gIndex = id / this.divisor;
 		// since integers start at -2^31
 		if (this.lvl == 3)
 			gIndex += 128;
 
-		int lowerIndex = id % divisor;
+		int lowerIndex = id % this.divisor;
 
 		if (this.groups[gIndex] == null) {
 			if (this.lvl > 1)
@@ -83,7 +83,7 @@ public class DuplicateFilter implements IUniqueIdProvider {
 
 	@Override
 	public void freeID(int id) {
-
+	    // TODO: implement
 	}
 
 	@Override
