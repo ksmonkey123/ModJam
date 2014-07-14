@@ -10,7 +10,7 @@ import ch.modjam.generic.tileEntity.GenericTileEntity;
 public abstract class MultiblockTileEntity extends GenericTileEntity {
     
     private EnumTileEntityState state;
-    private long                instanceID;
+    private int                 instanceID;
     private String              multiblockID;
     private boolean             isRegistered;
     
@@ -77,14 +77,14 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
     @Override
     public final void writeNBT(NBTTagCompound tag) {
         tag.setInteger("EntityState", this.state.ordinal());
-        tag.setLong("InstanceID", this.instanceID);
+        tag.setInteger("InstanceID", this.instanceID);
         this.writeCustomNBT(tag);
     }
     
     @Override
     public final void readNBT(NBTTagCompound tag) {
         this.state = EnumTileEntityState.values()[tag.getInteger("EntityState")];
-        this.instanceID = tag.getLong("InstanceID");
+        this.instanceID = tag.getInteger("InstanceID");
         this.readCustomNBT(tag);
     }
     
@@ -98,7 +98,7 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
      *             structure is attempted to be registered to a new one
      */
     @SuppressWarnings("hiding")
-    public final void activateAsSlave(long instanceID)
+    public final void activateAsSlave(int instanceID)
             throws AlreadyOwnedByMultiblockException {
         if (this.state != EnumTileEntityState.IDLE)
             throw new AlreadyOwnedByMultiblockException();
@@ -139,11 +139,11 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
      *         <tt>false</tt> otherwise.
      */
     @SuppressWarnings("hiding")
-    public boolean activateAsMaster(long instanceID, String multiblockID) {
+    public boolean activateAsMaster(int instanceID, String multiblockID) {
         if (this.state != EnumTileEntityState.IDLE)
             return false;
         MultiblockPoint points[] = MultiblockRegistry.instance()
-                .getMultiblockByInstanceID(instanceID).getMultiblockPoints();
+                .getMultiblockByStructureID(multiblockID).getMultiblockPoints();
         int counter = 0;
         try {
             for (MultiblockPoint pt : points) {
