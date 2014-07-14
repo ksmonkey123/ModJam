@@ -1,7 +1,7 @@
 package ch.modjam.generic.identification;
 
 /**
- * efficient IUniqueIdProvider, needs to be fully implemented first
+ * efficient IUniqueIdProvider
  * 
  * @since 06.07.2013
  * @author judos
@@ -17,7 +17,7 @@ public class DuplicateFilter implements IUniqueIdProvider {
 	protected int					groupsEmpty;
 	protected IUniqueIdProvider[]	groups;
 	/**
-	 * cache variable in order to find free slots very fast
+	 * cache variable in order to find free slots faster
 	 */
 	protected int					lowestFreeSlot;
 
