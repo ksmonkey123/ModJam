@@ -8,14 +8,18 @@ package ch.modjam.generic.identification;
  */
 public class DuplicateFilter implements IUniqueIdProvider {
 
-	private static final int	MAX_SLOTS	= 256;
+	protected static final int		MAX_SLOTS	= 256;
 
-	private int					lvl;
-	private int					divisor;
+	protected final int				lvl;
+	protected final int				divisor;
 
-	private int					used;
-	private IUniqueIdProvider[]	groups;
-	private int					lowestFreeSlot;
+	protected int					groupsFull;
+	protected int					groupsEmpty;
+	protected IUniqueIdProvider[]	groups;
+	/**
+	 * cache variable in order to find free slots very fast
+	 */
+	protected int					lowestFreeSlot;
 
 	/**
 	 * 
@@ -27,11 +31,12 @@ public class DuplicateFilter implements IUniqueIdProvider {
 	protected DuplicateFilter(int lvl) {
 		if (lvl == 0)
 			throw new IllegalStateException(
-				"Can't instantiate DuplicateFilter as lvl0, use lvl3 for integers");
+				"Can't instantiate DuplicateFilter as lvl0, use DuplicateByteFilter if you only want to use 1 byte");
 		this.lvl = lvl;
-		this.groups = new IUniqueIdProvider[256];
-		this.divisor = (int) Math.pow(2, 8 * lvl);
-		this.used = 0;
+		this.groups = new IUniqueIdProvider[MAX_SLOTS];
+		this.divisor = (int) Math.pow(MAX_SLOTS, lvl);
+		this.groupsFull = 0;
+		this.groupsEmpty = MAX_SLOTS;
 		this.lowestFreeSlot = 0;
 	}
 
@@ -45,7 +50,7 @@ public class DuplicateFilter implements IUniqueIdProvider {
 				}
 				int slot = this.groups[i].getFreeID(); // throws exception
 				this.lowestFreeSlot = i;
-				return i * this.divisor + slot;
+				return gAndIndexToId(i, slot);
 			} catch (IllegalStateException e) {
 				// continue in for loop
 				continue;
@@ -56,19 +61,16 @@ public class DuplicateFilter implements IUniqueIdProvider {
 
 	@Override
 	public boolean hasFreeID() {
-		return this.used < MAX_SLOTS;
+		return this.groupsFull < MAX_SLOTS;
 	}
 
 	@Override
 	public void useID(int id) throws IllegalStateException {
-		int gIndex = id / this.divisor;
-		// since integers start at -2^31
-		if (this.lvl == 3)
-			gIndex += 128;
-
+		int gIndex = idToGIndex(id);
 		int lowerIndex = id % this.divisor;
 
 		if (this.groups[gIndex] == null) {
+			this.groupsEmpty--;
 			if (this.lvl > 1)
 				this.groups[gIndex] = new DuplicateFilter(this.lvl - 1);
 			else
@@ -77,19 +79,58 @@ public class DuplicateFilter implements IUniqueIdProvider {
 
 		this.groups[gIndex].useID(lowerIndex); // might throw exception in case id is already in use
 
-		if (!this.groups[gIndex].hasFreeID() && this.lowestFreeSlot == gIndex)
-			this.lowestFreeSlot++;
+		if (!this.groups[gIndex].hasFreeID()) {
+			this.groupsFull++;
+			if (this.lowestFreeSlot == gIndex)
+				this.lowestFreeSlot++;
+		}
+	}
+
+	protected int idToGIndex(int id) {
+		int gIndex = id / this.divisor;
+		// since integers start at -2^31
+		if (this.lvl == 3)
+			gIndex += 128;
+		return gIndex;
+	}
+
+	protected int gAndIndexToId(int gIndex, int lowerId) {
+		if (this.lvl == 3)
+			gIndex -= 128;
+		return gIndex * this.divisor + lowerId;
 	}
 
 	@Override
 	public void freeID(int id) {
-	    // TODO: implement
+		int gIndex = idToGIndex(id);
+		if (this.groups[gIndex] == null)
+			return;
+		int lowIndex = id % this.divisor;
+		if (!this.groups[gIndex].hasFreeID())
+			this.groupsFull--;
+		this.groups[gIndex].freeID(lowIndex);
+
+		if (!this.groups[gIndex].hasOccuredId()) {
+			this.groups[gIndex] = null;
+			this.groupsEmpty++;
+		}
+
+		if (gIndex < this.lowestFreeSlot)
+			this.lowestFreeSlot = gIndex;
 	}
 
 	@Override
 	public boolean isFreeID(int id) {
-		// TODO Auto-generated method stub
-		return false;
+		int gIndex = idToGIndex(id);
+		if (this.groups[gIndex] == null)
+			return true;
+		int lowIndex = id % this.divisor;
+		return this.groups[gIndex].isFreeID(lowIndex);
+	}
+
+	@Override
+	public boolean hasOccuredId() {
+		return this.groupsEmpty < MAX_SLOTS;
 	}
 
 }

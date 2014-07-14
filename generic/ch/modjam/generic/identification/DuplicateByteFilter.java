@@ -61,4 +61,9 @@ public class DuplicateByteFilter implements IUniqueIdProvider {
 		return this.used < MAX_SLOTS;
 	}
 
+	@Override
+	public boolean hasOccuredId() {
+		return this.used > 0;
+	}
+
 }
