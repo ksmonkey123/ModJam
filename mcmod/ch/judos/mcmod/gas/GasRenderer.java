@@ -15,23 +15,21 @@ import ch.modjam.generic.blocks.SpriteRenderer;
  */
 public class GasRenderer extends TileEntitySpecialRenderer {
 
-	public static final int[][]	offsetInbetweenBlocks	= { { 1, 0, 0 }, { 0, 0, 1 }, { 1, 0, 1 }, { -1, 0, 1 }, // all
-														{ 0, 1, 0 }, // simple y case
-														{ -1, 1, 1 }, { 0, 1, 1 }, { 1, 1, 1 }, { 1, 1, 0 }, // y-cases
-																												// up
-														{ -1, -1, 1 }, { 0, -1, 1 }, { 1, -1, 1 }, { 1, -1, 0 } // y-cases
-																												// down
-														};
+	protected static final int[][]	offsetInbetweenBlocks	= { { 1, 0, 0 }, { 0, 0, 1 }, { 1, 0, 1 }, { -1, 0, 1 }, // all
+															{ 0, 1, 0 }, // simple y case
+															{ -1, 1, 1 }, { 0, 1, 1 }, { 1, 1, 1 }, { 1, 1, 0 }, // y-cases
+																													// up
+															{ -1, -1, 1 }, { 0, -1, 1 }, { 1, -1, 1 }, { 1, -1, 0 } // y-cases
+																													// down
+															};
 
-	private SpriteRenderer		r;
-	private int					frame;
+	private SpriteRenderer			r;
 
 	/**
 	 * 
 	 */
 	public GasRenderer() {
 		this.r = new SpriteRenderer(GasCO2.getTexture());
-		this.frame = 0;
 	}
 
 	@Override
