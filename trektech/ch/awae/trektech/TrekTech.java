@@ -116,8 +116,8 @@ public class TrekTech {
 		RegistryUtil.registerBlock(myMBB);
 
 		Multiblock mb = new Multiblock();
-		mb.addBlock((short) 0, (short) 0, (short) 0, myMBB);
-		mb.addBlock((short) 0, (short) 1, (short) 0, myMBB);
+		mb.setPossibleBlocksForPos((short) 0, (short) 0, (short) 0, myMBB);
+		mb.setPossibleBlocksForPos((short) 0, (short) 1, (short) 0, myMBB);
 		MultiblockRegistry.instance().registerMultiblock(mb, "testStructure");
 
 		// ITEMS
