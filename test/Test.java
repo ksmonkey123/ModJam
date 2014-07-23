@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-import ch.modjam.generic.identification.DuplicateFilter;
+import ch.modjam.generic.identification.IDProvider;
 
 /**
  * @author judos
@@ -18,7 +18,7 @@ public class Test {
 	public static void main(String[] args) {
 		checkAssertEnabled();
 
-		DuplicateFilter f = new DuplicateFilter();
+		IDProvider f = new IDProvider();
 		ArrayList<Integer> numbers = new ArrayList<Integer>();
 		Random r = new Random();
 		for (int i = 0; i < test_amount; i++) {

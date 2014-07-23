@@ -4,7 +4,7 @@ package ch.modjam.generic.identification;
  * @author j
  *
  */
-public class DuplicateByteFilter implements IUniqueIdProvider {
+public class IDByteProvider implements IUniqueIdProvider {
 
 	private static final int	MAX_SLOTS	= 256;
 
@@ -15,14 +15,14 @@ public class DuplicateByteFilter implements IUniqueIdProvider {
 	/**
 	 * 
 	 */
-	public DuplicateByteFilter() {
+	public IDByteProvider() {
 		this.slotUsed = new boolean[256];
 		this.used = 0;
 		this.lowestFreeId = 0;
 	}
 
 	@Override
-	public int getFreeID() throws IllegalStateException {
+	public synchronized int getFreeID() throws IllegalStateException {
 		for (int i = this.lowestFreeId; i < MAX_SLOTS; i++) {
 			if (!this.slotUsed[i]) {
 				this.lowestFreeId = i;
@@ -33,7 +33,7 @@ public class DuplicateByteFilter implements IUniqueIdProvider {
 	}
 
 	@Override
-	public void useID(int id) throws IllegalStateException {
+	public synchronized void useID(int id) throws IllegalStateException {
 		if (this.slotUsed[id])
 			throw new IllegalStateException("ID already in use");
 		this.slotUsed[id] = true;
@@ -43,7 +43,7 @@ public class DuplicateByteFilter implements IUniqueIdProvider {
 	}
 
 	@Override
-	public void freeID(int id) {
+	public synchronized void freeID(int id) {
 		if (this.slotUsed[id])
 			this.used--;
 		this.slotUsed[id] = false;
@@ -52,17 +52,17 @@ public class DuplicateByteFilter implements IUniqueIdProvider {
 	}
 
 	@Override
-	public boolean isFreeID(int id) {
+	public synchronized boolean isFreeID(int id) {
 		return !this.slotUsed[id];
 	}
 
 	@Override
-	public boolean hasFreeID() {
+	public synchronized boolean hasFreeID() {
 		return this.used < MAX_SLOTS;
 	}
 
 	@Override
-	public boolean hasOccuredId() {
+	public synchronized boolean hasOccuredId() {
 		return this.used > 0;
 	}
 

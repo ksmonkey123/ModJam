@@ -30,11 +30,13 @@ public class MultiblockRegistry {
 	 * register a multiblock structure as a valid multiblock
 	 * 
 	 * @param structure
-	 * @param id
+	 * @param multiblockName
 	 */
-	public void registerMultiblock(Multiblock structure, String id) {
-		// FIXME: prevent duplicate structure ID's
-		this.multiblocks.put(id, structure);
+	public void registerMultiblock(Multiblock structure, String multiblockName) {
+		if (this.multiblocks.containsKey(multiblockName))
+			throw new RuntimeException(
+				"A multiblock with the name " + multiblockName + " is already registered!");
+		this.multiblocks.put(multiblockName, structure);
 	}
 
 	/**
@@ -45,7 +47,7 @@ public class MultiblockRegistry {
 	 */
 	public Multiblock getMultiblockByInstanceID(long instanceID) {
 		return this.multiblocks.get(this.activeMultiblocks.get(Long.valueOf(instanceID))
-			.getMultiblock());
+			.getMultiblockName());
 	}
 
 	/**
@@ -55,7 +57,7 @@ public class MultiblockRegistry {
 	 * @return the master tile entity
 	 */
 	public MultiblockTileEntity getMultiblockTileEntityByInstanceID(long instanceID) {
-		return this.activeMultiblocks.get(Long.valueOf(instanceID)).getTileEntity();
+		return this.activeMultiblocks.get(instanceID).getTileEntity();
 	}
 
 	/**
@@ -103,7 +105,11 @@ public class MultiblockRegistry {
 			this.maxActiveID = instanceID;
 	}
 
+	/**
+	 * @return the next id to use for multiblock instance registration
+	 */
 	public int getNextID() {
+		// TODO: implement / use IDProvider
 		return 0; // this.maxActiveID + 1;
 	}
 
@@ -113,17 +119,17 @@ public class MultiblockRegistry {
 	}
 
 	class ActiveSet {
-		private String					multiblock;
+		private String					multiblockName;
 		private MultiblockTileEntity	tileEntity;
 
-		public ActiveSet(String multiblock, MultiblockTileEntity tileEntity) {
+		public ActiveSet(String multiblockName, MultiblockTileEntity tileEntity) {
 			super();
-			this.multiblock = multiblock;
+			this.multiblockName = multiblockName;
 			this.tileEntity = tileEntity;
 		}
 
-		public String getMultiblock() {
-			return this.multiblock;
+		public String getMultiblockName() {
+			return this.multiblockName;
 		}
 
 		public MultiblockTileEntity getTileEntity() {
