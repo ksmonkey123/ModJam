@@ -7,6 +7,9 @@
  * <br>
  * 2. in the same directory run the following shell command:<br>
  * gradlew setupDecompWorkspace<br>
+ * <br>
+ * FIXME: I created a new branch for the mod dev in mc 1.7.10, please change to this branch when you updated your forge<br>
+ * FIXME: the same goes for the git repo with mods, I updated some of them also in the new branch dedicated for mc 1.7.10
  * 
  * @author j
  *
