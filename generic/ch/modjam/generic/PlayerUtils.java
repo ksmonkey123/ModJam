@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
 
 /**
  * @author judos
@@ -37,15 +36,6 @@ public class PlayerUtils {
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * @param name
-	 * @return the object of the player
-	 */
-	public static EntityPlayer getPlayerByNameOnServer(String name) {
-		MinecraftServer s = MinecraftServer.getServer();
-		return s.getConfigurationManager().getPlayerForUsername(name);
 	}
 
 }

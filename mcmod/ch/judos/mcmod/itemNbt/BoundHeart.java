@@ -109,8 +109,8 @@ public class BoundHeart extends Item implements IItemHasGui {
 				}
 			} else {
 				EntityPlayer current = (EntityPlayer) entity;
-				EntityPlayer heartOrigin = PlayerUtils
-					.getPlayerByNameOnServer(item.stackTagCompound.getString("owner"));
+				EntityPlayer heartOrigin = PlayerUtils.getPlayerByName(item.stackTagCompound
+					.getString("owner"));
 				if (heartOrigin == null)
 					return;
 

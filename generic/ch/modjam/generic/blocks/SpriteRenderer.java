@@ -70,8 +70,7 @@ public class SpriteRenderer {
 			float u2, float v2) {
 		Minecraft mc = Minecraft.getMinecraft();
 		Vec3 pos = mc.thePlayer.getPosition(1);
-		Vec3 diff = pos.subtract(mc.theWorld.getWorldVec3Pool().getVecFromPool(x + 0.5, y + 0.5,
-			z + 0.5));
+		Vec3 diff = pos.subtract(Vec3.createVectorHelper(x + 0.5, y + 0.5, z + 0.5));
 
 		// needed in degree for openGL
 		double axz = Math.atan2(diff.xCoord, diff.zCoord) / Math.PI * 180;
