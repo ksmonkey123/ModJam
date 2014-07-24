@@ -1,3 +1,14 @@
+JUNIT (j)
+====================
+I put JUnit into the source folder together with hamcrest-core (which is needed by junit). The new source unitTests can
+be added and used for junit tests.
+
+steps:
+- right click in eclipse on unitTests folder -> add as source Folder
+- right click in eclipse on junit.jar -> add to build path
+  same goes for hamcrest-core.jar
+
+
 NOTES TO SELF (awae)
 ====================
 TILE ENTITIES MUST FEATURE AN EMPTY CONSTRUCTOR!
