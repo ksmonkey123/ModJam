@@ -12,13 +12,12 @@ import net.minecraft.world.World;
 import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
+import ch.modjam.generic.blocks.customRenderer.RenderType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SuppressWarnings("javadoc")
 public class BlockCarvedDirt extends BlockContainer {
-
-	public static final int	RENDER_TYPE_CUSTOM	= -1;
 
 	public BlockCarvedDirt() {
 		super(Material.grass);
@@ -60,7 +59,7 @@ public class BlockCarvedDirt extends BlockContainer {
 
 	@Override
 	public int getRenderType() {
-		return RENDER_TYPE_CUSTOM;
+		return RenderType.CUSTOM;
 	}
 
 	@Override

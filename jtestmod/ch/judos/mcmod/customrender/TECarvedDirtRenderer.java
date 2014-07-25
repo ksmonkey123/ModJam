@@ -9,23 +9,29 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector3f;
 
 import ch.modjam.generic.blocks.CustomRenderer;
 import ch.modjam.generic.blocks.CustomRenderer.Side;
+import ch.modjam.generic.blocks.customRenderer.Geometry;
 
 @SuppressWarnings("javadoc")
 public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 
 	private static CustomRenderer	renderer;
 	public static double			CARVE_DEPTH	= 1. / 3;
+	private static Geometry			newRenderer;
 
 	public TECarvedDirtRenderer() {
 		renderer = new CustomRenderer(TECarvedDirt.getTexture());
+
+		newRenderer = new Geometry(TECarvedDirt.getTexture());
 	}
 
 	@Override
@@ -37,6 +43,26 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 		// SETUP
 		GL11.glTranslated(transX + 0.5, transY + 0.5, transZ + 0.5);
 		renderBlock(t);
+
+		newRenderer.clear();
+		newRenderer.addPoint(-0.5f, 2, 0, 0, 0);
+		newRenderer.addPoint(0.5f, 2, 0, 1, 0);
+		newRenderer.addPoint(0.5f, 1, 0, 1, 1);
+		newRenderer.addPoint(-0.5f, 1, 0, 0, 1);
+
+		newRenderer.addPoint(-0.5f, 1, 0, 0, 1);
+		newRenderer.addPoint(0.5f, 1, 0, 1, 1);
+		newRenderer.addPoint(0.5f, 2, 0, 1, 0);
+		newRenderer.addPoint(-0.5f, 2, 0, 0, 0);
+
+		int time = (int) (ent.getWorldObj().getTotalWorldTime());
+		float angle = (float) time / 100;
+
+		newRenderer.transform.translate(new Vector3f(1, 0, 0));
+		newRenderer.transform.rotate(angle, new Vector3f(0, 1, 0));
+
+		newRenderer.draw(Tessellator.instance);
+
 		GL11.glTranslated(-transX - 0.5, -transY - 0.5, -transZ - 0.5);
 	}
 
@@ -48,6 +74,7 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 		boolean[][] arr = arrFromConnections(con2);
 
 		render(con2, arr);
+
 		// CLEANUP
 		RenderHelper.enableStandardItemLighting();
 
