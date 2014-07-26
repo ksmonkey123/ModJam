@@ -3,7 +3,7 @@ package ch.modjam.generic.multiblock;
 import java.util.HashMap;
 
 import net.minecraft.tileentity.TileEntity;
-import ch.modjam.generic.identification.DuplicateByteFilter;
+import ch.modjam.generic.identification.IDProvider;
 import ch.modjam.generic.identification.IUniqueIdProvider;
 
 /**
@@ -26,8 +26,7 @@ public class MultiblockRegistry {
     
     private HashMap<String, Multiblock> multiblocks       = new HashMap<String, Multiblock>();
     private HashMap<Integer, ActiveSet> activeMultiblocks = new HashMap<Integer, ActiveSet>();
-    // TODO: use real provider
-    private IUniqueIdProvider           idProvider        = new DuplicateByteFilter();
+    private IUniqueIdProvider           idProvider        = new IDProvider();
     
     /**
      * register a multiblock structure as a valid multiblock
