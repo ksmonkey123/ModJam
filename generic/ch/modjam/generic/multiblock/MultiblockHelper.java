@@ -1,5 +1,6 @@
 package ch.modjam.generic.multiblock;
 
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 /**
@@ -40,17 +41,20 @@ public class MultiblockHelper {
         }
     }
     
-    private static final Object SYNC_KEY = new Object();
-    
     private static void registerMB(String structureID, World w, int x, int y,
             int z) {
-        System.out.println("register new MultiBlock:\n Type: " + structureID
-                + "\nPosX: " + x + "\nPosY: " + y + "\nPosY: " + z + "\nDim:  "
-                + w.provider.dimensionId);
-        // TODO: implement
-        synchronized (MultiblockHelper.SYNC_KEY) {
-            
-        }
+        if (w.isRemote)
+            return;
+        System.out.println("register new MultiBlock:" + "\nType: "
+                + structureID + "\nPosX: " + x + "\nPosY: " + y + "\nPosY: "
+                + z + "\nDim:  " + w.provider.dimensionId);
+        TileEntity te = w.getTileEntity(x, y, z);
+        if (te instanceof MultiblockTileEntity) {
+            MultiblockRegistry.instance().registerMultiblockInstance(
+                    structureID, (MultiblockTileEntity) te);
+        } else
+            throw new IllegalStateException(
+                    "Multiblock cannot be instantitated - a MultiblockTileEntity is required in the Multiblock Root");
     }
     
     /**
@@ -62,8 +66,15 @@ public class MultiblockHelper {
      * @param z
      */
     public static void deconstructMultiblock(World w, int x, int y, int z) {
-        // TODO: implement
-        System.out.println(Thread.currentThread().getName() + ": deconstruct");
+        if (w.isRemote)
+            return;
+        System.out.println("remove MultiBlock:" + "\nPosX: " + x + "\nPosY: "
+                + y + "\nPosY: " + z + "\nDim:  " + w.provider.dimensionId);
+        TileEntity te = w.getTileEntity(x, y, z);
+        if (te instanceof MultiblockTileEntity) {
+            MultiblockRegistry.instance().unregisterMultiblockInstance(
+                    ((MultiblockTileEntity) te).getInstanceID());
+        }
     }
     
 }

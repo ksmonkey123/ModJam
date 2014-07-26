@@ -45,9 +45,8 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
     }
     
     private void register() {
-        // TODO: fix the following which caused compile errors
-        // MultiblockRegistry.instance().registerMultiblockInstance(
-        // this.instanceID, this.multiblockID, this);
+        MultiblockRegistry.instance().registerMultiblockInstance(
+                this.instanceID, this.multiblockID, this);
     }
     
     /**
@@ -100,10 +99,19 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
     @SuppressWarnings("hiding")
     public final void activateAsSlave(int instanceID)
             throws AlreadyOwnedByMultiblockException {
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         if (this.state != EnumTileEntityState.IDLE)
             throw new AlreadyOwnedByMultiblockException();
         this.state = EnumTileEntityState.SLAVE;
         this.instanceID = instanceID;
+        this.updateBlockActivationState(true);
+    }
+    
+    private void updateBlockActivationState(boolean activationState) {
+        if (this.blockType instanceof MultiblockBlock) {
+            MultiblockBlock.setActivationState(this.worldObj, this.xCoord,
+                    this.yCoord, this.zCoord, activationState);
+        }
     }
     
     /**
@@ -111,8 +119,10 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
      * tile-entity registration.
      */
     public final void resetToIdle() {
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         this.state = EnumTileEntityState.IDLE;
         this.instanceID = -1;
+        this.updateBlockActivationState(false);
     }
     
     /**
@@ -140,6 +150,8 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
      */
     @SuppressWarnings("hiding")
     public boolean activateAsMaster(int instanceID, String multiblockID) {
+        this.markDirty();
+        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         if (this.state != EnumTileEntityState.IDLE)
             return false;
         MultiblockPoint points[] = MultiblockRegistry.instance()
@@ -160,6 +172,7 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
             this.instanceID = instanceID;
             this.multiblockID = multiblockID;
             this.isRegistered = true;
+            this.updateBlockActivationState(true);
             return true;
         } catch (AlreadyOwnedByMultiblockException ex) {
             // reset previously set slaves
@@ -176,8 +189,16 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
                 }
                 counter--;
             }
+            this.updateBlockActivationState(false);
         }
         return false;
+    }
+    
+    /**
+     * @return the instanceID
+     */
+    public int getInstanceID() {
+        return this.instanceID;
     }
     
 }

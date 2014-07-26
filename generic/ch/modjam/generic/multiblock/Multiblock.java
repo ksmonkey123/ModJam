@@ -82,6 +82,13 @@ public class Multiblock {
         return this.usedBlocks.contains(block);
     }
     
+    /**
+     * Provides a list with all potential valid locations of a given block type
+     * within this multiblock structure.
+     * 
+     * @param block
+     * @return an unordered list of all valid positions
+     */
     public MultiblockPoint[] getValidBlockPositions(Block block) {
         if (!this.isBlockPresent(block))
             return new MultiblockPoint[0];

@@ -2,6 +2,8 @@ package ch.modjam.generic.multiblock;
 
 import java.util.HashMap;
 
+import net.minecraft.tileentity.TileEntity;
+import ch.modjam.generic.identification.DuplicateByteFilter;
 import ch.modjam.generic.identification.IUniqueIdProvider;
 
 /**
@@ -25,7 +27,7 @@ public class MultiblockRegistry {
     private HashMap<String, Multiblock> multiblocks       = new HashMap<String, Multiblock>();
     private HashMap<Integer, ActiveSet> activeMultiblocks = new HashMap<Integer, ActiveSet>();
     // TODO: use real provider
-    private IUniqueIdProvider           idProvider        = null;
+    private IUniqueIdProvider           idProvider        = new DuplicateByteFilter();
     
     /**
      * register a multiblock structure as a valid multiblock
@@ -86,8 +88,23 @@ public class MultiblockRegistry {
         }
     }
     
+    /**
+     * removes a multiblock from the world
+     * 
+     * @param id
+     */
     public void unregisterMultiblockInstance(int id) {
-        
+        Multiblock structure = this.getMultiblockByInstanceID(id);
+        MultiblockTileEntity ent = this.getMultiblockTileEntityByInstanceID(id);
+        for (MultiblockPoint pt : structure.getMultiblockPoints()) {
+            TileEntity te = ent.getWorldObj().getTileEntity(
+                    pt.getX(ent.xCoord), pt.getY(ent.yCoord),
+                    pt.getZ(ent.zCoord));
+            if (te instanceof MultiblockTileEntity) {
+                ((MultiblockTileEntity) te).resetToIdle();
+            }
+        }
+        this.activeMultiblocks.remove(Integer.valueOf(id));
     }
     
     /**
