@@ -144,7 +144,7 @@ public class MCMod {
 		proxy.registerRenderInformation();
 	}
 
-	private void addFurnaceHook() {
+	private static void addFurnaceHook() {
 		TileEntityHooks.registerUpdateListenerForTE(TileEntityFurnace.class, new GasCreator());
 	}
 
