@@ -96,7 +96,6 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
 	 * @throws AlreadyOwnedByMultiblockException whenever a TileEntity that is already registered to
 	 *             a structure is attempted to be registered to a new one
 	 */
-	@SuppressWarnings("hiding")
 	public final void activateAsSlave(long instanceID) throws AlreadyOwnedByMultiblockException {
 		if (this.state != EnumTileEntityState.IDLE)
 			throw new AlreadyOwnedByMultiblockException();
@@ -132,7 +131,6 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
 	 * @param multiblockID
 	 * @return <tt>true</tt> if structure registration was successful, <tt>false</tt> otherwise.
 	 */
-	@SuppressWarnings("hiding")
 	public boolean activateAsMaster(long instanceID, String multiblockID) {
 		if (this.state != EnumTileEntityState.IDLE)
 			return false;
