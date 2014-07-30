@@ -88,19 +88,19 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 		return this.icons[getFaceOfSide(side, metaRoot).ordinal()][flag];
 	}
 
-	private static EnumFace getFaceOfSide(int side, int meta) {
+	private static EFace getFaceOfSide(int side, int meta) {
 		if (side == 0)
-			return EnumFace.BOTTOM;
+			return EFace.BOTTOM;
 		if (side == 1)
-			return EnumFace.TOP;
+			return EFace.TOP;
 		if (side == meta)
-			return EnumFace.FRONT;
+			return EFace.FRONT;
 		if (side == meta + (meta % 2 == 0 ? 1 : -1))
-			return EnumFace.BACK;
+			return EFace.BACK;
 		if ((meta == 2 && side == 5) || (meta == 3 && side == 4) || (meta == 4 && side == 2) || (meta == 5 && side == 3))
-			return EnumFace.LEFT;
+			return EFace.LEFT;
 
-		return EnumFace.RIGHT;
+		return EFace.RIGHT;
 	}
 
 	@Override
@@ -133,7 +133,7 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 	 * @param face the face to set the icon for
 	 * @param icon the icon to set for the face
 	 */
-	public final void setIcon(EnumFace face, String icon) {
+	public final void setIcon(EFace face, String icon) {
 		this.setIcon(face, icon, icon);
 	}
 
@@ -145,7 +145,7 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 	 * @param iconOff the "off" state icon
 	 * @param iconOn the "on" state icon
 	 */
-	public final void setIcon(EnumFace face, String iconOff, String iconOn) {
+	public final void setIcon(EFace face, String iconOff, String iconOn) {
 		this.icons[face.ordinal()][0] = this.iconRegister.registerIcon(iconOff);
 		this.icons[face.ordinal()][1] = this.iconRegister.registerIcon(iconOn);
 	}
@@ -210,11 +210,11 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 	 * @param metadata
 	 * @return the direction of the face
 	 */
-	public static ForgeDirection getFaceDirectionForMeta(EnumFace face, int metadata) {
+	public static ForgeDirection getFaceDirectionForMeta(EFace face, int metadata) {
 		int meta = metadata % 10;
 		if (meta == 0 | meta == 1)
 			meta = 3;
-		return EnumFace.getDirectionOfFace(face, ForgeDirection.getOrientation(meta).getOpposite());
+		return EFace.getDirectionOfFace(face, ForgeDirection.getOrientation(meta).getOpposite());
 	}
 
 	/**

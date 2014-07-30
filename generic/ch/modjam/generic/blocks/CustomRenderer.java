@@ -47,16 +47,16 @@ public class CustomRenderer {
 		this.direction = dir;
 	}
 
-	public void quad(double x, double y, double z, double width, double height, Side visibleFrom) {
+	public void quad(double x, double y, double z, double width, double height, EFace visibleFrom) {
 		quad(x, y, z, width, height, visibleFrom, visibleFrom.getTileIndex(), 0);
 	}
 
-	public void quad(double x, double y, double z, double width, double height, Side visibleFrom,
+	public void quad(double x, double y, double z, double width, double height, EFace visibleFrom,
 			int useTextureTileIndex) {
 		quad(x, y, z, width, height, visibleFrom, useTextureTileIndex, 0);
 	}
 
-	public void quad(double x, double y, double z, double width, double height, Side visibleFrom,
+	public void quad(double x, double y, double z, double width, double height, EFace visibleFrom,
 			int useTextureTileIndex, int texRotation) {
 
 		double[] delta = sizeToDeltaCoords(visibleFrom, width, height);
@@ -221,15 +221,6 @@ public class CustomRenderer {
 		return values;
 	}
 
-	private enum Coord {
-		X(0), Y(1), Z(2);
-		final int	index;
-
-		private Coord(int i) {
-			this.index = i;
-		}
-	}
-
 	/**
 	 * method for debugging stuff
 	 * 
@@ -244,7 +235,7 @@ public class CustomRenderer {
 		System.out.println(s.substring(0, s.length() - 2));
 	}
 
-	private static double[] sizeToDeltaCoords(Side visibleFrom, double width, double height) {
+	private static double[] sizeToDeltaCoords(EFace visibleFrom, double width, double height) {
 		int sideI = visibleFrom.getIndex();
 		double[] delta = new double[3];
 		for (int i = 0; i < 3; i++)
@@ -267,39 +258,18 @@ public class CustomRenderer {
 												{ 0, 0, 1, 1, 1, 1 }, //
 												{ 0, 0, 0, 0, 0, 0 } };
 
-	public enum Side {
-		TOP(1, 0), BOTTOM(9, 1), LEFT(4, 2), FRONT(5, 3), RIGHT(6, 4), BACK(10, 5);
-		private int	tileIndex;
-		private int	index;
-
-		Side(int tileIndex, int index) {
-			// the index of the tile in the texture for this side
-			this.tileIndex = tileIndex;
-			// a unique index for each side, starting at 0
-			this.index = index;
-		}
-
-		public int getTileIndex() {
-			return this.tileIndex;
-		}
-
-		public int getIndex() {
-			return this.index;
-		}
-	}
-
 	public void standardCube() {
 		cubeOfRadius(0.5);
 	}
 
 	public void cubeOfRadius(double r) {
 		double d = 2 * r;
-		this.quad(-r, r, -r, d, d, Side.TOP);
-		this.quad(-r, -r, -r, d, d, Side.FRONT);
-		this.quad(r, -r, -r, d, d, Side.LEFT);
-		this.quad(-r, -r, -r, d, d, Side.RIGHT);
-		this.quad(-r, -r, r, d, d, Side.BACK);
-		this.quad(-r, -r, -r, d, d, Side.BOTTOM);
+		this.quad(-r, r, -r, d, d, EFace.TOP);
+		this.quad(-r, -r, -r, d, d, EFace.FRONT);
+		this.quad(r, -r, -r, d, d, EFace.LEFT);
+		this.quad(-r, -r, -r, d, d, EFace.RIGHT);
+		this.quad(-r, -r, r, d, d, EFace.BACK);
+		this.quad(-r, -r, -r, d, d, EFace.BOTTOM);
 	}
 
 	/**
@@ -309,12 +279,21 @@ public class CustomRenderer {
 		TextureManager render = Minecraft.getMinecraft().renderEngine;
 		render.bindTexture(new ResourceLocation(this.tex));
 		GL11.glPushMatrix();
+
+		// Turn on blending for alpha values
+		// GL11.glEnable(GL11.GL_BLEND);
+		// set the correct blending function to overlay alpha
+		// GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		// GL11.glAlphaFunc(GL11.GL_GREATER, 0);
+
 		rotateQuadBasedOnBlockRotation();
 		Tessellator.instance.startDrawingQuads();
 	}
 
 	public void end() {
 		Tessellator.instance.draw();
+
+		// GL11.glDisable(GL11.GL_BLEND); // Turn off blending
 		GL11.glPopMatrix();
 	}
 

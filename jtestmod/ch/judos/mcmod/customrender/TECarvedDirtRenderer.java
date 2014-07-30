@@ -18,7 +18,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 import ch.modjam.generic.blocks.CustomRenderer;
-import ch.modjam.generic.blocks.CustomRenderer.Side;
+import ch.modjam.generic.blocks.EFace;
 import ch.modjam.generic.blocks.customRenderer.Geometry;
 
 @SuppressWarnings("javadoc")
@@ -42,24 +42,29 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 		TECarvedDirt t = (TECarvedDirt) ent;
 		// SETUP
 		GL11.glTranslated(transX + 0.5, transY + 0.5, transZ + 0.5);
+
 		renderBlock(t);
 
+		float umin = 0;// icon.getMinU();
+		float umax = 1;// icon.getMaxU();
+		float vmin = 0;// icon.getMinV();
+		float vmax = 1;// icon.getMaxV();
 		newRenderer.clear();
-		newRenderer.addPoint(-0.5f, 2, 0, 0, 0);
-		newRenderer.addPoint(0.5f, 2, 0, 1, 0);
-		newRenderer.addPoint(0.5f, 1, 0, 1, 1);
-		newRenderer.addPoint(-0.5f, 1, 0, 0, 1);
+		newRenderer.addPoint(-0.5f, 2, 0, umin, vmin);
+		newRenderer.addPoint(0.5f, 2, 0, umax, vmin);
+		newRenderer.addPoint(0.5f, 1, 0, umax, vmax);
+		newRenderer.addPoint(-0.5f, 1, 0, umin, vmax);
 
-		newRenderer.addPoint(-0.5f, 1, 0, 0, 1);
-		newRenderer.addPoint(0.5f, 1, 0, 1, 1);
-		newRenderer.addPoint(0.5f, 2, 0, 1, 0);
-		newRenderer.addPoint(-0.5f, 2, 0, 0, 0);
+		newRenderer.addPoint(-0.5f, 1, 0, umin, vmax);
+		newRenderer.addPoint(0.5f, 1, 0, umax, vmax);
+		newRenderer.addPoint(0.5f, 2, 0, umax, vmin);
+		newRenderer.addPoint(-0.5f, 2, 0, umin, vmin);
 
 		int time = (int) (ent.getWorldObj().getTotalWorldTime());
 		float angle = (float) time / 100;
 
-		newRenderer.transform.translate(new Vector3f(1, 0, 0));
 		newRenderer.transform.rotate(angle, new Vector3f(0, 1, 0));
+		// newRenderer.transform.translate(new Vector3f(1, 0, 0));
 
 		newRenderer.draw(Tessellator.instance);
 
@@ -117,23 +122,23 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 		for (ForgeDirection d : dir) {
 			renderer.begin();
 			if (!con.contains(d)) {
-				renderer.quad(-0.5, -0.5, -0.5, 1, 1, Side.FRONT);
+				renderer.quad(-0.5, -0.5, -0.5, 1, 1, EFace.FRONT);
 				// inside dirt
-				renderer.quad(-0.5 + t, +0.5 - t, -0.5 + t, t, t, Side.BACK, 13);
+				renderer.quad(-0.5 + t, +0.5 - t, -0.5 + t, t, t, EFace.BACK, 13);
 			} else {
 				// side dirt
-				renderer.quad(-0.5 + t, +0.5 - t, -0.5, t, t, Side.LEFT, 13);
-				renderer.quad(0.5 - t, +0.5 - t, -0.5, t, t, Side.RIGHT, 13);
+				renderer.quad(-0.5 + t, +0.5 - t, -0.5, t, t, EFace.LEFT, 13);
+				renderer.quad(0.5 - t, +0.5 - t, -0.5, t, t, EFace.RIGHT, 13);
 				// outside texture
-				renderer.quad(-0.5, -0.5, -0.5, 1, 1 - t, Side.FRONT, 8);
-				renderer.quad(-0.5, 0.5 - t, -0.5, t, t, Side.FRONT, 8);
-				renderer.quad(0.5 - t, 0.5 - t, -0.5, t, t, Side.FRONT, 8);
+				renderer.quad(-0.5, -0.5, -0.5, 1, 1 - t, EFace.FRONT, 8);
+				renderer.quad(-0.5, 0.5 - t, -0.5, t, t, EFace.FRONT, 8);
+				renderer.quad(0.5 - t, 0.5 - t, -0.5, t, t, EFace.FRONT, 8);
 			}
 			renderer.end();
 			GL11.glRotated(90, 0, 1, 0);
 		}
 
-		renderer.quad(-0.5, -0.5, -0.5, 1, 1, Side.BOTTOM);
+		renderer.quad(-0.5, -0.5, -0.5, 1, 1, EFace.BOTTOM);
 	}
 
 	/**
@@ -192,7 +197,7 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 				double y = 0.5;
 				if (arr[x][z])
 					y = 0.5 - CARVE_DEPTH;
-				renderer.quad(+0.5 - t - x * t, y, +0.5 - t - z * t, t, t, Side.TOP, tileNr,
+				renderer.quad(+0.5 - t - x * t, y, +0.5 - t - z * t, t, t, EFace.TOP, tileNr,
 					rotation);
 			}
 		}

@@ -92,15 +92,15 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
 	/**
 	 * activate this TileEntity as a slave of a given MultiBlock
 	 * 
-	 * @param instanceID the MultiBlock's instance ID
+	 * @param instanceIDarg the MultiBlock's instance ID
 	 * @throws AlreadyOwnedByMultiblockException whenever a TileEntity that is already registered to
 	 *             a structure is attempted to be registered to a new one
 	 */
-	public final void activateAsSlave(long instanceID) throws AlreadyOwnedByMultiblockException {
+	public final void activateAsSlave(long instanceIDarg) throws AlreadyOwnedByMultiblockException {
 		if (this.state != EnumTileEntityState.IDLE)
 			throw new AlreadyOwnedByMultiblockException();
 		this.state = EnumTileEntityState.SLAVE;
-		this.instanceID = instanceID;
+		this.instanceID = instanceIDarg;
 	}
 
 	/**
@@ -127,15 +127,15 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
 	 * multiple access. The <i>later</i> master will simply fail to register overlapping Entities,
 	 * even if the <i>first</i> fails too, which would make the <i>later</i> one valid.
 	 * 
-	 * @param instanceID
+	 * @param instanceIDarg
 	 * @param multiblockID
 	 * @return <tt>true</tt> if structure registration was successful, <tt>false</tt> otherwise.
 	 */
-	public boolean activateAsMaster(long instanceID, String multiblockID) {
+	public boolean activateAsMaster(long instanceIDarg, String multiblockID) {
 		if (this.state != EnumTileEntityState.IDLE)
 			return false;
 		MultiblockPoint points[] = MultiblockRegistry.instance().getMultiblockByInstanceID(
-			instanceID).getMultiblockPoints();
+			instanceIDarg).getMultiblockPoints();
 		int counter = 0;
 		try {
 			for (MultiblockPoint pt : points) {
@@ -144,12 +144,12 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
 				int z = pt.getZ(this.zCoord);
 				TileEntity te = this.worldObj.getTileEntity(x, y, z);
 				if (te instanceof MultiblockTileEntity) {
-					((MultiblockTileEntity) te).activateAsSlave(instanceID);
+					((MultiblockTileEntity) te).activateAsSlave(instanceIDarg);
 				}
 				counter++;
 			}
 			this.state = EnumTileEntityState.MASTER;
-			this.instanceID = instanceID;
+			this.instanceID = instanceIDarg;
 			this.multiblockName = multiblockID;
 			this.isRegistered = true;
 			return true;

@@ -7,6 +7,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import ch.judos.mcmod.MCMod;
@@ -27,6 +28,10 @@ public class BlockCarvedDirt extends BlockContainer {
 		this.setHardness(0.3f);
 		this.setHarvestLevel("shovel", 0);
 		this.setLightOpacity(0);
+	}
+
+	public IIcon getBlockIcon() {
+		return this.blockIcon;
 	}
 
 	@Override

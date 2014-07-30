@@ -12,7 +12,7 @@ import ch.awae.trektech.Handler;
 import ch.awae.trektech.TrekTech;
 import ch.awae.trektech.entities.TileEntityPlasmaEnergizerLow;
 import ch.modjam.generic.blocks.BlockGenericDualStateDirected;
-import ch.modjam.generic.blocks.EnumFace;
+import ch.modjam.generic.blocks.EFace;
 import ch.modjam.generic.gui.GenericGuiHandler;
 
 /**
@@ -85,17 +85,17 @@ public class BlockPlasmaEnergizerLow extends BlockGenericDualStateDirected {
     
     @Override
     public void registerIcons() {
-        this.setIcon(EnumFace.FRONT, TrekTech.MODID + ":plasma_gen_front_off",
+        this.setIcon(EFace.FRONT, TrekTech.MODID + ":plasma_gen_front_off",
                 TrekTech.MODID + ":plasma_gen_front_on");
-        this.setIcon(EnumFace.BACK, TrekTech.MODID + ":plasma_gen_front_off",
+        this.setIcon(EFace.BACK, TrekTech.MODID + ":plasma_gen_front_off",
                 TrekTech.MODID + ":plasma_gen_front_on");
-        this.setIcon(EnumFace.TOP, TrekTech.MODID + ":plasma_gen_front_off",
+        this.setIcon(EFace.TOP, TrekTech.MODID + ":plasma_gen_front_off",
                 TrekTech.MODID + ":plasma_gen_front_on");
-        this.setIcon(EnumFace.LEFT, TrekTech.MODID + ":plasma_gen_front_off",
+        this.setIcon(EFace.LEFT, TrekTech.MODID + ":plasma_gen_front_off",
                 TrekTech.MODID + ":plasma_gen_front_on");
-        this.setIcon(EnumFace.RIGHT, TrekTech.MODID + ":plasma_gen_front_off",
+        this.setIcon(EFace.RIGHT, TrekTech.MODID + ":plasma_gen_front_off",
                 TrekTech.MODID + ":plasma_gen_front_on");
-        this.setIcon(EnumFace.BOTTOM, TrekTech.MODID + ":plasma_gen_front_off",
+        this.setIcon(EFace.BOTTOM, TrekTech.MODID + ":plasma_gen_front_off",
                 TrekTech.MODID + ":plasma_gen_front_on");
     }
     

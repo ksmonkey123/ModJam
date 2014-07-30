@@ -21,7 +21,6 @@ import ch.judos.mcmod.armor.ItemSlimyBoots;
 import ch.judos.mcmod.basemod.TileEntityHooks;
 import ch.judos.mcmod.customrender.BlockCarvedDirt;
 import ch.judos.mcmod.customrender.TECarvedDirt;
-import ch.judos.mcmod.emptyGui.ItemEmptyGui;
 import ch.judos.mcmod.gas.GasCO2;
 import ch.judos.mcmod.gas.GasCO2TileEntity;
 import ch.judos.mcmod.gas.GasCreator;
@@ -95,7 +94,7 @@ public class MCMod {
 	public static FuelHandler					fuelHandler;
 
 	// Custom rendered block
-	public static Block							blockCarvedDirt;
+	public static BlockCarvedDirt					blockCarvedDirt;
 	public static Class<? extends TileEntity>	teCarvedDirt;
 
 	// Custom tool
@@ -120,7 +119,6 @@ public class MCMod {
 
 	public static GasCO2						gas;
 
-	public static ItemEmptyGui					itemEmptyGui;
 
 	/**
 	 * @param e
@@ -144,15 +142,9 @@ public class MCMod {
 		addGas();
 		addFurnaceHook();
 
-		addEmptyGuiItem();
-
 		proxy.registerRenderInformation();
 	}
 
-	private static void addEmptyGuiItem() {
-		itemEmptyGui = new ItemEmptyGui();
-		GameRegistry.registerItem(itemEmptyGui, Names.EmptyGui);
-	}
 
 	private static void addFurnaceHook() {
 		TileEntityHooks.registerUpdateListenerForTE(TileEntityFurnace.class, new GasCreator());

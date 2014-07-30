@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import ch.modjam.generic.blocks.BlockGenericDualStateDirected;
-import ch.modjam.generic.blocks.EnumFace;
+import ch.modjam.generic.blocks.EFace;
 import ch.modjam.generic.gui.GenericGuiHandler;
 import ch.phyranja.EssenceCrops.EssenceCrops;
 import ch.phyranja.EssenceCrops.entities.TileEntityExtractor;
@@ -40,13 +40,13 @@ public class EssenceExtractor extends BlockGenericDualStateDirected {
     
     @Override
     public void registerIcons() {
-        this.setIcon(EnumFace.FRONT, References.MOD_ID + ":e_extractor_front_off",
+        this.setIcon(EFace.FRONT, References.MOD_ID + ":e_extractor_front_off",
         		References.MOD_ID + ":e_extractor_front_on");
-        this.setIcon(EnumFace.BACK, References.MOD_ID + ":e_extractor_side");
-        this.setIcon(EnumFace.TOP, References.MOD_ID + ":e_extractor_top");
-        this.setIcon(EnumFace.LEFT, References.MOD_ID + ":e_extractor_side");
-        this.setIcon(EnumFace.RIGHT, References.MOD_ID + ":e_extractor_side");
-        this.setIcon(EnumFace.BOTTOM, References.MOD_ID + ":e_extractor_top");
+        this.setIcon(EFace.BACK, References.MOD_ID + ":e_extractor_side");
+        this.setIcon(EFace.TOP, References.MOD_ID + ":e_extractor_top");
+        this.setIcon(EFace.LEFT, References.MOD_ID + ":e_extractor_side");
+        this.setIcon(EFace.RIGHT, References.MOD_ID + ":e_extractor_side");
+        this.setIcon(EFace.BOTTOM, References.MOD_ID + ":e_extractor_top");
     }
     
     @Override

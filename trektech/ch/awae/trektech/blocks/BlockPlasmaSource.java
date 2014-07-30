@@ -12,7 +12,7 @@ import ch.awae.trektech.Handler;
 import ch.awae.trektech.TrekTech;
 import ch.awae.trektech.entities.TileEntityPlasmaSource;
 import ch.modjam.generic.blocks.BlockGenericDualStateDirected;
-import ch.modjam.generic.blocks.EnumFace;
+import ch.modjam.generic.blocks.EFace;
 import ch.modjam.generic.gui.GenericGuiHandler;
 
 /**
@@ -85,10 +85,10 @@ public class BlockPlasmaSource extends BlockGenericDualStateDirected {
     
     @Override
     public void registerIcons() {
-        this.setIcon(EnumFace.FRONT, TrekTech.MODID + ":plasma_gen_front_off",
+        this.setIcon(EFace.FRONT, TrekTech.MODID + ":plasma_gen_front_off",
                 TrekTech.MODID + ":plasma_gen_front_on");
-        this.setIcon(EnumFace.BACK, TrekTech.MODID + ":plasma_gen_back");
-        this.setIcon(EnumFace.TOP, TrekTech.MODID + ":plasma_gen_top_off",
+        this.setIcon(EFace.BACK, TrekTech.MODID + ":plasma_gen_back");
+        this.setIcon(EFace.TOP, TrekTech.MODID + ":plasma_gen_top_off",
                 TrekTech.MODID + ":plasma_gen_top_on");
     }
     

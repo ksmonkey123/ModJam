@@ -15,7 +15,7 @@ import ch.awae.trektech.EnumPlasmaTypes;
 import ch.awae.trektech.gui.GuiPlasmaSource;
 import ch.awae.trektech.gui.container.ContainerPlasmaSource;
 import ch.modjam.generic.blocks.BlockGenericDualStateDirected;
-import ch.modjam.generic.blocks.EnumFace;
+import ch.modjam.generic.blocks.EFace;
 import ch.modjam.generic.gui.IHasGui;
 
 /**
@@ -228,7 +228,7 @@ public class TileEntityPlasmaSource extends ATileEntityPlasmaSystem implements
             ForgeDirection direction) {
         return plasma == EnumPlasmaTypes.NEUTRAL
                 && BlockGenericDualStateDirected.getFaceDirectionForMeta(
-                        EnumFace.BACK, this.getBlockMetadata()) == direction
+                        EFace.BACK, this.getBlockMetadata()) == direction
                         .getOpposite();
     }
     

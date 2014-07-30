@@ -16,14 +16,9 @@ import org.lwjgl.util.vector.Vector4f;
  * @author j
  *
  */
-public class Geometry {
-	/**
-	 * the transformation that is used, you can apply for example a rotation by modifying this
-	 * object
-	 */
-	public Matrix4f				transform;
-	private ArrayList<Vertex>	points;
-	private ArrayList<Quad>		quads;
+public class Geometry extends GroupGeometry {
+	protected ArrayList<Vertex>	points;
+	protected ArrayList<Quad>	quads;
 	private final String		texture;
 
 	/**
@@ -36,13 +31,11 @@ public class Geometry {
 		this.texture = texture;
 	}
 
-	/**
-	 * removes all quads and resets the transformation matrix
-	 */
+	@Override
 	public void clear() {
+		super.clear();
 		this.points.clear();
 		this.quads.clear();
-		this.transform.setIdentity();
 	}
 
 	/**
@@ -74,29 +67,25 @@ public class Geometry {
 		this.points.clear();
 	}
 
-	/**
-	 * draws the whole content of this geometry object
-	 * 
-	 * @param t
-	 */
-	public void draw(Tessellator t) {
+	@Override
+	protected void draw(Tessellator t, Matrix4f transformMat) {
 		TextureManager render = Minecraft.getMinecraft().renderEngine;
 		render.bindTexture(new ResourceLocation(this.texture));
-		// GL11.glPushMatrix();
-		t.startDrawingQuads();
 
-		Vector4f pos = new Vector4f(); // optimization, only one object is created for all the
-										// calculation
+		Vector4f pos = new Vector4f(); // optimization, only one object is
+		// created for all the
+		// calculation
+
+		Matrix4f transformComplete = Matrix4f.mul(transformMat, this.transform, null);
 		for (Quad q : this.quads) {
 			for (Vertex vertex : q.points) {
-				pos = Matrix4f.transform(this.transform, vertex.position, pos); // reuse pos vector
-																				// object
+				pos = Matrix4f.transform(transformComplete, vertex.position, pos);
+				// reuse pos vector object
 				t.addVertexWithUV(pos.x, pos.y, pos.z, vertex.u, vertex.v);
 			}
 		}
 
-		t.draw();
-		// GL11.glPopMatrix();
+		super.draw(t, transformComplete);
 	}
 
 }

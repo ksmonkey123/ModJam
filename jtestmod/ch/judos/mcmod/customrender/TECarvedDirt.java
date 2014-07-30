@@ -5,6 +5,7 @@ import net.minecraft.block.BlockStaticLiquid;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
@@ -15,6 +16,12 @@ public class TECarvedDirt extends GenericTileEntity implements IConnecting, ICan
 
 	public TECarvedDirt() {
 
+	}
+
+	@Override
+	public AxisAlignedBB getRenderBoundingBox() {
+		return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1,
+			this.yCoord + 2, this.zCoord + 1);
 	}
 
 	@Override
