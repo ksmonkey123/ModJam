@@ -1,7 +1,6 @@
 package ch.modjam.generic.blocks.customRenderer;
 
-import net.minecraft.client.renderer.Tessellator;
-import ch.modjam.generic.blocks.Coord;
+import ch.modjam.generic.blocks.Axis;
 import ch.modjam.generic.blocks.EFace;
 
 public class Geometry2 extends Geometry {
@@ -34,27 +33,25 @@ public class Geometry2 extends Geometry {
 		super(texture);
 	}
 
-	public void quad(double x, double y, double z, double width, double height, EFace visibleFrom) {
-		quad(x, y, z, width, height, visibleFrom, visibleFrom.getTileIndex(), 0);
+	public void addQuadOnSide(double x, double y, double z, double width, double height, EFace visibleFrom) {
+		addQuadOnSideWithTexRot(x, y, z, width, height, visibleFrom, visibleFrom.getTileIndex(), 0);
 	}
 
-	public void quad(double x, double y, double z, double width, double height, EFace visibleFrom,
+	public void addQuadOnSideWithTex(double x, double y, double z, double width, double height, EFace visibleFrom,
 			int useTextureTileIndex) {
-		quad(x, y, z, width, height, visibleFrom, useTextureTileIndex, 0);
+		addQuadOnSideWithTexRot(x, y, z, width, height, visibleFrom, useTextureTileIndex, 0);
 	}
 
-	public void quad(double x, double y, double z, double width, double height, EFace visibleFrom,
+	public void addQuadOnSideWithTexRot(double x, double y, double z, double width, double height, EFace visibleFrom,
 			int useTextureTileIndex, int texRotation) {
 
-		double[] delta = sizeToDeltaCoords(visibleFrom, width, height);
-
+		// calculates the absolute coordinates of the points that are offset by width,height
+		double[] delta = size2dTo3dDeltaCoordinates(visibleFrom, width, height);
 		double xp = x + delta[0];
 		double yp = y + delta[1];
 		double zp = z + delta[2];
-		double[][] coord = { { -xp, x }, { -yp, y }, { -zp, z } };
 
-		int tx = useTextureTileIndex % 4;
-		int ty = useTextureTileIndex / 4;
+		double[][] coord = { { -xp, x }, { -yp, y }, { -zp, z } };
 
 		double us = 0, vs = 0, dU, dV;
 
@@ -65,34 +62,34 @@ public class Geometry2 extends Geometry {
 
 		switch (visibleFrom) {
 			case TOP: {
-				uc = arr(0, Coord.X.index);
-				vc = arr(0, Coord.Z.index);
+				uc = arr(0, Axis.X.index);
+				vc = arr(0, Axis.Z.index);
 				swaped = !swaped;
 				break;
 			}
 			case FRONT: {
-				uc = arr(0, Coord.X.index);
-				vc = arr(0, Coord.Y.index);
+				uc = arr(0, Axis.X.index);
+				vc = arr(0, Axis.Y.index);
 				break;
 			}
 			case LEFT: {
-				uc = arr(0, Coord.Z.index);
-				vc = arr(0, Coord.Y.index);
+				uc = arr(0, Axis.Z.index);
+				vc = arr(0, Axis.Y.index);
 				break;
 			}
 			case RIGHT: {
-				uc = arr(1, Coord.Z.index);
-				vc = arr(0, Coord.Y.index);
+				uc = arr(1, Axis.Z.index);
+				vc = arr(0, Axis.Y.index);
 				break;
 			}
 			case BACK: {
-				uc = arr(1, Coord.X.index);
-				vc = arr(0, Coord.Y.index);
+				uc = arr(1, Axis.X.index);
+				vc = arr(0, Axis.Y.index);
 				break;
 			}
 			case BOTTOM: {
-				uc = arr(0, Coord.X.index);
-				vc = arr(1, Coord.Z.index);
+				uc = arr(0, Axis.X.index);
+				vc = arr(1, Axis.Z.index);
 				swaped = !swaped;
 				break;
 			}
@@ -109,6 +106,8 @@ public class Geometry2 extends Geometry {
 			vc = arr(1 - temp[0], temp[1]);
 		}
 
+		int tx = useTextureTileIndex % 4;
+		int ty = useTextureTileIndex / 4;
 		us = tx * uvPerTile + (0.5 + coord[uc[1]][uc[0]]) * uvPerTile;
 		vs = ty * uvPerTile + (0.5 + coord[vc[1]][vc[0]]) * uvPerTile;
 
@@ -125,10 +124,31 @@ public class Geometry2 extends Geometry {
 
 		double[] u = { us, us, up, up };
 		double[] v = { vs, vp, vp, vs };
-		double[] cx = null;
-		double[] cy = null;
-		double[] cz = null;
 
+		// get the final coordinates for all points of the quad
+		double[][] c = getFinalCoordinatesFromMinMaxSide(visibleFrom, x, xp, y, yp, z, zp);
+		double[] cx = c[0];
+		double[] cy = c[1];
+		double[] cz = c[2];
+
+		for (int i = 0; i < 4; i++)
+			this.addPoint((float) cx[i], (float) cy[i], (float) cz[i],
+				(float) u[(i + texRotation) % 4], (float) v[(i + texRotation) % 4]);
+	}
+
+	/**
+	 * @param visibleFrom
+	 * @param x
+	 * @param xp
+	 * @param y
+	 * @param yp
+	 * @param z
+	 * @param zp
+	 * @return
+	 */
+	private static double[][] getFinalCoordinatesFromMinMaxSide(EFace visibleFrom, double x,
+			double xp, double y, double yp, double z, double zp) {
+		double[] cx, cy, cz;
 		switch (visibleFrom) {
 			case TOP: {
 				cx = new double[] { xp, xp, x, x };
@@ -168,13 +188,11 @@ public class Geometry2 extends Geometry {
 				break;
 			}
 		}
-
-		for (int i = 0; i < 4; i++)
-			Tessellator.instance.addVertexWithUV(cx[i], cy[i], cz[i], u[(i + texRotation) % 4],
-				v[(i + texRotation) % 4]);
+		return new double[][] { cx, cy, cz };
 	}
 
-	private static double[] sizeToDeltaCoords(EFace visibleFrom, double width, double height) {
+	private static double[] size2dTo3dDeltaCoordinates(EFace visibleFrom, double width,
+			double height) {
 		int sideI = visibleFrom.getIndex();
 		double[] delta = new double[3];
 		for (int i = 0; i < 3; i++)

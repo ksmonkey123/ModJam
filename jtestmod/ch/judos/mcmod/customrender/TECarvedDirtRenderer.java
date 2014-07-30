@@ -19,19 +19,19 @@ import org.lwjgl.util.vector.Vector3f;
 
 import ch.modjam.generic.blocks.CustomRenderer;
 import ch.modjam.generic.blocks.EFace;
-import ch.modjam.generic.blocks.customRenderer.Geometry;
+import ch.modjam.generic.blocks.customRenderer.Geometry2;
 
 @SuppressWarnings("javadoc")
 public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 
 	private static CustomRenderer	renderer;
 	public static double			CARVE_DEPTH	= 1. / 3;
-	private static Geometry			newRenderer;
+	private static Geometry2		newRenderer;
 
 	public TECarvedDirtRenderer() {
 		renderer = new CustomRenderer(TECarvedDirt.getTexture());
 
-		newRenderer = new Geometry(TECarvedDirt.getTexture());
+		newRenderer = new Geometry2(TECarvedDirt.getTexture());
 	}
 
 	@Override
@@ -43,29 +43,35 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 		// SETUP
 		GL11.glTranslated(transX + 0.5, transY + 0.5, transZ + 0.5);
 
-		renderBlock(t);
+		// renderBlock(t);
 
 		float umin = 0;// icon.getMinU();
 		float umax = 1;// icon.getMaxU();
 		float vmin = 0;// icon.getMinV();
 		float vmax = 1;// icon.getMaxV();
+		float h = 0.5f;
 		newRenderer.clear();
-		newRenderer.addPoint(-0.5f, 2, 0, umin, vmin);
-		newRenderer.addPoint(0.5f, 2, 0, umax, vmin);
-		newRenderer.addPoint(0.5f, 1, 0, umax, vmax);
-		newRenderer.addPoint(-0.5f, 1, 0, umin, vmax);
+		newRenderer.addPoint(-0.5f, h, 0, umin, vmin);
+		newRenderer.addPoint(0.5f, h, 0, umax, vmin);
+		newRenderer.addPoint(0.5f, -h, 0, umax, vmax);
+		newRenderer.addPoint(-0.5f, -h, 0, umin, vmax);
 
-		newRenderer.addPoint(-0.5f, 1, 0, umin, vmax);
-		newRenderer.addPoint(0.5f, 1, 0, umax, vmax);
-		newRenderer.addPoint(0.5f, 2, 0, umax, vmin);
-		newRenderer.addPoint(-0.5f, 2, 0, umin, vmin);
+		newRenderer.addPoint(-0.5f, -h, 0, umin, vmax);
+		newRenderer.addPoint(0.5f, -h, 0, umax, vmax);
+		newRenderer.addPoint(0.5f, h, 0, umax, vmin);
+		newRenderer.addPoint(-0.5f, h, 0, umin, vmin);
+
+		newRenderer.subParts.clear();
+		Geometry2 q = new Geometry2(TECarvedDirt.getTexture());
+		q.addQuadOnSide(-0.4, -0.4, -0.01, 0.8, 0.8, EFace.FRONT);
+		newRenderer.addSubGeometry(q);
 
 		int time = (int) (ent.getWorldObj().getTotalWorldTime());
-		float angle = (float) time / 100;
+		float angle = (float) time / 50;
 
 		newRenderer.transform.rotate(angle, new Vector3f(0, 1, 0));
-		// newRenderer.transform.translate(new Vector3f(1, 0, 0));
-
+		newRenderer.transform.translate(new Vector3f(0, 1, 0));
+		q.transform.rotate(angle, new Vector3f(0, 0, 1));
 		newRenderer.draw(Tessellator.instance);
 
 		GL11.glTranslated(-transX - 0.5, -transY - 0.5, -transZ - 0.5);

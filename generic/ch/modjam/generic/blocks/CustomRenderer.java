@@ -78,34 +78,34 @@ public class CustomRenderer {
 
 		switch (visibleFrom) {
 			case TOP: {
-				uc = arr(0, Coord.X.index);
-				vc = arr(0, Coord.Z.index);
+				uc = arr(0, Axis.X.index);
+				vc = arr(0, Axis.Z.index);
 				swaped = !swaped;
 				break;
 			}
 			case FRONT: {
-				uc = arr(0, Coord.X.index);
-				vc = arr(0, Coord.Y.index);
+				uc = arr(0, Axis.X.index);
+				vc = arr(0, Axis.Y.index);
 				break;
 			}
 			case LEFT: {
-				uc = arr(0, Coord.Z.index);
-				vc = arr(0, Coord.Y.index);
+				uc = arr(0, Axis.Z.index);
+				vc = arr(0, Axis.Y.index);
 				break;
 			}
 			case RIGHT: {
-				uc = arr(1, Coord.Z.index);
-				vc = arr(0, Coord.Y.index);
+				uc = arr(1, Axis.Z.index);
+				vc = arr(0, Axis.Y.index);
 				break;
 			}
 			case BACK: {
-				uc = arr(1, Coord.X.index);
-				vc = arr(0, Coord.Y.index);
+				uc = arr(1, Axis.X.index);
+				vc = arr(0, Axis.Y.index);
 				break;
 			}
 			case BOTTOM: {
-				uc = arr(0, Coord.X.index);
-				vc = arr(1, Coord.Z.index);
+				uc = arr(0, Axis.X.index);
+				vc = arr(1, Axis.Z.index);
 				swaped = !swaped;
 				break;
 			}

@@ -6,11 +6,11 @@ package ch.modjam.generic.blocks;
  * @author j
  *
  */
-public enum Coord {
+public enum Axis {
 	X(0), Y(1), Z(2);
 	public final int	index;
 
-	private Coord(int i) {
+	private Axis(int i) {
 		this.index = i;
 	}
 }
