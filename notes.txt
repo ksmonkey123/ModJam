@@ -3,7 +3,7 @@ MCP Conf dir for deobfuscator
 
 Incase you are asked by eclipse:
 Put MCP conf folder for the deobfuscator here:
-	gradleUserHome\caches\minecraft\net\minecraftforge\forge\1.7.2-10.12.2.1121\unpacked\conf
+	gradleUserHome\caches\minecraft\net\minecraftforge\forge\1.7.X-your forge version-\unpacked\conf
 probably the gradleUserHome dir is in your user directory (c:/benutzer/name/)
 
 
