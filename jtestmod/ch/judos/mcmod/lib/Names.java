@@ -23,5 +23,4 @@ public class Names {
 	public static final String	BoundHeart		= "bound_heart";
 	public static final String	LivingFlesh		= "living_flesh";
 	public static final String	CO2				= "co2";
-	public static final String	EmptyGui		= "open_empty_gui";
 }
