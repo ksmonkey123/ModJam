@@ -20,16 +20,11 @@ public class Station extends BlockContainer {
 		this.setCreativeTab(ModMain.modTab);
 		this.setHardness(0.3f);
 		this.setHarvestLevel("axe", 0);
-		this.setLightOpacity(255);
+		// this.setLightOpacity(0);
 	}
 
 	public IIcon getBlockIcon() {
 		return this.blockIcon;
-	}
-
-	@Override
-	public String getTextureName() {
-		return super.getTextureName();
 	}
 
 	@Override

@@ -43,7 +43,7 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 		// SETUP
 		GL11.glTranslated(transX + 0.5, transY + 0.5, transZ + 0.5);
 
-		// renderBlock(t);
+		renderBlock(t);
 
 		float umin = 0;// icon.getMinU();
 		float umax = 1;// icon.getMaxU();

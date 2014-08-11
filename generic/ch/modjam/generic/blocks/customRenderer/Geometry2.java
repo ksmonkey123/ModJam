@@ -139,7 +139,10 @@ public class Geometry2 extends Geometry {
 				break;
 			}
 			default: {
-				throw new RuntimeException("Unhandled enum type: " + visibleFrom);
+				// using front as default
+				uc = arr(0, Axis.X.index);
+				vc = arr(0, Axis.Y.index);
+				System.err.println("Unhandled enum type: " + visibleFrom);
 			}
 		}
 		return new int[][] { uc, vc };

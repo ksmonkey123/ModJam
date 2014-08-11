@@ -5,8 +5,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumChatFormatting;
 import ch.judos.at.blocks.Station;
-import ch.judos.at.lib.CommonProxy;
 import ch.judos.at.lib.ATReferences;
+import ch.judos.at.lib.CommonProxy;
 import ch.judos.at.te.TEStation;
 import ch.modjam.generic.RegistryUtil;
 import cpw.mods.fml.common.Mod;
@@ -44,10 +44,10 @@ public class ModMain {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
 		setMetaData(e.getModMetadata());
+		createCreativeTab();
 
 		registerStation();
 
-		createCreativeTab();
 		proxy.registerRenderInformation();
 	}
 
