@@ -28,9 +28,15 @@ public class Geometry2 extends Geometry {
 												{ 1, 1, 0, 0, 0, 0 }, //
 												{ 0, 0, 1, 1, 1, 1 }, //
 												{ 0, 0, 0, 0, 0, 0 } };
+	private boolean					uvModeScaled;
 
 	public Geometry2(String texture) {
 		super(texture);
+		this.uvModeScaled = false;
+	}
+
+	public void setUvModeScaled(boolean isScaled) {
+		this.uvModeScaled = isScaled;
 	}
 
 	public void addQuadOnSide(double x, double y, double z, double width, double height,
@@ -46,49 +52,67 @@ public class Geometry2 extends Geometry {
 	public void addQuadOnSideWithTexRot(double x, double y, double z, double width, double height,
 			EFace visibleFrom, int useTextureTileIndex, int texRotation) {
 
-		// calculates the absolute coordinates of the points that are offset by width,height
+		// calculates the absolute coordinates for the offset by width,height
 		double[] delta = size2dTo3dDeltaCoordinates(visibleFrom, width, height);
 		double xp = x + delta[0];
 		double yp = y + delta[1];
 		double zp = z + delta[2];
 
-		double[][] coord = { { -xp, x }, { -yp, y }, { -zp, z } };
-
-		double us = 0, vs = 0, dU, dV;
-
+		// normally u is scaled to the width and v to the height
+		// needs to be swaped if texRotation is 90° or 270°
 		boolean[] swaped = { (texRotation % 2) == 1 };
 
-		int[] uc, vc; // {value (+delta[n]/2 or -delta[n]/2), coordinate
-						// (0=x,1=y,2=z)}
-
+		// returns two coordinate,axis index pairs for u and v
 		int[][] ucvc = calcUcVcFromSide(visibleFrom, swaped);
-		uc = ucvc[0];
-		vc = ucvc[1];
 
+		// {value (+delta[n]/2 or -delta[n]/2), coordinate (0=x,1=y,2=z)}
+		int[] uc = ucvc[0];
+		int[] vc = ucvc[1];
+
+		// while rotating by 90°
 		int rot = texRotation;
 		while (rot > 0) {
 			rot--;
+			// exchange index of what value to use (-xp or x) and
+			// the axis that is mapped to u,v
 			int[] temp = uc;
 			uc = arr(vc[0], vc[1]);
 			vc = arr(1 - temp[0], temp[1]);
 		}
 
+		// what value to use depending starting point and axis
+		// NOTE: x,y,z is only relative coordinate to the block center (so between -0.5 and 0.5)
+		// same goes for xp,yp,zp
+		double[][] coord = { { -xp, -yp, -zp }, { x, y, z } };
+		if (this.uvModeScaled)
+			coord = new double[][] { { -0.5, -0.5, -0.5 }, { -0.5, -0.5, -0.5 } };
+
 		int tx = useTextureTileIndex % 4;
 		int ty = useTextureTileIndex / 4;
-		us = tx * uvPerTile + (0.5 + coord[uc[1]][uc[0]]) * uvPerTile;
-		vs = ty * uvPerTile + (0.5 + coord[vc[1]][vc[0]]) * uvPerTile;
+		// the u,v starting coordinates
+		double us = tx * uvPerTile + (0.5 + coord[uc[0]][uc[1]]) * uvPerTile;
+		double vs = ty * uvPerTile + (0.5 + coord[vc[0]][vc[1]]) * uvPerTile;
 
-		if (!swaped[0]) {
-			dU = width * uvPerTile;
-			dV = height * uvPerTile;
+		// delta variables for u,v
+		double dU, dV;
+		if (this.uvModeScaled) {
+			dU = uvPerTile;
+			dV = uvPerTile;
 		} else {
-			dU = height * uvPerTile;
-			dV = width * uvPerTile;
+			if (!swaped[0]) {
+				dU = width * uvPerTile;
+				dV = height * uvPerTile;
+			} else {
+				dU = height * uvPerTile;
+				dV = width * uvPerTile;
+			}
 		}
 
+		// the maximum u,v coordinates
 		double up = us + dU;
 		double vp = vs + dV;
 
+		// alls the u,v coordinates for the 4 edge point of the quad
 		double[] u = { us, us, up, up };
 		double[] v = { vs, vp, vp, vs };
 
