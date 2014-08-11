@@ -2,7 +2,9 @@ package ch.judos.at;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumChatFormatting;
+import ch.judos.at.blocks.Station;
 import ch.judos.at.lib.CommonProxy;
 import ch.judos.at.lib.References;
 import cpw.mods.fml.common.Mod;
@@ -32,14 +34,23 @@ public class ModMain {
 
 	public static CreativeTabs	modTab;
 
+	public static Station		station;
+
 	/**
 	 * @param e
 	 */
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
 		setMetaData(e.getModMetadata());
+
+		registerStation();
+
 		createCreativeTab();
 		proxy.registerRenderInformation();
+	}
+
+	private static void registerStation() {
+		station = new Station();
 	}
 
 	private static void setMetaData(ModMetadata m) {
@@ -53,11 +64,11 @@ public class ModMain {
 	}
 
 	private static void createCreativeTab() {
-		modTab = new CreativeTabs("MCMod") {
+		modTab = new CreativeTabs(References.NAME) {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public Item getTabIconItem() {
-				return null;// ModMain.itemObsidianStick;
+				return new ItemBlock(ModMain.station);
 			}
 
 			@Override
