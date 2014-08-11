@@ -103,7 +103,7 @@ public class Geometry2 extends Geometry {
 				(float) u[(i + texRotation) % 4], (float) v[(i + texRotation) % 4]);
 	}
 
-	private int[][] calcUcVcFromSide(EFace visibleFrom, boolean[] swaped) {
+	private static int[][] calcUcVcFromSide(EFace visibleFrom, boolean[] swaped) {
 		int[] uc, vc;
 		switch (visibleFrom) {
 			case TOP: {
