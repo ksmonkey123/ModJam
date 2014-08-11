@@ -1,3 +1,12 @@
+MCP Conf dir for deobfuscator
+=============================
+
+Incase you are asked by eclipse:
+Put MCP conf folder for the deobfuscator here:
+	gradleUserHome\caches\minecraft\net\minecraftforge\forge\1.7.2-10.12.2.1121\unpacked\conf
+probably the gradleUserHome dir is in your user directory (c:/benutzer/name/)
+
+
 JUNIT (j)
 ====================
 I put JUnit into the source folder together with hamcrest-core (which is needed by junit). The new source unitTests can
