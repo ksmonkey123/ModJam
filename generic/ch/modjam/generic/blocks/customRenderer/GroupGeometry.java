@@ -48,6 +48,7 @@ public class GroupGeometry {
 		t.startDrawingQuads();
 		draw(t, new Matrix4f());
 		t.draw();
+
 		RenderHelper.enableStandardItemLighting();
 
 		GL11.glDisable(GL11.GL_BLEND); // Turn off blending

@@ -35,6 +35,11 @@ public class Geometry2 extends Geometry {
 		this.uvModeScaled = false;
 	}
 
+	public Geometry2(Geometry parentPart) {
+		super(parentPart);
+		this.uvModeScaled = false;
+	}
+
 	public void setUvModeScaled(boolean isScaled) {
 		this.uvModeScaled = isScaled;
 	}

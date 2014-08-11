@@ -8,6 +8,10 @@ public class Geometry3 extends Geometry2 {
 		super(texture);
 	}
 
+	public Geometry3(Geometry parentPart) {
+		super(parentPart);
+	}
+
 	public void addStandardCube() {
 		addCubeOfRadius(0.5);
 	}

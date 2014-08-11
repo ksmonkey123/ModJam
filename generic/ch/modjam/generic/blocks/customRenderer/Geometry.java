@@ -31,6 +31,13 @@ public class Geometry extends GroupGeometry {
 		this.texture = texture;
 	}
 
+	// instanciates a geometry part with the same texture as it's parent, and adds it to the list of
+	// subParts
+	public Geometry(Geometry parentPart) {
+		this(parentPart.texture);
+		parentPart.subParts.add(this);
+	}
+
 	@Override
 	public void clear() {
 		super.clear();
@@ -50,6 +57,10 @@ public class Geometry extends GroupGeometry {
 	 */
 	public void addPoint(float x, float y, float z, float u, float v) {
 		this.addPoint(new Vertex(x, y, z, u, v));
+	}
+
+	public void addPoint(double x, double y, double z, double u, double v) {
+		this.addPoint(new Vertex((float) x, (float) y, (float) z, (float) u, (float) v));
 	}
 
 	/**
