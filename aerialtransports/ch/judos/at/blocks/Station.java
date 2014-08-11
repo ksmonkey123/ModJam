@@ -6,8 +6,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import ch.judos.at.ModMain;
-import ch.judos.at.lib.ModNames;
-import ch.judos.at.lib.References;
+import ch.judos.at.lib.ATNames;
+import ch.judos.at.lib.ATReferences;
 import ch.judos.at.te.TEStation;
 import ch.modjam.generic.blocks.customRenderer.RenderType;
 
@@ -15,8 +15,8 @@ public class Station extends BlockContainer {
 
 	public Station() {
 		super(Material.wood);
-		this.setBlockName(ModNames.station);
-		this.setBlockTextureName(References.MOD_ID + ":" + ModNames.station);
+		this.setBlockName(ATNames.station);
+		this.setBlockTextureName(ATReferences.MOD_ID + ":" + ATNames.station);
 		this.setCreativeTab(ModMain.modTab);
 		this.setHardness(0.3f);
 		this.setHarvestLevel("axe", 0);

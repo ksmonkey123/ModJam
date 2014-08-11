@@ -1,7 +1,7 @@
 package ch.judos.at.lib;
 
 @SuppressWarnings("javadoc")
-public class ModNames {
+public class ATNames {
 	/*
 	 * All names must be lower case
 	 */
