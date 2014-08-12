@@ -1,4 +1,4 @@
-package ch.modjam.generic.blocks;
+package ch.modjam.generic.rendering;
 
 import net.minecraft.tileentity.TileEntity;
 

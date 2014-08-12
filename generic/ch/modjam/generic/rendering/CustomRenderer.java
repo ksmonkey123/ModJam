@@ -1,4 +1,4 @@
-package ch.modjam.generic.blocks;
+package ch.modjam.generic.rendering;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
@@ -7,6 +7,9 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
+
+import ch.modjam.generic.blocks.Axis;
+import ch.modjam.generic.blocks.EFace;
 
 /**
  * supports easy rendering for custom blocks.<br>

@@ -1,4 +1,4 @@
-package ch.modjam.generic.blocks.customRenderer;
+package ch.modjam.generic.rendering.customRenderer;
 
 import org.lwjgl.util.vector.Vector4f;
 

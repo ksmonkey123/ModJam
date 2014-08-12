@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
-import ch.modjam.generic.blocks.customRenderer.RenderType;
+import ch.modjam.generic.rendering.customRenderer.RenderType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

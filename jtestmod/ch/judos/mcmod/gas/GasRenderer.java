@@ -6,8 +6,8 @@ import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
-import ch.modjam.generic.blocks.AnimatedTextureUtils;
-import ch.modjam.generic.blocks.SpriteRenderer;
+import ch.modjam.generic.rendering.AnimatedTextureUtils;
+import ch.modjam.generic.rendering.SpriteRenderer;
 
 /**
  * @author judos

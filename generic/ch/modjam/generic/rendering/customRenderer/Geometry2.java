@@ -1,4 +1,4 @@
-package ch.modjam.generic.blocks.customRenderer;
+package ch.modjam.generic.rendering.customRenderer;
 
 import ch.modjam.generic.blocks.Axis;
 import ch.modjam.generic.blocks.EFace;

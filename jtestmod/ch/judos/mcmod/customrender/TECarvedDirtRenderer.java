@@ -17,9 +17,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
-import ch.modjam.generic.blocks.CustomRenderer;
 import ch.modjam.generic.blocks.EFace;
-import ch.modjam.generic.blocks.customRenderer.Geometry2;
+import ch.modjam.generic.rendering.CustomRenderer;
+import ch.modjam.generic.rendering.customRenderer.Geometry2;
 
 @SuppressWarnings("javadoc")
 public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
