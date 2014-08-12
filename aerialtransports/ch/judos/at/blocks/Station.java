@@ -9,7 +9,7 @@ import ch.judos.at.ModMain;
 import ch.judos.at.lib.ATNames;
 import ch.judos.at.lib.ATReferences;
 import ch.judos.at.te.TEStation;
-import ch.modjam.generic.blocks.customRenderer.RenderType;
+import ch.modjam.generic.rendering.customRenderer.RenderType;
 
 public class Station extends BlockContainer {
 

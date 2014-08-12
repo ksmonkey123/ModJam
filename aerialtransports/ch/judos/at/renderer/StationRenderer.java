@@ -2,15 +2,20 @@ package ch.judos.at.renderer;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 import ch.judos.at.te.TEStation;
 import ch.modjam.generic.blocks.EFace;
-import ch.modjam.generic.blocks.customRenderer.Geometry2;
-import ch.modjam.generic.blocks.customRenderer.Geometry3;
+import ch.modjam.generic.rendering.ItemRendering;
+import ch.modjam.generic.rendering.customRenderer.Geometry2;
+import ch.modjam.generic.rendering.customRenderer.Geometry3;
 
 public class StationRenderer extends TileEntitySpecialRenderer {
 
@@ -22,7 +27,7 @@ public class StationRenderer extends TileEntitySpecialRenderer {
 
 	@Override
 	public void renderTileEntityAt(TileEntity ent, double transX, double transY, double transZ,
-			float f) {
+			float partialTickTime) {
 		if (!(ent instanceof TEStation))
 			return;
 
@@ -53,13 +58,21 @@ public class StationRenderer extends TileEntitySpecialRenderer {
 			g.addPoint(s / 2f, 0.49f, -0.5f, ue, ve);
 			g.addPoint(-s / 2f, 0.5f, -0.5f, us, ve);
 
+			Item x = Items.apple;
+			x.getIconFromDamage(0);
 			// g.addQuadOnSide(-s / 2, 0.5, -0.5, s, 0.5, EFace.TOP);
 		}
 
+		Item i = Items.apple;
+		IIcon icon = i.getIconFromDamage(0);
+
 		// r.addQuadOnSide(-0.36, -0.36, -0.36, 2 * 0.36, 0.36, EFace.FRONT);
 		r.draw(Tessellator.instance);
+
+		ItemRendering.render3DItem(new ItemStack(Items.diamond, 1), partialTickTime, true);
 		// TEAR DOWN
 		GL11.glTranslated(-transX - 0.5, -transY - 0.5, -transZ - 0.5);
+
 	}
 
 }
