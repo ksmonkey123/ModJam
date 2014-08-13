@@ -28,7 +28,7 @@ public class TEStation extends GenericTileEntity {
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		super.getRenderBoundingBox()
+		// super.getRenderBoundingBox()
 		return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1,
 			this.yCoord + 2, this.zCoord + 1);
 	}
