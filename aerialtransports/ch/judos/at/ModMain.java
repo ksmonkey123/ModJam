@@ -4,6 +4,9 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.EnumChatFormatting;
+
+import org.apache.logging.log4j.Logger;
+
 import ch.judos.at.blocks.Station;
 import ch.judos.at.lib.ATReferences;
 import ch.judos.at.lib.CommonProxy;
@@ -38,11 +41,14 @@ public class ModMain {
 
 	public static Station		station;
 
+	public static Logger		logger;
+
 	/**
 	 * @param e
 	 */
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
+		logger = e.getModLog();
 		setMetaData(e.getModMetadata());
 		createCreativeTab();
 

@@ -31,6 +31,10 @@ public class Geometry extends GroupGeometry {
 		this.texture = texture;
 	}
 
+	public String getTexture() {
+		return this.texture;
+	}
+
 	// instanciates a geometry part with the same texture as it's parent, and adds it to the list of
 	// subParts
 	public Geometry(Geometry parentPart) {

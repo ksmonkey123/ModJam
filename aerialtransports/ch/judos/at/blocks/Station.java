@@ -2,6 +2,7 @@ package ch.judos.at.blocks;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -21,6 +22,19 @@ public class Station extends BlockContainer {
 		this.setHardness(0.3f);
 		this.setHarvestLevel("axe", 0);
 		// this.setLightOpacity(0);
+	}
+
+	@Override
+	public boolean onBlockActivated(World w, int x, int y, int z, EntityPlayer player, int side,
+			float hitX, float hitY, float hitZ) {
+		TileEntity te = w.getTileEntity(x, y, z);
+		if (te instanceof TEStation) {
+			ModMain.logger.error("onBlockActivated: " + player);
+			TEStation te2 = (TEStation) te;
+			te2.onBlockActivated(player);
+			return true;
+		}
+		return false;
 	}
 
 	public IIcon getBlockIcon() {

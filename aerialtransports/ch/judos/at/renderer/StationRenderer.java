@@ -1,12 +1,13 @@
 package ch.judos.at.renderer;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.Vec3;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
@@ -58,13 +59,35 @@ public class StationRenderer extends TileEntitySpecialRenderer {
 			g.addPoint(s / 2f, 0.49f, -0.5f, ue, ve);
 			g.addPoint(-s / 2f, 0.5f, -0.5f, us, ve);
 
-			Item x = Items.apple;
-			x.getIconFromDamage(0);
 			// g.addQuadOnSide(-s / 2, 0.5, -0.5, s, 0.5, EFace.TOP);
 		}
 
-		Item i = Items.apple;
-		IIcon icon = i.getIconFromDamage(0);
+		// ent.getWorldObj().getPlayerEntityByName(t.connectTo.getCommandSenderName())
+		EntityPlayer player = t.connectTo;
+		player = Minecraft.getMinecraft().thePlayer;
+
+		if (player != null) {
+			Vec3 pos = player.getPosition(partialTickTime);
+			pos = pos.addVector(0, -1, 0);
+			Vec3 relPos = pos.subtract(Vec3.createVectorHelper(t.xCoord + 0.5, t.yCoord + 0.5,
+				t.zCoord + 0.5));
+
+			float angleXZ = (float) (Math.atan2(relPos.xCoord, relPos.zCoord) + Math.PI / 2);
+			float angleY = (float) (-Math.atan2(relPos.yCoord, Math.hypot(relPos.xCoord,
+				relPos.zCoord)));
+			double length = 2;// relPos.lengthVector();
+
+			Geometry2 rope = new Geometry2("minecraft:textures/blocks/wool_colored_white.png");
+			rope.setUvModeScaled(false);
+			rope.addQuadOnSideWithTex(-0.1, 0.1, 0, length, 0.2, EFace.TOP, 0);
+			rope.addQuadOnSideWithTex(-0.1, -0.1, 0, length, 0.2, EFace.RIGHT, 0);
+			rope.addQuadOnSideWithTex(0.1, -0.1, 0, length, 0.2, EFace.LEFT, 0);
+			rope.addQuadOnSideWithTex(-0.1, -0.1, length, 0.2, 0.2, EFace.BACK, 0);
+
+			// rope.transform.rotate(angleXZ, new Vector3f(0, 1, 0));
+			// rope.transform.rotate(angleY, new Vector3f(0, 0, 1));
+			rope.draw(Tessellator.instance);
+		}
 
 		// r.addQuadOnSide(-0.36, -0.36, -0.36, 2 * 0.36, 0.36, EFace.FRONT);
 		r.draw(Tessellator.instance);
@@ -74,5 +97,4 @@ public class StationRenderer extends TileEntitySpecialRenderer {
 		GL11.glTranslated(-transX - 0.5, -transY - 0.5, -transZ - 0.5);
 
 	}
-
 }
