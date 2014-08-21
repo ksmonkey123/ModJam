@@ -37,6 +37,9 @@ public class GenericGuiHandler implements IGuiHandler {
 	 *         otherwise.
 	 */
 	public static boolean openGUI(EntityPlayer player, World world, int x, int y, int z) {
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		if (tileEntity == null || player.isSneaking())
+			return false;
 		if (!(world.getTileEntity(x, y, z) instanceof IHasGui))
 			return false;
 		player.openGui(GenericMod.instance, GUI_ID_TILE_ENTITY, world, x, y, z);
