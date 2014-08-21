@@ -1,4 +1,8 @@
-item.o_stick.name=Obsidian Stick
-tile.tar_block.name=Fluid Tar
 
 tile.station.name=Gondola Station
+item.rope_to_station.name=Rope
+
+at.gondolas=Gondolas
+at.items=Items
+at.connect=Connect
+at.reconnect=Reconnect

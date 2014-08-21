@@ -1,9 +1,7 @@
 package ch.judos.at.renderer;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -20,10 +18,10 @@ import ch.modjam.generic.rendering.customRenderer.Geometry3;
 
 public class StationRenderer extends TileEntitySpecialRenderer {
 
-	private Geometry3	r;
+	private Geometry3	g3;
 
 	public StationRenderer() {
-		this.r = new Geometry3(TEStation.getTextureName());
+		this.g3 = new Geometry3(TEStation.getTextureName());
 	}
 
 	@Override
@@ -38,14 +36,14 @@ public class StationRenderer extends TileEntitySpecialRenderer {
 		int time = (int) (ent.getWorldObj().getTotalWorldTime());
 		float angle = (float) time / 50;
 
-		r.clear();
-		r.subParts.clear();
-		r.setUvModeScaled(false);
-		r.transform.rotate(angle, new Vector3f(0, 1, 0));
+		this.g3.clear();
+		this.g3.subParts.clear();
+		this.g3.setUvModeScaled(false);
+		this.g3.transform.rotate(angle, new Vector3f(0, 1, 0));
 
 		final double s = 0.415; // side of one quad for an 8-sided cylinder
 		for (int i = 0; i < 8; i++) {
-			Geometry2 g = new Geometry2(r);
+			Geometry2 g = new Geometry2(this.g3);
 			g.setUvModeScaled(false);
 			g.transform.rotate((float) (i * 2 * Math.PI / 8), new Vector3f(0, 1, 0));
 			g.addQuadOnSide(-s / 2, -0.5, -0.5, s, 1, EFace.FRONT);
@@ -63,34 +61,38 @@ public class StationRenderer extends TileEntitySpecialRenderer {
 		}
 
 		// ent.getWorldObj().getPlayerEntityByName(t.connectTo.getCommandSenderName())
-		EntityPlayer player = t.connectTo;
-		player = Minecraft.getMinecraft().thePlayer;
+		if (t.isConnectedToSomething()) {
+			GL11.glTranslated(0, 0.4, 0);
+			Vec3 pos = t.getConnectedEndCoordinatesOrSelf(partialTickTime);
+			// pos = pos.addVector(0, -1, 0);
+			Vec3 station = Vec3.createVectorHelper(t.xCoord + 0.5, t.yCoord + 0.9, t.zCoord + 0.5);
+			Vec3 relPos = pos.subtract(station);
 
-		if (player != null) {
-			Vec3 pos = player.getPosition(partialTickTime);
-			pos = pos.addVector(0, -1, 0);
-			Vec3 relPos = pos.subtract(Vec3.createVectorHelper(t.xCoord + 0.5, t.yCoord + 0.5,
-				t.zCoord + 0.5));
-
-			float angleXZ = (float) (Math.atan2(relPos.xCoord, relPos.zCoord) + Math.PI / 2);
-			float angleY = (float) (-Math.atan2(relPos.yCoord, Math.hypot(relPos.xCoord,
+			float angleXZ = (float) (Math.atan2(relPos.xCoord, relPos.zCoord) + Math.PI);
+			float angleY = (float) (Math.atan2(relPos.yCoord, Math.hypot(relPos.xCoord,
 				relPos.zCoord)));
-			double length = 2;// relPos.lengthVector();
+			double length = relPos.lengthVector();
 
 			Geometry2 rope = new Geometry2("minecraft:textures/blocks/wool_colored_white.png");
 			rope.setUvModeScaled(false);
-			rope.addQuadOnSideWithTex(-0.1, 0.1, 0, length, 0.2, EFace.TOP, 0);
-			rope.addQuadOnSideWithTex(-0.1, -0.1, 0, length, 0.2, EFace.RIGHT, 0);
-			rope.addQuadOnSideWithTex(0.1, -0.1, 0, length, 0.2, EFace.LEFT, 0);
-			rope.addQuadOnSideWithTex(-0.1, -0.1, length, 0.2, 0.2, EFace.BACK, 0);
+			double r = 0.1; // rope thickness
 
-			// rope.transform.rotate(angleXZ, new Vector3f(0, 1, 0));
-			// rope.transform.rotate(angleY, new Vector3f(0, 0, 1));
+			rope.addQuadOnSideWithTex(-r / 2, r / 2, 0, length, r, EFace.TOP, 0);
+			rope.addQuadOnSideWithTex(-r / 2, -r / 2, 0, length, r, EFace.RIGHT, 0);
+			rope.addQuadOnSideWithTex(r / 2, -r / 2, 0, length, r, EFace.LEFT, 0);
+			rope.addQuadOnSideWithTex(-r / 2, -r / 2, length, r, r, EFace.BACK, 0);
+
+			rope.transform.rotate(angleXZ, new Vector3f(0, 1, 0));
+			rope.transform.rotate(angleY, new Vector3f(1, 0, 0));
 			rope.draw(Tessellator.instance);
+
+			// MovingObjectPosition x = t.getWorldObj().func_147447_a(station, pos, true, false,
+			// true);
+			GL11.glTranslated(0, -0.4, 0);
 		}
 
 		// r.addQuadOnSide(-0.36, -0.36, -0.36, 2 * 0.36, 0.36, EFace.FRONT);
-		r.draw(Tessellator.instance);
+		this.g3.draw(Tessellator.instance);
 
 		ItemRendering.render3DItem(new ItemStack(Items.diamond, 1), partialTickTime, true);
 		// TEAR DOWN
