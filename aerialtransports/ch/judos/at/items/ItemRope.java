@@ -3,6 +3,7 @@ package ch.judos.at.items;
 import java.util.List;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -64,14 +65,15 @@ public class ItemRope extends Item {
 				EntityPlayer e2 = (EntityPlayer) entity;
 				e2.inventory.setInventorySlotContents(slot, null);
 				if (!world.isRemote) {
-					EntityRope spawnIn = new EntityRope(world, entity, item);
-					world.spawnEntityInWorld(spawnIn);
+					EntityItem e = new EntityItem(world, entity.posX, entity.posY, entity.posZ,
+						new ItemStack(ATMain.ropeOfStation));
+					e.motionX = 0;
+					e.motionY = 0;
+					e.motionZ = 0;
+					world.spawnEntityInWorld(e);
 				}
 			}
 		}
-		//
-
-		// TODO:
 	}
 
 	public void onCreated(ItemStack rope, TEStation te2) {

@@ -11,6 +11,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 import ch.judos.at.ATMain;
 import ch.judos.at.gui.ContainerStation;
 import ch.judos.at.gui.GuiContainerStation;
@@ -25,6 +26,7 @@ public class TEStation extends GenericTileEntity implements IHasGui {
 																						// with
 																						// x,y,z
 	public static final String	nbtBuildConnectPlayerName	= "buildConnectPlayerName";
+
 	public static final String	netcmdClientRequestBindRope	= "requestBindRope";
 
 	public EntityPlayer			buildConnectTo;
@@ -60,9 +62,14 @@ public class TEStation extends GenericTileEntity implements IHasGui {
 		this.inventory.readNBT(tag);
 		if (tag.hasKey(nbtConnectedToCoords))
 			this.connectedTo = tag.getIntArray(nbtConnectedToCoords);
-		if (tag.hasKey(nbtBuildConnectPlayerName))
-			this.buildConnectTo = Minecraft.getMinecraft().theWorld.getPlayerEntityByName(tag
-				.getString(nbtBuildConnectPlayerName));
+		if (tag.hasKey(nbtBuildConnectPlayerName)) {
+			String name = tag.getString(nbtBuildConnectPlayerName);
+			World w = Minecraft.getMinecraft().theWorld;
+			// Minecraft.getMinecraft().get
+			// FIXME: world does not load correctly
+			ATMain.logger.error("name: " + name + ", world: " + w);
+			this.buildConnectTo = w.getPlayerEntityByName(name);
+		}
 	}
 
 	public static String getTextureName() {
