@@ -18,6 +18,8 @@ import ch.modjam.generic.inventory.GenericInventory;
  */
 public class CustomBoxTE extends BoxTE {
 
+	public static final String				netcmdSlotSizeChanged	= "slotSizeChanged";
+
 	private ArrayList<CustomBoxContainer>	containers;
 
 	/**
@@ -33,7 +35,7 @@ public class CustomBoxTE extends BoxTE {
 	 */
 	public void tryIncreaseSize() {
 		if (this.inventory.stack.length < 5)
-			this.sendNetworkCommand("slotSizeChanged", (byte) (this.inventory.stack.length + 1));
+			this.sendNetworkCommand(netcmdSlotSizeChanged, (byte) (this.inventory.stack.length + 1));
 	}
 
 	/**
@@ -41,11 +43,13 @@ public class CustomBoxTE extends BoxTE {
 	 */
 	public void tryDecreaseSize() {
 		if (this.inventory.stack.length > 1)
-			this.sendNetworkCommand("slotSizeChanged", (byte) (this.inventory.stack.length - 1));
+			this.sendNetworkCommand(netcmdSlotSizeChanged, (byte) (this.inventory.stack.length - 1));
 	}
 
 	@Override
 	public void onNetworkCommand(String command, byte[] data) {
+		if (!netcmdSlotSizeChanged.equals(command))
+			return;
 		int newSize = data[0];
 		if (newSize < this.inventory.stack.length)
 			dropItemsOnTheFloor(this.inventory.stack[this.inventory.stack.length - 1]);

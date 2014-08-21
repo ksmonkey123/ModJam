@@ -40,9 +40,6 @@ public class Box extends BlockContainer {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
 			int side, float sideX, float sideY, float sideZ) {
-		TileEntity tileEntity = world.getTileEntity(x, y, z);
-		if (tileEntity == null || player.isSneaking())
-			return false;
 		return GenericGuiHandler.openGUI(player, world, x, y, z);
 	}
 
