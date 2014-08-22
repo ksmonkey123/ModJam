@@ -65,8 +65,10 @@ public class TEStation extends GenericTileEntity implements IHasGui {
 		if (tag.hasKey(nbtBuildConnectPlayerName)) {
 			String name = tag.getString(nbtBuildConnectPlayerName);
 			World w = Minecraft.getMinecraft().theWorld;
-			// Minecraft.getMinecraft().get
-			// FIXME: world does not load correctly
+			// PlayerUtils.getPlayerByName(name, serverWorld)
+			w = Minecraft.getMinecraft().getIntegratedServer().getConfigurationManager()
+				.getServerInstance().getEntityWorld();
+			// FIXME: world object not existing yet, how to load the player object?
 			ATMain.logger.error("name: " + name + ", world: " + w);
 			this.buildConnectTo = w.getPlayerEntityByName(name);
 		}

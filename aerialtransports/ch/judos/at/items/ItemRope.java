@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import ch.judos.at.ATMain;
-import ch.judos.at.entity.EntityRope;
 import ch.judos.at.lib.ATNames;
 import ch.judos.at.te.TEStation;
 
@@ -29,21 +28,21 @@ public class ItemRope extends Item {
 
 	@Override
 	public boolean hasCustomEntity(ItemStack stack) {
-		return true;
+		return false;
 	}
 
 	@Override
 	public Entity createEntity(World world, Entity ent, ItemStack itemstack) {
-		ent.motionX = 0;
-		ent.motionY = 0;
-		ent.motionZ = 0;
-		return new EntityRope(world, ent, itemstack);
+		// ent.motionX = 0;
+		// ent.motionY = 0;
+		// ent.motionZ = 0;
+		// return new EntityRope(world, ent, itemstack);
+		return null;
 	}
 
 	@Override
 	public int getEntityLifespan(ItemStack itemStack, World world) {
-		// TODO Auto-generated method stub
-		return super.getEntityLifespan(itemStack, world);
+		return 100;
 	}
 
 	@Override
@@ -62,16 +61,16 @@ public class ItemRope extends Item {
 	public void onUpdate(ItemStack item, World world, Entity entity, int slot, boolean heldInHand) {
 		if (!heldInHand) {
 			if (entity instanceof EntityPlayer) {
+				ATMain.logger.error(entity + " - " + item);
 				EntityPlayer e2 = (EntityPlayer) entity;
 				e2.inventory.setInventorySlotContents(slot, null);
-				if (!world.isRemote) {
-					EntityItem e = new EntityItem(world, entity.posX, entity.posY, entity.posZ,
-						new ItemStack(ATMain.ropeOfStation));
-					e.motionX = 0;
-					e.motionY = 0;
-					e.motionZ = 0;
-					world.spawnEntityInWorld(e);
-				}
+
+				EntityItem e = new EntityItem(world, entity.posX, entity.posY, entity.posZ,
+					new ItemStack(ATMain.ropeOfStation));
+				e.motionX = 0;
+				e.motionY = 0;
+				e.motionZ = 0;
+				world.spawnEntityInWorld(e);
 			}
 		}
 	}

@@ -40,9 +40,7 @@ public class BlockStation extends BlockContainer {
 					return true;
 				}
 			}
-			if (world.isRemote) {
-				return GenericGuiHandler.openGUI(player, world, x, y, z);
-			}
+			return GenericGuiHandler.openGUI(player, world, x, y, z);
 		}
 		return false;
 	}
