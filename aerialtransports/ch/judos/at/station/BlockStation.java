@@ -1,4 +1,4 @@
-package ch.judos.at.blocks;
+package ch.judos.at.station;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -8,9 +8,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import ch.judos.at.ATMain;
-import ch.judos.at.items.ItemRope;
 import ch.judos.at.lib.ATNames;
-import ch.judos.at.te.TEStation;
+import ch.judos.at.station.items.ItemRope;
 import ch.modjam.generic.gui.GenericGuiHandler;
 import ch.modjam.generic.rendering.customRenderer.RenderType;
 
@@ -30,6 +29,7 @@ public class BlockStation extends BlockContainer {
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
 			int side, float hitX, float hitY, float hitZ) {
 		TileEntity te = world.getTileEntity(x, y, z);
+		ATMain.logger.error("onBlockActivated holding: " + player.getHeldItem());
 		if (te instanceof TEStation) {
 			TEStation te2 = (TEStation) te;
 

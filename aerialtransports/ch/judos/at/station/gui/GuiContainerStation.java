@@ -1,4 +1,4 @@
-package ch.judos.at.gui;
+package ch.judos.at.station.gui;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -9,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 
 import ch.judos.at.ATMain;
 import ch.judos.at.lib.ATNames;
-import ch.judos.at.te.TEStation;
+import ch.judos.at.station.TEStation;
 import ch.modjam.generic.gui.GenericGuiTEContainer;
 
 /**
@@ -34,7 +34,7 @@ public class GuiContainerStation extends GenericGuiTEContainer {
 		this.buttonList.clear();
 		String connect = StatCollector.translateToLocal("at.connect");
 		this.buttonList
-			.add(new GuiButton(0, this.guiLeft + 100, this.guiTop + 25, 50, 20, connect));
+			.add(new GuiButton(0, this.guiLeft + 100, this.guiTop + 25, 60, 20, connect));
 	}
 
 	@Override
@@ -61,8 +61,11 @@ public class GuiContainerStation extends GenericGuiTEContainer {
 		String items = StatCollector.translateToLocal("at.items");
 		this.fontRendererObj.drawString(items, 10, 48, color);
 
-		if (this.teStation.isConnectedToSomething())
-			((GuiButton) this.buttonList.get(0)).displayString = "---";
+		if (this.teStation.isConnectedToSomething()) {
+			String reconnect = StatCollector.translateToLocal("at.reconnect");
+			((GuiButton) this.buttonList.get(0)).displayString = reconnect;
+		}
+
 	}
 
 	@Override

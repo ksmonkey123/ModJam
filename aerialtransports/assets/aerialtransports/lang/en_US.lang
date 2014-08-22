@@ -1,6 +1,7 @@
 
 tile.station.name=Gondola Station
 item.rope_to_station.name=Rope
+item.gondola.name=Gondola
 
 at.gondolas=Gondolas
 at.items=Items

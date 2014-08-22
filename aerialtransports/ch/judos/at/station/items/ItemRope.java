@@ -1,4 +1,4 @@
-package ch.judos.at.items;
+package ch.judos.at.station.items;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import ch.judos.at.ATMain;
 import ch.judos.at.lib.ATNames;
-import ch.judos.at.te.TEStation;
+import ch.judos.at.station.TEStation;
 
 public class ItemRope extends Item {
 
@@ -59,6 +59,8 @@ public class ItemRope extends Item {
 
 	@Override
 	public void onUpdate(ItemStack item, World world, Entity entity, int slot, boolean heldInHand) {
+		if (true)
+			return;
 		if (!heldInHand) {
 			if (entity instanceof EntityPlayer) {
 				ATMain.logger.error(entity + " - " + item);

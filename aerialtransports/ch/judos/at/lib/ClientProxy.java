@@ -1,7 +1,7 @@
 package ch.judos.at.lib;
 
-import ch.judos.at.renderer.StationRenderer;
-import ch.judos.at.te.TEStation;
+import ch.judos.at.station.StationRenderer;
+import ch.judos.at.station.TEStation;
 import cpw.mods.fml.client.registry.ClientRegistry;
 
 @SuppressWarnings("javadoc")

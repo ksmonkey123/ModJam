@@ -1,6 +1,5 @@
-package ch.judos.at.te;
+package ch.judos.at.station;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -11,11 +10,10 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
 import ch.judos.at.ATMain;
-import ch.judos.at.gui.ContainerStation;
-import ch.judos.at.gui.GuiContainerStation;
 import ch.judos.at.lib.ATNames;
+import ch.judos.at.station.gui.ContainerStation;
+import ch.judos.at.station.gui.GuiContainerStation;
 import ch.modjam.generic.gui.IHasGui;
 import ch.modjam.generic.inventory.GenericInventory;
 import ch.modjam.generic.tileEntity.GenericTileEntity;
@@ -62,15 +60,10 @@ public class TEStation extends GenericTileEntity implements IHasGui {
 		this.inventory.readNBT(tag);
 		if (tag.hasKey(nbtConnectedToCoords))
 			this.connectedTo = tag.getIntArray(nbtConnectedToCoords);
-		if (tag.hasKey(nbtBuildConnectPlayerName)) {
+		if (tag.hasKey(nbtBuildConnectPlayerName) && this.worldObj != null) {
 			String name = tag.getString(nbtBuildConnectPlayerName);
-			World w = Minecraft.getMinecraft().theWorld;
-			// PlayerUtils.getPlayerByName(name, serverWorld)
-			w = Minecraft.getMinecraft().getIntegratedServer().getConfigurationManager()
-				.getServerInstance().getEntityWorld();
-			// FIXME: world object not existing yet, how to load the player object?
-			ATMain.logger.error("name: " + name + ", world: " + w);
-			this.buildConnectTo = w.getPlayerEntityByName(name);
+			ATMain.logger.error("loading: " + this.worldObj);
+			this.buildConnectTo = this.worldObj.getPlayerEntityByName(name);
 		}
 	}
 
@@ -96,6 +89,7 @@ public class TEStation extends GenericTileEntity implements IHasGui {
 		ATMain.ropeOfStation.onCreated(rope, this);
 		player.inventory.setInventorySlotContents(currentSlotHeld, rope);
 
+		ATMain.logger.error("bindRopeConnecction");
 		this.buildConnectTo = player;
 		// if (this.worldObj.isRemote)
 		player.addChatMessage(new ChatComponentText("Connected rope to player " + player
@@ -148,8 +142,7 @@ public class TEStation extends GenericTileEntity implements IHasGui {
 	public void onNetworkCommand(String command, byte[] data) {
 		if (netcmdClientRequestBindRope.equals(command)) {
 			String playerName = new String(data);
-			EntityPlayer player = Minecraft.getMinecraft().theWorld
-				.getPlayerEntityByName(playerName);
+			EntityPlayer player = this.worldObj.getPlayerEntityByName(playerName);
 			this.bindRopeConnection(player);
 		}
 	}

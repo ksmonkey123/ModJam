@@ -1,22 +1,26 @@
 package ch.judos.at;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.logging.log4j.Logger;
 
-import ch.judos.at.blocks.BlockStation;
-import ch.judos.at.items.ItemRope;
 import ch.judos.at.lib.CommonProxy;
-import ch.judos.at.te.TEStation;
+import ch.judos.at.station.BlockStation;
+import ch.judos.at.station.TEStation;
+import ch.judos.at.station.items.ItemGondola;
+import ch.judos.at.station.items.ItemRope;
 import ch.modjam.generic.RegistryUtil;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -36,23 +40,17 @@ public class ATMain {
 
 	@SidedProxy(clientSide = ATMain.Client, serverSide = ATMain.Common)
 	public static CommonProxy	proxy;
-
-	public static CreativeTabs	modTab;
-
-	public static BlockStation		station;
-
 	public static Logger		logger;
 
-	public static ItemRope	ropeOfStation;
+	public static CreativeTabs	modTab;
+	public static BlockStation	station;
+	public static ItemRope		ropeOfStation;
+	public static ItemGondola	gondola;
 
 	public static final String	MOD_ID	= "aerialtransports";
-
 	public static final String	VERSION	= "1.7.10-0.11";
-
 	public static final String	NAME	= "Aerial Transports";
-
 	public static final String	Common	= "ch.judos.at.lib.CommonProxy";
-
 	public static final String	Client	= "ch.judos.at.lib.ClientProxy";
 
 	/**
@@ -65,9 +63,17 @@ public class ATMain {
 		createCreativeTab();
 
 		registerRopeOfStationItem();
+		registerGondola();
 		registerStation();
 
 		proxy.registerRenderInformation();
+	}
+
+	private static void registerGondola() {
+		gondola = new ItemGondola();
+		RegistryUtil.registerItem(gondola);
+		GameRegistry.addShapedRecipe(new ItemStack(gondola, 2), "S", "I", "B", 'S', Items.string,
+			'I', Items.stick, 'B', Blocks.chest);
 	}
 
 	private static void registerRopeOfStationItem() {
@@ -95,7 +101,7 @@ public class ATMain {
 			@Override
 			@SideOnly(Side.CLIENT)
 			public Item getTabIconItem() {
-				return new ItemBlock(ATMain.station);
+				return ATMain.gondola;
 			}
 
 			@Override

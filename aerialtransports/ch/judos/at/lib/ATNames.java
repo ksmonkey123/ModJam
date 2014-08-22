@@ -8,5 +8,6 @@ public class ATNames {
 
 	public static final String	station			= "station";
 	public static final String	ropeToStation	= "rope_to_station";
+	public static final String	gondola			= "gondola";
 
 }

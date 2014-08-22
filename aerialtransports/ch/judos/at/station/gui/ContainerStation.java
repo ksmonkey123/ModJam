@@ -1,10 +1,10 @@
-package ch.judos.at.gui;
+package ch.judos.at.station.gui;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import ch.judos.at.te.TEStation;
+import ch.judos.at.station.TEStation;
 import ch.modjam.generic.gui.GenericContainer;
 
 /**
