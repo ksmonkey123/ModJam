@@ -9,9 +9,12 @@ import net.minecraft.util.EnumChatFormatting;
 
 import org.apache.logging.log4j.Logger;
 
+import ch.judos.at.lib.ATNames;
 import ch.judos.at.lib.CommonProxy;
 import ch.judos.at.station.BlockStation;
 import ch.judos.at.station.TEStation;
+import ch.judos.at.station.entity.EntityGondola;
+import ch.judos.at.station.entity.GondolaTargetMessage;
 import ch.judos.at.station.items.ItemGondola;
 import ch.judos.at.station.items.ItemRope;
 import ch.modjam.generic.RegistryUtil;
@@ -20,6 +23,9 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -36,22 +42,24 @@ public class ATMain {
 	 * public instance of this mod
 	 */
 	@Mod.Instance(ATMain.MOD_ID)
-	public static ATMain		instance;
+	public static ATMain				instance;
 
 	@SidedProxy(clientSide = ATMain.Client, serverSide = ATMain.Common)
-	public static CommonProxy	proxy;
-	public static Logger		logger;
+	public static CommonProxy			proxy;
+	public static Logger				logger;
 
-	public static CreativeTabs	modTab;
-	public static BlockStation	station;
-	public static ItemRope		ropeOfStation;
-	public static ItemGondola	gondola;
+	public static CreativeTabs			modTab;
+	public static BlockStation			station;
+	public static ItemRope				ropeOfStation;
+	public static ItemGondola			gondola;
 
-	public static final String	MOD_ID	= "aerialtransports";
-	public static final String	VERSION	= "1.7.10-0.11";
-	public static final String	NAME	= "Aerial Transports";
-	public static final String	Common	= "ch.judos.at.lib.CommonProxy";
-	public static final String	Client	= "ch.judos.at.lib.ClientProxy";
+	public static final String			MOD_ID	= "aerialtransports";
+	public static final String			VERSION	= "1.7.10-0.11";
+	public static final String			NAME	= "Aerial Transports";
+	public static final String			Common	= "ch.judos.at.lib.CommonProxy";
+	public static final String			Client	= "ch.judos.at.lib.ClientProxy";
+
+	public static SimpleNetworkWrapper	network;
 
 	/**
 	 * @param e
@@ -66,6 +74,10 @@ public class ATMain {
 		registerGondola();
 		registerStation();
 
+		network = NetworkRegistry.INSTANCE.newSimpleChannel(ATMain.MOD_ID + "c1");
+		network.registerMessage(GondolaTargetMessage.GondolaTargetHandler.class,
+			GondolaTargetMessage.class, 0, Side.CLIENT);
+
 		proxy.registerRenderInformation();
 	}
 
@@ -74,6 +86,9 @@ public class ATMain {
 		RegistryUtil.registerItem(gondola);
 		GameRegistry.addShapedRecipe(new ItemStack(gondola, 2), "S", "I", "B", 'S', Items.string,
 			'I', Items.stick, 'B', Blocks.chest);
+
+		EntityRegistry.registerModEntity(EntityGondola.class, ATNames.gondola, 0, ATMain.instance,
+			80, 1, true);
 	}
 
 	private static void registerRopeOfStationItem() {

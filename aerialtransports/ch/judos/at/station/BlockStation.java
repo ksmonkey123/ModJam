@@ -29,14 +29,12 @@ public class BlockStation extends BlockContainer {
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
 			int side, float hitX, float hitY, float hitZ) {
 		TileEntity te = world.getTileEntity(x, y, z);
-		ATMain.logger.error("onBlockActivated holding: " + player.getHeldItem());
 		if (te instanceof TEStation) {
 			TEStation te2 = (TEStation) te;
 
 			ItemStack held = player.getHeldItem();
 			if (held != null && ATMain.ropeOfStation == held.getItem()) {
 				if (connectStationToStation(world, te2, held, player)) {
-					ATMain.logger.error("connected true");
 					return true;
 				}
 			}

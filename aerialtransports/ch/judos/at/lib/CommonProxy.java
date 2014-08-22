@@ -11,4 +11,11 @@ public class CommonProxy {
 	public void registerRenderInformation() {
 		// not required - rendering is client side
 	}
+
+	/**
+	 * register sounds
+	 */
+	public void registerSound() {
+		// not required - rendering is client side
+	}
 }

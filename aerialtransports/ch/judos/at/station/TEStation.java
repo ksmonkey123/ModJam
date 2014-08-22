@@ -6,12 +6,14 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import ch.judos.at.ATMain;
 import ch.judos.at.lib.ATNames;
+import ch.judos.at.station.entity.EntityGondola;
 import ch.judos.at.station.gui.ContainerStation;
 import ch.judos.at.station.gui.GuiContainerStation;
 import ch.modjam.generic.gui.IHasGui;
@@ -29,18 +31,55 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 
 	public EntityPlayer			buildConnectTo;
 	private int[]				connectedTo;											// block
-																						// coordinates
+	private int					counter;
+
+	// coordinates
 
 	public TEStation() {
 		super(new GenericInventory(2, ATNames.station));
 		this.inventory.addWhiteListFilter(0, ATMain.gondola);
 		this.buildConnectTo = null;
 		this.connectedTo = null;
+		this.counter = 0;
 	}
 
 	@Override
 	public void tick() {
-		// TODO
+		if (this.worldObj.isRemote)
+			return;
+
+		this.counter++;
+		if (this.counter >= 75) {
+			this.counter = 0;
+
+			ItemStack gondolas = this.inventory.getStackInSlot(0);
+			ItemStack goods = this.inventory.getStackInSlot(1);
+
+			if (gondolas != null && gondolas.stackSize > 0 && goods != null) {
+
+				TEStation target = this.getTarget();
+				if (target != null) {
+					// ATMain.logger.error("sending items: " + this.inventory.decrStackSize(1, 1));
+					ATMain.logger.error("sending items: " + this.worldObj.getTotalWorldTime());
+					EntityGondola eGondola = new EntityGondola(this.worldObj);
+					eGondola.setPosition(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5);
+					eGondola.setStartAndTarget(this.xCoord + 0.5, this.yCoord + 0.5,
+						this.zCoord + 0.5, target.xCoord + 0.5, target.yCoord + 0.5,
+						target.zCoord + 0.5);
+					this.worldObj.spawnEntityInWorld(eGondola);
+				}
+			}
+		}
+	}
+
+	public TEStation getTarget() {
+		if (this.connectedTo == null)
+			return null;
+		TileEntity e = this.worldObj.getTileEntity(this.connectedTo[0], this.connectedTo[1],
+			this.connectedTo[2]);
+		if (e instanceof TEStation)
+			return (TEStation) e;
+		return null;
 	}
 
 	@Override
