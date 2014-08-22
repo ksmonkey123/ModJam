@@ -4,8 +4,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import ch.judos.at.ATMain;
 import ch.judos.at.station.TEStation;
 import ch.modjam.generic.gui.GenericContainer;
+import ch.modjam.generic.inventory.slot.WhiteListSlot;
 
 /**
  * @author judos
@@ -25,7 +27,9 @@ public class ContainerStation extends GenericContainer {
 	}
 
 	protected void init() {
-		addSlotToContainer(new Slot(this.tileEntityInventory, 0, 70, 31 - 5));
+		WhiteListSlot gondolas = new WhiteListSlot(this.tileEntityInventory, 0, 70, 31 - 5);
+		gondolas.addItem(ATMain.gondola);
+		addSlotToContainer(gondolas);
 		addSlotToContainer(new Slot(this.tileEntityInventory, 1, 70, 49 - 5));
 	}
 

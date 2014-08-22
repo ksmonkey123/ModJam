@@ -1,4 +1,4 @@
-package ch.judos.at.entity;
+package ch.judos.at.workinprogress;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;

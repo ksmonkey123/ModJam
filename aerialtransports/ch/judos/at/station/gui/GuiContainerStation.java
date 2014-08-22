@@ -32,9 +32,10 @@ public class GuiContainerStation extends GenericGuiTEContainer {
 	public void initGui() {
 		super.initGui();
 		this.buttonList.clear();
-		String connect = StatCollector.translateToLocal("at.connect");
-		this.buttonList
-			.add(new GuiButton(0, this.guiLeft + 100, this.guiTop + 25, 60, 20, connect));
+		String text = StatCollector.translateToLocal("at.connect");
+		if (this.teStation.isConnectedToSomething())
+			text = StatCollector.translateToLocal("at.reconnect");
+		this.buttonList.add(new GuiButton(0, this.guiLeft + 100, this.guiTop + 25, 60, 20, text));
 	}
 
 	@Override

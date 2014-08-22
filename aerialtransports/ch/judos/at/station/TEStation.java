@@ -16,9 +16,9 @@ import ch.judos.at.station.gui.ContainerStation;
 import ch.judos.at.station.gui.GuiContainerStation;
 import ch.modjam.generic.gui.IHasGui;
 import ch.modjam.generic.inventory.GenericInventory;
-import ch.modjam.generic.tileEntity.GenericTileEntity;
+import ch.modjam.generic.inventory.GenericTileEntityWithInventory;
 
-public class TEStation extends GenericTileEntity implements IHasGui {
+public class TEStation extends GenericTileEntityWithInventory implements IHasGui {
 
 	public static final String	nbtConnectedToCoords		= "connectedToCoords";		// int array
 																						// with
@@ -30,13 +30,10 @@ public class TEStation extends GenericTileEntity implements IHasGui {
 	public EntityPlayer			buildConnectTo;
 	private int[]				connectedTo;											// block
 																						// coordinates
-																						// of the
-																						// connected
-																						// station
-	public GenericInventory		inventory;
 
 	public TEStation() {
-		this.inventory = new GenericInventory(2, ATNames.station);
+		super(new GenericInventory(2, ATNames.station));
+		this.inventory.addWhiteListFilter(0, ATMain.gondola);
 		this.buildConnectTo = null;
 		this.connectedTo = null;
 	}
