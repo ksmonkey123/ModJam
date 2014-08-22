@@ -2,8 +2,10 @@ package ch.modjam.generic.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import ch.judos.at.ATMain;
 
 /**
  * @author judos
@@ -13,13 +15,29 @@ public abstract class AbstractInventory implements IInventory {
 	/**
 	 * name of the tileEntity
 	 */
-	public String	tileName;
+	public String			tileName;
+	protected ItemFilter[]	filters;
+	protected int			size;
 
 	/**
+	 * @param slots
 	 * @param tileEntityName
 	 */
-	public AbstractInventory(String tileEntityName) {
+	public AbstractInventory(int slots, String tileEntityName) {
+		this.size = slots;
 		this.tileName = tileEntityName;
+		this.filters = new ItemFilter[this.getSizeInventory()];
+	}
+
+	@Override
+	public int getSizeInventory() {
+		return this.size;
+	}
+
+	public void addWhiteListFilter(int slot, Item i) {
+		if (!(this.filters[slot] instanceof ItemFilterWhiteList))
+			this.filters[slot] = new ItemFilterWhiteList();
+		this.filters[slot].addItem(i);
 	}
 
 	@Override
@@ -57,12 +75,17 @@ public abstract class AbstractInventory implements IInventory {
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack items) {
+		ATMain.logger.error("isValid slot: " + slot + ", stack: " + items);
+
+		if (this.filters[slot] != null && !this.filters[slot].itemAllowed(items.getItem()))
+			return false;
+
 		return this.getStackInSlot(slot) == null || this.getStackInSlot(slot).getItem().equals(
 			items.getItem());
 	}
 
 	/**
-	 * @return the first item that can be removed from the
+	 * @return the first item that can be removed from the inventory
 	 */
 	public ItemStack getAndRemoveFirstItem() {
 		for (int i = 0; i < this.getSizeInventory(); i++)
@@ -107,7 +130,7 @@ public abstract class AbstractInventory implements IInventory {
 	}
 
 	@Override
-	public boolean isUseableByPlayer(EntityPlayer var1) {
+	public boolean isUseableByPlayer(EntityPlayer player) {
 		return true;
 	}
 

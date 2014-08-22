@@ -24,14 +24,9 @@ public class GenericInventory extends AbstractInventory {
 	 * @param tileName used to translate with "tile." + tileName + ".name"
 	 */
 	public GenericInventory(int slots, String tileName) {
-		super(tileName);
+		super(slots, tileName);
 		this.stack = new ItemStack[slots];
 		this.listeners = new ArrayList<InventorySlotChangedListener>();
-	}
-
-	@Override
-	public int getSizeInventory() {
-		return this.stack.length;
 	}
 
 	@Override
@@ -45,7 +40,7 @@ public class GenericInventory extends AbstractInventory {
 			return;
 		this.stack[slot] = items;
 		for (InventorySlotChangedListener l : this.listeners)
-            l.slotChanged(slot, items);
+			l.slotChanged(slot, items);
 	}
 
 	/**
@@ -74,7 +69,7 @@ public class GenericInventory extends AbstractInventory {
 
 	@Override
 	public void markDirty() {
-	    // not implemented
+		// not implemented
 	}
 
 	/**

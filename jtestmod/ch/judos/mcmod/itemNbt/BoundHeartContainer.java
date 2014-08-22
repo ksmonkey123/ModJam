@@ -57,7 +57,7 @@ public class BoundHeartContainer extends GenericContainer {
 	}
 
 	private void init() {
-		unbindPlayerInventory();
+		removeAllInventorySlots();
 		bindPlayerInventory(this.playerInventory);
 		for (int i = 0; i < this.heart.getSizeInventory(); i++) {
 			// addSlotToContainer(new BackFeedingSlot(this.heart, i, 44 + 18 * i, 53));

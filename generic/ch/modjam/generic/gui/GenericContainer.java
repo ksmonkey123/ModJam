@@ -44,7 +44,7 @@ public abstract class GenericContainer extends Container {
 		}
 	}
 
-	protected void unbindPlayerInventory() {
+	protected void removeAllInventorySlots() {
 		this.inventorySlots.clear();
 		this.inventoryItemStacks.clear();
 	}

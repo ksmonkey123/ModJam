@@ -20,7 +20,7 @@ public class GenericNBTInventory extends AbstractInventory {
 	 * @param tileName
 	 */
 	public GenericNBTInventory(NBTProvider provider, String tileName) {
-		super(tileName);
+		super(provider.getNBT().getInteger("Slots"), tileName);
 		this.provider = provider;
 	}
 
