@@ -7,6 +7,7 @@ import static org.lwjgl.opengl.GL11.glRotatef;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 public class ItemRendering {
@@ -44,7 +45,11 @@ public class ItemRendering {
 			glRotatef(rot, 0, 1, 0);
 		}
 		item.hoverStart = 0.0F;
-		RenderManager.instance.renderEntityWithPosYaw(item, 0.0D, 1.0D, 0.0D, 0f, 0f);
+		// correct some buggy translation offset:
+		if (item.getEntityItem().getItem() instanceof ItemBlock)
+			RenderManager.instance.renderEntityWithPosYaw(item, 0D, 0.0D, -0.08D, 0f, 0f);
+		else
+			RenderManager.instance.renderEntityWithPosYaw(item, -0.08D, 0.0D, 0D, 0f, 0f);
 		glPopMatrix();
 	}
 }

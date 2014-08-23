@@ -3,10 +3,10 @@ package ch.judos.at.station.entity;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import ch.judos.at.ATMain;
 import ch.modjam.generic.Vec3Helper;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
@@ -16,12 +16,14 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 	public static final double	TRAVEL_SPEED	= 0.03;
 
 	private double				travelDistance;
-	private Vec3				end;
-	private Vec3				start;
+	public Vec3					end;
+	public Vec3					start;
+
+	public ItemStack			transportGoods;
 
 	public EntityGondola(World world) {
 		super(world);
-		this.setSize(0.1f, 0.1f);
+		this.setSize(1f, 1f);
 		this.travelDistance = 0;
 		this.noClip = true;
 		this.setAir(1);
@@ -30,10 +32,11 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 
 	}
 
-	public EntityGondola(World world, Vec3 start, Vec3 end) {
+	public EntityGondola(World world, Vec3 start, Vec3 end, ItemStack transportGoods) {
 		this(world);
 		this.start = start;
 		this.end = end;
+		this.transportGoods = transportGoods;
 
 		Vec3 direction = this.start.subtract(this.end);
 		direction = direction.normalize();
@@ -45,12 +48,13 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 	@Override
 	public void setPositionAndRotation2(double x, double y, double z, float xz, float ay,
 			int unknown) {
-		if (this.start != null)
+		// prevents flickering because too many updates from server are received
+		Vec3 current = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
+		Vec3 target = Vec3.createVectorHelper(x, y, z);
+		if (current.subtract(target).lengthVector() < 0.1)
 			return;
 		this.setPosition(x, y, z);
 		this.setRotation(xz, ay);
-
-		System.out.println("set Position and rot " + this.getEntityId());
 	}
 
 	@Override
@@ -80,7 +84,8 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 
 	@Override
 	public boolean isEntityInsideOpaqueBlock() {
-		return false;
+		return super.isEntityInsideOpaqueBlock();
+		// return false;
 	}
 
 	@Override
@@ -103,14 +108,23 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 
 		this.travelDistance += TRAVEL_SPEED;
 
-		if (this.end == null)
-			return;
-
 		Vec3 before = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
+
 		this.posX += this.motionX;
 		this.posY += this.motionY;
 		this.posZ += this.motionZ;
 
+		this.boundingBox.setBounds(this.posX - 0.5, this.posY - 0.5, this.posZ - 0.5,
+			this.posX + 0.5, this.posY + 0.5, this.posZ + 0.5);
+
+		if (this.worldObj.isRemote) {
+			// this.serverPosX = (int) this.posX;
+			// this.serverPosY = (int) this.posY;
+			// this.serverPosZ = (int) this.posZ;
+		}
+
+		if (this.end == null)
+			return;
 		Vec3 current = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
 		if (current.subtract(this.end).lengthVector() > before.subtract(this.end).lengthVector())
 			this.setDead();
@@ -122,20 +136,10 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound tag) {
-		this.start = Vec3Helper.readVecFromNBT(tag, "start");
-		this.end = Vec3Helper.readVecFromNBT(tag, "end");
-		ATMain.logger.error("read: " + this.end);
-		this.travelDistance = tag.getDouble("travelDistance");
-	}
+	protected void readEntityFromNBT(NBTTagCompound tag) {}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound tag) {
-		ATMain.logger.error("write: " + this.end);
-		Vec3Helper.writeVecToNBT(tag, this.start, "start");
-		Vec3Helper.writeVecToNBT(tag, this.end, "end");
-		tag.setDouble("travelDistance", this.travelDistance);
-	}
+	protected void writeEntityToNBT(NBTTagCompound tag) {}
 
 	public void setStartAndTarget(double xs, double ys, double zs, double xe, double ye, double ze) {
 		this.start = Vec3.createVectorHelper(xs, ys, zs);
@@ -148,6 +152,7 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 		Vec3Helper.writeVecToNBT(data, this.start, "start");
 		Vec3Helper.writeVecToNBT(data, this.end, "end");
 		ByteBufUtils.writeTag(buffer, data);
+		ByteBufUtils.writeItemStack(buffer, this.transportGoods);
 	}
 
 	@Override
@@ -155,6 +160,7 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 		NBTTagCompound data = ByteBufUtils.readTag(buffer);
 		this.start = Vec3Helper.readVecFromNBT(data, "start");
 		this.end = Vec3Helper.readVecFromNBT(data, "end");
+		this.transportGoods = ByteBufUtils.readItemStack(buffer);
 
 		Vec3 direction = this.start.subtract(this.end);
 		direction = direction.normalize();

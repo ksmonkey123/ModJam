@@ -2,8 +2,6 @@ package ch.judos.at.station;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
 
@@ -11,7 +9,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 import ch.modjam.generic.blocks.EFace;
-import ch.modjam.generic.rendering.ItemRendering;
 import ch.modjam.generic.rendering.customRenderer.Geometry2;
 import ch.modjam.generic.rendering.customRenderer.Geometry3;
 
@@ -88,7 +85,6 @@ public class StationRenderer extends TileEntitySpecialRenderer {
 		// r.addQuadOnSide(-0.36, -0.36, -0.36, 2 * 0.36, 0.36, EFace.FRONT);
 		this.g3.draw(Tessellator.instance);
 
-		ItemRendering.render3DItem(new ItemStack(Items.diamond, 1), partialTickTime, true);
 		// TEAR DOWN
 		GL11.glTranslated(-transX - 0.5, -transY - 0.5, -transZ - 0.5);
 
