@@ -27,7 +27,7 @@ public class RendererGondola extends Render {
 		GL11.glTranslated(x, y, z);
 
 		Geometry3 g = new Geometry3(ATMain.MOD_ID + ":textures/blocks/station.png");
-		g.addCubeOfRadius(0.5);
+		g.addCubeOfRadius(0.3);
 
 		g.draw(Tessellator.instance);
 		GL11.glTranslated(-x, -y, -z);

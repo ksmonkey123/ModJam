@@ -49,7 +49,7 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 			return;
 
 		this.counter++;
-		if (this.counter >= 75) {
+		if (this.counter >= 200) {
 			this.counter = 0;
 
 			ItemStack gondolas = this.inventory.getStackInSlot(0);
@@ -61,11 +61,12 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 				if (target != null) {
 					// ATMain.logger.error("sending items: " + this.inventory.decrStackSize(1, 1));
 					ATMain.logger.error("sending items: " + this.worldObj.getTotalWorldTime());
-					EntityGondola eGondola = new EntityGondola(this.worldObj);
-					eGondola.setPosition(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5);
-					eGondola.setStartAndTarget(this.xCoord + 0.5, this.yCoord + 0.5,
-						this.zCoord + 0.5, target.xCoord + 0.5, target.yCoord + 0.5,
+					Vec3 start = Vec3.createVectorHelper(this.xCoord + 0.5, this.yCoord + 0.5,
+						this.zCoord + 0.5);
+					Vec3 end = Vec3.createVectorHelper(target.xCoord + 0.5, target.yCoord + 0.5,
 						target.zCoord + 0.5);
+					EntityGondola eGondola = new EntityGondola(this.worldObj, start, end);
+					eGondola.setPosition(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5);
 					this.worldObj.spawnEntityInWorld(eGondola);
 				}
 			}
