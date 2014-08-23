@@ -15,9 +15,9 @@ import net.minecraft.world.World;
 import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
-import ch.modjam.generic.PlayerUtils;
 import ch.modjam.generic.gui.GenericGuiHandler;
 import ch.modjam.generic.gui.IItemHasGui;
+import ch.modjam.generic.helper.PlayerUtils;
 import ch.modjam.generic.inventory.GenericNBTInventory;
 import ch.modjam.generic.inventory.NBTProvider;
 

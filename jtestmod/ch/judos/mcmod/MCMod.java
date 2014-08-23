@@ -49,7 +49,7 @@ import ch.judos.mcmod.lib.References;
 import ch.judos.mcmod.potions.OnEntityLivingHook;
 import ch.judos.mcmod.potions.PotionTest;
 import ch.judos.mcmod.world.WorldGenerator;
-import ch.modjam.generic.RegistryUtil;
+import ch.modjam.generic.helper.RegistryUtil;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.ModMetadata;

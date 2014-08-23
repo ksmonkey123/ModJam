@@ -17,7 +17,7 @@ import ch.judos.at.station.entity.EntityGondola;
 import ch.judos.at.station.items.ItemGondola;
 import ch.judos.at.station.items.ItemRope;
 import ch.judos.at.workinprogress.GondolaTargetMessage;
-import ch.modjam.generic.RegistryUtil;
+import ch.modjam.generic.helper.RegistryUtil;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.ModMetadata;

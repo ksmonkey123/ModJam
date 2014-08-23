@@ -10,7 +10,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import ch.judos.mcmod.MCMod;
 import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
-import ch.modjam.generic.ListedStuff;
+import ch.modjam.generic.helper.ListedStuff;
 
 @SuppressWarnings("javadoc")
 public class BlockKryptoniteOre extends Block {

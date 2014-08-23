@@ -1,4 +1,4 @@
-package ch.modjam.generic;
+package ch.modjam.generic.helper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;

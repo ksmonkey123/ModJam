@@ -3,14 +3,13 @@ package ch.phyranja.EssenceCrops;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.fluids.FluidRegistry;
-import ch.modjam.generic.RegistryUtil;
+import ch.modjam.generic.helper.RegistryUtil;
 import ch.phyranja.EssenceCrops.blocks.*;
 import ch.phyranja.EssenceCrops.entities.TileEntityExtractor;
 import ch.phyranja.EssenceCrops.essences.*;
 import ch.phyranja.EssenceCrops.items.*;
 import ch.phyranja.EssenceCrops.lib.*;
 import ch.phyranja.EssenceCrops.world.*;
-
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.SidedProxy;

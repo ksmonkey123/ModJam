@@ -45,6 +45,7 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 
 	@Override
 	public void tick() {
+
 		if (this.worldObj.isRemote)
 			return;
 

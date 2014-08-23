@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import ch.modjam.generic.Vec3Helper;
+import ch.modjam.generic.helper.NBTHelper;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
@@ -15,7 +15,6 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 
 	public static final double	TRAVEL_SPEED	= 0.03;
 
-	private double				travelDistance;
 	public Vec3					end;
 	public Vec3					start;
 
@@ -24,7 +23,6 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 	public EntityGondola(World world) {
 		super(world);
 		this.setSize(1f, 1f);
-		this.travelDistance = 0;
 		this.noClip = true;
 		this.setAir(1);
 		this.isAirBorne = true;
@@ -38,11 +36,19 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 		this.end = end;
 		this.transportGoods = transportGoods;
 
+		initializeGondola();
+	}
+
+	private void initializeGondola() {
+		if (this.start == null || this.end == null)
+			return;
 		Vec3 direction = this.start.subtract(this.end);
 		direction = direction.normalize();
 		this.motionX = TRAVEL_SPEED * direction.xCoord;
 		this.motionY = TRAVEL_SPEED * direction.yCoord;
 		this.motionZ = TRAVEL_SPEED * direction.zCoord;
+
+		this.rotationYaw = (float) Math.atan2(direction.xCoord, direction.zCoord);
 	}
 
 	@Override
@@ -106,8 +112,6 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 	@Override
 	public void onEntityUpdate() {
 
-		this.travelDistance += TRAVEL_SPEED;
-
 		Vec3 before = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
 
 		this.posX += this.motionX;
@@ -126,6 +130,7 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 		if (this.end == null)
 			return;
 		Vec3 current = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
+		// if distance to target station is bigger than before, entity has reached station
 		if (current.subtract(this.end).lengthVector() > before.subtract(this.end).lengthVector())
 			this.setDead();
 	}
@@ -136,10 +141,18 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 	}
 
 	@Override
-	protected void readEntityFromNBT(NBTTagCompound tag) {}
+	protected void readEntityFromNBT(NBTTagCompound tag) {
+		this.start = NBTHelper.readVecFromNBT(tag, "start");
+		this.end = NBTHelper.readVecFromNBT(tag, "end");
+		this.transportGoods = NBTHelper.readItemStackFromNBT(tag, "transportedGoods");
+	}
 
 	@Override
-	protected void writeEntityToNBT(NBTTagCompound tag) {}
+	protected void writeEntityToNBT(NBTTagCompound tag) {
+		NBTHelper.writeVecToNBT(tag, this.start, "start");
+		NBTHelper.writeVecToNBT(tag, this.end, "end");
+		NBTHelper.writeItemStackToNBT(this.transportGoods, tag, "transportedGoods");
+	}
 
 	public void setStartAndTarget(double xs, double ys, double zs, double xe, double ye, double ze) {
 		this.start = Vec3.createVectorHelper(xs, ys, zs);
@@ -149,8 +162,14 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 	@Override
 	public void writeSpawnData(ByteBuf buffer) {
 		NBTTagCompound data = new NBTTagCompound();
-		Vec3Helper.writeVecToNBT(data, this.start, "start");
-		Vec3Helper.writeVecToNBT(data, this.end, "end");
+		if (this.start != null)
+			NBTHelper.writeVecToNBT(data, this.start, "start");
+		else
+			new RuntimeException("couldn't write start : " + this.start).printStackTrace();
+		if (this.end != null)
+			NBTHelper.writeVecToNBT(data, this.end, "end");
+		else
+			new RuntimeException("couldn't write end : " + this.start).printStackTrace();
 		ByteBufUtils.writeTag(buffer, data);
 		ByteBufUtils.writeItemStack(buffer, this.transportGoods);
 	}
@@ -158,15 +177,11 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 	@Override
 	public void readSpawnData(ByteBuf buffer) {
 		NBTTagCompound data = ByteBufUtils.readTag(buffer);
-		this.start = Vec3Helper.readVecFromNBT(data, "start");
-		this.end = Vec3Helper.readVecFromNBT(data, "end");
+		this.start = NBTHelper.readVecFromNBT(data, "start");
+		this.end = NBTHelper.readVecFromNBT(data, "end");
 		this.transportGoods = ByteBufUtils.readItemStack(buffer);
 
-		Vec3 direction = this.start.subtract(this.end);
-		direction = direction.normalize();
-		this.motionX = TRAVEL_SPEED * direction.xCoord;
-		this.motionY = TRAVEL_SPEED * direction.yCoord;
-		this.motionZ = TRAVEL_SPEED * direction.zCoord;
+		initializeGondola();
 	}
 
 }

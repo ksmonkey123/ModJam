@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
-import ch.modjam.generic.Vec3Helper;
+import ch.modjam.generic.helper.NBTHelper;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
@@ -27,16 +27,16 @@ public class GondolaTargetMessage implements IMessage {
 	@Override
 	public void fromBytes(ByteBuf buf) {
 		NBTTagCompound data = ByteBufUtils.readTag(buf);
-		this.start = Vec3Helper.readVecFromNBT(data, "start");
-		this.end = Vec3Helper.readVecFromNBT(data, "end");
+		this.start = NBTHelper.readVecFromNBT(data, "start");
+		this.end = NBTHelper.readVecFromNBT(data, "end");
 		this.entityId = buf.readInt();
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf) {
 		NBTTagCompound data = new NBTTagCompound();
-		Vec3Helper.writeVecToNBT(data, this.start, "start");
-		Vec3Helper.writeVecToNBT(data, this.end, "end");
+		NBTHelper.writeVecToNBT(data, this.start, "start");
+		NBTHelper.writeVecToNBT(data, this.end, "end");
 		ByteBufUtils.writeTag(buf, data);
 		buf.writeInt(this.entityId);
 	}

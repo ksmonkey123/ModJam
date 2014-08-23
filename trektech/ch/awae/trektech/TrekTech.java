@@ -27,7 +27,7 @@ import ch.awae.trektech.items.ItemPlasmaContainmentRing;
 import ch.awae.trektech.items.ItemScrap;
 import ch.awae.trektech.items.ItemStarFleetSymbol;
 import ch.awae.trektech.items.ItemUpgrade;
-import ch.modjam.generic.RegistryUtil;
+import ch.modjam.generic.helper.RegistryUtil;
 import ch.modjam.generic.multiblock.Multiblock;
 import ch.modjam.generic.multiblock.MultiblockBlock;
 import ch.modjam.generic.multiblock.MultiblockRegistry;

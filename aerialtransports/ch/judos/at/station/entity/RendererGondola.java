@@ -12,7 +12,6 @@ import ch.judos.at.ATMain;
 import ch.judos.at.lib.ATNames;
 import ch.modjam.generic.blocks.EFace;
 import ch.modjam.generic.rendering.ItemRendering;
-import ch.modjam.generic.rendering.customRenderer.Geometry2;
 import ch.modjam.generic.rendering.customRenderer.Geometry3;
 
 public class RendererGondola extends Render {
@@ -35,7 +34,8 @@ public class RendererGondola extends Render {
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
 
-		Geometry3 g = new Geometry3(ATMain.MOD_ID + ":textures/entity/gondola5.png");
+		Geometry3 g = new Geometry3(ATMain.MOD_ID + ":textures/entity/gondola2.png");
+		g.transform.rotate(entity.rotationYaw, new Vector3f(0, 1, 0));
 		g.setUvModeScaled(true);
 
 		double in = 0.25;
@@ -48,16 +48,19 @@ public class RendererGondola extends Render {
 		double ra = -0.1; // border
 
 		g.addQuadOnSideWithTex(-in, hi, -in, wi, wi, EFace.TOP, 0);
+		g.addQuadOnSideWithTex(-ou, hb, -ou, wo, wo, EFace.BOTTOM, 1);
 
 		for (int i = 0; i < 4; i++) {
-			Geometry2 side = new Geometry2(g);
+			Geometry3 side = new Geometry3(g);
 			side.transform.rotate((float) (Math.PI / 2 * i), new Vector3f(0, 1, 0));
 			side.setUvModeScaled(true);
 
 			side.addQuadOnSideWithTex(-in, hi, -in, wi, ra - hi, EFace.BACK, 0);
 			side.addQuadOnSideWithTex(-ou, hb, -ou, wo, ra - hb, EFace.FRONT, 1);
+
 			side.setUvModeScaled(false);
-			side.addQuadOnSideWithTex(-ou, ra, -ou, ou - in, wo, EFace.TOP, 0);
+			side.addQuadOnSideWithTex(-ou, ra, -ou, ou - in, wo, EFace.TOP, 1);
+
 		}
 
 		// g.addCubeOfRadius(0.3);
@@ -66,6 +69,7 @@ public class RendererGondola extends Render {
 
 		if (ent.transportGoods != null) {
 			GL11.glTranslated(0, -0.25, 0);
+			GL11.glRotated(entity.rotationYaw / Math.PI * 180, 0, 1, 0);
 			ItemRendering.render3DItem(ent.transportGoods, partialTickTime, false);
 		}
 
