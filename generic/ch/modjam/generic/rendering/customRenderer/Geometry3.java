@@ -34,12 +34,12 @@ public class Geometry3 extends Geometry2 {
 		double xr = b / 2;
 		double yr = h / 2;
 		double zr = l / 2;
-		this.addQuadOnSideWithTex(-xr, yr, -zr, b, l, EFace.TOP, tex);
+		this.addQuadOnSideWithTex(-xr, yr, -zr, l, b, EFace.TOP, tex);
 		this.addQuadOnSideWithTex(-xr, -yr, -zr, b, h, EFace.FRONT, tex);
-		this.addQuadOnSideWithTex(xr, -yr, -zr, b, h, EFace.LEFT, tex);
-		this.addQuadOnSideWithTex(-xr, -yr, -zr, b, h, EFace.RIGHT, tex);
+		this.addQuadOnSideWithTex(xr, -yr, -zr, l, h, EFace.LEFT, tex);
+		this.addQuadOnSideWithTex(-xr, -yr, -zr, l, h, EFace.RIGHT, tex);
 		this.addQuadOnSideWithTex(-xr, -yr, zr, b, h, EFace.BACK, tex);
-		this.addQuadOnSideWithTex(-xr, -yr, -zr, b, l, EFace.BOTTOM, tex);
+		this.addQuadOnSideWithTex(-xr, -yr, -zr, l, b, EFace.BOTTOM, tex);
 	}
 
 	public void addCubeWithoutFaces(double b, double h, double l, int tex, EFace... remove) {
@@ -48,17 +48,17 @@ public class Geometry3 extends Geometry2 {
 		double zr = l / 2;
 		final Set<EFace> mySet = new HashSet<EFace>(Arrays.asList(remove));
 		if (!mySet.contains(EFace.TOP))
-			this.addQuadOnSideWithTex(-xr, yr, -zr, b, l, EFace.TOP, tex);
+			this.addQuadOnSideWithTex(-xr, yr, -zr, l, b, EFace.TOP, tex);
 		if (!mySet.contains(EFace.FRONT))
 			this.addQuadOnSideWithTex(-xr, -yr, -zr, b, h, EFace.FRONT, tex);
 		if (!mySet.contains(EFace.LEFT))
-			this.addQuadOnSideWithTex(xr, -yr, -zr, b, h, EFace.LEFT, tex);
+			this.addQuadOnSideWithTex(xr, -yr, -zr, l, h, EFace.LEFT, tex);
 		if (!mySet.contains(EFace.RIGHT))
-			this.addQuadOnSideWithTex(-xr, -yr, -zr, b, h, EFace.RIGHT, tex);
+			this.addQuadOnSideWithTex(-xr, -yr, -zr, l, h, EFace.RIGHT, tex);
 		if (!mySet.contains(EFace.BACK))
 			this.addQuadOnSideWithTex(-xr, -yr, zr, b, h, EFace.BACK, tex);
 		if (!mySet.contains(EFace.BOTTOM))
-			this.addQuadOnSideWithTex(-xr, -yr, -zr, b, l, EFace.BOTTOM, tex);
+			this.addQuadOnSideWithTex(-xr, -yr, -zr, l, b, EFace.BOTTOM, tex);
 	}
 
 }

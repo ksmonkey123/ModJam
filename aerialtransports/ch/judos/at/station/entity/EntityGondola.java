@@ -43,12 +43,15 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 		if (this.start == null || this.end == null)
 			return;
 		Vec3 direction = this.start.subtract(this.end);
+
+		this.rotationYaw = (float) -Math.atan2(direction.zCoord, direction.xCoord);
+		this.rotationPitch = (float) Math.atan2(direction.yCoord, Math.hypot(direction.xCoord,
+			direction.zCoord));
+
 		direction = direction.normalize();
 		this.motionX = TRAVEL_SPEED * direction.xCoord;
 		this.motionY = TRAVEL_SPEED * direction.yCoord;
 		this.motionZ = TRAVEL_SPEED * direction.zCoord;
-
-		this.rotationYaw = (float) Math.atan2(direction.xCoord, direction.zCoord);
 	}
 
 	@Override

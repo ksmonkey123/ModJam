@@ -19,6 +19,12 @@ public class GroupGeometry {
 
 	public GroupGeometry() {
 		this.subParts = new ArrayList<GroupGeometry>();
+		this.transform = new Matrix4f();
+	}
+
+	public GroupGeometry(GroupGeometry g) {
+		this();
+		g.subParts.add(this);
 	}
 
 	/**
@@ -54,9 +60,10 @@ public class GroupGeometry {
 		GL11.glDisable(GL11.GL_BLEND); // Turn off blending
 	}
 
-	protected void draw(Tessellator t, Matrix4f matrix4f) {
+	protected void draw(Tessellator t, Matrix4f transformMat) {
+		Matrix4f transformComplete = Matrix4f.mul(transformMat, this.transform, null);
 		for (GroupGeometry g : this.subParts)
-			g.draw(t, matrix4f);
+			g.draw(t, transformComplete);
 	}
 
 }

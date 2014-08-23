@@ -100,7 +100,8 @@ public class Geometry extends GroupGeometry {
 			}
 		}
 
-		super.draw(t, transformComplete);
+		for (GroupGeometry g : this.subParts)
+			g.draw(t, transformComplete);
 	}
 
 }
