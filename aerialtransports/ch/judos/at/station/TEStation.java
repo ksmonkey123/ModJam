@@ -13,7 +13,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import ch.judos.at.ATMain;
 import ch.judos.at.lib.ATNames;
-import ch.judos.at.station.entity.EntityGondola;
+import ch.judos.at.station.gondola.EntityGondola;
 import ch.judos.at.station.gui.ContainerStation;
 import ch.judos.at.station.gui.GuiContainerStation;
 import ch.modjam.generic.gui.IHasGui;

@@ -1,9 +1,12 @@
 package ch.judos.at.lib;
 
+import net.minecraftforge.client.MinecraftForgeClient;
+import ch.judos.at.ATMain;
 import ch.judos.at.station.StationRenderer;
 import ch.judos.at.station.TEStation;
-import ch.judos.at.station.entity.EntityGondola;
-import ch.judos.at.station.entity.RendererGondola;
+import ch.judos.at.station.gondola.EntityGondola;
+import ch.judos.at.station.gondola.ItemRendererGondola;
+import ch.judos.at.station.gondola.RendererGondola;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -19,8 +22,7 @@ public class ClientProxy extends CommonProxy {
 			.registerEntityRenderingHandler(EntityGondola.class, new RendererGondola());
 
 		// How to register item renderers:
-		// MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(MCMod.blockCarvedDirt),
-		// new TECarvedDirtItemRenderer());
+		MinecraftForgeClient.registerItemRenderer(ATMain.gondola, new ItemRendererGondola());
 
 	}
 

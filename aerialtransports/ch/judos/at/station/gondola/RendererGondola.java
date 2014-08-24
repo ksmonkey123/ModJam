@@ -1,8 +1,9 @@
-package ch.judos.at.station.entity;
+package ch.judos.at.station.gondola;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -34,22 +35,30 @@ public class RendererGondola extends Render {
 
 		GL11.glPushMatrix();
 		GL11.glTranslated(x, y, z);
+
+		renderGondola(ent.rotationYaw, ent.rotationPitch, ent.transportGoods, partialTickTime);
+
+		GL11.glPopMatrix();
+	}
+
+	public static void renderGondola(float rotationYaw, float rotationPitch, ItemStack goods,
+			float partialTickTime) {
 		final float radianToDegreeF = (float) (Math.PI / 180);
 
-		Geometry3 g = new Geometry3(ATMain.MOD_ID + ":textures/entity/gondola2.png");
+		Geometry3 g = new Geometry3(ATMain.MOD_ID + ":textures/entity/gondola8.png");
 
-		g.transform.rotate(entity.rotationYaw, new Vector3f(0, 1, 0));
+		g.transform.rotate(rotationYaw, new Vector3f(0, 1, 0));
 		g.setUvModeScaled(true);
 
-		double in = 0.25; // inner x/z offset
-		double ou = 0.3; // outer x/z offset from center
+		final double in = 0.25; // inner x/z offset
+		final double ou = 0.3; // outer x/z offset from center
 
-		double hb = -0.4; // lowest height (out)
-		double hi = -0.38; // lowest height (inside)
-		double ra = -0.1; // border
-		double ro = 0.4; // height of the rope
+		final double hb = -0.4; // lowest height (out)
+		final double hi = -0.38; // lowest height (inside)
+		final double ra = -0.1; // border
+		// final double ro = 0.4; // height of the rope
 
-		final double rm = (float) (in + ou) / 2; // middle of the border
+		// final double rm = (float) (in + ou) / 2; // middle of the border
 		final double wo = 2 * ou; // outer width
 		final double wi = 2 * in; // inner width
 
@@ -68,31 +77,35 @@ public class RendererGondola extends Render {
 			side.addQuadOnSideWithTex(-ou, ra, -ou, ou - in, wo, EFace.TOP, 1);
 
 			Geometry hanger = new Geometry(side);
-			hanger.transform.translate(new Vector3f(0, 0.4f, 0));
-			hanger.transform.rotate(radianToDegreeF * 25, new Vector3f(0, 0, 1));
-			hanger.transform.rotate(radianToDegreeF * 25, new Vector3f(1, 0, 0));
+			hanger.transform.translate(new Vector3f(0, 0.36f, 0));
+			hanger.transform.rotate(radianToDegreeF * 30, new Vector3f(1, 0, 1));
+			// hanger.transform.rotate(radianToDegreeF * 28, new Vector3f(1, 0, 0));
 
 			Geometry3 hang = new Geometry3(g.getTexture());
 			hanger.addSubGeometry(hang);
-			hang.transform.translate(new Vector3f(0, -0.33f, 0));
-			hang.addCube(0.03, 0.66, 0.03, 3);
+			hang.transform.translate(new Vector3f(0, -0.3f, 0));
+			hang.addCube(0.02, 0.5, 0.02, 3);
 
 		}
 
 		Geometry3 wheel = new Geometry3(g);
 		wheel.transform.translate(new Vector3f(0, 0.4f, 0));
-		wheel.transform.rotate(entity.rotationPitch, new Vector3f(0, 0, 1));
+		wheel.transform.rotate(rotationPitch, new Vector3f(0, 0, 1));
 		wheel.setUvModeScaled(true);
-		wheel.addCube(0.3, 0.1, 0.1, 2);
+		wheel.addCube(0.3, 0.08, 0.08, 2);
+
+		Geometry3 mech = new Geometry3(g);
+		mech.transform.translate(new Vector3f(0, 0.35f, 0));
+		mech.setUvModeScaled(true);
+		mech.addCube(0.2, 0.1, 0.07, 4);
 
 		g.draw(Tessellator.instance);
 
-		if (ent.transportGoods != null) {
+		if (goods != null) {
 			GL11.glTranslated(0, -0.25, 0);
-			GL11.glRotated(entity.rotationYaw / Math.PI * 180, 0, 1, 0);
-			ItemRendering.render3DItem(ent.transportGoods, partialTickTime, false);
+			GL11.glRotated(rotationYaw / Math.PI * 180, 0, 1, 0);
+			ItemRendering.render3DItem(goods, partialTickTime, false);
 		}
 
-		GL11.glPopMatrix();
 	}
 }
