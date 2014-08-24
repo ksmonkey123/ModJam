@@ -1,8 +1,10 @@
 package ch.judos.at.lib;
 
+import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 import ch.judos.at.ATMain;
-import ch.judos.at.station.StationRenderer;
+import ch.judos.at.station.ItemRendererStation;
+import ch.judos.at.station.RendererStation;
 import ch.judos.at.station.TEStation;
 import ch.judos.at.station.gondola.EntityGondola;
 import ch.judos.at.station.gondola.ItemRendererGondola;
@@ -16,12 +18,14 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void registerRenderInformation() {
 
-		ClientRegistry.bindTileEntitySpecialRenderer(TEStation.class, new StationRenderer());
+		// Station:
+		ClientRegistry.bindTileEntitySpecialRenderer(TEStation.class, new RendererStation());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ATMain.station),
+			new ItemRendererStation());
 
+		// Gondolas:
 		RenderingRegistry
 			.registerEntityRenderingHandler(EntityGondola.class, new RendererGondola());
-
-		// How to register item renderers:
 		MinecraftForgeClient.registerItemRenderer(ATMain.gondola, new ItemRendererGondola());
 
 	}

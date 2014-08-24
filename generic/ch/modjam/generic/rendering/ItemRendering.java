@@ -37,11 +37,11 @@ public class ItemRendering {
 	}
 
 	public static void render3DItem(EntityItem item, float partialTickTime, boolean rotate) {
-		float rot = (Minecraft.getMinecraft().theWorld.getTotalWorldTime() + partialTickTime) % 360 * 1.5f;
 		glPushMatrix();
 		glDepthMask(true);
 		rotate &= Minecraft.getMinecraft().gameSettings.fancyGraphics;
 		if (rotate) {
+			float rot = (Minecraft.getMinecraft().theWorld.getTotalWorldTime() + partialTickTime) % 360 * 1.5f;
 			glRotatef(rot, 0, 1, 0);
 		}
 		item.hoverStart = 0.0F;

@@ -8,18 +8,20 @@ import net.minecraftforge.common.util.ForgeDirection;
  * @author Andreas Waelchli (andreas.waelchl@me.com)
  */
 public enum EFace {
-	TOP(1, 0), BOTTOM(9, 1), LEFT(4, 2), FRONT(5, 3), RIGHT(6, 4), BACK(10, 5);
+	TOP(1, 0, 1), BOTTOM(9, 1, 0), LEFT(4, 2, 4), FRONT(5, 3, 5), RIGHT(6, 4, 2), BACK(10, 5, 3);
 
 	private final static int[][]	directionMatrix	= { { 0, 0, 0, 0 }, { 1, 1, 1, 1 }, { 2, 3, 4, 5 }, { 3, 2, 5, 4 }, { 4, 5, 2, 3 }, { 5, 4, 3, 2 } };
 
 	private int						tileIndex;
 	private int						index;
+	private int						invertedFaceIndex;
 
-	EFace(int tileIndex, int index) {
+	EFace(int tileIndex, int index, int invertedSide) {
 		// the index of the tile in the texture for this side
 		this.tileIndex = tileIndex;
 		// a unique index for each side, starting at 0
 		this.index = index;
+		this.invertedFaceIndex = invertedSide;
 	}
 
 	public int getTileIndex() {
@@ -47,5 +49,11 @@ public enum EFace {
 				.println("IndexOutOfBound in getDirectionOfFace:" + frontDirection.ordinal() + "\n Taking recovery measure (NORTH)");
 			return ForgeDirection.NORTH;
 		}
+	}
+
+	public EFace invert(boolean inverted) {
+		if (inverted)
+			return values()[this.invertedFaceIndex];
+		return this;
 	}
 }

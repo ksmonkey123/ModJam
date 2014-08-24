@@ -33,9 +33,18 @@ public class GuiContainerStation extends GenericGuiTEContainer {
 		super.initGui();
 		this.buttonList.clear();
 		String text = StatCollector.translateToLocal("at.connect");
-		if (this.teStation.isConnectedToSomething())
+		if (this.teStation.isConnectedToSomething()) {
 			text = StatCollector.translateToLocal("at.reconnect");
-		this.buttonList.add(new GuiButton(0, this.guiLeft + 100, this.guiTop + 25, 60, 20, text));
+
+			String t2;
+			if (this.teStation.isSender())
+				t2 = StatCollector.translateToLocal("at.sender");
+			else
+				t2 = StatCollector.translateToLocal("at.receiver");
+			this.buttonList.add(new GuiButton(1, this.guiLeft + 100, this.guiTop + 43, 60, 20, t2));
+
+		}
+		this.buttonList.add(new GuiButton(0, this.guiLeft + 100, this.guiTop + 23, 60, 20, text));
 	}
 
 	@Override
@@ -45,6 +54,8 @@ public class GuiContainerStation extends GenericGuiTEContainer {
 				this.inventory.player.closeScreen();
 				this.teStation.clientRequestBindRopeConnection(this.inventory.player);
 				break;
+			case 1:
+				this.teStation.clientRequestSenderChange();
 		}
 	}
 
@@ -62,11 +73,12 @@ public class GuiContainerStation extends GenericGuiTEContainer {
 		String items = StatCollector.translateToLocal("at.items");
 		this.fontRendererObj.drawString(items, 10, 48, color);
 
-		if (this.teStation.isConnectedToSomething()) {
-			String reconnect = StatCollector.translateToLocal("at.reconnect");
-			((GuiButton) this.buttonList.get(0)).displayString = reconnect;
-		}
+		initGui();
 
+		// if (this.teStation.isConnectedToSomething()) {
+		// String reconnect = StatCollector.translateToLocal("at.reconnect");
+		// ((GuiButton) this.buttonList.get(0)).displayString = reconnect;
+		// }
 	}
 
 	@Override

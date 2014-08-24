@@ -7,3 +7,5 @@ at.gondolas=Gondolas
 at.items=Items
 at.connect=Connect
 at.reconnect=Reconnect
+at.sender=Sender
+at.receiver=Receiver

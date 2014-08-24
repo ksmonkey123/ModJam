@@ -22,15 +22,26 @@ import ch.modjam.generic.inventory.GenericTileEntityWithInventory;
 
 public class TEStation extends GenericTileEntityWithInventory implements IHasGui {
 
-	public static final String	nbtConnectedToCoords		= "connectedToCoords";		// int array
-																						// with
-																						// x,y,z
+	/**
+	 * int array with x,y,z
+	 */
+	public static final String	nbtConnectedToCoords		= "connectedToCoords";
 	public static final String	nbtBuildConnectPlayerName	= "buildConnectPlayerName";
+	public static final String	nbtIsSender					= "isSender";
 
-	public static final String	netcmdClientRequestBindRope	= "requestBindRope";
+	public static final String	netClientReqBindRope		= "requestBindRope";
+	private static final String	netClientReqChangeSender	= "requestSenderChange";
 
+	/**
+	 * player currently wearing a rope to connect this station with another station
+	 */
 	public EntityPlayer			buildConnectTo;
-	private int[]				connectedTo;											// block
+	/**
+	 * block coordinates of receiver/sender station<br>
+	 * is null if not connected
+	 */
+	private int[]				connectedToCoords;
+	private boolean				isSender;
 	private int					counter;
 
 	// coordinates
@@ -39,7 +50,7 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		super(new GenericInventory(2, ATNames.station));
 		this.inventory.addWhiteListFilter(0, ATMain.gondola);
 		this.buildConnectTo = null;
-		this.connectedTo = null;
+		this.connectedToCoords = null;
 		this.counter = 0;
 	}
 
@@ -47,6 +58,8 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	public void tick() {
 
 		if (this.worldObj.isRemote)
+			return;
+		if (!this.isSender)
 			return;
 
 		this.counter++;
@@ -81,10 +94,10 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	}
 
 	public TEStation getTarget() {
-		if (this.connectedTo == null)
+		if (this.connectedToCoords == null)
 			return null;
-		TileEntity e = this.worldObj.getTileEntity(this.connectedTo[0], this.connectedTo[1],
-			this.connectedTo[2]);
+		TileEntity e = this.worldObj.getTileEntity(this.connectedToCoords[0],
+			this.connectedToCoords[1], this.connectedToCoords[2]);
 		if (e instanceof TEStation)
 			return (TEStation) e;
 		return null;
@@ -93,22 +106,27 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	@Override
 	public void writeNBT(NBTTagCompound tag) {
 		this.inventory.writeNBT(tag);
-		if (this.connectedTo != null)
-			tag.setIntArray(nbtConnectedToCoords, this.connectedTo);
+		if (this.connectedToCoords != null)
+			tag.setIntArray(nbtConnectedToCoords, this.connectedToCoords);
 		if (this.buildConnectTo != null)
 			tag.setString(nbtBuildConnectPlayerName, this.buildConnectTo.getCommandSenderName());
+		tag.setBoolean(nbtIsSender, this.isSender);
 	}
 
 	@Override
 	public void readNBT(NBTTagCompound tag) {
 		this.inventory.readNBT(tag);
 		if (tag.hasKey(nbtConnectedToCoords))
-			this.connectedTo = tag.getIntArray(nbtConnectedToCoords);
+			this.connectedToCoords = tag.getIntArray(nbtConnectedToCoords);
+		else
+			this.connectedToCoords = null;
 		if (tag.hasKey(nbtBuildConnectPlayerName) && this.worldObj != null) {
 			String name = tag.getString(nbtBuildConnectPlayerName);
-			ATMain.logger.error("loading: " + this.worldObj);
 			this.buildConnectTo = this.worldObj.getPlayerEntityByName(name);
-		}
+		} else
+			this.buildConnectTo = null;
+		if (tag.hasKey(nbtIsSender))
+			this.isSender = tag.getBoolean(nbtIsSender);
 	}
 
 	public static String getTextureName() {
@@ -117,6 +135,8 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
+		if (!this.isConnectedToSomethingAndSender())
+			return getStandardRenderBB();
 		Vec3 other = getConnectedEndCoordinatesOrSelf();
 		int lx = MathHelper.floor_double(Math.min(this.xCoord, other.xCoord));
 		int ly = MathHelper.floor_double(Math.min(this.yCoord, other.yCoord));
@@ -127,22 +147,49 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		return AxisAlignedBB.getBoundingBox(lx, ly, lz, hx, hy, hz);
 	}
 
+	private AxisAlignedBB getStandardRenderBB() {
+		return AxisAlignedBB.getBoundingBox(this.xCoord, this.yCoord, this.zCoord, this.xCoord + 1,
+			this.yCoord + 1, this.zCoord + 1);
+	}
+
 	public void bindRopeConnection(EntityPlayer player) {
 		int currentSlotHeld = player.inventory.currentItem;
 		ItemStack rope = new ItemStack(ATMain.ropeOfStation);
 		ATMain.ropeOfStation.onCreated(rope, this);
 		player.inventory.setInventorySlotContents(currentSlotHeld, rope);
 
-		ATMain.logger.error("bindRopeConnecction");
+		this.disconnectOtherStation();
 		this.buildConnectTo = player;
+		this.connectedToCoords = null;
+		this.forceServerPush();
+
 		// if (this.worldObj.isRemote)
 		player.addChatMessage(new ChatComponentText("Connected rope to player " + player
 			.getCommandSenderName()));
 	}
 
+	private void disconnectOtherStation() {
+		TEStation other = getTarget();
+		ATMain.logger.error("disconnect other: " + this.connectedToCoords + " te: " + other);
+		if (other == null)
+			return;
+
+		other.connectedToCoords = null;
+		other.forceServerPush();
+	}
+
 	public void finishRopeConnection(TEStation otherStation, EntityPlayer player) {
 		this.buildConnectTo = null;
-		this.connectedTo = new int[] { otherStation.xCoord, otherStation.yCoord, otherStation.zCoord };
+		this.connectedToCoords = new int[] { otherStation.xCoord, otherStation.yCoord, otherStation.zCoord };
+		this.isSender = true;
+		this.forceServerPush();
+
+		otherStation.disconnectOtherStation();
+		otherStation.buildConnectTo = null;
+		otherStation.connectedToCoords = new int[] { this.xCoord, this.yCoord, this.zCoord };
+		otherStation.isSender = false;
+		otherStation.forceServerPush();
+
 		if (this.worldObj.isRemote)
 			player.addChatMessage(new ChatComponentText("Connected rope to station."));
 	}
@@ -157,14 +204,25 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 			pos.yCoord -= 1;
 			return pos;
 		}
-		if (this.connectedTo != null)
-			return Vec3.createVectorHelper(this.connectedTo[0] + 0.5, this.connectedTo[1] + 0.9,
-				this.connectedTo[2] + 0.5);
+		if (this.connectedToCoords != null)
+			return Vec3.createVectorHelper(this.connectedToCoords[0] + 0.5,
+				this.connectedToCoords[1] + 0.9, this.connectedToCoords[2] + 0.5);
 		return Vec3.createVectorHelper(this.xCoord, this.yCoord, this.zCoord);
 	}
 
+	/**
+	 * @return true if it is connected to player or if it is a sender station connected to some
+	 *         other station
+	 */
+	public boolean isConnectedToSomethingAndSender() {
+		return this.buildConnectTo != null || (this.connectedToCoords != null && this.isSender);
+	}
+
+	/**
+	 * @return true if it is connected to player or if it connected to some other station
+	 */
 	public boolean isConnectedToSomething() {
-		return this.buildConnectTo != null || this.connectedTo != null;
+		return this.buildConnectTo != null || this.connectedToCoords != null;
 	}
 
 	@Override
@@ -178,17 +236,33 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	}
 
 	public void clientRequestBindRopeConnection(EntityPlayer player) {
-		this.sendNetworkCommand(netcmdClientRequestBindRope, player.getCommandSenderName()
-			.getBytes());
+		this.sendNetworkCommand(netClientReqBindRope, player.getCommandSenderName().getBytes());
 	}
 
 	@Override
 	public void onNetworkCommand(String command, byte[] data) {
-		if (netcmdClientRequestBindRope.equals(command)) {
+		if (netClientReqBindRope.equals(command)) {
 			String playerName = new String(data);
 			EntityPlayer player = this.worldObj.getPlayerEntityByName(playerName);
 			this.bindRopeConnection(player);
+			ATMain.logger.error("bound rope connection..");
 		}
+		if (netClientReqChangeSender.equals(command)) {
+			TEStation te = getTarget();
+			if (te != null) {
+				this.isSender = !this.isSender;
+				te.isSender = !te.isSender;
+				te.forceServerPush();
+			}
+		}
+	}
+
+	public boolean isSender() {
+		return this.isSender;
+	}
+
+	public void clientRequestSenderChange() {
+		this.sendNetworkCommand(netClientReqChangeSender);
 	}
 
 }

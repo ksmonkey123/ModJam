@@ -45,7 +45,7 @@ public class RendererGondola extends Render {
 			float partialTickTime) {
 		final float radianToDegreeF = (float) (Math.PI / 180);
 
-		Geometry3 g = new Geometry3(ATMain.MOD_ID + ":textures/entity/gondola8.png");
+		Geometry3 g = new Geometry3(ATMain.MOD_ID + ":textures/entity/gondola.png");
 
 		g.transform.rotate(rotationYaw, new Vector3f(0, 1, 0));
 		g.setUvModeScaled(true);
