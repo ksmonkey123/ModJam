@@ -1,6 +1,11 @@
 package ch.judos.at.station;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
+
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -11,6 +16,9 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import ch.judos.at.ATMain;
 import ch.judos.at.lib.ATNames;
 import ch.judos.at.station.gondola.EntityGondola;
@@ -28,6 +36,7 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	public static final String	nbtConnectedToCoords		= "connectedToCoords";
 	public static final String	nbtBuildConnectPlayerName	= "buildConnectPlayerName";
 	public static final String	nbtIsSender					= "isSender";
+	public static final String	nbtGondolaArr				= "gondolaIdArr";
 
 	public static final String	netClientReqBindRope		= "requestBindRope";
 	private static final String	netClientReqChangeSender	= "requestSenderChange";
@@ -43,6 +52,7 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	private int[]				connectedToCoords;
 	private boolean				isSender;
 	private int					counter;
+	public HashSet<Integer>		gondolaIdsSent;
 
 	// coordinates
 
@@ -52,6 +62,17 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		this.buildConnectTo = null;
 		this.connectedToCoords = null;
 		this.counter = 0;
+		this.gondolaIdsSent = new HashSet<Integer>();
+	}
+
+	private void cleanSentGondolaIdSet() {
+		ATMain.logger.error("cleaning list...");
+		Iterator<Integer> it = this.gondolaIdsSent.iterator();
+		while (it.hasNext()) {
+			int id = it.next();
+			if (this.worldObj.getEntityByID(id) == null)
+				it.remove();
+		}
 	}
 
 	@Override
@@ -63,9 +84,11 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 			return;
 
 		this.counter++;
-		if (this.counter >= 100) {
-			this.counter = 0;
+		if (this.counter % 10000 == 0)
+			cleanSentGondolaIdSet();
 
+		// TODO: pack into method
+		if (this.counter % 100 == 0) {
 			ItemStack gondolas = this.inventory.getStackInSlot(0);
 			ItemStack goods = this.inventory.getStackInSlot(1);
 
@@ -88,6 +111,11 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 						transportGoods);
 					eGondola.setPosition(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5);
 					this.worldObj.spawnEntityInWorld(eGondola);
+
+					// this.gondolaIdsSent = new HashSet<Integer>();
+					this.gondolaIdsSent.add(eGondola.getEntityId());
+					ATMain.logger.error("ids: " + this.gondolaIdsSent);
+
 				}
 			}
 		}
@@ -111,6 +139,9 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		if (this.buildConnectTo != null)
 			tag.setString(nbtBuildConnectPlayerName, this.buildConnectTo.getCommandSenderName());
 		tag.setBoolean(nbtIsSender, this.isSender);
+
+		int[] gondolaIdArr = ArrayUtils.toPrimitive(this.gondolaIdsSent.toArray(new Integer[] {}));
+		tag.setIntArray(nbtGondolaArr, gondolaIdArr);
 	}
 
 	@Override
@@ -127,6 +158,9 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 			this.buildConnectTo = null;
 		if (tag.hasKey(nbtIsSender))
 			this.isSender = tag.getBoolean(nbtIsSender);
+
+		int[] gondolaIdArr = tag.getIntArray(nbtGondolaArr);
+		this.gondolaIdsSent = new HashSet<Integer>(Arrays.asList(ArrayUtils.toObject(gondolaIdArr)));
 	}
 
 	public static String getTextureName() {
@@ -158,9 +192,8 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		ATMain.ropeOfStation.onCreated(rope, this);
 		player.inventory.setInventorySlotContents(currentSlotHeld, rope);
 
-		this.disconnectOtherStation();
+		this.disconnectStation();
 		this.buildConnectTo = player;
-		this.connectedToCoords = null;
 		this.forceServerPush();
 
 		// if (this.worldObj.isRemote)
@@ -168,25 +201,46 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 			.getCommandSenderName()));
 	}
 
-	private void disconnectOtherStation() {
+	public void disconnectOtherStation() {
 		TEStation other = getTarget();
-		ATMain.logger.error("disconnect other: " + this.connectedToCoords + " te: " + other);
 		if (other == null)
 			return;
 
 		other.connectedToCoords = null;
+		other.letAllGondolasFallOutOfRope();
 		other.forceServerPush();
 	}
 
-	public void finishRopeConnection(TEStation otherStation, EntityPlayer player) {
+	public void disconnectStation() {
+		disconnectOtherStation();
 		this.buildConnectTo = null;
+		this.connectedToCoords = null;
+		letAllGondolasFallOutOfRope();
+	}
+
+	private void letAllGondolasFallOutOfRope() {
+		HashSet<Integer> x = new HashSet<Integer>(this.gondolaIdsSent);
+		for (int entityId : x) {
+			Entity entity = this.worldObj.getEntityByID(entityId);
+			if (entity instanceof EntityGondola) {
+				EntityGondola gondola = (EntityGondola) entity;
+				gondola.gondolaFallsOutOfRope();
+			}
+		}
+	}
+
+	public void finishRopeConnection(TEStation otherStation, EntityPlayer player) {
+		disconnectStation();
+
 		this.connectedToCoords = new int[] { otherStation.xCoord, otherStation.yCoord, otherStation.zCoord };
+		int[] stationCoords = new int[] { this.xCoord, this.yCoord, this.zCoord };
 		this.isSender = true;
 		this.forceServerPush();
 
-		otherStation.disconnectOtherStation();
+		if (!Arrays.equals(otherStation.connectedToCoords, stationCoords))
+			otherStation.disconnectOtherStation();
 		otherStation.buildConnectTo = null;
-		otherStation.connectedToCoords = new int[] { this.xCoord, this.yCoord, this.zCoord };
+		otherStation.connectedToCoords = stationCoords;
 		otherStation.isSender = false;
 		otherStation.forceServerPush();
 

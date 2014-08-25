@@ -1,10 +1,12 @@
 package ch.judos.at.station;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import ch.judos.at.ATMain;
@@ -28,15 +30,14 @@ public class BlockStation extends BlockContainer {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
 			int side, float hitX, float hitY, float hitZ) {
-		TileEntity te = world.getTileEntity(x, y, z);
-		if (te instanceof TEStation) {
-			TEStation te2 = (TEStation) te;
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		if (tileEntity instanceof TEStation) {
+			TEStation station = (TEStation) tileEntity;
 
 			ItemStack held = player.getHeldItem();
 			if (held != null && ATMain.ropeOfStation == held.getItem()) {
-				if (connectStationToStation(world, te2, held, player)) {
+				if (connectStationToStation(world, station, held, player))
 					return true;
-				}
 			}
 			return GenericGuiHandler.openGUI(player, world, x, y, z);
 		}
@@ -50,17 +51,38 @@ public class BlockStation extends BlockContainer {
 		int[] pos = held.stackTagCompound.getIntArray(ItemRope.nbtStationCoordinates);
 		TileEntity te = w.getTileEntity(pos[0], pos[1], pos[2]);
 
-		int currentSlotHeld = player.inventory.currentItem;
-		player.inventory.setInventorySlotContents(currentSlotHeld, null);
 		if (te == null)
 			return false;
 
 		if (te instanceof TEStation) {
 			TEStation stationStart = (TEStation) te;
-			stationStart.finishRopeConnection(stationEnd, player);
+			if (stationStart.isOnTheSameBlockPosition(stationEnd)) {
+				if (w.isRemote)
+					player.addChatMessage(new ChatComponentText(
+						"Can't connect a station to itself."));
+			} else {
+				int currentSlotHeld = player.inventory.currentItem;
+				player.inventory.setInventorySlotContents(currentSlotHeld, null);
+				stationStart.finishRopeConnection(stationEnd, player);
+			}
 		}
-
 		return true;
+	}
+
+	@Override
+	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+		ATMain.logger.error("breakBlock");
+		TileEntity te = world.getTileEntity(x, y, z);
+		if (te == null || !(te instanceof TEStation))
+			return;
+		TEStation stationStart = (TEStation) te;
+
+		if (!world.isRemote)
+			stationStart.disconnectStation();
+		else
+			stationStart.disconnectStation();
+
+		super.breakBlock(world, x, y, z, block, meta);
 	}
 
 	public IIcon getBlockIcon() {

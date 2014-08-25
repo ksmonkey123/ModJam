@@ -5,9 +5,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import ch.judos.at.ATMain;
+import ch.judos.at.station.TEStation;
 import ch.modjam.generic.helper.ItemUtils;
 import ch.modjam.generic.helper.NBTUtils;
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -113,24 +116,25 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 
 	@Override
 	public void onCollideWithPlayer(EntityPlayer player) {
-
+		// XXX: mc1.8 fixed the coordinate offset, also Vec3 is immutable
 		Vec3 ppos = player.getPosition(1);
-		if (!this.worldObj.isRemote) {
+		if (!this.worldObj.isRemote)
 			ppos.yCoord += 1.62;
-		}
 
 		double dist = this.currentPos.subtract(ppos).lengthVector();
-		// ATMain.logger
-		// .error("entity dist: " + dist + ", cuurent: " + this.currentPos + ", player: " + ppos);
-		if (this.currentPos.subtract(ppos).lengthVector() < 0.9) {
-			ATMain.logger
-				.error("spawn items: " + this.worldObj + ", " + this.posX + "," + this.posY + "," + this.posZ + ", items: " + this.transportGoods);
+		if (dist < 0.9)
+			gondolaFallsOutOfRope();
+	}
 
-			if (!this.worldObj.isRemote) {
-				ItemUtils.spawnItemEntity(this, this.transportGoods);
-				ItemUtils.spawnItemEntity(this, new ItemStack(ATMain.gondola));
-				this.worldObj.removeEntity(this);
-			}
+	/**
+	 * drops items and itself as EntityItem on the floor
+	 */
+	public void gondolaFallsOutOfRope() {
+		if (!this.worldObj.isRemote) {
+			ItemUtils.spawnItemEntity(this, this.transportGoods);
+			ItemUtils.spawnItemEntity(this, new ItemStack(ATMain.gondola));
+			this.worldObj.removeEntity(this);
+			this.removeFromListInStation();
 		}
 	}
 
@@ -150,18 +154,24 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 		this.boundingBox.setBounds(this.posX - r, this.posY - r, this.posZ - r, this.posX + r,
 			this.posY + r, this.posZ + r);
 
-		if (this.worldObj.isRemote) {
-			// this.serverPosX = (int) this.posX;
-			// this.serverPosY = (int) this.posY;
-			// this.serverPosZ = (int) this.posZ;
-		}
-
 		if (this.end == null)
 			return;
 		// if distance to target station is bigger than before, entity has reached station
 		if (this.currentPos.subtract(this.end).lengthVector() > before.subtract(this.end)
-			.lengthVector())
+			.lengthVector()) {
+			this.removeFromListInStation();
 			this.setDead();
+		}
+	}
+
+	private void removeFromListInStation() {
+		TileEntity startEntity = this.worldObj.getTileEntity(MathHelper
+			.floor_double(this.start.xCoord), MathHelper.floor_double(this.start.yCoord),
+			MathHelper.floor_double(this.start.zCoord));
+		if (startEntity instanceof TEStation) {
+			TEStation startStation = (TEStation) startEntity;
+			startStation.gondolaIdsSent.remove(this.getEntityId());
+		}
 	}
 
 	@Override

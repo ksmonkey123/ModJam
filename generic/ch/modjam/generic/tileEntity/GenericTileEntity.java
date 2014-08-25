@@ -17,6 +17,10 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public abstract class GenericTileEntity extends TileEntity {
 
+	public boolean isOnTheSameBlockPosition(TileEntity t) {
+		return this.xCoord == t.xCoord && this.yCoord == t.yCoord && this.zCoord == t.zCoord;
+	}
+
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
