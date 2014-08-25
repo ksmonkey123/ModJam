@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
 
-public class NBTHelper {
+public class NBTUtils {
 	public static void writeItemStackToNBT(ItemStack stack, NBTTagCompound nbt, String identifier) {
 		NBTTagCompound stackNBT = new NBTTagCompound();
 		stack.writeToNBT(stackNBT);

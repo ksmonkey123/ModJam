@@ -2,14 +2,14 @@ package ch.judos.at.station.gondola;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import ch.judos.at.ATMain;
-import ch.modjam.generic.helper.NBTHelper;
+import ch.modjam.generic.helper.ItemUtils;
+import ch.modjam.generic.helper.NBTUtils;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
@@ -113,21 +113,24 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 
 	@Override
 	public void onCollideWithPlayer(EntityPlayer player) {
-		double dist = this.currentPos.subtract(player.getPosition(1)).lengthVector();
-		ATMain.logger
-			.error("entity dist: " + dist + ", cuurent: " + this.currentPos + ", player: " + player
-				.getPosition(1));
-		if (this.currentPos.subtract(player.getPosition(1)).lengthVector() < 0.9) {
-			ATMain.logger.error("removed entity");
-			EntityItem items = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ,
-				this.transportGoods);
-			items.delayBeforeCanPickup = 20;
+
+		Vec3 ppos = player.getPosition(1);
+		if (!this.worldObj.isRemote) {
+			ppos.yCoord += 1.62;
+		}
+
+		double dist = this.currentPos.subtract(ppos).lengthVector();
+		// ATMain.logger
+		// .error("entity dist: " + dist + ", cuurent: " + this.currentPos + ", player: " + ppos);
+		if (this.currentPos.subtract(ppos).lengthVector() < 0.9) {
+			ATMain.logger
+				.error("spawn items: " + this.worldObj + ", " + this.posX + "," + this.posY + "," + this.posZ + ", items: " + this.transportGoods);
+
 			if (!this.worldObj.isRemote) {
-				this.worldObj.spawnEntityInWorld(items);
+				ItemUtils.spawnItemEntity(this, this.transportGoods);
+				ItemUtils.spawnItemEntity(this, new ItemStack(ATMain.gondola));
 				this.worldObj.removeEntity(this);
 			}
-			// this.
-
 		}
 	}
 
@@ -168,16 +171,16 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound tag) {
-		this.start = NBTHelper.readVecFromNBT(tag, "start");
-		this.end = NBTHelper.readVecFromNBT(tag, "end");
-		this.transportGoods = NBTHelper.readItemStackFromNBT(tag, "transportedGoods");
+		this.start = NBTUtils.readVecFromNBT(tag, "start");
+		this.end = NBTUtils.readVecFromNBT(tag, "end");
+		this.transportGoods = NBTUtils.readItemStackFromNBT(tag, "transportedGoods");
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound tag) {
-		NBTHelper.writeVecToNBT(tag, this.start, "start");
-		NBTHelper.writeVecToNBT(tag, this.end, "end");
-		NBTHelper.writeItemStackToNBT(this.transportGoods, tag, "transportedGoods");
+		NBTUtils.writeVecToNBT(tag, this.start, "start");
+		NBTUtils.writeVecToNBT(tag, this.end, "end");
+		NBTUtils.writeItemStackToNBT(this.transportGoods, tag, "transportedGoods");
 	}
 
 	public void setStartAndTarget(double xs, double ys, double zs, double xe, double ye, double ze) {
@@ -189,11 +192,11 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 	public void writeSpawnData(ByteBuf buffer) {
 		NBTTagCompound data = new NBTTagCompound();
 		if (this.start != null)
-			NBTHelper.writeVecToNBT(data, this.start, "start");
+			NBTUtils.writeVecToNBT(data, this.start, "start");
 		else
 			new RuntimeException("couldn't write start : " + this.start).printStackTrace();
 		if (this.end != null)
-			NBTHelper.writeVecToNBT(data, this.end, "end");
+			NBTUtils.writeVecToNBT(data, this.end, "end");
 		else
 			new RuntimeException("couldn't write end : " + this.start).printStackTrace();
 		ByteBufUtils.writeTag(buffer, data);
@@ -203,8 +206,8 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 	@Override
 	public void readSpawnData(ByteBuf buffer) {
 		NBTTagCompound data = ByteBufUtils.readTag(buffer);
-		this.start = NBTHelper.readVecFromNBT(data, "start");
-		this.end = NBTHelper.readVecFromNBT(data, "end");
+		this.start = NBTUtils.readVecFromNBT(data, "start");
+		this.end = NBTUtils.readVecFromNBT(data, "end");
 		this.transportGoods = ByteBufUtils.readItemStack(buffer);
 
 		initializeGondola();

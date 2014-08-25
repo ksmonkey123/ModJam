@@ -75,8 +75,8 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 				if (target != null) {
 
 					// FIXME: remove item dupe:
-					ItemStack transportGoods = this.inventory.getStackInSlot(1);// this.inventory.decrStackSize(1,
-																				// 5);
+					ItemStack transportGoods = this.inventory.getStackInSlot(1).copy();
+					// this.inventory.decrStackSize(1, 5);
 
 					// ATMain.logger.error("sending items: " + this.inventory.decrStackSize(1, 1));
 					// ATMain.logger.error("sending items: " + this.worldObj.getTotalWorldTime());
