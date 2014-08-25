@@ -66,7 +66,6 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	}
 
 	private void cleanSentGondolaIdSet() {
-		ATMain.logger.error("cleaning list...");
 		Iterator<Integer> it = this.gondolaIdsSent.iterator();
 		while (it.hasNext()) {
 			int id = it.next();
@@ -112,10 +111,7 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 					eGondola.setPosition(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5);
 					this.worldObj.spawnEntityInWorld(eGondola);
 
-					// this.gondolaIdsSent = new HashSet<Integer>();
 					this.gondolaIdsSent.add(eGondola.getEntityId());
-					ATMain.logger.error("ids: " + this.gondolaIdsSent);
-
 				}
 			}
 		}
