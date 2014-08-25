@@ -2,13 +2,11 @@ package ch.judos.at.station.gondola;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import ch.judos.at.ATMain;
 import ch.modjam.generic.helper.NBTHelper;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
@@ -19,7 +17,6 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 
 	public Vec3					end;
 	public Vec3					start;
-	public Vec3					currentPos;
 
 	public ItemStack			transportGoods;
 
@@ -30,7 +27,6 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 		this.setAir(1);
 		this.isAirBorne = true;
 		this.setVelocity(0.1, 0, 0);
-		this.currentPos = Vec3.createVectorHelper(0, 0, 0);
 
 	}
 
@@ -113,22 +109,7 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 
 	@Override
 	public void onCollideWithPlayer(EntityPlayer player) {
-		double dist = this.currentPos.subtract(player.getPosition(1)).lengthVector();
-		ATMain.logger
-			.error("entity dist: " + dist + ", cuurent: " + this.currentPos + ", player: " + player
-				.getPosition(1));
-		if (this.currentPos.subtract(player.getPosition(1)).lengthVector() < 0.9) {
-			ATMain.logger.error("removed entity");
-			EntityItem items = new EntityItem(this.worldObj, this.posX, this.posY, this.posZ,
-				this.transportGoods);
-			items.delayBeforeCanPickup = 20;
-			if (!this.worldObj.isRemote) {
-				this.worldObj.spawnEntityInWorld(items);
-				this.worldObj.removeEntity(this);
-			}
-			// this.
-
-		}
+		// ATMain.logger.error("collision " + player);
 	}
 
 	@Override
@@ -139,13 +120,9 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 		this.posX += this.motionX;
 		this.posY += this.motionY;
 		this.posZ += this.motionZ;
-		this.currentPos.xCoord = this.posX;
-		this.currentPos.yCoord = this.posY;
-		this.currentPos.zCoord = this.posZ;
 
-		double r = 0.5;
-		this.boundingBox.setBounds(this.posX - r, this.posY - r, this.posZ - r, this.posX + r,
-			this.posY + r, this.posZ + r);
+		this.boundingBox.setBounds(this.posX - 0.5, this.posY - 0.5, this.posZ - 0.5,
+			this.posX + 0.5, this.posY + 0.5, this.posZ + 0.5);
 
 		if (this.worldObj.isRemote) {
 			// this.serverPosX = (int) this.posX;
@@ -155,9 +132,9 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 
 		if (this.end == null)
 			return;
+		Vec3 current = Vec3.createVectorHelper(this.posX, this.posY, this.posZ);
 		// if distance to target station is bigger than before, entity has reached station
-		if (this.currentPos.subtract(this.end).lengthVector() > before.subtract(this.end)
-			.lengthVector())
+		if (current.subtract(this.end).lengthVector() > before.subtract(this.end).lengthVector())
 			this.setDead();
 	}
 
