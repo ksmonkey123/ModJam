@@ -54,6 +54,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -94,7 +95,7 @@ public class MCMod {
 	public static FuelHandler					fuelHandler;
 
 	// Custom rendered block
-	public static BlockCarvedDirt					blockCarvedDirt;
+	public static BlockCarvedDirt				blockCarvedDirt;
 	public static Class<? extends TileEntity>	teCarvedDirt;
 
 	// Custom tool
@@ -119,7 +120,6 @@ public class MCMod {
 
 	public static GasCO2						gas;
 
-
 	/**
 	 * @param e
 	 */
@@ -134,7 +134,6 @@ public class MCMod {
 		addSmelting();
 		addCarvedDirtCustomRenderingBlock();
 		addDirtShovel();
-		addPotion();
 		addArmor();
 		addBlockWithCustomGui();
 		addItemWithNBTData();
@@ -145,6 +144,13 @@ public class MCMod {
 		proxy.registerRenderInformation();
 	}
 
+	/**
+	 * @param e
+	 */
+	@EventHandler
+	public void postInit(FMLPostInitializationEvent e) {
+		addPotion();
+	}
 
 	private static void addFurnaceHook() {
 		TileEntityHooks.registerUpdateListenerForTE(TileEntityFurnace.class, new GasCreator());
