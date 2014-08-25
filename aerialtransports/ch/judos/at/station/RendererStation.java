@@ -39,7 +39,7 @@ public class RendererStation extends TileEntitySpecialRenderer {
 		float angleXZ = (float) (Math.atan2(relPos.xCoord, relPos.zCoord));
 		float angleY = (float) (Math.atan2(relPos.yCoord, Math.hypot(relPos.xCoord, relPos.zCoord)));
 
-		this.g3 = new Geometry3(ATMain.MOD_ID + ":textures/blocks/" + ATNames.station + "3.png");
+		this.g3 = new Geometry3(ATMain.MOD_ID + ":textures/blocks/" + ATNames.station + ".png");
 		this.g3.clear();
 		this.g3.setUvModeScaled(false);
 		this.g3.transform.rotate(angleXZ, new Vector3f(0, 1, 0));
@@ -60,6 +60,7 @@ public class RendererStation extends TileEntitySpecialRenderer {
 		this.g3.addQuadOnSideWithTex(-s / 2 + 0.1, 0.45, -s / 2, s - 0.2, 0.05, EFace.FRONT, 0);
 		this.g3.addQuadOnSideWithTex(-s / 2 + 0.1, -0.5, -s / 2, s - 0.2, 0.05, EFace.FRONT, 0);
 		this.g3.setOffset(0, 0.4, 0);
+		this.g3.setUvModeScaled(true);
 		this.g3.addCube(0.15, 0.1, 0.5, 2);
 
 		// this.g3.addCubeOfRadius(0.45);

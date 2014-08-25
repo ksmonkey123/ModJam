@@ -102,9 +102,18 @@ public class RendererGondola extends Render {
 		g.draw(Tessellator.instance);
 
 		if (goods != null) {
-			GL11.glTranslated(0, -0.25, 0);
+			GL11.glPushMatrix();
+			GL11.glTranslated(0, -0.28, 0);
 			GL11.glRotated(rotationYaw / Math.PI * 180, 0, 1, 0);
+
+			GL11.glScaled(0.8, 0.8, 0.8);
+
 			ItemRendering.render3DItem(goods, partialTickTime, false);
+			// if (!(goods.getItem() instanceof ItemBlock)) {
+			// GL11.glRotated(90, 0, 1, 0);
+			// ItemRendering.render3DItem(goods, partialTickTime, false);
+			// }
+			GL11.glPopMatrix();
 		}
 
 	}

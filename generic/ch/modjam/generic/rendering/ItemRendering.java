@@ -44,12 +44,13 @@ public class ItemRendering {
 			float rot = (Minecraft.getMinecraft().theWorld.getTotalWorldTime() + partialTickTime) % 360 * 1.5f;
 			glRotatef(rot, 0, 1, 0);
 		}
+
 		item.hoverStart = 0.0F;
 		// correct some buggy translation offset:
 		if (item.getEntityItem().getItem() instanceof ItemBlock)
 			RenderManager.instance.renderEntityWithPosYaw(item, 0D, 0.0D, -0.08D, 0f, 0f);
 		else
-			RenderManager.instance.renderEntityWithPosYaw(item, -0.08D, 0.0D, 0D, 0f, 0f);
+			RenderManager.instance.renderEntityWithPosYaw(item, -0.08D, -0.1D, 0D, 0f, 0f);
 		glPopMatrix();
 	}
 }
