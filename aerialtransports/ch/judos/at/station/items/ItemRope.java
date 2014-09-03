@@ -1,6 +1,7 @@
 package ch.judos.at.station.items;
 
 import java.util.List;
+import java.util.Set;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -8,10 +9,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import ch.judos.at.ATMain;
 import ch.judos.at.lib.ATNames;
 import ch.judos.at.station.TEStation;
+import ch.modjam.generic.blocks.BlockCoordinates;
+import ch.modjam.generic.blocks.Collision;
+import ch.modjam.generic.blocks.Vec3P;
 
 public class ItemRope extends Item {
 
@@ -59,6 +64,26 @@ public class ItemRope extends Item {
 
 	@Override
 	public void onUpdate(ItemStack item, World world, Entity entity, int slot, boolean heldInHand) {
+		int[] coords = item.stackTagCompound.getIntArray(nbtStationCoordinates);
+		Collision c = new Collision(world);
+
+		if (!(entity instanceof EntityPlayer))
+			return;
+
+		EntityPlayer player = (EntityPlayer) entity;
+
+		Vec3 ppos = player.getPosition(1);
+		if (!world.isRemote)
+			ppos.yCoord += 1.62;
+		ppos.yCoord -= 1; // height of arm
+
+		Vec3P start = new Vec3P(coords[0] + 0.5, coords[1] + 0.9, coords[2] + 0.5);
+		Vec3P end = new Vec3P(ppos.xCoord, ppos.yCoord, ppos.zCoord);
+
+		Set<BlockCoordinates> mop = c.detectCollissions(start, end, true, false, false);
+		// FIXME: instead of output, use map when trying to connect stations
+		ATMain.logger.error(mop);
+
 		if (true)
 			return;
 		if (!heldInHand) {

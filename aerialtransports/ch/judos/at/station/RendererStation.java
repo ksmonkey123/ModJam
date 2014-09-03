@@ -16,8 +16,6 @@ import ch.modjam.generic.rendering.customRenderer.Geometry3;
 
 public class RendererStation extends TileEntitySpecialRenderer {
 
-	private Geometry3	g3;
-
 	public RendererStation() {
 
 	}
@@ -31,50 +29,64 @@ public class RendererStation extends TileEntitySpecialRenderer {
 		TEStation st = (TEStation) ent;
 		// SETUP
 		GL11.glTranslated(transX + 0.5, transY + 0.5, transZ + 0.5);
-		int time = (int) (ent.getWorldObj().getTotalWorldTime());
 
 		Vec3 pos = st.getConnectedEndCoordinatesOrSelf(partialTickTime);
 		Vec3 station = Vec3.createVectorHelper(st.xCoord + 0.5, st.yCoord + 0.9, st.zCoord + 0.5);
 		Vec3 relPos = pos.subtract(station);
 		float angleXZ = (float) (Math.atan2(relPos.xCoord, relPos.zCoord));
 		float angleY = (float) (Math.atan2(relPos.yCoord, Math.hypot(relPos.xCoord, relPos.zCoord)));
+		double lengthRope;
 
-		this.g3 = new Geometry3(ATMain.MOD_ID + ":textures/blocks/" + ATNames.station + ".png");
-		this.g3.clear();
-		this.g3.setUvModeScaled(false);
-		this.g3.transform.rotate(angleXZ, new Vector3f(0, 1, 0));
+		if (!st.isConnectedToSomethingAndSender())
+			lengthRope = 0;
+		else
+			lengthRope = relPos.lengthVector();
+
+		renderStation(angleXZ, angleY, lengthRope);
+
+		// TEAR DOWN
+		GL11.glTranslated(-transX - 0.5, -transY - 0.5, -transZ - 0.5);
+	}
+
+	public static void renderStation(float angleXZ, float angleY, double lengthRope) {
+
+		Geometry3 g3 = new Geometry3(ATMain.MOD_ID + ":textures/blocks/" + ATNames.station + ".png");
+		g3.clear();
+		g3.setUvModeScaled(false);
+		g3.transform.rotate(angleXZ, new Vector3f(0, 1, 0));
 
 		final double s = 0.75; // side of one quad
 		final double t = s / 2;
 		final double b = -0.499;
-		this.g3.setUvModeScaled(true);
-		this.g3.addCubeWithoutFaces(s, 1, s, 0, EFace.FRONT);
+		g3.setUvModeScaled(true);
+		g3.addCubeWithoutFaces(s, 1, s, 0, EFace.FRONT);
 
-		this.g3.setOffset(0, 0, -0.05);
-		this.g3.addCubeWithoutFaces(s - 0.1, 0.9, s - 0.1, 1, true, EFace.FRONT);
+		g3.setOffset(0, 0, -0.05);
+		g3.addCubeWithoutFaces(s - 0.1, 0.9, s - 0.1, 1, true, EFace.FRONT);
 
-		this.g3.setOffset(0, 0, 0);
-		this.g3.setUvModeScaled(false);
-		this.g3.addQuadOnSideWithTex(s / 2 - 0.1, -0.5, -s / 2, 0.1, 1, EFace.FRONT, 0);
-		this.g3.addQuadOnSideWithTex(-s / 2, -0.5, -s / 2, 0.1, 1, EFace.FRONT, 0);
-		this.g3.addQuadOnSideWithTex(-s / 2 + 0.1, 0.45, -s / 2, s - 0.2, 0.05, EFace.FRONT, 0);
-		this.g3.addQuadOnSideWithTex(-s / 2 + 0.1, -0.5, -s / 2, s - 0.2, 0.05, EFace.FRONT, 0);
-		this.g3.setOffset(0, 0.4, 0);
-		this.g3.setUvModeScaled(true);
-		this.g3.addCube(0.15, 0.1, 0.5, 2);
+		g3.setOffset(0, 0, 0);
+		g3.setUvModeScaled(false);
+		g3.addQuadOnSideWithTex(s / 2 - 0.1, -0.5, -s / 2, 0.1, 1, EFace.FRONT, 0);
+		g3.addQuadOnSideWithTex(-s / 2, -0.5, -s / 2, 0.1, 1, EFace.FRONT, 0);
+		g3.addQuadOnSideWithTex(-s / 2 + 0.1, 0.45, -s / 2, s - 0.2, 0.05, EFace.FRONT, 0);
+		g3.addQuadOnSideWithTex(-s / 2 + 0.1, -0.5, -s / 2, s - 0.2, 0.05, EFace.FRONT, 0);
+		g3.setOffset(0, 0.4, 0);
+		g3.setUvModeScaled(true);
+		g3.addCube(0.15, 0.1, 0.5, 2);
 
-		// this.g3.addCubeOfRadius(0.45);
+		// g3.addCubeOfRadius(0.45);
 
-		if (st.isConnectedToSomethingAndSender()) {
+		if (lengthRope > 0) {
 			GL11.glTranslated(0, 0.4, 0);
 
-			double length = relPos.lengthVector();
+			double length = lengthRope;
 
 			Geometry2 rope = new Geometry2("minecraft:textures/blocks/wool_colored_white.png");
 			rope.setUvModeScaled(false);
 			double r = 0.05; // rope thickness
 
 			rope.addQuadOnSideWithTex(-r / 2, r / 2, -length, length, r, EFace.TOP, 0);
+			rope.addQuadOnSideWithTex(-r / 2, -r / 2, -length, length, r, EFace.BOTTOM, 0);
 			rope.addQuadOnSideWithTex(-r / 2, -r / 2, -length, length, r, EFace.RIGHT, 0);
 			rope.addQuadOnSideWithTex(r / 2, -r / 2, -length, length, r, EFace.LEFT, 0);
 			rope.addQuadOnSideWithTex(-r / 2, -r / 2, -length, r, r, EFace.FRONT, 0);
@@ -89,10 +101,6 @@ public class RendererStation extends TileEntitySpecialRenderer {
 		}
 
 		// r.addQuadOnSide(-0.36, -0.36, -0.36, 2 * 0.36, 0.36, EFace.FRONT);
-		this.g3.draw(Tessellator.instance);
-
-		// TEAR DOWN
-		GL11.glTranslated(-transX - 0.5, -transY - 0.5, -transZ - 0.5);
-
+		g3.draw(Tessellator.instance);
 	}
 }

@@ -122,7 +122,7 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 			ppos.yCoord += 1.62;
 
 		double dist = this.currentPos.subtract(ppos).lengthVector();
-		if (dist < 0.9)
+		if (dist < 0.7)
 			gondolaFallsOutOfRope();
 	}
 
