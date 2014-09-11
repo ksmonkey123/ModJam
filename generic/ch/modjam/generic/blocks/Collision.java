@@ -25,8 +25,26 @@ public class Collision {
 	 * @param returnMiss
 	 * @return an empty set if any value of start or endVec is NaN<br>
 	 */
-	public Set<BlockCoordinates> detectCollissions(Vec3 startVec, Vec3 endVec,
-			boolean collideWithLiquid, boolean detectStart, boolean returnMiss) {
+	public Set<BlockCoordinates> detectCollisions(Vec3P startVec, Vec3P endVec,
+			boolean collideWithLiquid, boolean excludeStart) {
+		HashSet<BlockCoordinates> exclude = new HashSet<BlockCoordinates>();
+		if (excludeStart)
+			exclude.add(startVec.getBlockCoords());
+		return detectCollisions(startVec, endVec, collideWithLiquid, exclude);
+	}
+
+	public Set<BlockCoordinates> detectCollisions(Vec3P startVec, Vec3P endVec,
+			boolean collideWithLiquid, boolean excludeStart, boolean excludeEnd) {
+		HashSet<BlockCoordinates> exclude = new HashSet<BlockCoordinates>();
+		if (excludeStart)
+			exclude.add(startVec.getBlockCoords());
+		if (excludeEnd)
+			exclude.add(endVec.getBlockCoords());
+		return detectCollisions(startVec, endVec, collideWithLiquid, exclude);
+	}
+
+	public Set<BlockCoordinates> detectCollisions(Vec3P startVec, Vec3P endVec,
+			boolean collideWithLiquid, Set<BlockCoordinates> exclude) {
 
 		HashSet<BlockCoordinates> result = new HashSet<BlockCoordinates>();
 
@@ -49,17 +67,18 @@ public class Collision {
 		Block block = this.world.getBlock(startX, startY, startZ);
 		int blockMeta = this.world.getBlockMetadata(startX, startY, startZ);
 
-		if (detectStart && block
-			.getCollisionBoundingBoxFromPool(this.world, startX, startY, startZ) != null && block
+		if (block.getCollisionBoundingBoxFromPool(this.world, startX, startY, startZ) != null && block
 			.canCollideCheck(blockMeta, collideWithLiquid)) {
 			MovingObjectPosition mop = block.collisionRayTrace(this.world, startX, startY, startZ,
 				startVec, endVec);
 
-			if (mop != null)
-				result.add(new BlockCoordinates(mop.blockX, mop.blockY, mop.blockZ));
+			if (mop != null) {
+				BlockCoordinates blockC = new BlockCoordinates(mop.blockX, mop.blockY, mop.blockZ);
+				if (!exclude.contains(blockC))
+					result.add(blockC);
+			}
 		}
 
-		MovingObjectPosition movingobjectposition2 = null;
 		int blockRemainingForCollision = 200;
 
 		while (blockRemainingForCollision-- >= 0) {
@@ -181,8 +200,12 @@ public class Collision {
 					MovingObjectPosition mop = block1.collisionRayTrace(this.world, startX, startY,
 						startZ, startVec, endVec);
 
-					if (mop != null)
-						result.add(new BlockCoordinates(mop.blockX, mop.blockY, mop.blockZ));
+					if (mop != null) {
+						BlockCoordinates blockC = new BlockCoordinates(mop.blockX, mop.blockY,
+							mop.blockZ);
+						if (!exclude.contains(blockC))
+							result.add(blockC);
+					}
 				}
 			}
 		}
@@ -190,6 +213,8 @@ public class Collision {
 	}
 
 	/**
+	 * a somewhat deobfuscated version of the world.rayTrace() method
+	 * 
 	 * @param startVec
 	 * @param endVec
 	 * @param collideWithLiquid

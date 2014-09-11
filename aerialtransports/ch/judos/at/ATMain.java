@@ -15,6 +15,7 @@ import ch.judos.at.station.BlockStation;
 import ch.judos.at.station.TEStation;
 import ch.judos.at.station.gondola.EntityGondola;
 import ch.judos.at.station.gondola.ItemGondola;
+import ch.judos.at.station.items.BlockRope;
 import ch.judos.at.station.items.ItemRope;
 import ch.judos.at.workinprogress.GondolaTargetMessage;
 import ch.modjam.generic.helper.RegistryUtil;
@@ -50,6 +51,7 @@ public class ATMain {
 
 	public static CreativeTabs			modTab;
 	public static BlockStation			station;
+	public static BlockRope				ropeBlock;
 	public static ItemRope				ropeOfStation;
 	public static ItemGondola			gondola;
 
@@ -71,6 +73,7 @@ public class ATMain {
 		createCreativeTab();
 
 		registerRopeOfStationItem();
+		registerRopeBlocks();
 		registerGondola();
 		registerStation();
 
@@ -79,6 +82,11 @@ public class ATMain {
 			GondolaTargetMessage.class, 0, Side.CLIENT);
 
 		proxy.registerRenderInformation();
+	}
+
+	private static void registerRopeBlocks() {
+		ropeBlock = new BlockRope();
+		RegistryUtil.registerBlock(ropeBlock);
 	}
 
 	private static void registerGondola() {

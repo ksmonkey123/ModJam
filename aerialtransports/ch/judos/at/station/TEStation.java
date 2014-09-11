@@ -148,6 +148,7 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		else
 			this.connectedToCoords = null;
 		if (tag.hasKey(nbtBuildConnectPlayerName) && this.worldObj != null) {
+			ATMain.logger.error("No world object yet available");
 			String name = tag.getString(nbtBuildConnectPlayerName);
 			this.buildConnectTo = this.worldObj.getPlayerEntityByName(name);
 		} else

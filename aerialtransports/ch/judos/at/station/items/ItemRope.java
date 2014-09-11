@@ -3,12 +3,16 @@ package ch.judos.at.station.items;
 import java.util.List;
 import java.util.Set;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import ch.judos.at.ATMain;
@@ -21,6 +25,8 @@ import ch.modjam.generic.blocks.Vec3P;
 public class ItemRope extends Item {
 
 	public static final String	nbtStationCoordinates	= "station_coordinates";
+	private IIcon				normal;
+	private IIcon				blocked;
 
 	public ItemRope() {
 		super();
@@ -58,19 +64,26 @@ public class ItemRope extends Item {
 			for (int i = 0; i < 3; i++)
 				s.append(coords[i] + "/");
 			infoList.add(s.substring(0, s.length() - 1));
-		} else
+		} else {
 			infoList.add("invalid item");
+		}
 	}
 
 	@Override
-	public void onUpdate(ItemStack item, World world, Entity entity, int slot, boolean heldInHand) {
-		int[] coords = item.stackTagCompound.getIntArray(nbtStationCoordinates);
+	public void registerIcons(IIconRegister register) {
+		this.normal = register.registerIcon(ATMain.MOD_ID + ":" + ATNames.ropeToStation);
+		this.blocked = register
+			.registerIcon(ATMain.MOD_ID + ":" + ATNames.ropeToStation + "_collision");
+	}
+
+	@Override
+	public IIcon getIconIndex(ItemStack stack) {
+		if (stack.stackTagCompound == null)
+			return this.normal;
+		int[] coords = stack.stackTagCompound.getIntArray(nbtStationCoordinates);
+		EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+		World world = player.worldObj;
 		Collision c = new Collision(world);
-
-		if (!(entity instanceof EntityPlayer))
-			return;
-
-		EntityPlayer player = (EntityPlayer) entity;
 
 		Vec3 ppos = player.getPosition(1);
 		if (!world.isRemote)
@@ -80,9 +93,16 @@ public class ItemRope extends Item {
 		Vec3P start = new Vec3P(coords[0] + 0.5, coords[1] + 0.9, coords[2] + 0.5);
 		Vec3P end = new Vec3P(ppos.xCoord, ppos.yCoord, ppos.zCoord);
 
-		Set<BlockCoordinates> mop = c.detectCollissions(start, end, true, false, false);
-		// FIXME: instead of output, use map when trying to connect stations
-		ATMain.logger.error(mop);
+		// detects liquids and excludes the start (station itself)
+		Set<BlockCoordinates> mop = c.detectCollisions(start, end, true, true);
+
+		if (mop.isEmpty())
+			return this.normal;
+		return this.blocked;
+	}
+
+	@Override
+	public void onUpdate(ItemStack item, World world, Entity entity, int slot, boolean heldInHand) {
 
 		if (true)
 			return;

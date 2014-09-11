@@ -1,5 +1,7 @@
 package ch.judos.at.station;
 
+import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -12,6 +14,9 @@ import net.minecraft.world.World;
 import ch.judos.at.ATMain;
 import ch.judos.at.lib.ATNames;
 import ch.judos.at.station.items.ItemRope;
+import ch.modjam.generic.blocks.BlockCoordinates;
+import ch.modjam.generic.blocks.Collision;
+import ch.modjam.generic.blocks.Vec3P;
 import ch.modjam.generic.gui.GenericGuiHandler;
 import ch.modjam.generic.rendering.customRenderer.RenderType;
 
@@ -61,9 +66,25 @@ public class BlockStation extends BlockContainer {
 					player.addChatMessage(new ChatComponentText(
 						"Can't connect a station to itself."));
 			} else {
-				int currentSlotHeld = player.inventory.currentItem;
-				player.inventory.setInventorySlotContents(currentSlotHeld, null);
-				stationStart.finishRopeConnection(stationEnd, player);
+				Collision c = new Collision(w);
+				Vec3P start = new Vec3P(stationStart.xCoord + 0.5, stationStart.yCoord + 0.9,
+					stationStart.zCoord + 0.5);
+				Vec3P end = new Vec3P(stationEnd.xCoord + 0.5, stationEnd.yCoord + 0.9,
+					stationEnd.zCoord + 0.5);
+
+				// detects liquids and excludes both, start and end stations
+				Set<BlockCoordinates> intermediate = c.detectCollisions(start, end, true, true,
+					true);
+				if (intermediate.isEmpty()) {
+					int currentSlotHeld = player.inventory.currentItem;
+					player.inventory.setInventorySlotContents(currentSlotHeld, null);
+					stationStart.finishRopeConnection(stationEnd, player);
+				} else {
+					ATMain.logger.error(intermediate);
+					if (w.isRemote)
+						player.addChatMessage(new ChatComponentText(
+							"The rope is blocked, can't connect it."));
+				}
 			}
 		}
 		return true;

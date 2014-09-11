@@ -1,0 +1,80 @@
+package ch.judos.at.station.items;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
+import ch.judos.at.ATMain;
+import ch.judos.at.lib.ATNames;
+import ch.judos.at.station.BlockStation;
+import ch.modjam.generic.blocks.BlockCoordinates;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+public class BlockRope extends Block {
+
+	public BlockRope() {
+		super(Material.cloth);
+		this.setCreativeTab(ATMain.modTab);
+		this.setBlockName(ATNames.ropeBlock);
+		this.setBlockTextureName(ATMain.MOD_ID + ":" + ATNames.ropeBlock);
+		this.setLightOpacity(0);
+	}
+
+	@Override
+	public boolean isOpaqueCube() {
+		return false;
+	}
+
+	@Override
+	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+		HashSet<BlockCoordinates> checked = new HashSet<BlockCoordinates>();
+		ArrayList<BlockCoordinates> check = new ArrayList<BlockCoordinates>();
+		check.add(new BlockCoordinates(x, y, z));
+		while (!check.isEmpty()) {
+			BlockCoordinates checkCoords = check.remove(0);
+			checked.add(checkCoords);
+			Block checkBlock = world.getBlock(checkCoords.x, checkCoords.y, checkCoords.z);
+			if (checkBlock instanceof BlockRope) {
+				for (BlockCoordinates c : checkCoords.neighbors())
+					if (!checked.contains(c))
+						check.add(c);
+			} else if (checkBlock instanceof BlockStation) {
+				// TODO: implement
+			}
+		}
+	}
+
+	@Override
+	public boolean renderAsNormalBlock() {
+		return false;
+	}
+
+	/**
+	 * Returns which pass should this block be rendered on. 0 for solids and 1 for alpha
+	 */
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getRenderBlockPass() {
+		return 0;
+	}
+
+	@Override
+	public int getRenderType() {
+		return -1; // custom render type
+	}
+
+	@Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
+		return null;
+	}
+
+	@Override
+	public boolean canCollideCheck(int p_149678_1_, boolean p_149678_2_) {
+		return true;
+	}
+
+}
