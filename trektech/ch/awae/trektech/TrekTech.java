@@ -23,6 +23,7 @@ import ch.awae.trektech.entities.TileEntityPlasmaValve;
 import ch.awae.trektech.items.ItemDilithiumCrystal;
 import ch.awae.trektech.items.ItemDilithiumRaw;
 import ch.awae.trektech.items.ItemDuraniumIngot;
+import ch.awae.trektech.items.ItemFurnaceWood;
 import ch.awae.trektech.items.ItemPlasmaContainmentRing;
 import ch.awae.trektech.items.ItemScrap;
 import ch.awae.trektech.items.ItemStarFleetSymbol;
@@ -32,6 +33,7 @@ import ch.modjam.generic.multiblock.Multiblock;
 import ch.modjam.generic.multiblock.MultiblockBlock;
 import ch.modjam.generic.multiblock.MultiblockRegistry;
 import ch.modjam.generic.multiblock.MultiblockTileEntity;
+import cpw.mods.fml.common.IFuelHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -95,6 +97,8 @@ public class TrekTech {
     public static Block[]      valves                    = new Block[EnumPlasmaTypes
                                                                  .values().length];
     
+    public static Item          itemFurnaceWood = new ItemFurnaceWood();
+    
     @SidedProxy(clientSide = "ch.awae.trektech.ClientProxy", serverSide = "ch.awae.trektech.CommonProxy")
     public static CommonProxy  proxy;
     
@@ -140,6 +144,17 @@ public class TrekTech {
         RegistryUtil.registerItem(TrekTech.itemDilithiumCrystal);
         RegistryUtil.registerItem(TrekTech.itemPlasmaContainmentRing);
         RegistryUtil.registerItem(TrekTech.itemScrap);
+        
+        RegistryUtil.registerItem(TrekTech.itemFurnaceWood);
+        GameRegistry.registerFuelHandler(new IFuelHandler() {
+            
+            @Override
+            public int getBurnTime(ItemStack fuel) {
+                if (fuel.getItem().equals(TrekTech.itemFurnaceWood))
+                    return 200;
+                return 0;
+            }
+        });
         // BLOCKS
         RegistryUtil.registerBlock(TrekTech.blockDuraniumWall);
         

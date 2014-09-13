@@ -31,5 +31,6 @@ item.upgrade3.name=Specialisation Upgrade
 item.upgrade4.name=Security Upgrade
 
 item.scrap.name=Scrap
+item.furnaceWood.name=Furnace Wood
 
 container.plasmaSource=Exothermic Plasma Ionizer

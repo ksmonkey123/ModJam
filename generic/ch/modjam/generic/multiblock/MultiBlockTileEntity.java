@@ -19,7 +19,6 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
      */
     public MultiblockTileEntity() {
         this.state = EnumTileEntityState.IDLE;
-        this.instanceID = -1;
         this.multiblockID = null;
         this.isRegistered = false;
     }
@@ -121,7 +120,6 @@ public abstract class MultiblockTileEntity extends GenericTileEntity {
     public final void resetToIdle() {
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
         this.state = EnumTileEntityState.IDLE;
-        this.instanceID = -1;
         this.updateBlockActivationState(false);
     }
     
