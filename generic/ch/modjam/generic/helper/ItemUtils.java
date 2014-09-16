@@ -20,7 +20,7 @@ public class ItemUtils {
 		if (world.isRemote)
 			return;
 		EntityItem items = new EntityItem(world, x, y, z, stack);
-		items.delayBeforeCanPickup = 10;
+		items.delayBeforeCanPickup = 15;
 		items.motionX = 0;
 		items.motionY = 0.2f;
 		items.motionZ = 0;
