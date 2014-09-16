@@ -24,7 +24,9 @@ import ch.judos.at.lib.ATNames;
 import ch.judos.at.station.gondola.EntityGondola;
 import ch.judos.at.station.gui.ContainerStation;
 import ch.judos.at.station.gui.GuiContainerStation;
+import ch.modjam.generic.blocks.Vec3P;
 import ch.modjam.generic.gui.IHasGui;
+import ch.modjam.generic.helper.ItemUtils;
 import ch.modjam.generic.inventory.GenericInventory;
 import ch.modjam.generic.inventory.GenericTileEntityWithInventory;
 
@@ -104,7 +106,7 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 					// ATMain.logger.error("sending items: " + this.worldObj.getTotalWorldTime());
 					Vec3 start = Vec3.createVectorHelper(this.xCoord + 0.5, this.yCoord + 0.5,
 						this.zCoord + 0.5);
-					Vec3 end = Vec3.createVectorHelper(target.xCoord + 0.5, target.yCoord + 0.5,
+					Vec3P end = new Vec3P(target.xCoord + 0.5, target.yCoord + 0.5,
 						target.zCoord + 0.5);
 					EntityGondola eGondola = new EntityGondola(this.worldObj, start, end,
 						transportGoods);
@@ -314,6 +316,13 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 
 	public void clientRequestSenderChange() {
 		this.sendNetworkCommand(netClientReqChangeSender);
+	}
+
+	public void receiveGondola(EntityGondola entityGondola) {
+		if (!this.inventory.addItemStackToInventory(new ItemStack(ATMain.gondola)))
+			ItemUtils.spawnItemEntity(this, new ItemStack(ATMain.gondola));
+		if (!this.inventory.addItemStackToInventory(entityGondola.transportGoods))
+			ItemUtils.spawnItemEntity(this, entityGondola.transportGoods);
 	}
 
 }

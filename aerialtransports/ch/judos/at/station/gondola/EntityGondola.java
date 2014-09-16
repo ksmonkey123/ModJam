@@ -11,6 +11,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import ch.judos.at.ATMain;
 import ch.judos.at.station.TEStation;
+import ch.modjam.generic.blocks.Vec3P;
 import ch.modjam.generic.helper.ItemUtils;
 import ch.modjam.generic.helper.NBTUtils;
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -20,7 +21,7 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 
 	public static final double	TRAVEL_SPEED	= 0.03;
 
-	public Vec3					end;
+	public Vec3P				end;
 	public Vec3					start;
 	public Vec3					currentPos;
 
@@ -37,7 +38,7 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 
 	}
 
-	public EntityGondola(World world, Vec3 start, Vec3 end, ItemStack transportGoods) {
+	public EntityGondola(World world, Vec3 start, Vec3P end, ItemStack transportGoods) {
 		this(world);
 		this.start = start;
 		this.end = end;
@@ -131,11 +132,27 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 	 */
 	public void gondolaFallsOutOfRope() {
 		if (!this.worldObj.isRemote) {
+			this.disposeGondola();
 			ItemUtils.spawnItemEntity(this, this.transportGoods);
 			ItemUtils.spawnItemEntity(this, new ItemStack(ATMain.gondola));
-			this.worldObj.removeEntity(this);
-			this.removeFromListInStation();
 		}
+	}
+
+	private void disposeGondola() {
+		this.removeFromListInStation();
+		this.worldObj.removeEntity(this);
+		this.setDead();
+	}
+
+	private void deliverItemsToTargetStation() {
+		TileEntity targetTE = this.end.getTileEntityThere(this.worldObj);
+		if (targetTE instanceof TEStation) {
+			TEStation targetStation = (TEStation) targetTE;
+			targetStation.receiveGondola(this);
+			this.disposeGondola();
+
+		} else
+			this.gondolaFallsOutOfRope();
 	}
 
 	@Override
@@ -159,6 +176,7 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 		// if distance to target station is bigger than before, entity has reached station
 		if (this.currentPos.subtract(this.end).lengthVector() > before.subtract(this.end)
 			.lengthVector()) {
+			this.deliverItemsToTargetStation();
 			this.removeFromListInStation();
 			this.setDead();
 		}
@@ -195,7 +213,7 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 
 	public void setStartAndTarget(double xs, double ys, double zs, double xe, double ye, double ze) {
 		this.start = Vec3.createVectorHelper(xs, ys, zs);
-		this.end = Vec3.createVectorHelper(xe, ye, ze);
+		this.end = new Vec3P(xe, ye, ze);
 	}
 
 	@Override

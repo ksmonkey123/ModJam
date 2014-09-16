@@ -106,6 +106,7 @@ public class ItemRope extends Item {
 
 		if (true)
 			return;
+		// XXX: eventually drop item when not in hand
 		if (!heldInHand) {
 			if (entity instanceof EntityPlayer) {
 				ATMain.logger.error(entity + " - " + item);
