@@ -78,7 +78,6 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 
 	@Override
 	public void tick() {
-
 		if (this.worldObj.isRemote)
 			return;
 		if (!this.isSender)
@@ -88,35 +87,42 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		if (this.counter % 10000 == 0)
 			cleanSentGondolaIdSet();
 
-		// TODO: pack into method
 		if (this.counter % 100 == 0) {
-			ItemStack gondolas = this.inventory.getStackInSlot(0);
-			ItemStack goods = this.inventory.getStackInSlot(1);
-
-			if (gondolas != null && gondolas.stackSize > 0 && goods != null) {
-
-				TEStation target = this.getTarget();
-				if (target != null) {
-
-					// FIXME: remove item dupe:
-					ItemStack transportGoods = this.inventory.getStackInSlot(1).copy();
-					// this.inventory.decrStackSize(1, 5);
-
-					// ATMain.logger.error("sending items: " + this.inventory.decrStackSize(1, 1));
-					// ATMain.logger.error("sending items: " + this.worldObj.getTotalWorldTime());
-					Vec3 start = Vec3.createVectorHelper(this.xCoord + 0.5, this.yCoord + 0.5,
-						this.zCoord + 0.5);
-					Vec3P end = new Vec3P(target.xCoord + 0.5, target.yCoord + 0.5,
-						target.zCoord + 0.5);
-					EntityGondola eGondola = new EntityGondola(this.worldObj, start, end,
-						transportGoods);
-					eGondola.setPosition(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5);
-					this.worldObj.spawnEntityInWorld(eGondola);
-
-					this.gondolaIdsSent.add(eGondola.getEntityId());
-				}
-			}
+			if (canGondolaBeSent())
+				sendGondola();
 		}
+	}
+
+	private void sendGondola() {
+		TEStation target = this.getTarget();
+
+		// capacity of gondola: 5 items
+		ItemStack transportGoods = this.inventory.decrStackSize(1, 5);
+		// remove one gondola:
+		this.inventory.decrStackSize(0, 1);
+
+		// ATMain.logger.error("sending items: " + this.inventory.decrStackSize(1, 1));
+		// ATMain.logger.error("sending items: " + this.worldObj.getTotalWorldTime());
+		Vec3 start = Vec3.createVectorHelper(this.xCoord + 0.5, this.yCoord + 0.5,
+			this.zCoord + 0.5);
+		Vec3P end = new Vec3P(target.xCoord + 0.5, target.yCoord + 0.5, target.zCoord + 0.5);
+		EntityGondola eGondola = new EntityGondola(this.worldObj, start, end, transportGoods);
+		eGondola.setPosition(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5);
+		this.worldObj.spawnEntityInWorld(eGondola);
+
+		this.gondolaIdsSent.add(eGondola.getEntityId());
+	}
+
+	private boolean canGondolaBeSent() {
+		ItemStack gondolas = this.inventory.getStackInSlot(0);
+		ItemStack goods = this.inventory.getStackInSlot(1);
+
+		if (gondolas != null && gondolas.stackSize > 0 && goods != null && goods.stackSize > 0) {
+			TEStation target = this.getTarget();
+			return target != null;
+		}
+
+		return false;
 	}
 
 	public TEStation getTarget() {
@@ -320,9 +326,9 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 
 	public void receiveGondola(EntityGondola entityGondola) {
 		if (!this.inventory.addItemStackToInventory(new ItemStack(ATMain.gondola)))
-			ItemUtils.spawnItemEntity(this, new ItemStack(ATMain.gondola));
+			ItemUtils.spawnItemEntityAbove(this, new ItemStack(ATMain.gondola));
 		if (!this.inventory.addItemStackToInventory(entityGondola.transportGoods))
-			ItemUtils.spawnItemEntity(this, entityGondola.transportGoods);
+			ItemUtils.spawnItemEntityAbove(this, entityGondola.transportGoods);
 	}
 
 }

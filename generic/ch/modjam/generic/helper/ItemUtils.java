@@ -5,7 +5,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import ch.judos.at.ATMain;
 
 public class ItemUtils {
 	public static void spawnItemEntity(Entity origin, ItemStack stack) {
@@ -13,7 +12,13 @@ public class ItemUtils {
 	}
 
 	public static void spawnItemEntity(TileEntity origin, ItemStack stack) {
-		spawnItemEntity(origin.getWorldObj(), origin.xCoord, origin.yCoord, origin.zCoord, stack);
+		spawnItemEntity(origin.getWorldObj(), origin.xCoord + 0.5, origin.yCoord + 0.5,
+			origin.zCoord + 0.5, stack);
+	}
+
+	public static void spawnItemEntityAbove(TileEntity origin, ItemStack stack) {
+		spawnItemEntity(origin.getWorldObj(), origin.xCoord + 0.5, origin.yCoord + 1.5,
+			origin.zCoord + 0.5, stack);
 	}
 
 	public static void spawnItemEntity(World world, double x, double y, double z, ItemStack stack) {
@@ -25,6 +30,5 @@ public class ItemUtils {
 		items.motionY = 0.2f;
 		items.motionZ = 0;
 		world.spawnEntityInWorld(items);
-		ATMain.logger.error(items);
 	}
 }

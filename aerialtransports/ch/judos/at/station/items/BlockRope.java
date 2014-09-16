@@ -6,6 +6,7 @@ import java.util.HashSet;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import ch.judos.at.ATMain;
 import ch.judos.at.lib.ATNames;
@@ -22,6 +23,7 @@ public class BlockRope extends Block {
 		this.setBlockName(ATNames.ropeBlock);
 		this.setBlockTextureName(ATMain.MOD_ID + ":" + ATNames.ropeBlock);
 		this.setLightOpacity(0);
+		this.setBlockBounds(.3f, .3f, .3f, .7f, .7f, .7f);
 	}
 
 	@Override
@@ -70,6 +72,12 @@ public class BlockRope extends Block {
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 		return null;
+	}
+
+	@Override
+	public void setBlockBoundsBasedOnState(IBlockAccess p_149719_1_, int p_149719_2_,
+			int p_149719_3_, int p_149719_4_) {
+		super.setBlockBoundsBasedOnState(p_149719_1_, p_149719_2_, p_149719_3_, p_149719_4_);
 	}
 
 	@Override

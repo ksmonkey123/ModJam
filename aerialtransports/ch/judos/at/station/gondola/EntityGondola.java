@@ -80,6 +80,11 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 	}
 
 	@Override
+	public float getCollisionBorderSize() {
+		return 1;
+	}
+
+	@Override
 	public boolean handleWaterMovement() {
 		return false;
 	}
@@ -91,18 +96,12 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 
 	@Override
 	public boolean canBeCollidedWith() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean isEntityInvulnerable() {
 		return true;
-	}
-
-	@Override
-	public boolean isEntityInsideOpaqueBlock() {
-		return super.isEntityInsideOpaqueBlock();
-		// return false;
 	}
 
 	@Override
