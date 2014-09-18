@@ -92,7 +92,6 @@ public class BlockStation extends BlockContainer {
 
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-		ATMain.logger.error("breakBlock");
 		TileEntity te = world.getTileEntity(x, y, z);
 		if (te == null || !(te instanceof TEStation))
 			return;

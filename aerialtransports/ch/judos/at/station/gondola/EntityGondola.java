@@ -81,7 +81,7 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 
 	@Override
 	public float getCollisionBorderSize() {
-		return 1;
+		return 0.0f;
 	}
 
 	@Override
