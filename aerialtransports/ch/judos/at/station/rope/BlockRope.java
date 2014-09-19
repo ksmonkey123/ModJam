@@ -1,4 +1,4 @@
-package ch.judos.at.station.items;
+package ch.judos.at.station.rope;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -24,6 +24,7 @@ public class BlockRope extends Block {
 		this.setBlockTextureName(ATMain.MOD_ID + ":" + ATNames.ropeBlock);
 		this.setLightOpacity(0);
 		this.setBlockBounds(.3f, .3f, .3f, .7f, .7f, .7f);
+		this.setBlockUnbreakable();
 	}
 
 	@Override

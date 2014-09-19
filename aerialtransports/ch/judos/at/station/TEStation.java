@@ -325,10 +325,11 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	}
 
 	public void receiveGondola(EntityGondola entityGondola) {
-		if (!this.inventory.addItemStackToInventory(new ItemStack(ATMain.gondola)))
-			ItemUtils.spawnItemEntityAbove(this, new ItemStack(ATMain.gondola));
 		if (!this.inventory.addItemStackToInventory(entityGondola.transportGoods))
 			ItemUtils.spawnItemEntityAbove(this, entityGondola.transportGoods);
+		if (!this.inventory.addItemStackToInventory(new ItemStack(ATMain.gondola)))
+			ItemUtils.spawnItemEntityAbove(this, new ItemStack(ATMain.gondola));
+
 	}
 
 }

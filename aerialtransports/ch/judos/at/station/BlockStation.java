@@ -13,7 +13,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import ch.judos.at.ATMain;
 import ch.judos.at.lib.ATNames;
-import ch.judos.at.station.items.ItemRope;
+import ch.judos.at.station.rope.ItemRope;
 import ch.modjam.generic.blocks.BlockCoordinates;
 import ch.modjam.generic.blocks.Collision;
 import ch.modjam.generic.blocks.Vec3P;
@@ -25,9 +25,9 @@ public class BlockStation extends BlockContainer {
 	public BlockStation() {
 		super(Material.wood);
 		this.setBlockName(ATNames.station);
-		this.setBlockTextureName(ATMain.MOD_ID + ":" + ATNames.station);
+		this.setBlockTextureName(ATMain.MOD_ID + ":" + ATNames.station + "_particles");
 		this.setCreativeTab(ATMain.modTab);
-		this.setHardness(0.3f);
+		this.setHardness(0.5f);
 		this.setHarvestLevel("axe", 0);
 		// this.setLightOpacity(0);
 	}

@@ -1,4 +1,4 @@
-package ch.judos.at.station.items;
+package ch.judos.at.station.rope;
 
 import java.util.List;
 import java.util.Set;

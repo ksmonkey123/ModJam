@@ -100,6 +100,9 @@ public abstract class AbstractInventory implements IInventory {
 		if (push == null || push.stackSize <= 0)
 			return true;
 		for (int i = 0; i < this.getSizeInventory(); i++) {
+			if (!isItemValidForSlot(i, push))
+				continue;
+
 			ItemStack s = this.getStackInSlot(i);
 			if (s == null) {
 				ItemStack newStack = push.copy();
