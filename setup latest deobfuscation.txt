@@ -1,0 +1,7 @@
+This is used to get the latest deobfuscation from the mcpBot nightly.
+All the deobfuscated names from the crowd are updated nightly.
+
+1.in build.gradle file add inside "minecraft {...}" the following:
+    mappings="snapshot_20140922"
+	where "20140922" corresponds to YYYYMMDD
+2.rerun gradlew setupDecompWorkspace
