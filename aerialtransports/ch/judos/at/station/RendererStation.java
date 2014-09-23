@@ -13,6 +13,7 @@ import ch.judos.at.lib.ATNames;
 import ch.modjam.generic.blocks.BlockCoordinates;
 import ch.modjam.generic.blocks.EFace;
 import ch.modjam.generic.rendering.BaseTESRenderer;
+import ch.modjam.generic.rendering.customRenderer.Geometry;
 import ch.modjam.generic.rendering.customRenderer.Geometry2;
 import ch.modjam.generic.rendering.customRenderer.Geometry3;
 
@@ -44,22 +45,20 @@ public class RendererStation extends BaseTESRenderer {
 		else
 			lengthRope = relPos.lengthVector();
 
-		renderStation(angleXZ, angleY, lengthRope);
+		Geometry stationG = renderStation(angleXZ, angleY, lengthRope);
 		DestroyBlockProgress bdp = getBlockDestroyProgress(new BlockCoordinates(st));
 		if (bdp != null) {
 			String iconName = damagedIcons[bdp.getPartialBlockDamage()].getIconName();
-			System.out.println(iconName);
-			Geometry3 brea = new Geometry3("minecraft:textures/blocks/" + iconName + ".png");
-			brea.addQuadOnSide(0, 0, 0, 1, 1, EFace.FRONT);
-			// brea.addCubeOfRadius(1);
-			brea.draw(Tessellator.instance);
+			stationG.setTexture("minecraft:textures/blocks/" + iconName + ".png");
+			stationG.overWriteUV(0, 0, 1, 1);
+			stationG.drawDamaged(Tessellator.instance);
 		}
 
 		// TEAR DOWN
 		GL11.glTranslated(-transX - 0.5, -transY - 0.5, -transZ - 0.5);
 	}
 
-	public static void renderStation(float angleXZ, float angleY, double lengthRope) {
+	public static Geometry renderStation(float angleXZ, float angleY, double lengthRope) {
 
 		Geometry3 g3 = new Geometry3(ATMain.MOD_ID + ":textures/blocks/" + ATNames.station + ".png");
 		g3.clear();
@@ -113,5 +112,6 @@ public class RendererStation extends BaseTESRenderer {
 
 		// r.addQuadOnSide(-0.36, -0.36, -0.36, 2 * 0.36, 0.36, EFace.FRONT);
 		g3.draw(Tessellator.instance);
+		return g3;
 	}
 }

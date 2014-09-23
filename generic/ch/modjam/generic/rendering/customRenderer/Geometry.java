@@ -19,7 +19,7 @@ import org.lwjgl.util.vector.Vector4f;
 public class Geometry extends GroupGeometry {
 	protected ArrayList<Vertex>	points;
 	protected ArrayList<Quad>	quads;
-	private final String		texture;
+	protected String			texture;
 
 	/**
 	 * @param texture
@@ -29,6 +29,10 @@ public class Geometry extends GroupGeometry {
 		this.points = new ArrayList<Vertex>();
 		this.quads = new ArrayList<Quad>();
 		this.texture = texture;
+	}
+
+	public void setTexture(String textureNew) {
+		this.texture = textureNew;
 	}
 
 	public String getTexture() {
@@ -82,6 +86,10 @@ public class Geometry extends GroupGeometry {
 		this.points.clear();
 	}
 
+	public void shallowCopyQuadsTo(Geometry g) {
+		g.quads.addAll(this.quads);
+	}
+
 	@Override
 	protected void draw(Tessellator t, Matrix4f transformMat) {
 		TextureManager render = Minecraft.getMinecraft().renderEngine;
@@ -102,6 +110,20 @@ public class Geometry extends GroupGeometry {
 
 		for (GroupGeometry g : this.subParts)
 			g.draw(t, transformComplete);
+	}
+
+	public void overWriteUV(int uStart, int vStart, int uEnd, int vEnd) {
+		for (Quad q : this.quads) {
+			q.points[0].u = uStart;
+			q.points[0].v = vStart;
+			q.points[1].u = uEnd;
+			q.points[1].v = vStart;
+			q.points[2].u = uEnd;
+			q.points[2].v = vEnd;
+			q.points[3].u = uStart;
+			q.points[3].v = vEnd;
+		}
+
 	}
 
 }

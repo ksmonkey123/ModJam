@@ -19,6 +19,7 @@ public abstract class GenericTileEntityWithInventory extends GenericTileEntity i
 
 	public GenericTileEntityWithInventory(GenericInventory inv) {
 		this.inventory = inv;
+		this.inventory.setTileEntity(this);
 	}
 
 	@Override

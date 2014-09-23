@@ -5,6 +5,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
+import ch.judos.at.ATMain;
 
 /**
  * @author judos
@@ -74,8 +75,11 @@ public abstract class AbstractInventory implements IInventory {
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack items) {
-		if (this.filters[slot] != null && !this.filters[slot].itemAllowed(items.getItem()))
+		if (this.filters[slot] != null && !this.filters[slot].itemAllowed(items.getItem())) {
+			if (items.getItem().equals(Item.getItemFromBlock(ATMain.station)))
+				System.out.println(items + " not allowed in slot: " + slot);
 			return false;
+		}
 
 		return this.getStackInSlot(slot) == null || this.getStackInSlot(slot).getItem().equals(
 			items.getItem());

@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 
 /**
  * @author judos
@@ -18,6 +19,7 @@ public class GenericInventory extends AbstractInventory {
 	 */
 	public ItemStack[]							stack;
 	private List<InventorySlotChangedListener>	listeners;
+	private TileEntity							tileEntity;
 
 	/**
 	 * @param slots
@@ -69,7 +71,10 @@ public class GenericInventory extends AbstractInventory {
 
 	@Override
 	public void markDirty() {
-		// not implemented
+		if (this.tileEntity != null) {
+			System.out.println("TE marked dirty: " + this.tileEntity);
+			this.tileEntity.markDirty();
+		}
 	}
 
 	/**
@@ -86,6 +91,16 @@ public class GenericInventory extends AbstractInventory {
 	 */
 	public void addListener(InventorySlotChangedListener list) {
 		this.listeners.add(list);
+	}
+
+	/**
+	 * set the tileEntity
+	 * 
+	 * @param te if the inventory markDirty() is called then the tileEntity's markDirty() will also
+	 *            be called
+	 */
+	public void setTileEntity(TileEntity te) {
+		this.tileEntity = te;
 	}
 
 }
