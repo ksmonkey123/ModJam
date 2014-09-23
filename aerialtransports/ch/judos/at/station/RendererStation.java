@@ -1,7 +1,7 @@
 package ch.judos.at.station;
 
+import net.minecraft.client.renderer.DestroyBlockProgress;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
 
@@ -10,11 +10,13 @@ import org.lwjgl.util.vector.Vector3f;
 
 import ch.judos.at.ATMain;
 import ch.judos.at.lib.ATNames;
+import ch.modjam.generic.blocks.BlockCoordinates;
 import ch.modjam.generic.blocks.EFace;
+import ch.modjam.generic.rendering.BaseTESRenderer;
 import ch.modjam.generic.rendering.customRenderer.Geometry2;
 import ch.modjam.generic.rendering.customRenderer.Geometry3;
 
-public class RendererStation extends TileEntitySpecialRenderer {
+public class RendererStation extends BaseTESRenderer {
 
 	public RendererStation() {
 
@@ -43,6 +45,15 @@ public class RendererStation extends TileEntitySpecialRenderer {
 			lengthRope = relPos.lengthVector();
 
 		renderStation(angleXZ, angleY, lengthRope);
+		DestroyBlockProgress bdp = getBlockDestroyProgress(new BlockCoordinates(st));
+		if (bdp != null) {
+			String iconName = damagedIcons[bdp.getPartialBlockDamage()].getIconName();
+			System.out.println(iconName);
+			Geometry3 brea = new Geometry3("minecraft:textures/blocks/" + iconName + ".png");
+			brea.addQuadOnSide(0, 0, 0, 1, 1, EFace.FRONT);
+			// brea.addCubeOfRadius(1);
+			brea.draw(Tessellator.instance);
+		}
 
 		// TEAR DOWN
 		GL11.glTranslated(-transX - 0.5, -transY - 0.5, -transZ - 0.5);

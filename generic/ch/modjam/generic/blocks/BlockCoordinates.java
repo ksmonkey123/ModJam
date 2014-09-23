@@ -3,6 +3,9 @@ package ch.modjam.generic.blocks;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.renderer.DestroyBlockProgress;
+import net.minecraft.tileentity.TileEntity;
+
 public class BlockCoordinates {
 	public int	x;
 	public int	y;
@@ -12,6 +15,17 @@ public class BlockCoordinates {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+	}
+
+	/**
+	 * creates a coordinate object based on the given tileentities coordinates
+	 * 
+	 * @param t
+	 */
+	public BlockCoordinates(TileEntity t) {
+		this.x = t.xCoord;
+		this.y = t.yCoord;
+		this.z = t.zCoord;
 	}
 
 	@Override
@@ -58,4 +72,8 @@ public class BlockCoordinates {
 		return result;
 	}
 
+	public boolean equalCoordinates(DestroyBlockProgress dbp) {
+		return this.x == dbp.getPartialBlockX() && this.y == dbp.getPartialBlockY() && this.z == dbp
+			.getPartialBlockZ();
+	}
 }
