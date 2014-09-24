@@ -63,11 +63,11 @@ public class GroupGeometry {
 
 	public void drawDamaged(Tessellator t) {
 		GL11.glEnable(GL11.GL_BLEND);
+		OpenGlHelper.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_SRC_COLOR, GL11.GL_ONE, GL11.GL_ZERO);
+
 		// set the correct blending function to overlay alpha
 		// GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 		// GL11.glAlphaFunc(GL11.GL_GREATER, 0);
-
-		OpenGlHelper.glBlendFunc(GL11.GL_DST_COLOR, GL11.GL_SRC_COLOR, GL11.GL_ONE, GL11.GL_ZERO);
 
 		RenderHelper.disableStandardItemLighting();
 		t.startDrawingQuads();
