@@ -1,0 +1,4 @@
+1. adapt build.gradle
+     set group="..." to match your name and modid
+		 set archiveBaseName="modid" to match your modid
+2. run "gradlew build" to create the jar file
