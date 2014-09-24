@@ -94,7 +94,7 @@ public class ItemRope extends Item {
 		Vec3P end = new Vec3P(ppos.xCoord, ppos.yCoord, ppos.zCoord);
 
 		// detects liquids and excludes the start (station itself)
-		Set<BlockCoordinates> mop = c.detectCollisions(start, end, true, true);
+		Set<BlockCoordinates> mop = c.detectCollisions(start, end, true, true, false);
 
 		if (mop.isEmpty())
 			return this.normal;

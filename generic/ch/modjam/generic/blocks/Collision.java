@@ -21,18 +21,10 @@ public class Collision {
 	 * @param startVec
 	 * @param endVec
 	 * @param collideWithLiquid
-	 * @param detectStart
-	 * @param returnMiss
+	 * @param excludeStart
+	 * @param excludeEnd
 	 * @return an empty set if any value of start or endVec is NaN<br>
 	 */
-	public Set<BlockCoordinates> detectCollisions(Vec3P startVec, Vec3P endVec,
-			boolean collideWithLiquid, boolean excludeStart) {
-		HashSet<BlockCoordinates> exclude = new HashSet<BlockCoordinates>();
-		if (excludeStart)
-			exclude.add(startVec.getBlockCoords());
-		return detectCollisions(startVec, endVec, collideWithLiquid, exclude);
-	}
-
 	public Set<BlockCoordinates> detectCollisions(Vec3P startVec, Vec3P endVec,
 			boolean collideWithLiquid, boolean excludeStart, boolean excludeEnd) {
 		HashSet<BlockCoordinates> exclude = new HashSet<BlockCoordinates>();
