@@ -329,7 +329,6 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 			ItemUtils.spawnItemEntityAbove(this, entityGondola.transportGoods);
 		if (!this.inventory.addItemStackToInventory(new ItemStack(ATMain.gondola)))
 			ItemUtils.spawnItemEntityAbove(this, new ItemStack(ATMain.gondola));
-		this.markDirty();
 	}
 
 }

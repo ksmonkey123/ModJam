@@ -43,6 +43,7 @@ public class GenericInventory extends AbstractInventory {
 		this.stack[slot] = items;
 		for (InventorySlotChangedListener l : this.listeners)
 			l.slotChanged(slot, items);
+		this.markDirty();
 	}
 
 	/**
@@ -71,10 +72,8 @@ public class GenericInventory extends AbstractInventory {
 
 	@Override
 	public void markDirty() {
-		if (this.tileEntity != null) {
-			System.out.println("TE marked dirty: " + this.tileEntity);
+		if (this.tileEntity != null)
 			this.tileEntity.markDirty();
-		}
 	}
 
 	/**
@@ -101,6 +100,10 @@ public class GenericInventory extends AbstractInventory {
 	 */
 	public void setTileEntity(TileEntity te) {
 		this.tileEntity = te;
+	}
+
+	public void removeListener(InventorySlotChangedListener slotListener) {
+		this.listeners.remove(slotListener);
 	}
 
 }
