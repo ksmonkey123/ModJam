@@ -18,35 +18,34 @@ import ch.modjam.generic.gui.GenericGuiHandler;
  * @author Andreas Waelchli (andreas.waelchli@me.com)
  */
 public class BlockPlasmaValve extends BlockContainer {
-    
-    private final EnumPlasmaTypes plasmaType;
-    
-    /**
-     * Basic Constructor
-     * 
-     * @param id
-     * @param plasmaType
-     */
-    public BlockPlasmaValve(String id, EnumPlasmaTypes plasmaType) {
-        super(Material.rock);
-        setBlockTextureName(TrekTech.MODID + ":" + id);
-        setBlockName(id);
-        setCreativeTab(TrekTech.tabCustom);
-        this.plasmaType = plasmaType;
-    }
-    
-    @Override
-    public TileEntity createNewTileEntity(World var1, int var2) {
-        return new TileEntityPlasmaValve(this.plasmaType, 10);
-    }
-    
-    @Override
-    public boolean onBlockActivated(World world, int x, int y, int z,
-            EntityPlayer player, int face, float p_149727_7_,
-            float p_149727_8_, float p_149727_9_) {
-        if (Handler.handleWrenching(player, world, x, y, z))
-            return true;
-        return GenericGuiHandler.openGUI(player, world, x, y, z);
-    }
-    
+
+	private final EnumPlasmaTypes	plasmaType;
+
+	/**
+	 * Basic Constructor
+	 * 
+	 * @param id
+	 * @param plasmaType
+	 */
+	public BlockPlasmaValve(String id, EnumPlasmaTypes plasmaType) {
+		super(Material.rock);
+		setTextureName(TrekTech.MODID + ":" + id);
+		setUnlocalizedName(id);
+		setCreativeTab(TrekTech.tabCustom);
+		this.plasmaType = plasmaType;
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World var1, int var2) {
+		return new TileEntityPlasmaValve(this.plasmaType, 10);
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
+			int face, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
+		if (Handler.handleWrenching(player, world, x, y, z))
+			return true;
+		return GenericGuiHandler.openGUI(player, world, x, y, z);
+	}
+
 }

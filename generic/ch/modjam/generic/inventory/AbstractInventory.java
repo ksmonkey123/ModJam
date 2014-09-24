@@ -45,7 +45,7 @@ public abstract class AbstractInventory implements IInventory {
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() {
+	public boolean isCustomInventoryName() {
 		return true;
 	}
 
@@ -136,12 +136,12 @@ public abstract class AbstractInventory implements IInventory {
 	}
 
 	@Override
-	public void openInventory() {
+	public void openChest() {
 		// not required
 	}
 
 	@Override
-	public void closeInventory() {
+	public void closeChest() {
 		// not required
 	}
 

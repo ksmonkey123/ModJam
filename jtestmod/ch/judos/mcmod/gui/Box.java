@@ -27,8 +27,8 @@ public class Box extends BlockContainer {
 		super(Material.ground);
 
 		this.setCreativeTab(MCMod.modTab);
-		this.setBlockName(Names.Box);
-		this.setBlockTextureName(References.MOD_ID + ":" + Names.Box);
+		this.setUnlocalizedName(Names.Box);
+		this.setTextureName(References.MOD_ID + ":" + Names.Box);
 		this.setHardness(1f);
 	}
 
@@ -53,7 +53,7 @@ public class Box extends BlockContainer {
 				if (itemstack != null) {
 					EntityItem entityitem = new EntityItem(world, x + 0.5, y + 1, z + 0.5,
 						new ItemStack(itemstack.getItem(), itemstack.stackSize, itemstack
-							.getItemDamage()));
+							.getMetadata()));
 					entityitem.motionX = 0;
 					entityitem.motionZ = 0;
 					entityitem.motionY = 0.2f;
@@ -65,7 +65,7 @@ public class Box extends BlockContainer {
 					world.spawnEntityInWorld(entityitem);
 				}
 
-				world.func_147453_f(x, y, z, block);
+				world.updateNeighborsAboutBlockChange(x, y, z, block);
 			}
 			super.breakBlock(world, x, y, z, block, meta);
 		}

@@ -120,6 +120,8 @@ public class MCMod {
 
 	public static GasCO2						gas;
 
+	public static BlockCommandBlockInTab		blockCommand;
+
 	/**
 	 * @param e
 	 */
@@ -140,8 +142,14 @@ public class MCMod {
 		addLivingFleshItem();
 		addGas();
 		addFurnaceHook();
+		addCommandBlockToTab();
 
 		proxy.registerRenderInformation();
+	}
+
+	private static void addCommandBlockToTab() {
+		MCMod.blockCommand = new BlockCommandBlockInTab();
+		RegistryUtil.registerBlock(MCMod.blockCommand);
 	}
 
 	/**
@@ -317,7 +325,7 @@ public class MCMod {
 		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 1), Items.cooked_chicken,
 			Items.chicken);
 
-		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 3), Items.cooked_fished);
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 3), Items.cooked_fish);
 		GameRegistry.addShapelessRecipe(new ItemStack(Items.bone, 3), Items.fish);
 		GameRegistry.addShapedRecipe(new ItemStack(Blocks.command_block), "Y", "X", 'X',
 			Blocks.diamond_block, 'Y', Items.redstone);

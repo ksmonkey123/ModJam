@@ -15,8 +15,8 @@ public class CustomBox extends Box {
 	 */
 	public CustomBox() {
 		super();
-		this.setBlockName(Names.CustomBox);
-		this.setBlockTextureName(References.MOD_ID + ":" + Names.CustomBox);
+		this.setUnlocalizedName(Names.CustomBox);
+		this.setTextureName(References.MOD_ID + ":" + Names.CustomBox);
 	}
 
 	@Override

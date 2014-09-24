@@ -64,7 +64,7 @@ public class GenericNBTInventory extends AbstractInventory {
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() {
+	public boolean isCustomInventoryName() {
 		return true;
 	}
 

@@ -16,7 +16,7 @@ public class GasCreator implements EntityUpdateListener {
 	public void updateEntity(TileEntity te) {
 		TileEntityFurnace f = (TileEntityFurnace) te;
 		if (f.isBurning()) {
-			World w = te.getWorldObj();
+			World w = te.getWorld();
 			if (w.isAirBlock(te.xCoord, te.yCoord + 1, te.zCoord)) {
 				w.setBlock(te.xCoord, te.yCoord + 1, te.zCoord, MCMod.gas, 0, 3);
 			}

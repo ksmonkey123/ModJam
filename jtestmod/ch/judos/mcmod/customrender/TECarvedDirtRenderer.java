@@ -66,7 +66,7 @@ public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 		q.addQuadOnSide(-0.4, -0.4, -0.01, 0.8, 0.8, EFace.FRONT);
 		newRenderer.addSubGeometry(q);
 
-		int time = (int) (ent.getWorldObj().getTotalWorldTime());
+		int time = (int) (ent.getWorld().getTotalWorldTime());
 		float angle = (float) time / 50;
 
 		newRenderer.transform.rotate(angle, new Vector3f(0, 1, 0));

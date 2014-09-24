@@ -116,14 +116,14 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory {
 	 */
 	@Override
 	public String getInventoryName() {
-		return this.hasCustomInventoryName() ? this.field_145958_o : "container.furnace";
+		return this.isCustomInventoryName() ? this.field_145958_o : "container.furnace";
 	}
 
 	/**
 	 * Returns if the inventory is named
 	 */
 	@Override
-	public boolean hasCustomInventoryName() {
+	public boolean isCustomInventoryName() {
 		return this.field_145958_o != null && this.field_145958_o.length() > 0;
 	}
 
@@ -173,7 +173,7 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory {
 
 		p_145841_1_.setTag("Items", nbttaglist);
 
-		if (this.hasCustomInventoryName()) {
+		if (this.isCustomInventoryName()) {
 			p_145841_1_.setString("CustomName", this.field_145958_o);
 		}
 	}
@@ -277,7 +277,7 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory {
 		if (this.furnaceItemStacks[0] == null) {
 			return false;
 		}
-		ItemStack itemstack = FurnaceRecipes.smelting()
+		ItemStack itemstack = FurnaceRecipes.instance()
 			.getSmeltingResult(this.furnaceItemStacks[0]);
 		if (itemstack == null)
 			return false;
@@ -296,7 +296,7 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory {
 	 */
 	public void smeltItem() {
 		if (this.canSmelt()) {
-			ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(
+			ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(
 				this.furnaceItemStacks[0]);
 
 			if (this.furnaceItemStacks[2] == null) {
@@ -345,7 +345,7 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory {
 			return 200;
 		if (item instanceof ItemSword && ((ItemSword) item).getToolMaterialName().equals("WOOD"))
 			return 200;
-		if (item instanceof ItemHoe && ((ItemHoe) item).getToolMaterialName().equals("WOOD"))
+		if (item instanceof ItemHoe && ((ItemHoe) item).getMaterialName().equals("WOOD"))
 			return 200;
 		if (item == Items.stick)
 			return 100;
@@ -378,12 +378,12 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory {
 	}
 
 	@Override
-	public void openInventory() {// do nothing
+	public void openChest() {// do nothing
 
 	}
 
 	@Override
-	public void closeInventory() {// do nothing
+	public void closeChest() {// do nothing
 
 	}
 
@@ -401,7 +401,7 @@ public class TileEntityFurnace extends TileEntity implements ISidedInventory {
 	 * the given side of this block.
 	 */
 	@Override
-	public int[] getAccessibleSlotsFromSide(int par1) {
+	public int[] getSlotsForFace(int par1) {
 		return par1 == 0 ? slotsBottom : (par1 == 1 ? slotsTop : slotsSides);
 	}
 

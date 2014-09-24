@@ -12,12 +12,12 @@ public class ItemUtils {
 	}
 
 	public static void spawnItemEntity(TileEntity origin, ItemStack stack) {
-		spawnItemEntity(origin.getWorldObj(), origin.xCoord + 0.5, origin.yCoord + 0.5,
+		spawnItemEntity(origin.getWorld(), origin.xCoord + 0.5, origin.yCoord + 0.5,
 			origin.zCoord + 0.5, stack);
 	}
 
 	public static void spawnItemEntityAbove(TileEntity origin, ItemStack stack) {
-		spawnItemEntity(origin.getWorldObj(), origin.xCoord + 0.5, origin.yCoord + 1.5,
+		spawnItemEntity(origin.getWorld(), origin.xCoord + 0.5, origin.yCoord + 1.5,
 			origin.zCoord + 0.5, stack);
 	}
 

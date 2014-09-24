@@ -14,25 +14,23 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 @SuppressWarnings("javadoc")
 public class ItemSlimyBoots extends ItemArmor {
 
-	public static final int ARMOR_HELMET_ID = 0;
-	public static final int ARMOR_CHESTPLATE_ID = 1;
-	public static final int ARMOR_LEGGINS_ID = 2;
-	public static final int ARMOR_BOOTS_ID = 3;
+	public static final int	ARMOR_HELMET_ID			= 0;
+	public static final int	ARMOR_CHESTPLATE_ID		= 1;
+	public static final int	ARMOR_LEGGINS_ID		= 2;
+	public static final int	ARMOR_BOOTS_ID			= 3;
 
-	public static final int EQUIPPED_BOOTS_SLOT_NR = 1;
+	public static final int	EQUIPPED_BOOTS_SLOT_NR	= 1;
 
 	public ItemSlimyBoots() {
-		super(MCMod.armorSlimeMaterial, MCMod.slimyBootsID,
-				ARMOR_BOOTS_ID);
-		this.setMaxDamage(64);
+		super(MCMod.armorSlimeMaterial, MCMod.slimyBootsID, ARMOR_BOOTS_ID);
+		this.setMaxDurability(64);
 		this.setUnlocalizedName(Names.SlimyBoots);
 		this.setTextureName(References.MOD_ID + ":" + Names.SlimyBoots);
 		this.setCreativeTab(MCMod.modTab);
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, int slot,
-			String type) {
+	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type) {
 		// we only have boots here, so we don't care for slot
 		return References.MOD_ID + ":textures/models/armor/slimy_layer_1.png";
 	}
@@ -50,8 +48,7 @@ public class ItemSlimyBoots extends ItemArmor {
 						if (living instanceof EntityPlayer) {
 							EntityPlayer player = (EntityPlayer) living;
 							int slot = player.inventory.mainInventory.length;
-							player.inventory.setInventorySlotContents(slot,
-									null);
+							player.inventory.setInventorySlotContents(slot, null);
 						}
 					}
 				}

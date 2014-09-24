@@ -141,7 +141,7 @@ public abstract class GenericContainer extends Container {
 				itemstack1 = slot.getStack();
 
 				if (itemstack1 != null && itemstack1.getItem() == stack.getItem() && (!stack
-					.getHasSubtypes() || stack.getItemDamage() == itemstack1.getItemDamage()) && ItemStack
+					.getHasSubtypes() || stack.getMetadata() == itemstack1.getMetadata()) && ItemStack
 					.areItemStackTagsEqual(stack, itemstack1)) {
 					int l = itemstack1.stackSize + stack.stackSize;
 

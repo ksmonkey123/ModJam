@@ -18,7 +18,7 @@ import cpw.mods.fml.common.eventhandler.Event.Result;
 @SuppressWarnings("javadoc")
 public class ItemDirtShovel extends Item {
 
-	public static HashMap<Block, Block> transforms;
+	public static HashMap<Block, Block>	transforms;
 
 	static {
 		initialize();
@@ -33,22 +33,20 @@ public class ItemDirtShovel extends Item {
 
 	public ItemDirtShovel() {
 		this.maxStackSize = 1;
-		this.setMaxDamage(32);
+		this.setMaxDurability(32);
 		this.setUnlocalizedName(Names.DirtShovel);
 		this.setTextureName(References.MOD_ID + ":" + Names.DirtShovel);
 		this.setCreativeTab(MCMod.modTab);
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack item, EntityPlayer player, World world,
-			int x, int y, int z, int blockSide, float blockX, float blockY,
-			float blockZ) {
+	public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z,
+			int blockSide, float blockX, float blockY, float blockZ) {
 
 		if (!player.canPlayerEdit(x, y, z, blockSide, item)) {
 			return false;
 		}
-		DirtShovelEvent event = new DirtShovelEvent(player, item, world, x, y,
-				z);
+		DirtShovelEvent event = new DirtShovelEvent(player, item, world, x, y, z);
 		if (MinecraftForge.EVENT_BUS.post(event)) {
 			return false;
 		}
@@ -60,14 +58,12 @@ public class ItemDirtShovel extends Item {
 
 		Block block = world.getBlock(x, y, z);
 
-		if (blockSide != 0
-				&& world.getBlock(x, y + 1, z).isAir(world, x, y + 1, z)
-				&& (transforms.containsKey(block))) {
+		if (blockSide != 0 && world.getBlock(x, y + 1, z).isAir(world, x, y + 1, z) && (transforms
+			.containsKey(block))) {
 			Block block1 = transforms.get(block);
-			world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F,
-					block1.stepSound.getStepResourcePath(),
-					(block1.stepSound.getVolume() + 1.0F) / 2.0F,
-					block1.stepSound.getPitch() * 0.8F);
+			world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, block1.stepSound.getStepSound(),
+				(block1.stepSound.getVolume() + 1.0F) / 2.0F,
+				block1.stepSound.getFrequency() * 0.8F);
 
 			if (world.isRemote) {
 				return true;

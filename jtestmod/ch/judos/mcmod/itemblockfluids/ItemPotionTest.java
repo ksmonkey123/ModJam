@@ -14,18 +14,16 @@ public class ItemPotionTest extends Item {
 
 	public ItemPotionTest() {
 		this.maxStackSize = 10;
-		this.setMaxDamage(1);
+		this.setMaxDurability(1);
 		this.setUnlocalizedName(Names.PotionTest);
 		this.setTextureName(References.MOD_ID + ":" + Names.PotionTest);
 		this.setCreativeTab(MCMod.modTab);
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack item, World world,
-			EntityPlayer player) {
+	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
 		item.damageItem(2, player);
-		player.addPotionEffect(new PotionEffect(MCMod.potionTest.id,
-				10 * 20, 0));
+		player.addPotionEffect(new PotionEffect(MCMod.potionTest.id, 10 * 20, 0));
 
 		return super.onItemRightClick(item, world, player);
 	}

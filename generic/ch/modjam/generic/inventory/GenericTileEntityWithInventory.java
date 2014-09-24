@@ -53,8 +53,8 @@ public abstract class GenericTileEntityWithInventory extends GenericTileEntity i
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() {
-		return this.inventory.hasCustomInventoryName();
+	public boolean isCustomInventoryName() {
+		return this.inventory.isCustomInventoryName();
 	}
 
 	@Override
@@ -68,13 +68,13 @@ public abstract class GenericTileEntityWithInventory extends GenericTileEntity i
 	}
 
 	@Override
-	public void openInventory() {
-		this.inventory.openInventory();
+	public void openChest() {
+		this.inventory.openChest();
 	}
 
 	@Override
-	public void closeInventory() {
-		this.inventory.closeInventory();
+	public void closeChest() {
+		this.inventory.closeChest();
 	}
 
 	@Override

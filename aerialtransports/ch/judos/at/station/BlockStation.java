@@ -24,8 +24,8 @@ public class BlockStation extends BlockContainer {
 
 	public BlockStation() {
 		super(Material.wood);
-		this.setBlockName(ATNames.station);
-		this.setBlockTextureName(ATMain.MOD_ID + ":" + ATNames.station + "_particles");
+		this.setUnlocalizedName(ATNames.station);
+		this.setTextureName(ATMain.MOD_ID + ":" + ATNames.station + "_particles");
 		this.setCreativeTab(ATMain.modTab);
 		this.setHardness(0.5f);
 		this.setHarvestLevel("axe", 0);

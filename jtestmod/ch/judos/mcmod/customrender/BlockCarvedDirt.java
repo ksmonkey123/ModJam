@@ -22,8 +22,8 @@ public class BlockCarvedDirt extends BlockContainer {
 
 	public BlockCarvedDirt() {
 		super(Material.grass);
-		this.setBlockName(Names.CarvedDirt);
-		this.setBlockTextureName(References.MOD_ID + ":" + Names.CarvedDirt);
+		this.setUnlocalizedName(Names.CarvedDirt);
+		this.setTextureName(References.MOD_ID + ":" + Names.CarvedDirt);
 		this.setCreativeTab(MCMod.modTab);
 		this.setHardness(0.3f);
 		this.setHarvestLevel("shovel", 0);

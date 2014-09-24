@@ -20,8 +20,8 @@ public class BlockRope extends Block {
 	public BlockRope() {
 		super(Material.cloth);
 		this.setCreativeTab(ATMain.modTab);
-		this.setBlockName(ATNames.ropeBlock);
-		this.setBlockTextureName(ATMain.MOD_ID + ":" + ATNames.ropeBlock);
+		this.setUnlocalizedName(ATNames.ropeBlock);
+		this.setTextureName(ATMain.MOD_ID + ":" + ATNames.ropeBlock);
 		this.setLightOpacity(0);
 		this.setBlockBounds(.3f, .3f, .3f, .7f, .7f, .7f);
 		this.setBlockUnbreakable();
@@ -82,7 +82,7 @@ public class BlockRope extends Block {
 	}
 
 	@Override
-	public boolean canCollideCheck(int p_149678_1_, boolean p_149678_2_) {
+	public boolean canStopRayTrace(int p_149678_1_, boolean p_149678_2_) {
 		return true;
 	}
 

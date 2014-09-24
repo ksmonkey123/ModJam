@@ -21,8 +21,8 @@ public class BlockPlasmaFurnace extends BlockContainer {
 	public BlockPlasmaFurnace() {
 		super(Material.rock);
 		this.setCreativeTab(TrekTech.tabCustom);
-		this.setBlockName("plasmaFurnace");
-		this.setBlockTextureName("trektech:plasma_furnace");
+		this.setUnlocalizedName("plasmaFurnace");
+		this.setTextureName("trektech:plasma_furnace");
 	}
 
 	@Override

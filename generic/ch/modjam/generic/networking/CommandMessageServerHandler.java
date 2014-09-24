@@ -30,7 +30,7 @@ public class CommandMessageServerHandler implements IMessageHandler<CommandMessa
 		if (message.getCommand() != "")
 			entity.onNetworkCommand(message.getCommand(), message.getData());
 
-		te.getWorldObj().markBlockForUpdate(te.xCoord, te.yCoord, te.zCoord);
+		te.getWorld().markBlockForUpdate(te.xCoord, te.yCoord, te.zCoord);
 		// finish
 		return null;
 	}

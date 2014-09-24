@@ -17,8 +17,8 @@ public class BlockKryptoniteOre extends Block {
 
 	public BlockKryptoniteOre() {
 		super(Material.rock);
-		this.setBlockName(Names.KryptonitBlock);
-		this.setBlockTextureName(References.MOD_ID + ":" + Names.KryptonitBlock);
+		this.setUnlocalizedName(Names.KryptonitBlock);
+		this.setTextureName(References.MOD_ID + ":" + Names.KryptonitBlock);
 		this.setCreativeTab(MCMod.modTab);
 		this.blockHardness = 5;
 		this.blockResistance = 20;

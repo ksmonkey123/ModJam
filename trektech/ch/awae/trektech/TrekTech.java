@@ -111,7 +111,7 @@ public class TrekTech {
 			public MultiblockTileEntity getCustomTileEntity(World var1, int var2) {
 				return null;
 			}
-		}.setBlockName("testBlock").setCreativeTab(TrekTech.tabCustom).setBlockTextureName(
+		}.setUnlocalizedName("testBlock").setCreativeTab(TrekTech.tabCustom).setTextureName(
 			"trektech:test_block");
 		RegistryUtil.registerBlock(myMBB);
 

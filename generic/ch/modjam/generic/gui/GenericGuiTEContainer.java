@@ -32,7 +32,7 @@ public abstract class GenericGuiTEContainer extends GuiContainer {
 	}
 
 	private void checkInventoryClosed() {
-		TileEntity other = this.te.getWorldObj().getTileEntity(this.te.xCoord, this.te.yCoord,
+		TileEntity other = this.te.getWorld().getTileEntity(this.te.xCoord, this.te.yCoord,
 			this.te.zCoord);
 		if (other != this.te)
 			this.inventory.player.closeScreen();

@@ -65,13 +65,13 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 
 			byte meta = 3;
 
-			if (block0.func_149730_j() && !block1.func_149730_j())
+			if (block0.isFullBlock() && !block1.isFullBlock())
 				meta = 3;
-			if (block1.func_149730_j() && !block0.func_149730_j())
+			if (block1.isFullBlock() && !block0.isFullBlock())
 				meta = 2;
-			if (block2.func_149730_j() && !block3.func_149730_j())
+			if (block2.isFullBlock() && !block3.isFullBlock())
 				meta = 5;
-			if (block3.func_149730_j() && !block2.func_149730_j())
+			if (block3.isFullBlock() && !block2.isFullBlock())
 				meta = 4;
 
 			w.setBlockMetadataWithNotify(x, y, z, meta, 2);
@@ -105,7 +105,7 @@ public abstract class BlockGenericDualStateDirected extends BlockContainer {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public final void registerBlockIcons(IIconRegister iconReg) {
+	public final void registerIcons(IIconRegister iconReg) {
 		this.iconRegister = iconReg;
 		IIcon icon = this.iconRegister.registerIcon(this.getDefaultIcon());
 		for (int i = 0; i < this.icons.length; i++)

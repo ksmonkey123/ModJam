@@ -22,10 +22,10 @@ public class GasCO2 extends BlockContainer {
 	 */
 	public GasCO2() {
 		super(Material.rock);
-		this.setBlockTextureName(References.MOD_ID + ":" + Names.CO2);
+		this.setTextureName(References.MOD_ID + ":" + Names.CO2);
 		this.setCreativeTab(MCMod.modTab);
 		this.setBlockUnbreakable();
-		this.setBlockName(Names.CO2);
+		this.setUnlocalizedName(Names.CO2);
 		this.setLightOpacity(1);
 	}
 

@@ -19,15 +19,14 @@ public class BlockFluidTar extends BlockFluidClassic {
 	public BlockFluidTar(Fluid f) {
 		super(f, Material.water);
 		this.setCreativeTab(MCMod.modTab);
-		this.setBlockName(Names.TarBlock);
-		this.setBlockTextureName(References.MOD_ID + ":" + Names.TarBlock);
+		this.setUnlocalizedName(Names.TarBlock);
+		this.setTextureName(References.MOD_ID + ":" + Names.TarBlock);
 		this.setHardness(0.5f);
 		this.setResistance(0.5f);
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(World world, int x, int y, int z,
-			Entity entity) {
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
 		// if (world.isRemote)
 		// return;
 

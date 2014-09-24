@@ -13,51 +13,47 @@ import ch.modjam.generic.tileEntity.GenericTileEntity;
 import ch.phyranja.EssenceCrops.guis.ContainerExtractor;
 import ch.phyranja.EssenceCrops.guis.ExtractorGui;
 
-public class TileEntityExtractor extends GenericTileEntity implements IInventory, IHasGui{
+public class TileEntityExtractor extends GenericTileEntity implements IInventory, IHasGui {
 
-	
-	private ItemStack[] items=new ItemStack[2];
-	private int extractTimer=0;
-	
-	
+	private ItemStack[]	items			= new ItemStack[2];
+	private int			extractTimer	= 0;
+
 	@Override
 	public void tick() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void writeNBT(NBTTagCompound tag) {
 		tag.setInteger("timer", this.extractTimer);
-        
-        for (int i=0; i<this.items.length; i++) {
-        	if(this.items[i]!=null){
-        		NBTTagList nbttaglist = new NBTTagList();
-                NBTTagCompound nbttagcompound = new NBTTagCompound();
-                this.items[i].writeToNBT(nbttagcompound);
-                nbttaglist.appendTag(nbttagcompound);
-                tag.setTag("slot"+i, nbttaglist);
-        	}
-        	
-        }
 
-		
+		for (int i = 0; i < this.items.length; i++) {
+			if (this.items[i] != null) {
+				NBTTagList nbttaglist = new NBTTagList();
+				NBTTagCompound nbttagcompound = new NBTTagCompound();
+				this.items[i].writeToNBT(nbttagcompound);
+				nbttaglist.appendTag(nbttagcompound);
+				tag.setTag("slot" + i, nbttaglist);
+			}
+
+		}
+
 	}
 
 	@Override
 	public void readNBT(NBTTagCompound tag) {
-		this.extractTimer=tag.getInteger("timer");
-		
-		for (int i=0; i<this.items.length; i++) {
-			if(this.items[i]!=null){
-				NBTTagList nbttaglist = tag.getTagList("slot"+i, 10);
-				NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(0);
-		        this.items[i] = ItemStack.loadItemStackFromNBT(nbttagcompound);
-			}
-			
+		this.extractTimer = tag.getInteger("timer");
 
-        }
-		
+		for (int i = 0; i < this.items.length; i++) {
+			if (this.items[i] != null) {
+				NBTTagList nbttaglist = tag.getTagList("slot" + i, 10);
+				NBTTagCompound nbttagcompound = nbttaglist.getCompoundTagAt(0);
+				this.items[i] = ItemStack.loadItemStackFromNBT(nbttagcompound);
+			}
+
+		}
+
 	}
 
 	@Override
@@ -72,14 +68,14 @@ public class TileEntityExtractor extends GenericTileEntity implements IInventory
 
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
-		if (slot < 0 || slot > 1 || amount <= 0){
+		if (slot < 0 || slot > 1 || amount <= 0) {
 			return null;
 		}
-        int realAmount = Math.min(this.items[slot].stackSize, amount);
-        ItemStack itemStack = this.items[slot].copy();
-        this.items[slot].stackSize -= realAmount;
-        itemStack.stackSize = realAmount;
-        return itemStack;
+		int realAmount = Math.min(this.items[slot].stackSize, amount);
+		ItemStack itemStack = this.items[slot].copy();
+		this.items[slot].stackSize -= realAmount;
+		itemStack.stackSize = realAmount;
+		return itemStack;
 	}
 
 	@Override
@@ -90,10 +86,10 @@ public class TileEntityExtractor extends GenericTileEntity implements IInventory
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 		System.out.println(slot);
-		if(slot==0){
-			items[slot]=stack;
+		if (slot == 0) {
+			items[slot] = stack;
 		}
-		
+
 	}
 
 	@Override
@@ -102,7 +98,7 @@ public class TileEntityExtractor extends GenericTileEntity implements IInventory
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() {
+	public boolean isCustomInventoryName() {
 		return true;
 	}
 
@@ -117,10 +113,10 @@ public class TileEntityExtractor extends GenericTileEntity implements IInventory
 	}
 
 	@Override
-	public void openInventory() { }
+	public void openChest() {}
 
 	@Override
-	public void closeInventory() { }
+	public void closeChest() {}
 
 	@Override
 	public boolean isItemValidForSlot(int var1, ItemStack var2) {

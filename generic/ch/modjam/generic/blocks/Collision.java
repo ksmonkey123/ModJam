@@ -60,7 +60,7 @@ public class Collision {
 		int blockMeta = this.world.getBlockMetadata(startX, startY, startZ);
 
 		if (block.getCollisionBoundingBoxFromPool(this.world, startX, startY, startZ) != null && block
-			.canCollideCheck(blockMeta, collideWithLiquid)) {
+			.canStopRayTrace(blockMeta, collideWithLiquid)) {
 			MovingObjectPosition mop = block.collisionRayTrace(this.world, startX, startY, startZ,
 				startVec, endVec);
 
@@ -188,7 +188,7 @@ public class Collision {
 			int block1meta = this.world.getBlockMetadata(startX, startY, startZ);
 
 			if (block1.getCollisionBoundingBoxFromPool(this.world, startX, startY, startZ) != null) {
-				if (block1.canCollideCheck(block1meta, collideWithLiquid)) {
+				if (block1.canStopRayTrace(block1meta, collideWithLiquid)) {
 					MovingObjectPosition mop = block1.collisionRayTrace(this.world, startX, startY,
 						startZ, startVec, endVec);
 
@@ -237,7 +237,7 @@ public class Collision {
 
 		if (detectStart && block
 			.getCollisionBoundingBoxFromPool(this.world, startX, startY, startZ) != null && block
-			.canCollideCheck(blockMeta, collideWithLiquid)) {
+			.canStopRayTrace(blockMeta, collideWithLiquid)) {
 			MovingObjectPosition movingobjectposition = block.collisionRayTrace(this.world, startX,
 				startY, startZ, startVec, endVec);
 
@@ -364,7 +364,7 @@ public class Collision {
 			int block1meta = this.world.getBlockMetadata(startX, startY, startZ);
 
 			if (block1.getCollisionBoundingBoxFromPool(this.world, startX, startY, startZ) != null) {
-				if (block1.canCollideCheck(block1meta, collideWithLiquid)) {
+				if (block1.canStopRayTrace(block1meta, collideWithLiquid)) {
 					MovingObjectPosition movingobjectposition1 = block1.collisionRayTrace(
 						this.world, startX, startY, startZ, startVec, endVec);
 

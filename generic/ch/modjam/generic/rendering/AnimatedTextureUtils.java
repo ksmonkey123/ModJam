@@ -24,7 +24,7 @@ public class AnimatedTextureUtils {
 	 */
 	public static int getFramePingPong(TileEntity te, int ticksPerFrame, int amountOfFrames) {
 		int hash = te.xCoord ^ te.yCoord ^ te.zCoord;
-		int time = (int) (te.getWorldObj().getTotalWorldTime());
+		int time = (int) (te.getWorld().getTotalWorldTime());
 		int timeFrameBased = time / ticksPerFrame + hash;
 		int frame = timeFrameBased % (amountOfFrames * 2 - 1);
 		// implement ping pong from end of animation back to start
