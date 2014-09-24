@@ -83,7 +83,7 @@ public class ItemRope extends Item {
 		int[] coords = stack.stackTagCompound.getIntArray(nbtStationCoordinates);
 		EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 		World world = player.worldObj;
-		Collision c = new Collision(world);
+		Collision c = new Collision(world, true, false);
 
 		Vec3 ppos = player.getPosition(1);
 		if (!world.isRemote)
@@ -94,7 +94,7 @@ public class ItemRope extends Item {
 		Vec3P end = new Vec3P(ppos.xCoord, ppos.yCoord, ppos.zCoord);
 
 		// detects liquids and excludes the start (station itself)
-		Set<BlockCoordinates> mop = c.detectCollisions(start, end, true, true, false);
+		Set<BlockCoordinates> mop = c.detectCollisions(start, end, true, false);
 
 		if (mop.isEmpty())
 			return this.normal;

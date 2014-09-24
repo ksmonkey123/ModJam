@@ -1,5 +1,6 @@
 package ch.modjam.generic.blocks;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,10 +12,20 @@ import net.minecraft.world.World;
 
 public class Collision {
 
-	protected World	world;
+	protected World						world;
+	private boolean						traceAllBlocks;
+	private boolean						collideWithLiquids;
+	private ArrayList<BlockCoordinates>	allBlocks;
 
-	public Collision(World w) {
+	public Collision(World w, boolean collideWithLiquids, boolean traceAll) {
+		this.collideWithLiquids = collideWithLiquids;
+		this.allBlocks = new ArrayList<BlockCoordinates>();
+		this.traceAllBlocks = traceAll;
 		this.world = w;
+	}
+
+	public ArrayList<BlockCoordinates> getAllBlocks() {
+		return this.allBlocks;
 	}
 
 	/**
@@ -26,43 +37,37 @@ public class Collision {
 	 * @return an empty set if any value of start or endVec is NaN<br>
 	 */
 	public Set<BlockCoordinates> detectCollisions(Vec3P startVec, Vec3P endVec,
-			boolean collideWithLiquid, boolean excludeStart, boolean excludeEnd) {
+			boolean excludeStart, boolean excludeEnd) {
 		HashSet<BlockCoordinates> exclude = new HashSet<BlockCoordinates>();
 		if (excludeStart)
 			exclude.add(startVec.getBlockCoords());
 		if (excludeEnd)
 			exclude.add(endVec.getBlockCoords());
-		return detectCollisions(startVec, endVec, collideWithLiquid, exclude);
+		return detectCollisions(startVec, endVec, exclude);
 	}
 
-	public Set<BlockCoordinates> detectCollisions(Vec3P startVec, Vec3P endVec,
-			boolean collideWithLiquid, Set<BlockCoordinates> exclude) {
+	public Set<BlockCoordinates> detectCollisions(Vec3P currentPoint, Vec3P endVec,
+			Set<BlockCoordinates> exclude) {
 
 		HashSet<BlockCoordinates> result = new HashSet<BlockCoordinates>();
-
-		if (Double.isNaN(startVec.xCoord) || Double.isNaN(startVec.yCoord) || Double
-			.isNaN(startVec.zCoord))
-			return result;
-
-		if (Double.isNaN(endVec.xCoord) || Double.isNaN(endVec.yCoord) || Double
-			.isNaN(endVec.zCoord))
+		if (currentPoint.isNaN() || endVec.isNaN())
 			return result;
 
 		// block end coordinates
-		int endX = MathHelper.floor_double(endVec.xCoord);
-		int endY = MathHelper.floor_double(endVec.yCoord);
-		int endZ = MathHelper.floor_double(endVec.zCoord);
+		BlockCoordinates end = endVec.getBlockCoords();
 		// block starting coordinates
-		int startX = MathHelper.floor_double(startVec.xCoord);
-		int startY = MathHelper.floor_double(startVec.yCoord);
-		int startZ = MathHelper.floor_double(startVec.zCoord);
-		Block block = this.world.getBlock(startX, startY, startZ);
-		int blockMeta = this.world.getBlockMetadata(startX, startY, startZ);
+		BlockCoordinates current = currentPoint.getBlockCoords();
 
-		if (block.getCollisionBoundingBoxFromPool(this.world, startX, startY, startZ) != null && block
-			.canStopRayTrace(blockMeta, collideWithLiquid)) {
-			MovingObjectPosition mop = block.collisionRayTrace(this.world, startX, startY, startZ,
-				startVec, endVec);
+		Block block = this.world.getBlock(current.x, current.y, current.z);
+		int blockMeta = this.world.getBlockMetadata(current.x, current.y, current.z);
+
+		if (this.traceAllBlocks)
+			if (!exclude.contains(current))
+				this.allBlocks.add(current.copy());
+		if (block.getCollisionBoundingBoxFromPool(this.world, current.x, current.y, current.z) != null && block
+			.canStopRayTrace(blockMeta, this.collideWithLiquids)) {
+			MovingObjectPosition mop = block.collisionRayTrace(this.world, current.x, current.y,
+				current.z, currentPoint, endVec);
 
 			if (mop != null) {
 				BlockCoordinates blockC = new BlockCoordinates(mop.blockX, mop.blockY, mop.blockZ);
@@ -75,7 +80,7 @@ public class Collision {
 
 		while (blockRemainingForCollision-- >= 0) {
 
-			if (startX == endX && startY == endY && startZ == endZ)
+			if (current.x == end.x && current.y == end.y && current.z == end.z)
 				return result;
 
 			boolean hasXDiff = true;
@@ -85,26 +90,26 @@ public class Collision {
 			double nextCheckY = 999.0D;
 			double nextCheckZ = 999.0D;
 
-			if (endX > startX) {
-				nextCheckX = startX + 1.0D;
-			} else if (endX < startX) {
-				nextCheckX = startX + 0.0D;
+			if (end.x > current.x) {
+				nextCheckX = current.x + 1.0D;
+			} else if (end.x < current.x) {
+				nextCheckX = current.x + 0.0D;
 			} else {
 				hasXDiff = false;
 			}
 
-			if (endY > startY) {
-				nextCheckY = startY + 1.0D;
-			} else if (endY < startY) {
-				nextCheckY = startY + 0.0D;
+			if (end.y > current.y) {
+				nextCheckY = current.y + 1.0D;
+			} else if (end.y < current.y) {
+				nextCheckY = current.y + 0.0D;
 			} else {
 				hasYDiff = false;
 			}
 
-			if (endZ > startZ) {
-				nextCheckZ = startZ + 1.0D;
-			} else if (endZ < startZ) {
-				nextCheckZ = startZ + 0.0D;
+			if (end.z > current.z) {
+				nextCheckZ = current.z + 1.0D;
+			} else if (end.z < current.z) {
+				nextCheckZ = current.z + 0.0D;
 			} else {
 				hasZDiff = false;
 			}
@@ -112,85 +117,89 @@ public class Collision {
 			double d3 = 999.0D;
 			double d4 = 999.0D;
 			double d5 = 999.0D;
-			double diffX = endVec.xCoord - startVec.xCoord;
-			double diffY = endVec.yCoord - startVec.yCoord;
-			double diffZ = endVec.zCoord - startVec.zCoord;
+			double diffX = endVec.xCoord - currentPoint.xCoord;
+			double diffY = endVec.yCoord - currentPoint.yCoord;
+			double diffZ = endVec.zCoord - currentPoint.zCoord;
 
 			if (hasXDiff) {
-				d3 = (nextCheckX - startVec.xCoord) / diffX;
+				d3 = (nextCheckX - currentPoint.xCoord) / diffX;
 			}
 
 			if (hasYDiff) {
-				d4 = (nextCheckY - startVec.yCoord) / diffY;
+				d4 = (nextCheckY - currentPoint.yCoord) / diffY;
 			}
 
 			if (hasZDiff) {
-				d5 = (nextCheckZ - startVec.zCoord) / diffZ;
+				d5 = (nextCheckZ - currentPoint.zCoord) / diffZ;
 			}
 
 			byte sideNr;
 
 			if (d3 < d4 && d3 < d5) {
-				if (endX > startX) {
+				if (end.x > current.x) {
 					sideNr = 4;
 				} else {
 					sideNr = 5;
 				}
 
-				startVec.xCoord = nextCheckX;
-				startVec.yCoord += diffY * d3;
-				startVec.zCoord += diffZ * d3;
+				currentPoint.xCoord = nextCheckX;
+				currentPoint.yCoord += diffY * d3;
+				currentPoint.zCoord += diffZ * d3;
 			} else if (d4 < d5) {
-				if (endY > startY) {
+				if (end.y > current.y) {
 					sideNr = 0;
 				} else {
 					sideNr = 1;
 				}
 
-				startVec.xCoord += diffX * d4;
-				startVec.yCoord = nextCheckY;
-				startVec.zCoord += diffZ * d4;
+				currentPoint.xCoord += diffX * d4;
+				currentPoint.yCoord = nextCheckY;
+				currentPoint.zCoord += diffZ * d4;
 			} else {
-				if (endZ > startZ) {
+				if (end.z > current.z) {
 					sideNr = 2;
 				} else {
 					sideNr = 3;
 				}
 
-				startVec.xCoord += diffX * d5;
-				startVec.yCoord += diffY * d5;
-				startVec.zCoord = nextCheckZ;
+				currentPoint.xCoord += diffX * d5;
+				currentPoint.yCoord += diffY * d5;
+				currentPoint.zCoord = nextCheckZ;
 			}
 
-			Vec3 vec32 = Vec3.createVectorHelper(startVec.xCoord, startVec.yCoord, startVec.zCoord);
-			startX = (int) (vec32.xCoord = MathHelper.floor_double(startVec.xCoord));
+			Vec3 vec32 = Vec3.createVectorHelper(currentPoint.xCoord, currentPoint.yCoord,
+				currentPoint.zCoord);
+			current.x = (int) (vec32.xCoord = MathHelper.floor_double(currentPoint.xCoord));
 
 			if (sideNr == 5) {
-				--startX;
+				current.x--;
 				++vec32.xCoord;
 			}
 
-			startY = (int) (vec32.yCoord = MathHelper.floor_double(startVec.yCoord));
+			current.y = (int) (vec32.yCoord = MathHelper.floor_double(currentPoint.yCoord));
 
 			if (sideNr == 1) {
-				--startY;
+				current.y--;
 				++vec32.yCoord;
 			}
 
-			startZ = (int) (vec32.zCoord = MathHelper.floor_double(startVec.zCoord));
+			current.z = (int) (vec32.zCoord = MathHelper.floor_double(currentPoint.zCoord));
 
 			if (sideNr == 3) {
-				--startZ;
+				current.z--;
 				++vec32.zCoord;
 			}
 
-			Block block1 = this.world.getBlock(startX, startY, startZ);
-			int block1meta = this.world.getBlockMetadata(startX, startY, startZ);
+			Block block1 = this.world.getBlock(current.x, current.y, current.z);
+			int block1meta = this.world.getBlockMetadata(current.x, current.y, current.z);
 
-			if (block1.getCollisionBoundingBoxFromPool(this.world, startX, startY, startZ) != null) {
-				if (block1.canStopRayTrace(block1meta, collideWithLiquid)) {
-					MovingObjectPosition mop = block1.collisionRayTrace(this.world, startX, startY,
-						startZ, startVec, endVec);
+			if (this.traceAllBlocks)
+				if (!exclude.contains(current))
+					this.allBlocks.add(current.copy());
+			if (block1.getCollisionBoundingBoxFromPool(this.world, current.x, current.y, current.z) != null) {
+				if (block1.canStopRayTrace(block1meta, this.collideWithLiquids)) {
+					MovingObjectPosition mop = block1.collisionRayTrace(this.world, current.x,
+						current.y, current.z, currentPoint, endVec);
 
 					if (mop != null) {
 						BlockCoordinates blockC = new BlockCoordinates(mop.blockX, mop.blockY,

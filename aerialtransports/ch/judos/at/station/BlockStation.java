@@ -66,19 +66,22 @@ public class BlockStation extends BlockContainer {
 					player.addChatMessage(new ChatComponentText(
 						"Can't connect a station to itself."));
 			} else {
-				Collision c = new Collision(w);
+				Collision c = new Collision(w, true, true);
 				Vec3P start = new Vec3P(stationStart.xCoord + 0.5, stationStart.yCoord + 0.9,
 					stationStart.zCoord + 0.5);
 				Vec3P end = new Vec3P(stationEnd.xCoord + 0.5, stationEnd.yCoord + 0.9,
 					stationEnd.zCoord + 0.5);
 
 				// detects liquids and excludes both, start and end stations
-				Set<BlockCoordinates> intermediate = c.detectCollisions(start, end, true, true,
-					true);
+				Set<BlockCoordinates> intermediate = c.detectCollisions(start, end, true, true);
 				if (intermediate.isEmpty()) {
+
+					for (BlockCoordinates r : c.getAllBlocks())
+						w.setBlock(r.x, r.y, r.z, ATMain.ropeBlock);
+
 					int currentSlotHeld = player.inventory.currentItem;
 					player.inventory.setInventorySlotContents(currentSlotHeld, null);
-					stationStart.finishRopeConnection(stationEnd, player);
+					stationStart.finishRopeConnection(stationEnd, player, c.getAllBlocks());
 				} else {
 					ATMain.logger.error(intermediate);
 					if (w.isRemote)

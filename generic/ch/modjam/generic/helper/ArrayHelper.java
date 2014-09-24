@@ -1,4 +1,4 @@
-package ch.modjam.generic.arrays;
+package ch.modjam.generic.helper;
 
 /**
  * @author j

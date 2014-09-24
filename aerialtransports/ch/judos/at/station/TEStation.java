@@ -1,5 +1,6 @@
 package ch.judos.at.station;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -24,9 +25,11 @@ import ch.judos.at.lib.ATNames;
 import ch.judos.at.station.gondola.EntityGondola;
 import ch.judos.at.station.gui.ContainerStation;
 import ch.judos.at.station.gui.GuiContainerStation;
+import ch.modjam.generic.blocks.BlockCoordinates;
 import ch.modjam.generic.blocks.Vec3P;
 import ch.modjam.generic.gui.IHasGui;
 import ch.modjam.generic.helper.ItemUtils;
+import ch.modjam.generic.helper.NBTUtils;
 import ch.modjam.generic.inventory.GenericInventory;
 import ch.modjam.generic.inventory.GenericTileEntityWithInventory;
 
@@ -35,26 +38,28 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	/**
 	 * int array with x,y,z
 	 */
-	public static final String	nbtConnectedToCoords		= "connectedToCoords";
-	public static final String	nbtBuildConnectPlayerName	= "buildConnectPlayerName";
-	public static final String	nbtIsSender					= "isSender";
-	public static final String	nbtGondolaArr				= "gondolaIdArr";
+	public static final String			nbtConnectedToCoords		= "connectedToCoords";
+	public static final String			nbtBuildConnectPlayerName	= "buildConnectPlayerName";
+	public static final String			nbtIsSender					= "isSender";
+	public static final String			nbtGondolaArr				= "gondolaIdArr";
+	public static final String			nbtCollisionBlocks			= "collisionBlocks";
 
-	public static final String	netClientReqBindRope		= "requestBindRope";
-	private static final String	netClientReqChangeSender	= "requestSenderChange";
+	public static final String			netClientReqBindRope		= "requestBindRope";
+	private static final String			netClientReqChangeSender	= "requestSenderChange";
 
 	/**
 	 * player currently wearing a rope to connect this station with another station
 	 */
-	public EntityPlayer			buildConnectTo;
+	public EntityPlayer					buildConnectTo;
 	/**
 	 * block coordinates of receiver/sender station<br>
 	 * is null if not connected
 	 */
-	private int[]				connectedToCoords;
-	private boolean				isSender;
-	private int					counter;
-	public HashSet<Integer>		gondolaIdsSent;
+	private int[]						connectedToCoords;
+	private boolean						isSender;
+	private int							counter;
+	public HashSet<Integer>				gondolaIdsSent;
+	private ArrayList<BlockCoordinates>	collisionBlocks;
 
 	// coordinates
 
@@ -146,6 +151,9 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 
 		int[] gondolaIdArr = ArrayUtils.toPrimitive(this.gondolaIdsSent.toArray(new Integer[] {}));
 		tag.setIntArray(nbtGondolaArr, gondolaIdArr);
+
+		if (this.collisionBlocks != null)
+			NBTUtils.writeListToNBT(tag, this.collisionBlocks, nbtCollisionBlocks);
 	}
 
 	@Override
@@ -166,6 +174,12 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 
 		int[] gondolaIdArr = tag.getIntArray(nbtGondolaArr);
 		this.gondolaIdsSent = new HashSet<Integer>(Arrays.asList(ArrayUtils.toObject(gondolaIdArr)));
+
+		if (tag.hasKey(nbtCollisionBlocks))
+			this.collisionBlocks = NBTUtils.readListFromNBT(tag, nbtCollisionBlocks,
+				BlockCoordinates.class);
+		else
+			this.collisionBlocks = new ArrayList<BlockCoordinates>();
 	}
 
 	public static String getTextureName() {
@@ -213,6 +227,10 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 
 		other.connectedToCoords = null;
 		other.letAllGondolasFallOutOfRope();
+		if (other.collisionBlocks != null)
+			for (BlockCoordinates b : other.collisionBlocks)
+				this.worldObj.setBlockToAir(b.x, b.y, b.z);
+		other.collisionBlocks = new ArrayList<BlockCoordinates>();
 		other.forceServerPush();
 	}
 
@@ -220,6 +238,11 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		disconnectOtherStation();
 		this.buildConnectTo = null;
 		this.connectedToCoords = null;
+		if (this.collisionBlocks != null)
+			for (BlockCoordinates b : this.collisionBlocks)
+				this.worldObj.setBlockToAir(b.x, b.y, b.z);
+		this.collisionBlocks = new ArrayList<BlockCoordinates>();
+
 		letAllGondolasFallOutOfRope();
 	}
 
@@ -234,16 +257,17 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		}
 	}
 
-	public void finishRopeConnection(TEStation otherStation, EntityPlayer player) {
+	public void finishRopeConnection(TEStation otherStation, EntityPlayer player,
+			ArrayList<BlockCoordinates> newCollisionBlocks) {
 		disconnectStation();
 
+		this.collisionBlocks = newCollisionBlocks;
 		this.connectedToCoords = new int[] { otherStation.xCoord, otherStation.yCoord, otherStation.zCoord };
 		int[] stationCoords = new int[] { this.xCoord, this.yCoord, this.zCoord };
 		this.isSender = true;
 		this.forceServerPush();
 
-		if (!Arrays.equals(otherStation.connectedToCoords, stationCoords))
-			otherStation.disconnectOtherStation();
+		otherStation.disconnectOtherStation();
 		otherStation.buildConnectTo = null;
 		otherStation.connectedToCoords = stationCoords;
 		otherStation.isSender = false;

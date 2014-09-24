@@ -24,4 +24,8 @@ public class Vec3P extends Vec3 {
 		return w.getTileEntity(MathHelper.floor_double(this.xCoord), MathHelper
 			.floor_double(this.yCoord), MathHelper.floor_double(this.zCoord));
 	}
+
+	public boolean isNaN() {
+		return Double.isNaN(this.xCoord) || Double.isNaN(this.yCoord) || Double.isNaN(this.zCoord);
+	}
 }

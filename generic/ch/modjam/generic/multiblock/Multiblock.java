@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
-import ch.modjam.generic.arrays.ArrayHelper;
+import ch.modjam.generic.helper.ArrayHelper;
 
 /**
  * This class describes a MultiBlock structure and provides methods to check for the validity.

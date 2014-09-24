@@ -4,17 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.renderer.DestroyBlockProgress;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import ch.modjam.generic.helper.NBTStorable;
 
-public class BlockCoordinates {
+public class BlockCoordinates implements NBTStorable {
 	public int	x;
 	public int	y;
 	public int	z;
+
+	public BlockCoordinates() {
+		// needed for generic instantiation
+	}
 
 	public BlockCoordinates(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
+	}
+
+	public BlockCoordinates copy() {
+		return new BlockCoordinates(this.x, this.y, this.z);
 	}
 
 	/**
@@ -75,5 +85,19 @@ public class BlockCoordinates {
 	public boolean equalCoordinates(DestroyBlockProgress dbp) {
 		return this.x == dbp.getPartialBlockX() && this.y == dbp.getPartialBlockY() && this.z == dbp
 			.getPartialBlockZ();
+	}
+
+	@Override
+	public void readNBT(NBTTagCompound tag) {
+		this.x = tag.getInteger("x");
+		this.y = tag.getInteger("y");
+		this.z = tag.getInteger("z");
+	}
+
+	@Override
+	public void writeNBT(NBTTagCompound tag) {
+		tag.setInteger("x", this.x);
+		tag.setInteger("y", this.y);
+		tag.setInteger("z", this.z);
 	}
 }

@@ -1,5 +1,8 @@
 package ch.modjam.generic.helper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
@@ -15,6 +18,41 @@ public class NBTUtils {
 	public static ItemStack readItemStackFromNBT(NBTTagCompound nbt, String identifier) {
 		NBTTagCompound tag = (NBTTagCompound) nbt.getTag(identifier);
 		return ItemStack.loadItemStackFromNBT(tag);
+	}
+
+	public static <T extends NBTStorable> void writeListToNBT(NBTTagCompound tag, List<T> list,
+			String name) {
+		NBTTagCompound dataTag = new NBTTagCompound();
+		tag.setTag(name, dataTag);
+		int index = 0;
+		for (T t : list) {
+			NBTTagCompound element = new NBTTagCompound();
+			t.writeNBT(element);
+			dataTag.setTag("" + index, element);
+			System.out.println();
+			index++;
+		}
+	}
+
+	public static <T extends NBTStorable> ArrayList<T> readListFromNBT(NBTTagCompound tag,
+			String name, Class<T> cl) {
+		ArrayList<T> result = new ArrayList<T>();
+		NBTTagCompound dataTag = (NBTTagCompound) tag.getTag(name);
+		int index = 0;
+		while (true) {
+			NBTTagCompound element = (NBTTagCompound) dataTag.getTag("" + index);
+			if (element == null)
+				break;
+			try {
+				T t = cl.newInstance();
+				t.readNBT(element);
+				result.add(t);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			index++;
+		}
+		return result;
 	}
 
 	public static void writeVecToNBT(NBTTagCompound tag, Vec3 vector, String name) {
