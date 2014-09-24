@@ -1,0 +1,5 @@
+1. change build.gradle
+   in minecraft { ... } 
+	 change version="..." to match the following
+	 version = "mcVersion-forgeVersion"
+	 e.g. version = "1.7.10-10.13.1.1217"
