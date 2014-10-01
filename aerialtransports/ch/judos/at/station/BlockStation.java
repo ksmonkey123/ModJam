@@ -29,6 +29,8 @@ public class BlockStation extends BlockContainer {
 		this.setCreativeTab(ATMain.modTab);
 		this.setHardness(0.7f);
 		this.setHarvestLevel("axe", 0);
+		float b = 0.1f;
+		this.setBlockBounds(b, 0, b, 1 - b, 1, 1 - b);
 		// this.setLightOpacity(0);
 	}
 
