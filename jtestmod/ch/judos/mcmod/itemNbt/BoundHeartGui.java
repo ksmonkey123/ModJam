@@ -26,8 +26,18 @@ public class BoundHeartGui extends GuiContainer {
 	 */
 	public BoundHeartGui(InventoryPlayer inventory, ItemStack stack, int slot) {
 		super(new BoundHeartContainer(inventory, stack, slot));
+		this.xSize = 176;
+		this.ySize = 200;
 		this.slot = slot;
 		this.heart = stack;
+
+		this.guiLeft = (this.width - this.xSize) / 2;
+		this.guiTop = (this.height - this.ySize) / 2;
+	}
+
+	@Override
+	public void initGui() {
+		super.initGui();
 	}
 
 	@Override
@@ -49,7 +59,7 @@ public class BoundHeartGui extends GuiContainer {
 		this.fontRendererObj.drawString(s,
 			this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6 + 33, color);
 		this.fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8,
-			this.ySize - 96 + 2, color);
+			this.ySize - 128, color);
 	}
 
 	@Override
