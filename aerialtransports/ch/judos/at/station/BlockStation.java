@@ -16,7 +16,7 @@ import ch.judos.at.lib.ATNames;
 import ch.judos.at.station.rope.ItemRope;
 import ch.modjam.generic.blocks.BlockCoordinates;
 import ch.modjam.generic.blocks.Collision;
-import ch.modjam.generic.blocks.Vec3P;
+import ch.modjam.generic.blocks.Vec3C;
 import ch.modjam.generic.gui.GenericGuiHandler;
 import ch.modjam.generic.rendering.customRenderer.RenderType;
 
@@ -67,9 +67,9 @@ public class BlockStation extends BlockContainer {
 						"Can't connect a station to itself."));
 			} else {
 				Collision c = new Collision(w, true, true);
-				Vec3P start = new Vec3P(stationStart.xCoord + 0.5, stationStart.yCoord + 0.9,
+				Vec3C start = new Vec3C(stationStart.xCoord + 0.5, stationStart.yCoord + 0.9,
 					stationStart.zCoord + 0.5);
-				Vec3P end = new Vec3P(stationEnd.xCoord + 0.5, stationEnd.yCoord + 0.9,
+				Vec3C end = new Vec3C(stationEnd.xCoord + 0.5, stationEnd.yCoord + 0.9,
 					stationEnd.zCoord + 0.5);
 
 				// detects liquids and excludes both, start and end stations

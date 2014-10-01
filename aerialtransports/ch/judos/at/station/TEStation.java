@@ -26,7 +26,7 @@ import ch.judos.at.station.gondola.EntityGondola;
 import ch.judos.at.station.gui.ContainerStation;
 import ch.judos.at.station.gui.GuiContainerStation;
 import ch.modjam.generic.blocks.BlockCoordinates;
-import ch.modjam.generic.blocks.Vec3P;
+import ch.modjam.generic.blocks.Vec3C;
 import ch.modjam.generic.gui.IHasGui;
 import ch.modjam.generic.helper.ItemUtils;
 import ch.modjam.generic.helper.NBTUtils;
@@ -110,7 +110,7 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		// ATMain.logger.error("sending items: " + this.worldObj.getTotalWorldTime());
 		Vec3 start = Vec3.createVectorHelper(this.xCoord + 0.5, this.yCoord + 0.5,
 			this.zCoord + 0.5);
-		Vec3P end = new Vec3P(target.xCoord + 0.5, target.yCoord + 0.5, target.zCoord + 0.5);
+		Vec3C end = new Vec3C(target.xCoord + 0.5, target.yCoord + 0.5, target.zCoord + 0.5);
 		EntityGondola eGondola = new EntityGondola(this.worldObj, start, end, transportGoods);
 		eGondola.setPosition(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5);
 		this.worldObj.spawnEntityInWorld(eGondola);

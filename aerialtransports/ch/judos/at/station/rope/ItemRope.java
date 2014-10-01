@@ -20,7 +20,7 @@ import ch.judos.at.lib.ATNames;
 import ch.judos.at.station.TEStation;
 import ch.modjam.generic.blocks.BlockCoordinates;
 import ch.modjam.generic.blocks.Collision;
-import ch.modjam.generic.blocks.Vec3P;
+import ch.modjam.generic.blocks.Vec3C;
 
 public class ItemRope extends Item {
 
@@ -90,8 +90,8 @@ public class ItemRope extends Item {
 			ppos.yCoord += 1.62;
 		ppos.yCoord -= 1; // height of arm
 
-		Vec3P start = new Vec3P(coords[0] + 0.5, coords[1] + 0.9, coords[2] + 0.5);
-		Vec3P end = new Vec3P(ppos.xCoord, ppos.yCoord, ppos.zCoord);
+		Vec3C start = new Vec3C(coords[0] + 0.5, coords[1] + 0.9, coords[2] + 0.5);
+		Vec3C end = new Vec3C(ppos.xCoord, ppos.yCoord, ppos.zCoord);
 
 		// detects liquids and excludes the start (station itself)
 		Set<BlockCoordinates> mop = c.detectCollisions(start, end, true, false);

@@ -10,6 +10,8 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
+import org.lwjgl.util.vector.Vector4f;
+
 public class Collision {
 
 	protected World						world;
@@ -31,22 +33,59 @@ public class Collision {
 	/**
 	 * @param startVec
 	 * @param endVec
-	 * @param collideWithLiquid
 	 * @param excludeStart
 	 * @param excludeEnd
-	 * @return an empty set if any value of start or endVec is NaN<br>
+	 * @param sqRadius radius of collision (4 rays on the edge of the square with radius r will be
+	 *            used)
+	 * @return a set of block coordinates that collide with the given area
 	 */
-	public Set<BlockCoordinates> detectCollisions(Vec3P startVec, Vec3P endVec,
+	public Set<BlockCoordinates> detectCollisionsInVolume(Vec3C startVec, Vec3C endVec,
+			boolean excludeStart, boolean excludeEnd, float sqRadius) {
+		HashSet<BlockCoordinates> exclude = getExclusionSetFor(startVec, endVec, excludeStart,
+			excludeEnd);
+
+		Vec3C relPos = endVec.subtract(startVec);
+		Vector4f[] cornersA = relPos.toPolarCoordinates().getRectangleCornersInOrigin(0.4f,
+			startVec.toVector3f());
+		Vector4f[] cornersB = relPos.toPolarCoordinates().getRectangleCornersInOrigin(0.4f,
+			endVec.toVector3f());
+
+		Set<BlockCoordinates> result = new HashSet<BlockCoordinates>();
+		for (int i = 0; i < cornersA.length; i++) {
+			Vec3C start = new Vec3C(cornersA[i]);
+			Vec3C end = new Vec3C(cornersB[i]);
+			Set<BlockCoordinates> s1 = detectCollisions(start, end, exclude);
+			result.addAll(s1);
+		}
+
+		return result;
+	}
+
+	public HashSet<BlockCoordinates> getExclusionSetFor(Vec3C startVec, Vec3C endVec,
 			boolean excludeStart, boolean excludeEnd) {
 		HashSet<BlockCoordinates> exclude = new HashSet<BlockCoordinates>();
 		if (excludeStart)
 			exclude.add(startVec.getBlockCoords());
 		if (excludeEnd)
 			exclude.add(endVec.getBlockCoords());
+		return exclude;
+	}
+
+	/**
+	 * @param startVec
+	 * @param endVec
+	 * @param excludeStart
+	 * @param excludeEnd
+	 * @return an empty set if any value of start or endVec is NaN<br>
+	 */
+	public Set<BlockCoordinates> detectCollisions(Vec3C startVec, Vec3C endVec,
+			boolean excludeStart, boolean excludeEnd) {
+		HashSet<BlockCoordinates> exclude = getExclusionSetFor(startVec, endVec, excludeStart,
+			excludeEnd);
 		return detectCollisions(startVec, endVec, exclude);
 	}
 
-	public Set<BlockCoordinates> detectCollisions(Vec3P currentPoint, Vec3P endVec,
+	public Set<BlockCoordinates> detectCollisions(Vec3C currentPoint, Vec3C endVec,
 			Set<BlockCoordinates> exclude) {
 
 		HashSet<BlockCoordinates> result = new HashSet<BlockCoordinates>();

@@ -6,7 +6,7 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Vec3;
-import ch.modjam.generic.blocks.Vec3P;
+import ch.modjam.generic.blocks.Vec3C;
 
 public class NBTUtils {
 	public static void writeItemStackToNBT(ItemStack stack, NBTTagCompound nbt, String identifier) {
@@ -63,13 +63,13 @@ public class NBTUtils {
 		tag.setDouble(name + "_z", vector.zCoord);
 	}
 
-	public static Vec3P readVecFromNBT(NBTTagCompound tag, String name) {
+	public static Vec3C readVecFromNBT(NBTTagCompound tag, String name) {
 		if (!tag.hasKey(name + "_x"))
 			return null;
 		double x = tag.getDouble(name + "_x");
 		double y = tag.getDouble(name + "_y");
 		double z = tag.getDouble(name + "_z");
-		return new Vec3P(x, y, z);
+		return new Vec3C(x, y, z);
 	}
 
 }

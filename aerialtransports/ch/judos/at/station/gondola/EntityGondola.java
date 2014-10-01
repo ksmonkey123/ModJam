@@ -11,7 +11,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import ch.judos.at.ATMain;
 import ch.judos.at.station.TEStation;
-import ch.modjam.generic.blocks.Vec3P;
+import ch.modjam.generic.blocks.Vec3C;
 import ch.modjam.generic.helper.ItemUtils;
 import ch.modjam.generic.helper.NBTUtils;
 import cpw.mods.fml.common.network.ByteBufUtils;
@@ -21,7 +21,7 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 
 	public static final double	TRAVEL_SPEED	= 0.03;
 
-	public Vec3P				end;
+	public Vec3C				end;
 	public Vec3					start;
 	public Vec3					currentPos;
 
@@ -38,7 +38,7 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 
 	}
 
-	public EntityGondola(World world, Vec3 start, Vec3P end, ItemStack transportGoods) {
+	public EntityGondola(World world, Vec3 start, Vec3C end, ItemStack transportGoods) {
 		this(world);
 		this.start = start;
 		this.end = end;
@@ -212,7 +212,7 @@ public class EntityGondola extends Entity implements IEntityAdditionalSpawnData 
 
 	public void setStartAndTarget(double xs, double ys, double zs, double xe, double ye, double ze) {
 		this.start = Vec3.createVectorHelper(xs, ys, zs);
-		this.end = new Vec3P(xe, ye, ze);
+		this.end = new Vec3C(xe, ye, ze);
 	}
 
 	@Override
