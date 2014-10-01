@@ -1,8 +1,5 @@
 package ch.judos.at.station.rope;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.AxisAlignedBB;
@@ -10,8 +7,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import ch.judos.at.ATMain;
 import ch.judos.at.lib.ATNames;
-import ch.judos.at.station.BlockStation;
-import ch.modjam.generic.blocks.BlockCoordinates;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -34,21 +29,22 @@ public class BlockRope extends Block {
 
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-		HashSet<BlockCoordinates> checked = new HashSet<BlockCoordinates>();
-		ArrayList<BlockCoordinates> check = new ArrayList<BlockCoordinates>();
-		check.add(new BlockCoordinates(x, y, z));
-		while (!check.isEmpty()) {
-			BlockCoordinates checkCoords = check.remove(0);
-			checked.add(checkCoords);
-			Block checkBlock = world.getBlock(checkCoords.x, checkCoords.y, checkCoords.z);
-			if (checkBlock instanceof BlockRope) {
-				for (BlockCoordinates c : checkCoords.neighbors())
-					if (!checked.contains(c))
-						check.add(c);
-			} else if (checkBlock instanceof BlockStation) {
-				// TODO: implement
-			}
-		}
+		// XXX: implement if player want to be able to destroy rope easily
+		// HashSet<BlockCoordinates> checked = new HashSet<BlockCoordinates>();
+		// ArrayList<BlockCoordinates> check = new ArrayList<BlockCoordinates>();
+		// check.add(new BlockCoordinates(x, y, z));
+		// while (!check.isEmpty()) {
+		// BlockCoordinates checkCoords = check.remove(0);
+		// checked.add(checkCoords);
+		// Block checkBlock = world.getBlock(checkCoords.x, checkCoords.y, checkCoords.z);
+		// if (checkBlock instanceof BlockRope) {
+		// for (BlockCoordinates c : checkCoords.neighbors())
+		// if (!checked.contains(c))
+		// check.add(c);
+		// } else if (checkBlock instanceof BlockStation) {
+		//
+		// }
+		// }
 	}
 
 	@Override
