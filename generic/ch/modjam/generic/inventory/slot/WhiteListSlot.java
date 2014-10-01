@@ -15,7 +15,7 @@ public class WhiteListSlot extends Slot {
 		this.allowed = new HashSet<Item>();
 	}
 
-	public void addItem(Item i) {
+	public void addAllowedItem(Item i) {
 		this.allowed.add(i);
 	}
 

@@ -14,10 +14,19 @@ import ch.modjam.generic.inventory.slot.FakeSlot;
 public abstract class GenericContainer extends Container {
 
 	/**
+	 * the inventory of the player is automatically bound to this container (all the slots)
+	 * 
 	 * @param inventoryPlayer inventory of the player
 	 */
 	public GenericContainer(InventoryPlayer inventoryPlayer) {
 		bindPlayerInventory(inventoryPlayer);
+	}
+
+	/**
+	 * player's inventory is NOT bound to the container
+	 */
+	public GenericContainer() {
+
 	}
 
 	/**

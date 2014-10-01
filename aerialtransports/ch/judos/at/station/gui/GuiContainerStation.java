@@ -73,7 +73,8 @@ public class GuiContainerStation extends GenericGuiTEContainer {
 		String items = StatCollector.translateToLocal("at.items");
 		this.fontRendererObj.drawString(items, 10, 48, color);
 
-		initGui();
+		// XXX: is this needed?
+		// initGui();
 
 		// if (this.teStation.isConnectedToSomething()) {
 		// String reconnect = StatCollector.translateToLocal("at.reconnect");

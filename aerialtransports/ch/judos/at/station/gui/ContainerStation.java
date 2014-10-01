@@ -38,7 +38,7 @@ public class ContainerStation extends GenericContainer {
 			}
 		};
 		this.tileEntityInventory.addListener(this.slotListener);
-		gondolas.addItem(ATMain.gondola);
+		gondolas.addAllowedItem(ATMain.gondola);
 		addSlotToContainer(gondolas);
 		addSlotToContainer(new Slot(this.tileEntityInventory, 1, 70, 49 - 5));
 	}

@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import ch.judos.at.gearbox.BlockStationGearBox;
 import ch.judos.at.gearbox.ItemGearBox;
+import ch.judos.at.gearbox.TEStationGearbox;
 import ch.judos.at.gondola.EntityGondola;
 import ch.judos.at.gondola.ItemGondola;
 import ch.judos.at.lib.ATNames;
@@ -92,7 +93,7 @@ public class ATMain {
 
 	private static void registerStationGearBox() {
 		stationGearbox = new BlockStationGearBox();
-		RegistryUtil.registerBlock(stationGearbox);
+		RegistryUtil.registerBlock(stationGearbox, TEStationGearbox.class);
 	}
 
 	/**
