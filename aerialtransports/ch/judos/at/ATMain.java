@@ -6,12 +6,15 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import org.apache.logging.log4j.Logger;
 
 import ch.judos.at.lib.ATNames;
 import ch.judos.at.lib.CommonProxy;
 import ch.judos.at.station.BlockStation;
+import ch.judos.at.station.BlockStationGearBox;
+import ch.judos.at.station.ItemGearBox;
 import ch.judos.at.station.TEStation;
 import ch.judos.at.station.gondola.EntityGondola;
 import ch.judos.at.station.gondola.ItemGondola;
@@ -23,6 +26,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -36,7 +40,6 @@ import cpw.mods.fml.relauncher.SideOnly;
  * dependencies="required-after:"modid"@["version"]"
  */
 @Mod(modid = ATMain.MOD_ID, version = ATMain.VERSION, name = ATMain.NAME)
-@SuppressWarnings("javadoc")
 public class ATMain {
 
 	/**
@@ -49,12 +52,6 @@ public class ATMain {
 	public static CommonProxy			proxy;
 	public static Logger				logger;
 
-	public static CreativeTabs			modTab;
-	public static BlockStation			station;
-	public static BlockRope				ropeBlock;
-	public static ItemRope				ropeOfStation;
-	public static ItemGondola			gondola;
-
 	public static final String			MOD_ID	= "aerialtransports";
 	public static final String			VERSION	= "1.7.10-0.11";
 	public static final String			NAME	= "Aerial Transports";
@@ -62,6 +59,14 @@ public class ATMain {
 	public static final String			Client	= "ch.judos.at.lib.ClientProxy";
 
 	public static SimpleNetworkWrapper	network;
+
+	public static CreativeTabs			modTab;
+	public static BlockStation			station;
+	public static BlockRope				ropeBlock;
+	public static ItemRope				ropeOfStation;
+	public static ItemGondola			gondola;
+	public static ItemGearBox			gearbox;
+	public static BlockStationGearBox	stationGearbox;
 
 	/**
 	 * @param e
@@ -72,8 +77,9 @@ public class ATMain {
 		setMetaData(e.getModMetadata());
 		createCreativeTab();
 
-		registerRopeOfStationItem();
-		registerRopeBlocks();
+		registerRope();
+		registerGearBox();
+		registerStationGearBox();
 		registerGondola();
 		registerStation();
 
@@ -84,24 +90,52 @@ public class ATMain {
 		proxy.registerRenderInformation();
 	}
 
-	private static void registerRopeBlocks() {
+	private static void registerStationGearBox() {
+		stationGearbox = new BlockStationGearBox();
+		RegistryUtil.registerBlock(stationGearbox);
+	}
+
+	/**
+	 * @param e
+	 */
+	@EventHandler
+	public void init(FMLInitializationEvent e) {
+		// gear box
+		GameRegistry.addRecipe(new ShapedOreRecipe(gearbox, " W ", "WSW", " W ", 'W',
+			Blocks.planks, 'S', Items.stick));
+
+		// gondolas
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(gondola, 2), "G", "I", "B", 'G',
+			ATMain.gearbox, 'I', Items.stick, 'B', Blocks.chest));
+
+		// stations
+		GameRegistry.addRecipe(new ShapedOreRecipe(station, "GGG", "WCW", "WCW", 'G', gearbox, 'W',
+			Blocks.planks, 'C', Blocks.chest));
+
+		// /station gearbox
+		GameRegistry.addRecipe(new ShapedOreRecipe(stationGearbox, "WWW", "rGG", "WWW", 'W',
+			Blocks.planks, 'r', Items.redstone, 'G', gearbox));
+	}
+
+	private static void registerGearBox() {
+		gearbox = new ItemGearBox();
+		RegistryUtil.registerItem(gearbox);
+	}
+
+	private static void registerRope() {
 		ropeBlock = new BlockRope();
 		RegistryUtil.registerBlock(ropeBlock);
+
+		ropeOfStation = new ItemRope();
+		RegistryUtil.registerItem(ropeOfStation);
 	}
 
 	private static void registerGondola() {
 		gondola = new ItemGondola();
 		RegistryUtil.registerItem(gondola);
-		GameRegistry.addShapedRecipe(new ItemStack(gondola, 2), "S", "I", "B", 'S', Items.string,
-			'I', Items.stick, 'B', Blocks.chest);
 
 		EntityRegistry.registerModEntity(EntityGondola.class, ATNames.gondola, 0, ATMain.instance,
 			80, 1, true);
-	}
-
-	private static void registerRopeOfStationItem() {
-		ropeOfStation = new ItemRope();
-		RegistryUtil.registerItem(ropeOfStation);
 	}
 
 	private static void registerStation() {

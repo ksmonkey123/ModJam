@@ -3,6 +3,8 @@ tile.station.name=Gondola Station
 item.rope_to_station.name=Rope
 item.gondola.name=Gondola
 tile.rope_collision_block.name=Rope collision block
+item.gearbox.name=Gearbox
+tile.station_gearbox.name=Station Gearbox
 
 at.gondolas=Gondolas
 at.items=Items
@@ -10,3 +12,4 @@ at.connect=Connect
 at.reconnect=Reconnect
 at.sender=Sender
 at.receiver=Receiver
+

@@ -27,7 +27,7 @@ public class BlockStation extends BlockContainer {
 		this.setUnlocalizedName(ATNames.station);
 		this.setTextureName(ATMain.MOD_ID + ":" + ATNames.station + "_particles");
 		this.setCreativeTab(ATMain.modTab);
-		this.setHardness(0.5f);
+		this.setHardness(0.7f);
 		this.setHarvestLevel("axe", 0);
 		// this.setLightOpacity(0);
 	}
