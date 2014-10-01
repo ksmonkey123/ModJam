@@ -22,8 +22,8 @@ import net.minecraft.util.Vec3;
 import org.apache.commons.lang3.ArrayUtils;
 
 import ch.judos.at.ATMain;
+import ch.judos.at.gondola.EntityGondola;
 import ch.judos.at.lib.ATNames;
-import ch.judos.at.station.gondola.EntityGondola;
 import ch.judos.at.station.gui.ContainerStation;
 import ch.judos.at.station.gui.GuiContainerStation;
 import ch.modjam.generic.blocks.BlockCoordinates;

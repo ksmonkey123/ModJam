@@ -10,16 +10,16 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import org.apache.logging.log4j.Logger;
 
+import ch.judos.at.gearbox.BlockStationGearBox;
+import ch.judos.at.gearbox.ItemGearBox;
+import ch.judos.at.gondola.EntityGondola;
+import ch.judos.at.gondola.ItemGondola;
 import ch.judos.at.lib.ATNames;
 import ch.judos.at.lib.CommonProxy;
+import ch.judos.at.rope.BlockRope;
+import ch.judos.at.rope.ItemRope;
 import ch.judos.at.station.BlockStation;
-import ch.judos.at.station.BlockStationGearBox;
-import ch.judos.at.station.ItemGearBox;
 import ch.judos.at.station.TEStation;
-import ch.judos.at.station.gondola.EntityGondola;
-import ch.judos.at.station.gondola.ItemGondola;
-import ch.judos.at.station.rope.BlockRope;
-import ch.judos.at.station.rope.ItemRope;
 import ch.judos.at.workinprogress.GondolaTargetMessage;
 import ch.modjam.generic.helper.RegistryUtil;
 import cpw.mods.fml.common.Mod;

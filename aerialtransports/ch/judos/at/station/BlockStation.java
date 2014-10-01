@@ -13,7 +13,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import ch.judos.at.ATMain;
 import ch.judos.at.lib.ATNames;
-import ch.judos.at.station.rope.ItemRope;
+import ch.judos.at.rope.ItemRope;
 import ch.modjam.generic.blocks.BlockCoordinates;
 import ch.modjam.generic.blocks.Collision;
 import ch.modjam.generic.blocks.Vec3C;

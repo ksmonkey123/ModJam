@@ -1,4 +1,4 @@
-package ch.judos.at.station.gondola;
+package ch.judos.at.gondola;
 
 import net.minecraft.item.Item;
 import ch.judos.at.ATMain;

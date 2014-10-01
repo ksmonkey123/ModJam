@@ -1,4 +1,4 @@
-package ch.judos.at.station.gondola;
+package ch.judos.at.gondola;
 
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;

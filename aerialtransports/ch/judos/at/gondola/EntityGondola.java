@@ -1,4 +1,4 @@
-package ch.judos.at.station.gondola;
+package ch.judos.at.gondola;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;

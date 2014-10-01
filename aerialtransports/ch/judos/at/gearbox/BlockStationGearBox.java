@@ -1,4 +1,4 @@
-package ch.judos.at.station;
+package ch.judos.at.gearbox;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;

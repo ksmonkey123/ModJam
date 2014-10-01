@@ -1,4 +1,4 @@
-package ch.judos.at.station.rope;
+package ch.judos.at.rope;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
