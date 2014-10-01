@@ -109,7 +109,6 @@ public class ItemRope extends Item {
 		// XXX: eventually drop item when not in hand
 		if (!heldInHand) {
 			if (entity instanceof EntityPlayer) {
-				ATMain.logger.error(entity + " - " + item);
 				EntityPlayer e2 = (EntityPlayer) entity;
 				e2.inventory.setInventorySlotContents(slot, null);
 

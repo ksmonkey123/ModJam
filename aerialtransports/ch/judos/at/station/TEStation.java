@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
@@ -51,6 +52,9 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	 * player currently wearing a rope to connect this station with another station
 	 */
 	public EntityPlayer					buildConnectTo;
+
+	protected String					buildConnectToName;
+
 	/**
 	 * block coordinates of receiver/sender station<br>
 	 * is null if not connected
@@ -60,6 +64,8 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	private int							counter;
 	public HashSet<Integer>				gondolaIdsSent;
 	private ArrayList<BlockCoordinates>	collisionBlocks;
+	public Set<BlockCoordinates>		blockingBlocks;
+	public int							showBlockingBlocksTimer;
 
 	// coordinates
 
@@ -83,6 +89,12 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 
 	@Override
 	public void tick() {
+		if (this.buildConnectToName != null) {
+			this.buildConnectTo = this.worldObj.getPlayerEntityByName(this.buildConnectToName);
+			if (this.buildConnectTo != null)
+				this.buildConnectToName = null;
+		}
+
 		if (this.worldObj.isRemote)
 			return;
 		if (!this.isSender)
@@ -106,8 +118,6 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		// remove one gondola:
 		this.inventory.decrStackSize(0, 1);
 
-		// ATMain.logger.error("sending items: " + this.inventory.decrStackSize(1, 1));
-		// ATMain.logger.error("sending items: " + this.worldObj.getTotalWorldTime());
 		Vec3 start = Vec3.createVectorHelper(this.xCoord + 0.5, this.yCoord + 0.5,
 			this.zCoord + 0.5);
 		Vec3C end = new Vec3C(target.xCoord + 0.5, target.yCoord + 0.5, target.zCoord + 0.5);
@@ -147,6 +157,9 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 			tag.setIntArray(nbtConnectedToCoords, this.connectedToCoords);
 		if (this.buildConnectTo != null)
 			tag.setString(nbtBuildConnectPlayerName, this.buildConnectTo.getCommandSenderName());
+		else if (this.buildConnectToName != null)
+			tag.setString(nbtBuildConnectPlayerName, this.buildConnectToName);
+
 		tag.setBoolean(nbtIsSender, this.isSender);
 
 		int[] gondolaIdArr = ArrayUtils.toPrimitive(this.gondolaIdsSent.toArray(new Integer[] {}));
@@ -164,11 +177,14 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		else
 			this.connectedToCoords = null;
 		if (tag.hasKey(nbtBuildConnectPlayerName) && this.worldObj != null) {
-			ATMain.logger.error("No world object yet available");
 			String name = tag.getString(nbtBuildConnectPlayerName);
 			this.buildConnectTo = this.worldObj.getPlayerEntityByName(name);
-		} else
+		} else if (tag.hasKey(nbtBuildConnectPlayerName)) {
+			this.buildConnectToName = tag.getString(nbtBuildConnectPlayerName);
+		} else {
 			this.buildConnectTo = null;
+		}
+
 		if (tag.hasKey(nbtIsSender))
 			this.isSender = tag.getBoolean(nbtIsSender);
 
@@ -261,6 +277,9 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 			ArrayList<BlockCoordinates> newCollisionBlocks) {
 		disconnectStation();
 
+		this.blockingBlocks = null;
+		this.showBlockingBlocksTimer = 0;
+
 		this.collisionBlocks = newCollisionBlocks;
 		this.connectedToCoords = new int[] { otherStation.xCoord, otherStation.yCoord, otherStation.zCoord };
 		int[] stationCoords = new int[] { this.xCoord, this.yCoord, this.zCoord };
@@ -268,6 +287,9 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		this.forceServerPush();
 
 		otherStation.disconnectOtherStation();
+		otherStation.blockingBlocks = null;
+		otherStation.showBlockingBlocksTimer = 0;
+
 		otherStation.buildConnectTo = null;
 		otherStation.connectedToCoords = stationCoords;
 		otherStation.isSender = false;
@@ -328,7 +350,6 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 			String playerName = new String(data);
 			EntityPlayer player = this.worldObj.getPlayerEntityByName(playerName);
 			this.bindRopeConnection(player);
-			ATMain.logger.error("bound rope connection..");
 		}
 		if (netClientReqChangeSender.equals(command)) {
 			TEStation te = getTarget();
@@ -353,6 +374,17 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 			ItemUtils.spawnItemEntityAbove(this, entityGondola.transportGoods);
 		if (!this.inventory.addItemStackToInventory(new ItemStack(ATMain.gondola)))
 			ItemUtils.spawnItemEntityAbove(this, new ItemStack(ATMain.gondola));
+	}
+
+	/**
+	 * sets the blocks that are currently in the way and prevent a connection between this station
+	 * and some other station
+	 * 
+	 * @param intermediate
+	 */
+	public void setBlockingBlocks(Set<BlockCoordinates> intermediate) {
+		this.blockingBlocks = intermediate;
+		this.showBlockingBlocksTimer = 100000 * 20;
 	}
 
 }

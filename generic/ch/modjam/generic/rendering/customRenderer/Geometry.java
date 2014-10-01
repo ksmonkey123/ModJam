@@ -19,6 +19,9 @@ import org.lwjgl.util.vector.Vector4f;
 public class Geometry extends GroupGeometry {
 	protected ArrayList<Vertex>	points;
 	protected ArrayList<Quad>	quads;
+	/**
+	 * if texture is null, everything is drawn texture-less
+	 */
 	protected String			texture;
 
 	/**
@@ -92,9 +95,10 @@ public class Geometry extends GroupGeometry {
 
 	@Override
 	protected void draw(Tessellator t, Matrix4f transformMat) {
-		TextureManager render = Minecraft.getMinecraft().renderEngine;
-		render.bindTexture(new ResourceLocation(this.texture));
-
+		if (this.texture != null) {
+			TextureManager render = Minecraft.getMinecraft().renderEngine;
+			render.bindTexture(new ResourceLocation(this.texture));
+		}
 		Vector4f pos = new Vector4f(); // optimization, only one object is
 		// created for all the
 		// calculation
@@ -104,7 +108,10 @@ public class Geometry extends GroupGeometry {
 			for (Vertex vertex : q.points) {
 				pos = Matrix4f.transform(transformComplete, vertex.position, pos);
 				// reuse pos vector object
-				t.addVertexWithUV(pos.x, pos.y, pos.z, vertex.u, vertex.v);
+				if (this.texture != null)
+					t.addVertexWithUV(pos.x, pos.y, pos.z, vertex.u, vertex.v);
+				else
+					t.addVertex(pos.x, pos.y, pos.z);
 			}
 		}
 

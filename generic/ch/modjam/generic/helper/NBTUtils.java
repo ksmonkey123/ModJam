@@ -29,7 +29,6 @@ public class NBTUtils {
 			NBTTagCompound element = new NBTTagCompound();
 			t.writeNBT(element);
 			dataTag.setTag("" + index, element);
-			System.out.println();
 			index++;
 		}
 	}

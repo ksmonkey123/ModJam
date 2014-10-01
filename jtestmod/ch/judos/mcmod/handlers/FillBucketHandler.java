@@ -19,11 +19,10 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 @SuppressWarnings("javadoc")
 public class FillBucketHandler {
 
-	public static FillBucketHandler INSTANCE = new FillBucketHandler();
-	public Map<Block, Item> buckets = new HashMap<Block, Item>();
+	public static FillBucketHandler	INSTANCE	= new FillBucketHandler();
+	public Map<Block, Item>			buckets		= new HashMap<Block, Item>();
 
-	private FillBucketHandler() {
-	}
+	private FillBucketHandler() {}
 
 	public static void add(Block b, Item i) {
 		INSTANCE.buckets.put(b, i);
@@ -49,8 +48,7 @@ public class FillBucketHandler {
 	 * @param event
 	 * @param player
 	 */
-	private static void dontAllowReplacingFluids(FillBucketEvent event,
-			EntityPlayer player) {
+	private static void dontAllowReplacingFluids(FillBucketEvent event, EntityPlayer player) {
 		MovingObjectPosition target = event.target;
 		Vec3 vec = event.target.hitVec;
 
@@ -71,10 +69,8 @@ public class FillBucketHandler {
 	private ItemStack fillCustomBucket(World world, MovingObjectPosition pos) {
 
 		Block block = world.getBlock(pos.blockX, pos.blockY, pos.blockZ);
-		// System.out.println("target: " + block);
 		Item bucket = this.buckets.get(block);
-		if (bucket != null
-				&& world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0) {
+		if (bucket != null && world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0) {
 			world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
 			return new ItemStack(bucket);
 		}

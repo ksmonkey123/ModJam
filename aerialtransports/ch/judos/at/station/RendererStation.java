@@ -1,6 +1,7 @@
 package ch.judos.at.station;
 
 import net.minecraft.client.renderer.DestroyBlockProgress;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Vec3;
@@ -54,6 +55,35 @@ public class RendererStation extends BaseTESRenderer {
 			stationG.drawDamaged(Tessellator.instance);
 		}
 
+		if (st.blockingBlocks != null) {
+			for (BlockCoordinates block : st.blockingBlocks) {
+				GL11.glTranslated(block.x - st.xCoord, block.y - st.yCoord, block.z - st.zCoord);
+				Tessellator.instance.setColorRGBA(255, 255, 255, 255);
+
+				Geometry3 collBlock = new Geometry3((String) null);
+				// collBlock.setTexture(stationG.getTexture());
+				collBlock.addCubeOfRadius(1.01);
+				GL11.glDepthMask(false);
+				GL11.glColor4f(1, 0, 0, 0.5f);
+				// GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
+				OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ONE, GL11.GL_ZERO);
+				// GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+				GL11.glAlphaFunc(GL11.GL_GREATER, 0);
+				GL11.glDisable(GL11.GL_TEXTURE_2D);
+				GL11.glEnable(GL11.GL_BLEND);
+				collBlock.draw(Tessellator.instance);
+
+				GL11.glDisable(GL11.GL_BLEND);
+				GL11.glEnable(GL11.GL_TEXTURE_2D);
+				GL11.glDepthMask(true);
+
+				GL11.glTranslated(st.xCoord - block.x, st.yCoord - block.y, st.zCoord - block.z);
+			}
+			st.showBlockingBlocksTimer--;
+			if (st.showBlockingBlocksTimer <= 0)
+				st.blockingBlocks = null;
+		}
+
 		// TEAR DOWN
 		GL11.glTranslated(-transX - 0.5, -transY - 0.5, -transZ - 0.5);
 	}
@@ -66,8 +96,8 @@ public class RendererStation extends BaseTESRenderer {
 		g3.transform.rotate(angleXZ, new Vector3f(0, 1, 0));
 
 		final double s = 0.75; // side of one quad
-		final double t = s / 2;
-		final double b = -0.499;
+		// final double t = s / 2;
+		// final double b = -0.499;
 		g3.setUvModeScaled(true);
 		g3.addCubeWithoutFaces(s, 1, s, 0, EFace.FRONT);
 

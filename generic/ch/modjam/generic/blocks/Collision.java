@@ -45,9 +45,9 @@ public class Collision {
 			excludeEnd);
 
 		Vec3C relPos = endVec.subtract(startVec);
-		Vector4f[] cornersA = relPos.toPolarCoordinates().getRectangleCornersInOrigin(0.4f,
+		Vector4f[] cornersA = relPos.toPolarCoordinates().getRectangleCornersInOrigin(sqRadius,
 			startVec.toVector3f());
-		Vector4f[] cornersB = relPos.toPolarCoordinates().getRectangleCornersInOrigin(0.4f,
+		Vector4f[] cornersB = relPos.toPolarCoordinates().getRectangleCornersInOrigin(sqRadius,
 			endVec.toVector3f());
 
 		Set<BlockCoordinates> result = new HashSet<BlockCoordinates>();
