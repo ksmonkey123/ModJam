@@ -25,7 +25,7 @@ public abstract class AbstractInventory implements IInventory {
 	public AbstractInventory(int slots, String tileEntityName) {
 		this.size = slots;
 		this.tileName = tileEntityName;
-		this.filters = new ItemFilter[this.getSizeInventory()];
+		this.filters = new ItemFilter[this.size];
 	}
 
 	@Override
