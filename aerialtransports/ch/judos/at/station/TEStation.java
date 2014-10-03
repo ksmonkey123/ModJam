@@ -359,6 +359,7 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 				te.forceServerPush();
 			}
 		}
+		super.onNetworkCommand(command, data);
 	}
 
 	public boolean isSender() {

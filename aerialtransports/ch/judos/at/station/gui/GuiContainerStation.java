@@ -56,6 +56,8 @@ public class GuiContainerStation extends GenericGuiTEContainer {
 				break;
 			case 1:
 				this.teStation.clientRequestSenderChange();
+				this.initGui();
+				break;
 		}
 	}
 
