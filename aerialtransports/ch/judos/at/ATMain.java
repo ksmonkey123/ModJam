@@ -49,8 +49,14 @@ public class ATMain {
 	@Mod.Instance(ATMain.MOD_ID)
 	public static ATMain				instance;
 
+	/**
+	 * proxy of the mod
+	 */
 	@SidedProxy(clientSide = ATMain.Client, serverSide = ATMain.Common)
 	public static CommonProxy			proxy;
+	/**
+	 * used for logging
+	 */
 	public static Logger				logger;
 
 	public static final String			MOD_ID	= "aerialtransports";
