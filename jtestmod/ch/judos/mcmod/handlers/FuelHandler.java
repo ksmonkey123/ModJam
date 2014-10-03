@@ -6,16 +6,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.IFuelHandler;
 
-@SuppressWarnings("javadoc")
 public class FuelHandler implements IFuelHandler {
-	
-	private HashMap<Item, Integer> map;
+
+	private HashMap<Item, Integer>	map;
 
 	public FuelHandler() {
-		this.map = new HashMap<Item,Integer>();
+		this.map = new HashMap<Item, Integer>();
 	}
-	
-	public void addFuel(Item i,int lastForXTicks) {
+
+	public void addFuel(Item i, int lastForXTicks) {
 		this.map.put(i, Integer.valueOf(lastForXTicks));
 	}
 

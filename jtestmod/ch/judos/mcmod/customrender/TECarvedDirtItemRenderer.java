@@ -10,7 +10,6 @@ import org.lwjgl.opengl.GL11;
 
 import ch.judos.mcmod.MCMod;
 
-@SuppressWarnings("javadoc")
 public class TECarvedDirtItemRenderer implements IItemRenderer {
 
 	@Override

@@ -9,13 +9,12 @@ import net.minecraft.world.gen.feature.WorldGenMinable;
 import ch.judos.mcmod.MCMod;
 import cpw.mods.fml.common.IWorldGenerator;
 
-@SuppressWarnings("javadoc")
 public class WorldGenerator implements IWorldGenerator {
 
 	/**
 	 * block size per chunk
 	 */
-	public static final int BLOCKS_CHUNK = 16;
+	public static final int	BLOCKS_CHUNK	= 16;
 
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world,

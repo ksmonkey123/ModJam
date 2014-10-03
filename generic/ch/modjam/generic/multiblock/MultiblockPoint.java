@@ -3,7 +3,6 @@ package ch.modjam.generic.multiblock;
 /**
  * @author Andreas Waelchli (andreas.waelchli@me.com)
  */
-@SuppressWarnings("javadoc")
 public class MultiblockPoint {
 
 	// XXX: I assume these are relative coordinates to the multiblock origin point?

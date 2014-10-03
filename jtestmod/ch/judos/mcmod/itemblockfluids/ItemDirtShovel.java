@@ -15,7 +15,6 @@ import ch.judos.mcmod.lib.Names;
 import ch.judos.mcmod.lib.References;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 
-@SuppressWarnings("javadoc")
 public class ItemDirtShovel extends Item {
 
 	public static HashMap<Block, Block>	transforms;

@@ -12,7 +12,6 @@ import net.minecraft.potion.Potion;
  * @author judos
  * 
  */
-@SuppressWarnings("javadoc")
 public abstract class AbstractPotion extends Potion {
 
 	public AbstractPotion(boolean isBadEffect, int liquidColor) {

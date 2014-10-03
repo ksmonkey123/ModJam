@@ -9,7 +9,6 @@ import ch.judos.mcmod.gas.GasCO2TileEntity;
 import ch.judos.mcmod.gas.GasRenderer;
 import cpw.mods.fml.client.registry.ClientRegistry;
 
-@SuppressWarnings("javadoc")
 public class ClientProxy extends CommonProxy {
 
 	public static TECarvedDirtRenderer	teCarvedDirtRenderer	= new TECarvedDirtRenderer();

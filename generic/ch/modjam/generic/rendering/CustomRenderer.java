@@ -17,7 +17,6 @@ import ch.modjam.generic.blocks.EFace;
  * 
  * @author judos
  */
-@SuppressWarnings("javadoc")
 public class CustomRenderer {
 
 	private String				tex;

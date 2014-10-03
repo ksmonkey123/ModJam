@@ -1,13 +1,12 @@
 package ch.judos.mcmod.itemblockfluids;
 
-import ch.judos.mcmod.MCMod;
-import ch.judos.mcmod.lib.Names;
-import ch.judos.mcmod.lib.References;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemBucket;
+import ch.judos.mcmod.MCMod;
+import ch.judos.mcmod.lib.Names;
+import ch.judos.mcmod.lib.References;
 
-@SuppressWarnings("javadoc")
 public class ItemTarBucket extends ItemBucket {
 
 	public ItemTarBucket(Block tarBlock) {

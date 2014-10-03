@@ -2,6 +2,7 @@ package ch.modjam.generic.multiblock;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
@@ -16,9 +17,7 @@ import ch.modjam.generic.helper.ArrayHelper;
  */
 public class Multiblock {
 
-	// XXX: a hashset could be used instead since no particular order is required and it is more
-	// efficient
-	private ArrayList<Block>					usedBlocks;
+	private HashSet<Block>						usedBlocks;
 
 	/**
 	 * if the array contains multiple blocks then it's possible to choose between one of them
@@ -28,10 +27,9 @@ public class Multiblock {
 	/**
 	 * initializes an empty MultiBlock
 	 * 
-	 * @param tileEntity the MultiBlock's core TileEntity Class
 	 */
 	public Multiblock() {
-		this.usedBlocks = new ArrayList<Block>();
+		this.usedBlocks = new HashSet<Block>();
 		this.blockMap = new HashMap<MultiblockPoint, Block[]>();
 	}
 

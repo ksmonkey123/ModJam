@@ -21,7 +21,6 @@ import ch.modjam.generic.blocks.EFace;
 import ch.modjam.generic.rendering.CustomRenderer;
 import ch.modjam.generic.rendering.customRenderer.Geometry2;
 
-@SuppressWarnings("javadoc")
 public class TECarvedDirtRenderer extends TileEntitySpecialRenderer {
 
 	private static CustomRenderer	renderer;

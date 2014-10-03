@@ -12,7 +12,6 @@ import ch.judos.at.station.TEStation;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
-@SuppressWarnings("javadoc")
 public class ClientProxy extends CommonProxy {
 
 	@Override

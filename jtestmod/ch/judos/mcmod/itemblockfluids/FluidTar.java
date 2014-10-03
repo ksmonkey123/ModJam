@@ -3,7 +3,6 @@ package ch.judos.mcmod.itemblockfluids;
 import net.minecraftforge.fluids.Fluid;
 import ch.judos.mcmod.lib.Names;
 
-@SuppressWarnings("javadoc")
 public class FluidTar extends Fluid {
 
 	public FluidTar() {

@@ -17,7 +17,6 @@ import ch.modjam.generic.rendering.customRenderer.RenderType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@SuppressWarnings("javadoc")
 public class BlockCarvedDirt extends BlockContainer {
 
 	public BlockCarvedDirt() {
