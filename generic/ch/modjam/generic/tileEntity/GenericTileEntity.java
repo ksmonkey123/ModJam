@@ -1,5 +1,7 @@
 package ch.modjam.generic.tileEntity;
 
+import java.util.ArrayList;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -16,6 +18,16 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author Andreas Waelchli (andreas.waelchli@me.com)
  */
 public abstract class GenericTileEntity extends TileEntity {
+
+	protected ArrayList<TileEntityChangeListener>	listeners	= new ArrayList<TileEntityChangeListener>();
+
+	public void addListener(TileEntityChangeListener l) {
+		this.listeners.add(l);
+	}
+
+	public void removeListener(TileEntityChangeListener l) {
+		this.listeners.remove(l);
+	}
 
 	public boolean isOnTheSameBlockPosition(TileEntity t) {
 		return this.xCoord == t.xCoord && this.yCoord == t.yCoord && this.zCoord == t.zCoord;
@@ -111,7 +123,8 @@ public abstract class GenericTileEntity extends TileEntity {
 	 * @param data additional command data
 	 */
 	public void onNetworkCommand(String command, byte[] data) {
-		// default: empty
+		for (TileEntityChangeListener l : this.listeners)
+			l.onNetworkCommand(command, data);
 	}
 
 }
