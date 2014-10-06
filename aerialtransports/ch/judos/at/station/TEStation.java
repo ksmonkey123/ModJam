@@ -388,4 +388,12 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		this.showBlockingBlocksTimer = 100000 * 20;
 	}
 
+	public void detectNeighborBlocks() {
+		BlockCoordinates c = new BlockCoordinates(this);
+		for (BlockCoordinates d : c.neighbors()) {
+			// if (this.worldObj.getTileEntity(d.x, d.y, d.z) instanceof TEStationGearbox)
+
+		}
+	}
+
 }

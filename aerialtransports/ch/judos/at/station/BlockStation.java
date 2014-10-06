@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import ch.judos.at.ATMain;
 import ch.judos.at.lib.ATNames;
@@ -32,6 +33,12 @@ public class BlockStation extends BlockContainer {
 		float b = 0.1f;
 		this.setBlockBounds(b, 0, b, 1 - b, 1, 1 - b);
 		// this.setLightOpacity(0);
+	}
+
+	@Override
+	public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY,
+			int tileZ) {
+		System.out.println("changed: " + tileX + "," + tileY + "," + tileZ);
 	}
 
 	@Override
