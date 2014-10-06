@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.UUID;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
@@ -18,6 +19,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
+import net.minecraft.world.World;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -33,6 +35,7 @@ import ch.modjam.generic.blocks.BlockCoordinates;
 import ch.modjam.generic.blocks.Vec3C;
 import ch.modjam.generic.gui.IHasGui;
 import ch.modjam.generic.helper.ItemUtils;
+import ch.modjam.generic.helper.LazyCache;
 import ch.modjam.generic.helper.NBTUtils;
 import ch.modjam.generic.inventory.GenericInventory;
 import ch.modjam.generic.inventory.GenericTileEntityWithInventory;
@@ -42,42 +45,57 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	/**
 	 * int array with x,y,z
 	 */
-	public static final String			nbtConnectedToCoords		= "connectedToCoords";
-	public static final String			nbtBuildConnectPlayerName	= "buildConnectPlayerName";
-	public static final String			nbtIsSender					= "isSender";
-	public static final String			nbtGondolaArr				= "gondolaIdArr";
-	public static final String			nbtCollisionBlocks			= "collisionBlocks";
-	public static final String			nbtGearBoxCoords			= "gearbox";
+	public static final String								nbtConnectedToCoords		= "connectedToCoords";
+	public static final String								nbtBuildConnectPlayerUUID	= "buildConnectPlayerUUID";
+	public static final String								nbtIsSender					= "isSender";
+	public static final String								nbtGondolaArr				= "gondolaIdArr";
+	public static final String								nbtCollisionBlocks			= "collisionBlocks";
+	public static final String								nbtGearBoxCoords			= "gearbox";
 
-	public static final String			netClientReqBindRope		= "requestBindRope";
-	private static final String			netClientReqChangeSender	= "requestSenderChange";
+	public static final String								netClientReqBindRope		= "requestBindRope";
+	private static final String								netClientReqChangeSender	= "requestSenderChange";
 
 	/**
 	 * player currently wearing a rope to connect this station with another station
 	 */
-	public EntityPlayer					buildConnectTo;
-
-	protected String					buildConnectToName;
+	public LazyCache<UUID, EntityPlayer>					buildConnectTo;
 
 	/**
 	 * block coordinates of receiver/sender station<br>
 	 * is null if not connected
 	 */
-	private int[]						connectedToCoords;
-	private boolean						isSender;
-	private int							counter;
-	public HashSet<Integer>				gondolaIdsSent;
-	private ArrayList<BlockCoordinates>	collisionBlocks;
-	public Set<BlockCoordinates>		blockingBlocks;
-	public int							showBlockingBlocksTimer;
-	private TEStationGearbox			gearbox;
+	private int[]											connectedToCoords;
+	private boolean											isSender;
+	private int												counter;
+	public HashSet<Integer>									gondolaIdsSent;
+	private ArrayList<BlockCoordinates>						collisionBlocks;
+	public Set<BlockCoordinates>							blockingBlocks;
+	public int												showBlockingBlocksTimer;
+	private LazyCache<BlockCoordinates, TEStationGearbox>	gearbox;
 
 	// coordinates
 
 	public TEStation() {
 		super(new GenericInventory(2, ATNames.station));
 		this.inventory.addWhiteListFilter(0, ATMain.gondola);
-		this.buildConnectTo = null;
+		this.buildConnectTo = new LazyCache<UUID, EntityPlayer>() {
+			@Override
+			protected EntityPlayer loadValue(World w, UUID key) {
+				return w.getPlayerEntityByUUID(key);
+			}
+		};
+		this.gearbox = new LazyCache<BlockCoordinates, TEStationGearbox>() {
+			@Override
+			protected TEStationGearbox loadValue(World w, BlockCoordinates key) {
+				try {
+					return (TEStationGearbox) key.getTileEntity(w);
+				} catch (ClassCastException e) {
+					System.out.println("could not cast object: " + key);
+					this.setKey(null);
+					return null;
+				}
+			}
+		};
 		this.connectedToCoords = null;
 		this.counter = 0;
 		this.gondolaIdsSent = new HashSet<Integer>();
@@ -95,14 +113,6 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 
 	@Override
 	public void tick() {
-
-		// ATMain.logger.error("station gearbox: " + this.gearbox);
-
-		if (this.buildConnectToName != null) {
-			this.buildConnectTo = this.worldObj.getPlayerEntityByName(this.buildConnectToName);
-			if (this.buildConnectTo != null)
-				this.buildConnectToName = null;
-		}
 
 		if (this.worldObj.isRemote)
 			return;
@@ -142,13 +152,16 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		ItemStack gondolas = this.inventory.getStackInSlot(0);
 		ItemStack goods = this.inventory.getStackInSlot(1);
 
-		if (this.gearbox != null) {
-			if (this.gearbox.sendMode == SendMode.OnRedstone && !this.gearbox.isPowered)
+		if (this.gearbox.getValue(this.worldObj) != null) {
+			if (this.gearbox.getValue(this.worldObj).sendMode == SendMode.OnRedstone && !this.gearbox
+				.getValue(this.worldObj).isPowered)
 				return false;
-			this.gearbox.isPowered = false;
+			this.gearbox.getValue(this.worldObj).isPowered = false;
 
-			if (this.gearbox.sendMode == SendMode.GondolaFilled && (goods == null || goods.stackSize < ATConfig.WOODEN_GONDOLA_CAPACITY))
+			if (this.gearbox.getValue(this.worldObj).sendMode == SendMode.GondolaFilled && (goods == null || goods.stackSize < ATConfig.WOODEN_GONDOLA_CAPACITY))
 				return false;
+		} else {
+			System.out.println("Gearbox value is null, key: " + this.gearbox.getKey());
 		}
 
 		if (gondolas != null && gondolas.stackSize > 0 && goods != null && goods.stackSize > 0) {
@@ -174,10 +187,8 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		this.inventory.writeNBT(tag);
 		if (this.connectedToCoords != null)
 			tag.setIntArray(nbtConnectedToCoords, this.connectedToCoords);
-		if (this.buildConnectTo != null)
-			tag.setString(nbtBuildConnectPlayerName, this.buildConnectTo.getCommandSenderName());
-		else if (this.buildConnectToName != null)
-			tag.setString(nbtBuildConnectPlayerName, this.buildConnectToName);
+		if (this.buildConnectTo.getKey() != null)
+			tag.setString(nbtBuildConnectPlayerUUID, this.buildConnectTo.getKey().toString());
 
 		tag.setBoolean(nbtIsSender, this.isSender);
 
@@ -187,8 +198,8 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		if (this.collisionBlocks != null)
 			NBTUtils.writeListToNBT(tag, this.collisionBlocks, nbtCollisionBlocks);
 
-		if (this.gearbox != null)
-			new BlockCoordinates(this.gearbox).writeNBT(tag, nbtGearBoxCoords);
+		if (this.gearbox.getKey() != null)
+			this.gearbox.getKey().writeNBT(tag, nbtGearBoxCoords);
 	}
 
 	@Override
@@ -198,14 +209,8 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 			this.connectedToCoords = tag.getIntArray(nbtConnectedToCoords);
 		else
 			this.connectedToCoords = null;
-		if (tag.hasKey(nbtBuildConnectPlayerName) && this.worldObj != null) {
-			String name = tag.getString(nbtBuildConnectPlayerName);
-			this.buildConnectTo = this.worldObj.getPlayerEntityByName(name);
-		} else if (tag.hasKey(nbtBuildConnectPlayerName)) {
-			this.buildConnectToName = tag.getString(nbtBuildConnectPlayerName);
-		} else {
-			this.buildConnectTo = null;
-		}
+		if (tag.hasKey(nbtBuildConnectPlayerUUID))
+			this.buildConnectTo.setKey(UUID.fromString(tag.getString(nbtBuildConnectPlayerUUID)));
 
 		if (tag.hasKey(nbtIsSender))
 			this.isSender = tag.getBoolean(nbtIsSender);
@@ -219,13 +224,8 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		else
 			this.collisionBlocks = new ArrayList<BlockCoordinates>();
 
-		if (this.worldObj == null) {
-			ATMain.logger.error("TileEntityUpdate without world object!");
-		}
-
-		if (tag.hasKey(nbtGearBoxCoords) && this.worldObj != null)
-			this.gearbox = (TEStationGearbox) new BlockCoordinates().readNBT(tag, nbtGearBoxCoords)
-				.getTileEntity(this.worldObj);
+		if (tag.hasKey(nbtGearBoxCoords))
+			this.gearbox.setKey(new BlockCoordinates().readNBT(tag, nbtGearBoxCoords));
 
 	}
 
@@ -253,13 +253,17 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	}
 
 	public void bindRopeConnection(EntityPlayer player) {
+		if (player == null) {
+			ATMain.logger.error("bindRopeConnection can't bind for player null.");
+			return;
+		}
 		int currentSlotHeld = player.inventory.currentItem;
 		ItemStack rope = new ItemStack(ATMain.ropeOfStation);
 		ATMain.ropeOfStation.onCreated(rope, this);
 		player.inventory.setInventorySlotContents(currentSlotHeld, rope);
 
 		this.disconnectStation();
-		this.buildConnectTo = player;
+		this.buildConnectTo.setKey(player.getUniqueID());
 		this.forceServerPush();
 
 		// if (this.worldObj.isRemote)
@@ -283,7 +287,7 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 
 	public void disconnectStation() {
 		disconnectOtherStation();
-		this.buildConnectTo = null;
+		this.buildConnectTo.setKey(null);
 		this.connectedToCoords = null;
 		if (this.collisionBlocks != null)
 			for (BlockCoordinates b : this.collisionBlocks)
@@ -321,7 +325,7 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		otherStation.blockingBlocks = null;
 		otherStation.showBlockingBlocksTimer = 0;
 
-		otherStation.buildConnectTo = null;
+		otherStation.buildConnectTo.setKey(null);
 		otherStation.connectedToCoords = stationCoords;
 		otherStation.isSender = false;
 		otherStation.forceServerPush();
@@ -335,8 +339,8 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	}
 
 	public Vec3 getConnectedEndCoordinatesOrSelf(float partialTickTime) {
-		if (this.buildConnectTo != null) {
-			Vec3 pos = this.buildConnectTo.getPosition(partialTickTime);
+		if (this.buildConnectTo.getValue(this.worldObj) != null) {
+			Vec3 pos = this.buildConnectTo.getValue(this.worldObj).getPosition(partialTickTime);
 			pos.yCoord -= 1;
 			return pos;
 		}
@@ -351,14 +355,14 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	 *         other station
 	 */
 	public boolean isConnectedToSomethingAndSender() {
-		return this.buildConnectTo != null || (this.connectedToCoords != null && this.isSender);
+		return this.buildConnectTo.getKey() != null || (this.connectedToCoords != null && this.isSender);
 	}
 
 	/**
 	 * @return true if it is connected to player or if it connected to some other station
 	 */
 	public boolean isConnectedToSomething() {
-		return this.buildConnectTo != null || this.connectedToCoords != null;
+		return this.buildConnectTo.getKey() != null || this.connectedToCoords != null;
 	}
 
 	@Override
@@ -372,14 +376,14 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	}
 
 	public void clientRequestBindRopeConnection(EntityPlayer player) {
-		this.sendNetworkCommand(netClientReqBindRope, player.getCommandSenderName());
+		this.sendNetworkCommand(netClientReqBindRope, player.getUniqueID());
 	}
 
 	@Override
 	public void onNetworkCommand(String command, Object data) {
 		if (netClientReqBindRope.equals(command)) {
-			String playerName = (String) data;
-			EntityPlayer player = this.worldObj.getPlayerEntityByName(playerName);
+			UUID playerId = (UUID) data;
+			EntityPlayer player = this.worldObj.getPlayerEntityByUUID(playerId);
 			this.bindRopeConnection(player);
 		}
 		if (netClientReqChangeSender.equals(command)) {
@@ -420,11 +424,12 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	}
 
 	public void detectNeighborBlocks() {
+		System.out.println("detecting neighbor blocks...");
 		BlockCoordinates c = new BlockCoordinates(this);
 		for (BlockCoordinates d : c.neighbors()) {
-			if (this.worldObj.getTileEntity(d.x, d.y, d.z) instanceof TEStationGearbox) {
-				this.gearbox = (TEStationGearbox) this.worldObj.getTileEntity(d.x, d.y, d.z);
-				System.out.println("Gearbox found!");
+			if (d.getTileEntity(this.worldObj) instanceof TEStationGearbox) {
+				this.gearbox.setKey(d.copy());
+				System.out.println("found gearbox: " + d);
 			}
 		}
 	}
