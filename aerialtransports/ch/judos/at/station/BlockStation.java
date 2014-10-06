@@ -38,7 +38,11 @@ public class BlockStation extends BlockContainer {
 	@Override
 	public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY,
 			int tileZ) {
-		System.out.println("changed: " + tileX + "," + tileY + "," + tileZ);
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
+		if (tileEntity instanceof TEStation) {
+			TEStation station = (TEStation) tileEntity;
+			station.detectNeighborBlocks();
+		}
 	}
 
 	@Override
@@ -134,6 +138,21 @@ public class BlockStation extends BlockContainer {
 	@Override
 	public boolean isOpaqueCube() {
 		return false;
+	}
+
+	@Override
+	public void onBlockAdded(World world, int x, int y, int z) {
+		TEStation t = (TEStation) world.getTileEntity(x, y, z);
+		if (t != null)
+			t.detectNeighborBlocks();
+		else
+			ATMain.logger.error("station was added but no tileEntity was found");
+	}
+
+	@Override
+	public int onBlockPlaced(World world, int x, int y, int z, int side, float subX, float subY,
+			float subZ, int meta) {
+		return super.onBlockPlaced(world, x, y, z, side, subX, subY, subZ, meta);
 	}
 
 	@Override

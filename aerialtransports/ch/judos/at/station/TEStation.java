@@ -21,7 +21,10 @@ import net.minecraft.util.Vec3;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import ch.judos.at.ATConfig;
 import ch.judos.at.ATMain;
+import ch.judos.at.gearbox.TEStationGearbox;
+import ch.judos.at.gearbox.TEStationGearbox.SendMode;
 import ch.judos.at.gondola.EntityGondola;
 import ch.judos.at.lib.ATNames;
 import ch.judos.at.station.gui.ContainerStation;
@@ -44,6 +47,7 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	public static final String			nbtIsSender					= "isSender";
 	public static final String			nbtGondolaArr				= "gondolaIdArr";
 	public static final String			nbtCollisionBlocks			= "collisionBlocks";
+	public static final String			nbtGearBoxCoords			= "gearbox";
 
 	public static final String			netClientReqBindRope		= "requestBindRope";
 	private static final String			netClientReqChangeSender	= "requestSenderChange";
@@ -66,6 +70,7 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	private ArrayList<BlockCoordinates>	collisionBlocks;
 	public Set<BlockCoordinates>		blockingBlocks;
 	public int							showBlockingBlocksTimer;
+	private TEStationGearbox			gearbox;
 
 	// coordinates
 
@@ -76,6 +81,7 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		this.connectedToCoords = null;
 		this.counter = 0;
 		this.gondolaIdsSent = new HashSet<Integer>();
+
 	}
 
 	private void cleanSentGondolaIdSet() {
@@ -89,6 +95,9 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 
 	@Override
 	public void tick() {
+
+		// ATMain.logger.error("station gearbox: " + this.gearbox);
+
 		if (this.buildConnectToName != null) {
 			this.buildConnectTo = this.worldObj.getPlayerEntityByName(this.buildConnectToName);
 			if (this.buildConnectTo != null)
@@ -104,7 +113,7 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 		if (this.counter % 10000 == 0)
 			cleanSentGondolaIdSet();
 
-		if (this.counter % 100 == 0) {
+		if (this.counter % 40 == 0) {
 			if (canGondolaBeSent())
 				sendGondola();
 		}
@@ -113,8 +122,9 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	private void sendGondola() {
 		TEStation target = this.getTarget();
 
-		// capacity of gondola: 5 items
-		ItemStack transportGoods = this.inventory.decrStackSize(1, 5);
+		// capacity of gondola:
+		ItemStack transportGoods = this.inventory
+			.decrStackSize(1, ATConfig.WOODEN_GONDOLA_CAPACITY);
 		// remove one gondola:
 		this.inventory.decrStackSize(0, 1);
 
@@ -131,6 +141,15 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	private boolean canGondolaBeSent() {
 		ItemStack gondolas = this.inventory.getStackInSlot(0);
 		ItemStack goods = this.inventory.getStackInSlot(1);
+
+		if (this.gearbox != null) {
+			if (this.gearbox.sendMode == SendMode.OnRedstone && !this.gearbox.isPowered)
+				return false;
+			this.gearbox.isPowered = false;
+
+			if (this.gearbox.sendMode == SendMode.GondolaFilled && (goods == null || goods.stackSize < ATConfig.WOODEN_GONDOLA_CAPACITY))
+				return false;
+		}
 
 		if (gondolas != null && gondolas.stackSize > 0 && goods != null && goods.stackSize > 0) {
 			TEStation target = this.getTarget();
@@ -167,6 +186,9 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 
 		if (this.collisionBlocks != null)
 			NBTUtils.writeListToNBT(tag, this.collisionBlocks, nbtCollisionBlocks);
+
+		if (this.gearbox != null)
+			new BlockCoordinates(this.gearbox).writeNBT(tag, nbtGearBoxCoords);
 	}
 
 	@Override
@@ -196,6 +218,15 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 				BlockCoordinates.class);
 		else
 			this.collisionBlocks = new ArrayList<BlockCoordinates>();
+
+		if (this.worldObj == null) {
+			ATMain.logger.error("TileEntityUpdate without world object!");
+		}
+
+		if (tag.hasKey(nbtGearBoxCoords) && this.worldObj != null)
+			this.gearbox = (TEStationGearbox) new BlockCoordinates().readNBT(tag, nbtGearBoxCoords)
+				.getTileEntity(this.worldObj);
+
 	}
 
 	public static String getTextureName() {
@@ -385,14 +416,16 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	 */
 	public void setBlockingBlocks(Set<BlockCoordinates> intermediate) {
 		this.blockingBlocks = intermediate;
-		this.showBlockingBlocksTimer = 100000 * 20;
+		this.showBlockingBlocksTimer = 10 * 20;
 	}
 
 	public void detectNeighborBlocks() {
 		BlockCoordinates c = new BlockCoordinates(this);
 		for (BlockCoordinates d : c.neighbors()) {
-			// if (this.worldObj.getTileEntity(d.x, d.y, d.z) instanceof TEStationGearbox)
-
+			if (this.worldObj.getTileEntity(d.x, d.y, d.z) instanceof TEStationGearbox) {
+				this.gearbox = (TEStationGearbox) this.worldObj.getTileEntity(d.x, d.y, d.z);
+				System.out.println("Gearbox found!");
+			}
 		}
 	}
 

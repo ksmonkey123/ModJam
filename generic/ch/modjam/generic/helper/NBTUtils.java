@@ -20,31 +20,27 @@ public class NBTUtils {
 		return ItemStack.loadItemStackFromNBT(tag);
 	}
 
-	public static <T extends NBTStorable> void writeListToNBT(NBTTagCompound tag, List<T> list,
+	public static <T extends NBTStorable<T>> void writeListToNBT(NBTTagCompound tag, List<T> list,
 			String name) {
 		NBTTagCompound dataTag = new NBTTagCompound();
 		tag.setTag(name, dataTag);
+		dataTag.setInteger("size", list.size());
 		int index = 0;
 		for (T t : list) {
-			NBTTagCompound element = new NBTTagCompound();
-			t.writeNBT(element);
-			dataTag.setTag("" + index, element);
+			t.writeNBT(dataTag, "" + index);
 			index++;
 		}
 	}
 
-	public static <T extends NBTStorable> ArrayList<T> readListFromNBT(NBTTagCompound tag,
+	public static <T extends NBTStorable<T>> ArrayList<T> readListFromNBT(NBTTagCompound tag,
 			String name, Class<T> cl) {
 		ArrayList<T> result = new ArrayList<T>();
 		NBTTagCompound dataTag = (NBTTagCompound) tag.getTag(name);
-		int index = 0;
-		while (true) {
-			NBTTagCompound element = (NBTTagCompound) dataTag.getTag("" + index);
-			if (element == null)
-				break;
+		int size = dataTag.getInteger("size");
+		for (int index = 0; index < size; index++) {
 			try {
 				T t = cl.newInstance();
-				t.readNBT(element);
+				t.readNBT(dataTag, "" + index);
 				result.add(t);
 			} catch (Exception e) {
 				e.printStackTrace();

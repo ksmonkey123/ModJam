@@ -40,6 +40,12 @@ public class TEStationGearbox extends GenericTileEntity implements IHasGui {
 
 	public boolean				receiveEmitsRedstone;
 
+	/**
+	 * set to true on a signal (in block class), nearby station will set it to false in update
+	 * tick() when a gondola can be sent
+	 */
+	public boolean				isPowered;
+
 	public TEStationGearbox() {
 		this.sendMode = SendMode.Periodically;
 		this.receiveEmitsRedstone = false;

@@ -2,9 +2,19 @@ package ch.modjam.generic.helper;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-public interface NBTStorable {
+/**
+ * @author j
+ *
+ * @param <T> the own class, used for returning the own object in the readNBT() method
+ */
+public interface NBTStorable<T> {
 
-	public void readNBT(NBTTagCompound tag);
+	/**
+	 * @param tag
+	 * @param name
+	 * @return the original object for ease in use
+	 */
+	public T readNBT(NBTTagCompound tag, String name);
 
-	public void writeNBT(NBTTagCompound tag);
+	public void writeNBT(NBTTagCompound tag, String name);
 }

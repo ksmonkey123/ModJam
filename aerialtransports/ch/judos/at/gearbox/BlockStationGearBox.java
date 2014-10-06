@@ -1,5 +1,6 @@
 package ch.judos.at.gearbox;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -33,31 +34,21 @@ public class BlockStationGearBox extends BlockContainer {
 	}
 
 	@Override
-	public boolean getWeakChanges(IBlockAccess world, int x, int y, int z) {
-		System.out.println("weak change: " + x + "," + y + "," + z);
-		return super.getWeakChanges(world, x, y, z);
-	}
-
-	@Override
-	public int isProvidingStrongPower(IBlockAccess worldIn, int x, int y, int z, int side) {
-		System.out
-			.println("checking for strong power: " + x + "," + y + "," + z + ", side:" + side);
-		return super.isProvidingStrongPower(worldIn, x, y, z, side);
-	}
-
-	@Override
-	public int isProvidingWeakPower(IBlockAccess worldIn, int x, int y, int z, int side) {
-		System.out.println("checking for weak power: " + x + "," + y + "," + z + ", side:" + side);
-		return super.isProvidingWeakPower(worldIn, x, y, z, side);
-	}
-
-	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player,
 			int side, float hitX, float hitY, float hitZ) {
 		TileEntity tileEntity = world.getTileEntity(x, y, z);
 		if (tileEntity instanceof TEStationGearbox)
 			return GenericGuiHandler.openGUI(player, world, x, y, z);
 		return false;
+	}
+
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
+		if (world.getBlockPowerInput(x, y, z) > 0) {
+			TEStationGearbox te = (TEStationGearbox) world.getTileEntity(x, y, z);
+			te.isPowered = true;
+		}
+		super.onNeighborBlockChange(world, x, y, z, neighbor);
 	}
 
 	@Override

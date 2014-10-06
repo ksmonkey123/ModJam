@@ -6,9 +6,10 @@ import java.util.List;
 import net.minecraft.client.renderer.DestroyBlockProgress;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import ch.modjam.generic.helper.NBTStorable;
 
-public class BlockCoordinates implements NBTStorable {
+public class BlockCoordinates implements NBTStorable<BlockCoordinates> {
 	public int	x;
 	public int	y;
 	public int	z;
@@ -88,16 +89,20 @@ public class BlockCoordinates implements NBTStorable {
 	}
 
 	@Override
-	public void readNBT(NBTTagCompound tag) {
-		this.x = tag.getInteger("x");
-		this.y = tag.getInteger("y");
-		this.z = tag.getInteger("z");
+	public BlockCoordinates readNBT(NBTTagCompound tag, String subName) {
+		int[] arr = tag.getIntArray(subName);
+		this.x = arr[0];
+		this.y = arr[1];
+		this.z = arr[2];
+		return this;
 	}
 
 	@Override
-	public void writeNBT(NBTTagCompound tag) {
-		tag.setInteger("x", this.x);
-		tag.setInteger("y", this.y);
-		tag.setInteger("z", this.z);
+	public void writeNBT(NBTTagCompound tag, String subName) {
+		tag.setIntArray(subName, new int[] { this.x, this.y, this.z });
+	}
+
+	public TileEntity getTileEntity(World worldObj) {
+		return worldObj.getTileEntity(this.x, this.y, this.z);
 	}
 }
