@@ -9,8 +9,8 @@ import net.minecraft.util.StatCollector;
 import org.lwjgl.opengl.GL11;
 
 import ch.judos.at.ATMain;
+import ch.judos.at.gearbox.SendMode;
 import ch.judos.at.gearbox.TEStationGearbox;
-import ch.judos.at.gearbox.TEStationGearbox.SendMode;
 import ch.judos.at.lib.ATNames;
 import ch.modjam.generic.gui.GenericGuiTEContainer;
 import ch.modjam.generic.tileEntity.TileEntityChangeListener;
@@ -34,13 +34,13 @@ public class GuiContainerGearbox extends GenericGuiTEContainer implements TileEn
 	protected void actionPerformed(GuiButton button) {
 		switch (button.id) {
 			case 0:
-				this.teGearBox.requestSetSendMode(TEStationGearbox.SendMode.Periodically);
+				this.teGearBox.requestSetSendMode(SendMode.Periodically);
 				break;
 			case 1:
-				this.teGearBox.requestSetSendMode(TEStationGearbox.SendMode.GondolaFilled);
+				this.teGearBox.requestSetSendMode(SendMode.GondolaFilled);
 				break;
 			case 2:
-				this.teGearBox.requestSetSendMode(TEStationGearbox.SendMode.OnRedstone);
+				this.teGearBox.requestSetSendMode(SendMode.OnRedstone);
 				break;
 			case 3:
 				this.teGearBox.requestSetReceiveRedstoneSignal(this.emitRedstone.isChecked());

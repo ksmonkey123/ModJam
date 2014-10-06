@@ -23,8 +23,8 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import ch.judos.at.ATConfig;
 import ch.judos.at.ATMain;
+import ch.judos.at.gearbox.SendMode;
 import ch.judos.at.gearbox.TEStationGearbox;
-import ch.judos.at.gearbox.TEStationGearbox.SendMode;
 import ch.judos.at.gondola.EntityGondola;
 import ch.judos.at.lib.ATNames;
 import ch.judos.at.station.gui.ContainerStation;

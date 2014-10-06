@@ -21,7 +21,12 @@ import cpw.mods.fml.relauncher.SideOnly;
  */
 public abstract class GenericTileEntity extends TileEntity {
 
-	protected ArrayList<TileEntityChangeListener>	listeners	= new ArrayList<TileEntityChangeListener>();
+	protected ArrayList<TileEntityChangeListener>	listeners;
+
+	protected GenericTileEntity() {
+		super();
+		this.listeners = new ArrayList<TileEntityChangeListener>();
+	}
 
 	public void addListener(TileEntityChangeListener l) {
 		this.listeners.add(l);
@@ -42,15 +47,15 @@ public abstract class GenericTileEntity extends TileEntity {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound p_145841_1_) {
-		super.writeToNBT(p_145841_1_);
-		this.writeNBT(p_145841_1_);
+	public void writeToNBT(NBTTagCompound nbtData) {
+		super.writeToNBT(nbtData);
+		this.writeNBT(nbtData);
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound p_145839_1_) {
-		super.readFromNBT(p_145839_1_);
-		this.readNBT(p_145839_1_);
+	public void readFromNBT(NBTTagCompound nbtData) {
+		super.readFromNBT(nbtData);
+		this.readNBT(nbtData);
 	}
 
 	@Override
