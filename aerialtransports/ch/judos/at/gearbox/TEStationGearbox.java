@@ -28,7 +28,9 @@ public class TEStationGearbox extends GenericTileEntity implements IHasGui {
 		}
 	}
 
-	public static final String	nbtSendMode	= "sendMode";
+	public static final String	nbtSendMode			= "sendMode";
+
+	private static final String	netCmdSetSendMode	= "setSendMode";
 
 	public SendMode				sendMode;
 
@@ -65,6 +67,17 @@ public class TEStationGearbox extends GenericTileEntity implements IHasGui {
 	@Override
 	public Container getGuiServer(InventoryPlayer inventory) {
 		return new ContainerGearbox(inventory, this);
+	}
+
+	public void requestSetSendMode(SendMode sendMode) {
+		// Integer.sendMode.id
+		// this.sendNetworkCommand(netCmdSetSendMode, data);
+		// TODO: implement
+	}
+
+	public void requestSetReceiveRedstoneSignal(boolean checked) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

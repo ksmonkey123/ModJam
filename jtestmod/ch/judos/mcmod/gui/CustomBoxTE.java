@@ -35,7 +35,7 @@ public class CustomBoxTE extends BoxTE {
 	 */
 	public void tryIncreaseSize() {
 		if (this.inventory.stack.length < 5)
-			this.sendNetworkCommand(netcmdSlotSizeChanged, (byte) (this.inventory.stack.length + 1));
+			this.sendNetworkCommand(netcmdSlotSizeChanged, this.inventory.stack.length + 1);
 	}
 
 	/**
@@ -43,14 +43,14 @@ public class CustomBoxTE extends BoxTE {
 	 */
 	public void tryDecreaseSize() {
 		if (this.inventory.stack.length > 1)
-			this.sendNetworkCommand(netcmdSlotSizeChanged, (byte) (this.inventory.stack.length - 1));
+			this.sendNetworkCommand(netcmdSlotSizeChanged, this.inventory.stack.length - 1);
 	}
 
 	@Override
-	public void onNetworkCommand(String command, byte[] data) {
+	public void onNetworkCommand(String command, Object data) {
 		if (!netcmdSlotSizeChanged.equals(command))
 			return;
-		int newSize = data[0];
+		int newSize = (Integer) data;
 		if (newSize < this.inventory.stack.length)
 			dropItemsOnTheFloor(this.inventory.stack[this.inventory.stack.length - 1]);
 		this.inventory.stack = Arrays.copyOf(this.inventory.stack, newSize);

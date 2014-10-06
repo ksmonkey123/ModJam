@@ -36,12 +36,13 @@ public class GuiContainerStation extends GenericGuiTEContainer implements TileEn
 		this.teStation.removeListener(this);
 	}
 
-	/*
-	 * called when the station does any changes over the network
+	/**
+	 * should be called when the server receives an update command for this tileEntity.<br>
+	 * XXX: actually it's not called, fix this
 	 */
 	@Override
-	public void onNetworkCommand(String command, byte[] data) {
-		// this is server-side, do nothing
+	public void onNetworkCommand(String command, Object data) {
+		// not needed
 	}
 
 	@Override
@@ -91,13 +92,6 @@ public class GuiContainerStation extends GenericGuiTEContainer implements TileEn
 		String items = StatCollector.translateToLocal("at.items");
 		this.fontRendererObj.drawString(items, 10, 48, color);
 
-		// XXX: is this needed?
-		// initGui();
-
-		// if (this.teStation.isConnectedToSomething()) {
-		// String reconnect = StatCollector.translateToLocal("at.reconnect");
-		// ((GuiButton) this.buttonList.get(0)).displayString = reconnect;
-		// }
 	}
 
 	@Override
@@ -110,9 +104,11 @@ public class GuiContainerStation extends GenericGuiTEContainer implements TileEn
 		this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
 	}
 
+	/**
+	 * called when the client receives an update of the tileEntity, needs to update gui as well
+	 */
 	@Override
 	public void onDataPacket(NBTTagCompound nbtCompound) {
-		System.out.println("listened to update");
 		this.initGui();
 	}
 

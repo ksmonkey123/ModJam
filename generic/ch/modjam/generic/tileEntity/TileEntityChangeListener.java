@@ -15,7 +15,7 @@ public interface TileEntityChangeListener {
 	 * @param command the command string identifying the command
 	 * @param data additional command data
 	 */
-	public void onNetworkCommand(String command, byte[] data);
+	public void onNetworkCommand(String command, Object data);
 
 	/**
 	 * this method is called client-side when the tileEntity is updated

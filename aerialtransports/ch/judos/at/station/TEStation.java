@@ -341,13 +341,13 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	}
 
 	public void clientRequestBindRopeConnection(EntityPlayer player) {
-		this.sendNetworkCommand(netClientReqBindRope, player.getCommandSenderName().getBytes());
+		this.sendNetworkCommand(netClientReqBindRope, player.getCommandSenderName());
 	}
 
 	@Override
-	public void onNetworkCommand(String command, byte[] data) {
+	public void onNetworkCommand(String command, Object data) {
 		if (netClientReqBindRope.equals(command)) {
-			String playerName = new String(data);
+			String playerName = (String) data;
 			EntityPlayer player = this.worldObj.getPlayerEntityByName(playerName);
 			this.bindRopeConnection(player);
 		}

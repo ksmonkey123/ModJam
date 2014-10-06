@@ -1,5 +1,6 @@
 package ch.modjam.generic.tileEntity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,6 +10,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import ch.modjam.generic.GenericMod;
 import ch.modjam.generic.networking.CommandMessage;
+import ch.modjam.generic.networking.SerializerException;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -91,11 +93,26 @@ public abstract class GenericTileEntity extends TileEntity {
 	 * @param data additional data for the command
 	 */
 	@SideOnly(Side.CLIENT)
-	public final void sendNetworkCommand(String command, byte... data) {
+	public final void sendNetworkCommand(String command, Serializable data) {
 		if (this.worldObj.isRemote) {
-			CommandMessage message = new CommandMessage(this, command, data);
-			GenericMod.NETWORK.sendToServer(message);
+			CommandMessage message;
+			try {
+				message = new CommandMessage(this, command, data);
+				GenericMod.NETWORK.sendToServer(message);
+			} catch (SerializerException e) {
+				e.printStackTrace();
+			}
 		}
+	}
+
+	/**
+	 * Sends a command to the server-side tileEntity without data. Use client-side only!
+	 * 
+	 * @param command
+	 */
+	@SideOnly(Side.CLIENT)
+	public final void sendNetworkCommand(String command) {
+		this.sendNetworkCommand(command, null);
 	}
 
 	/**
@@ -124,7 +141,7 @@ public abstract class GenericTileEntity extends TileEntity {
 	 * @param command the command string identifying the command
 	 * @param data additional command data
 	 */
-	public void onNetworkCommand(String command, byte[] data) {
+	public void onNetworkCommand(String command, Object data) {
 		for (TileEntityChangeListener l : this.listeners)
 			l.onNetworkCommand(command, data);
 	}

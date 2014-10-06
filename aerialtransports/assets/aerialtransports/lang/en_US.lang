@@ -13,3 +13,10 @@ at.reconnect=Reconnect
 at.sender=Sender
 at.receiver=Receiver
 
+at.sendmode=Send mode
+at.always=Always
+at.whenfull=When full
+at.onredstone=On redstone
+
+at.recmode=Receive actions
+at.emitredstone=Emit redstone

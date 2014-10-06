@@ -1,5 +1,6 @@
 package ch.judos.at.gearbox.gui;
 
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
@@ -10,44 +11,64 @@ import ch.judos.at.ATMain;
 import ch.judos.at.gearbox.TEStationGearbox;
 import ch.judos.at.lib.ATNames;
 import ch.modjam.generic.gui.GenericGuiTEContainer;
+import cpw.mods.fml.client.config.GuiCheckBox;
 
 public class GuiContainerGearbox extends GenericGuiTEContainer {
 
 	private TEStationGearbox	teGearBox;
+	private GuiCheckBox			emitRedstone;
 
 	public GuiContainerGearbox(InventoryPlayer inventory, TEStationGearbox te) {
 		super(new ContainerGearbox(inventory, te), te, inventory);
 		this.teGearBox = te;
+
+		this.xSize = 250;
+	}
+
+	@Override
+	protected void actionPerformed(GuiButton button) {
+		switch (button.id) {
+			case 0:
+				this.teGearBox.requestSetSendMode(TEStationGearbox.SendMode.Periodically);
+				break;
+			case 1:
+				this.teGearBox.requestSetSendMode(TEStationGearbox.SendMode.GondolaFilled);
+				break;
+			case 2:
+				this.teGearBox.requestSetSendMode(TEStationGearbox.SendMode.OnRedstone);
+				break;
+			case 3:
+				this.teGearBox.requestSetReceiveRedstoneSignal(this.emitRedstone.isChecked());
+				break;
+		}
 	}
 
 	@Override
 	public void initGui() {
 		super.initGui();
 		this.buttonList.clear();
-		//
-		//
-		// text = StatCollector.translateToLocal("at.reconnect");
-		//
-		// String t2;
-		// if (this.teStation.isSender())
-		// t2 = StatCollector.translateToLocal("at.sender");
-		// else
-		// t2 = StatCollector.translateToLocal("at.receiver");
-		// this.buttonList.add(new GuiButton(1, this.guiLeft + 100, this.guiTop + 43, 60, 20, t2));
-		//
-		// this.buttonList.add(new GuiButton(0, this.guiLeft + 100, this.guiTop + 23, 60, 20,
-		// text));
+
+		String text = StatCollector.translateToLocal("at.always");
+		this.buttonList.add(new GuiButton(0, this.guiLeft + 10, this.guiTop + 33, 60, 20, text));
+		text = StatCollector.translateToLocal("at.whenfull");
+		this.buttonList.add(new GuiButton(1, this.guiLeft + 75, this.guiTop + 33, 60, 20, text));
+		text = StatCollector.translateToLocal("at.onredstone");
+		GuiButton b = new GuiButton(2, this.guiLeft + 140, this.guiTop + 33, 80, 20, text);
+		this.buttonList.add(b);
+		b.enabled = false;
+
+		text = StatCollector.translateToLocal("at.emitredstone");
+		this.emitRedstone = new GuiCheckBox(3, this.guiLeft + 10, this.guiTop + 73, text, false);
+		this.buttonList.add(this.emitRedstone);
+
 	}
 
 	@Override
 	protected void drawGuiContainerForegroundLayer(int param1, int param2) {
-		String s = StatCollector.translateToLocal("tile." + ATNames.station_gearbox + ".name");
-		int color = 4210752;
-		this.fontRendererObj.drawString(s,
-			this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, color);
+		this.drawText("tile." + ATNames.station_gearbox + ".name", this.xSize / 2, 6, true);
 
-		// String items = StatCollector.translateToLocal("at.items");
-		// this.fontRendererObj.drawString(items, 10, 48, color);
+		this.drawText("at.sendmode", ":", 6, 20, false);
+		this.drawText("at.recmode", ":", 6, 60, false);
 	}
 
 	@Override

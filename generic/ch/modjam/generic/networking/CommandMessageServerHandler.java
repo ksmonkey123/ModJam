@@ -27,8 +27,12 @@ public class CommandMessageServerHandler implements IMessageHandler<CommandMessa
 		}
 		GenericTileEntity entity = (GenericTileEntity) te;
 		// process
-		if (message.getCommand() != "")
-			entity.onNetworkCommand(message.getCommand(), message.getData());
+		if (!"".equals(message.getCommand()))
+			try {
+				entity.onNetworkCommand(message.getCommand(), message.getObjectData());
+			} catch (SerializerException e) {
+				e.printStackTrace();
+			}
 
 		te.getWorld().markBlockForUpdate(te.xCoord, te.yCoord, te.zCoord);
 		// finish

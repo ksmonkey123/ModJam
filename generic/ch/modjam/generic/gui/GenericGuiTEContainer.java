@@ -4,6 +4,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
 
 /**
  * @author judos
@@ -36,6 +37,18 @@ public abstract class GenericGuiTEContainer extends GuiContainer {
 			this.te.zCoord);
 		if (other != this.te)
 			this.inventory.player.closeScreen();
+	}
 
+	protected void drawText(String unlocalized_text, String appendedText, int x, int y,
+			boolean centered) {
+		String text = StatCollector.translateToLocal(unlocalized_text) + appendedText;
+		int color = 4210752;
+		if (centered)
+			x -= this.fontRendererObj.getStringWidth(text) / 2;
+		this.fontRendererObj.drawString(text, x, y, color);
+	}
+
+	protected void drawText(String unlocalized_text, int x, int y, boolean centered) {
+		this.drawText(unlocalized_text, "", x, y, centered);
 	}
 }

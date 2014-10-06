@@ -1,6 +1,9 @@
 package ch.modjam.generic.networking;
 
 import io.netty.buffer.ByteBuf;
+
+import java.io.Serializable;
+
 import ch.modjam.generic.tileEntity.GenericTileEntity;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 
@@ -27,13 +30,30 @@ public class CommandMessage implements IMessage {
 	}
 
 	/**
+	 * @param tileEntity
+	 * @param command
+	 * @param data null objects are allowed and will be serialized as empty byte arrays
+	 * @throws SerializerException
+	 */
+	public CommandMessage(GenericTileEntity tileEntity, String command, Serializable data)
+			throws SerializerException {
+		this(tileEntity, command, object2data(data));
+	}
+
+	public static byte[] object2data(Object obj) throws SerializerException {
+		if (obj == null)
+			return new byte[0];
+		return Serializer.object2Bytes(obj);
+	}
+
+	/**
 	 * Basic Constructor
 	 * 
 	 * @param tileEntity
 	 * @param command
 	 * @param data
 	 */
-	public CommandMessage(GenericTileEntity tileEntity, String command, byte... data) {
+	protected CommandMessage(GenericTileEntity tileEntity, String command, byte... data) {
 		this.xCoord = tileEntity.xCoord;
 		this.yCoord = tileEntity.yCoord;
 		this.zCoord = tileEntity.zCoord;
@@ -116,6 +136,12 @@ public class CommandMessage implements IMessage {
 	 */
 	public byte[] getData() {
 		return this.data;
+	}
+
+	public Object getObjectData() throws SerializerException {
+		if (this.data.length == 0)
+			return null;
+		return Serializer.bytes2object(this.data);
 	}
 
 }
