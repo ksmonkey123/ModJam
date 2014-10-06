@@ -4,6 +4,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
+import ch.judos.at.ATConfig;
 import ch.judos.at.gearbox.gui.ContainerGearbox;
 import ch.judos.at.gearbox.gui.GuiContainerGearbox;
 import ch.modjam.generic.gui.IHasGui;
@@ -12,20 +13,23 @@ import ch.modjam.generic.tileEntity.GenericTileEntity;
 public class TEStationGearbox extends GenericTileEntity implements IHasGui {
 
 	public static final String	nbtSendMode						= "sendMode";
-
-	private static final String	netCmdSetSendMode				= "setSendMode";
-
-	private static final String	netCmdSetReceiveEmitRedstone	= "setReceiveEmitRedstone";
-
-	private static final String	nbtReceiveEmitsRedstone			= "receiveEmitsRedstone";
+	public static final String	nbtReceiveEmitsRedstone			= "receiveEmitsRedstone";
+	public static final String	netCmdSetSendMode				= "setSendMode";
+	public static final String	netCmdSetReceiveEmitRedstone	= "setReceiveEmitRedstone";
+	public static final String	nbtCurrentlyEmitingRs			= "currentlyEmitingRs";
 
 	public SendMode				sendMode;
-
 	public boolean				receiveEmitsRedstone;
 
 	/**
-	 * set to true on a signal (in block class), nearby station will set it to false in update
-	 * tick() when a gondola can be sent
+	 * set to true when the station receives a gondola, emitRedstone() schedules an update and the
+	 * block will reset the value
+	 */
+	public boolean				currentlyEmitingRedstone;
+
+	/**
+	 * whether the gearbox has been powered recently by redstone. this is set by the block and reset
+	 * by a nearby station when it sends out a gondola
 	 */
 	public boolean				isPowered;
 
@@ -62,6 +66,7 @@ public class TEStationGearbox extends GenericTileEntity implements IHasGui {
 	public void writeNBT(NBTTagCompound tag) {
 		tag.setInteger(nbtSendMode, this.sendMode.id);
 		tag.setBoolean(nbtReceiveEmitsRedstone, this.receiveEmitsRedstone);
+		tag.setBoolean(nbtCurrentlyEmitingRs, this.currentlyEmitingRedstone);
 	}
 
 	@Override
@@ -70,6 +75,8 @@ public class TEStationGearbox extends GenericTileEntity implements IHasGui {
 			this.sendMode = SendMode.fromId(tag.getInteger(nbtSendMode));
 		if (tag.hasKey(nbtReceiveEmitsRedstone))
 			this.receiveEmitsRedstone = tag.getBoolean(nbtReceiveEmitsRedstone);
+		if (tag.hasKey(nbtCurrentlyEmitingRs))
+			this.currentlyEmitingRedstone = tag.getBoolean(nbtCurrentlyEmitingRs);
 	}
 
 	@Override
@@ -88,6 +95,15 @@ public class TEStationGearbox extends GenericTileEntity implements IHasGui {
 
 	public void requestSetReceiveRedstoneSignal(boolean checked) {
 		this.sendNetworkCommand(netCmdSetReceiveEmitRedstone, checked);
+	}
+
+	public void emitRedstone() {
+		this.currentlyEmitingRedstone = true;
+		this.worldObj.scheduleBlockUpdate(this.xCoord, this.yCoord, this.zCoord, this
+			.getBlockType(), ATConfig.GEARBOX_EMIT_REDSTONE_X_TICKS);
+
+		this.worldObj.notifyBlocksOfNeighborChange(this.xCoord, this.yCoord, this.zCoord, this
+			.getBlockType());
 	}
 
 }

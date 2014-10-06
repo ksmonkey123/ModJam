@@ -1,5 +1,7 @@
 package ch.judos.at.gearbox;
 
+import java.util.Random;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -21,6 +23,25 @@ public class BlockStationGearBox extends BlockContainer {
 		this.setCreativeTab(ATMain.modTab);
 		this.setHardness(0.5f);
 		this.setHarvestLevel("axe", 0);
+	}
+
+	@Override
+	public int isProvidingStrongPower(IBlockAccess world, int x, int y, int z, int side) {
+		TEStationGearbox te = (TEStationGearbox) world.getTileEntity(x, y, z);
+		return te.currentlyEmitingRedstone ? 15 : 0;
+	}
+
+	@Override
+	public int isProvidingWeakPower(IBlockAccess worldIn, int x, int y, int z, int side) {
+		return this.isProvidingStrongPower(worldIn, x, y, z, side);
+	}
+
+	@Override
+	public void updateTick(World world, int x, int y, int z, Random random) {
+		TEStationGearbox te = (TEStationGearbox) world.getTileEntity(x, y, z);
+		te.currentlyEmitingRedstone = false;
+
+		world.notifyBlocksOfNeighborChange(x, y, z, this);
 	}
 
 	@Override

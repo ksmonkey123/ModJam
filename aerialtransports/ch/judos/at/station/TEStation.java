@@ -160,8 +160,6 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 
 			if (this.gearbox.getValue(this.worldObj).sendMode == SendMode.GondolaFilled && (goods == null || goods.stackSize < ATConfig.WOODEN_GONDOLA_CAPACITY))
 				return false;
-		} else {
-			System.out.println("Gearbox value is null, key: " + this.gearbox.getKey());
 		}
 
 		if (gondolas != null && gondolas.stackSize > 0 && goods != null && goods.stackSize > 0) {
@@ -410,6 +408,12 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 			ItemUtils.spawnItemEntityAbove(this, entityGondola.transportGoods);
 		if (!this.inventory.addItemStackToInventory(new ItemStack(ATMain.gondola)))
 			ItemUtils.spawnItemEntityAbove(this, new ItemStack(ATMain.gondola));
+
+		if (this.gearbox.getValue(this.worldObj) != null) {
+			if (this.gearbox.getValue(this.worldObj).receiveEmitsRedstone) {
+				this.gearbox.getValue(this.worldObj).emitRedstone();
+			}
+		}
 	}
 
 	/**
@@ -424,12 +428,10 @@ public class TEStation extends GenericTileEntityWithInventory implements IHasGui
 	}
 
 	public void detectNeighborBlocks() {
-		System.out.println("detecting neighbor blocks...");
 		BlockCoordinates c = new BlockCoordinates(this);
 		for (BlockCoordinates d : c.neighbors()) {
 			if (d.getTileEntity(this.worldObj) instanceof TEStationGearbox) {
 				this.gearbox.setKey(d.copy());
-				System.out.println("found gearbox: " + d);
 			}
 		}
 	}
