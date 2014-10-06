@@ -21,6 +21,25 @@ public class GuiContainerGearbox extends GenericGuiTEContainer {
 	}
 
 	@Override
+	public void initGui() {
+		super.initGui();
+		this.buttonList.clear();
+		//
+		//
+		// text = StatCollector.translateToLocal("at.reconnect");
+		//
+		// String t2;
+		// if (this.teStation.isSender())
+		// t2 = StatCollector.translateToLocal("at.sender");
+		// else
+		// t2 = StatCollector.translateToLocal("at.receiver");
+		// this.buttonList.add(new GuiButton(1, this.guiLeft + 100, this.guiTop + 43, 60, 20, t2));
+		//
+		// this.buttonList.add(new GuiButton(0, this.guiLeft + 100, this.guiTop + 23, 60, 20,
+		// text));
+	}
+
+	@Override
 	protected void drawGuiContainerForegroundLayer(int param1, int param2) {
 		String s = StatCollector.translateToLocal("tile." + ATNames.station_gearbox + ".name");
 		int color = 4210752;

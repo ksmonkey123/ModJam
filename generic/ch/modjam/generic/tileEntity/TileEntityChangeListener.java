@@ -1,5 +1,7 @@
 package ch.modjam.generic.tileEntity;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 public interface TileEntityChangeListener {
 
 	/**
@@ -14,5 +16,12 @@ public interface TileEntityChangeListener {
 	 * @param data additional command data
 	 */
 	public void onNetworkCommand(String command, byte[] data);
+
+	/**
+	 * this method is called client-side when the tileEntity is updated
+	 * 
+	 * @param nbtCompound the nbt of the packet update
+	 */
+	public void onDataPacket(NBTTagCompound nbtCompound);
 
 }

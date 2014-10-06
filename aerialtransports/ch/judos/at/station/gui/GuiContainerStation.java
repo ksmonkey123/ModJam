@@ -2,6 +2,7 @@ package ch.judos.at.station.gui;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 
@@ -11,11 +12,12 @@ import ch.judos.at.ATMain;
 import ch.judos.at.lib.ATNames;
 import ch.judos.at.station.TEStation;
 import ch.modjam.generic.gui.GenericGuiTEContainer;
+import ch.modjam.generic.tileEntity.TileEntityChangeListener;
 
 /**
  * @author judos
  */
-public class GuiContainerStation extends GenericGuiTEContainer {
+public class GuiContainerStation extends GenericGuiTEContainer implements TileEntityChangeListener {
 
 	private TEStation	teStation;
 
@@ -26,6 +28,20 @@ public class GuiContainerStation extends GenericGuiTEContainer {
 	public GuiContainerStation(InventoryPlayer inventory, TEStation te) {
 		super(new ContainerStation(inventory, te), te, inventory);
 		this.teStation = te;
+		this.teStation.addListener(this);
+	}
+
+	@Override
+	public void onGuiClosed() {
+		this.teStation.removeListener(this);
+	}
+
+	/*
+	 * called when the station does any changes over the network
+	 */
+	@Override
+	public void onNetworkCommand(String command, byte[] data) {
+		// this is server-side, do nothing
 	}
 
 	@Override
@@ -92,6 +108,12 @@ public class GuiContainerStation extends GenericGuiTEContainer {
 		int x = (this.width - this.xSize) / 2;
 		int y = (this.height - this.ySize) / 2;
 		this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
+	}
+
+	@Override
+	public void onDataPacket(NBTTagCompound nbtCompound) {
+		System.out.println("listened to update");
+		this.initGui();
 	}
 
 }
