@@ -11,6 +11,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import ch.judos.at.ATMain;
 import ch.judos.at.lib.ATNames;
+import ch.modjam.generic.WorldFixes;
 import ch.modjam.generic.gui.GenericGuiHandler;
 
 public class BlockStationGearBox extends BlockContainer {
@@ -65,7 +66,8 @@ public class BlockStationGearBox extends BlockContainer {
 
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
-		if (world.getBlockPowerInput(x, y, z) > 0) {
+		if (WorldFixes.getBlockPowerInputUP(world, x, y, z) > 0) {
+			System.out.println("powered");
 			TEStationGearbox te = (TEStationGearbox) world.getTileEntity(x, y, z);
 			te.isPowered = true;
 		}
