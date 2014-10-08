@@ -17,6 +17,8 @@ import ch.judos.at.gondola.EntityGondola;
 import ch.judos.at.gondola.ItemGondola;
 import ch.judos.at.lib.ATNames;
 import ch.judos.at.lib.CommonProxy;
+import ch.judos.at.mast.BlockMast;
+import ch.judos.at.mast.TEMast;
 import ch.judos.at.rope.BlockRope;
 import ch.judos.at.rope.ItemRope;
 import ch.judos.at.station.BlockStation;
@@ -75,20 +77,31 @@ public class ATMain {
 	public static ItemGearBox			gearbox;
 	public static BlockStationGearBox	stationGearbox;
 
+	public static BlockMast				mast;
+
 	/**
 	 * @param e
 	 */
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent e) {
+		// Create and register all items
 		logger = e.getModLog();
 		setMetaData(e.getModMetadata());
 		createCreativeTab();
 
-		registerRope();
-		registerGearBox();
-		registerStationGearBox();
-		registerGondola();
-		registerStation();
+		RegistryUtil.registerBlock(ropeBlock = new BlockRope());
+		RegistryUtil.registerItem(ropeOfStation = new ItemRope());
+
+		RegistryUtil.registerItem(gearbox = new ItemGearBox());
+		RegistryUtil.registerBlock(stationGearbox = new BlockStationGearBox(),
+			TEStationGearbox.class);
+
+		RegistryUtil.registerItem(gondola = new ItemGondola());
+		EntityRegistry.registerModEntity(EntityGondola.class, ATNames.gondola, 0, ATMain.instance,
+			80, 1, true);
+
+		RegistryUtil.registerBlock(station = new BlockStation(), TEStation.class);
+		RegistryUtil.registerBlock(mast = new BlockMast(), TEMast.class);
 
 		network = NetworkRegistry.INSTANCE.newSimpleChannel(ATMain.MOD_ID + "c1");
 		network.registerMessage(GondolaTargetMessage.GondolaTargetHandler.class,
@@ -97,16 +110,13 @@ public class ATMain {
 		proxy.registerRenderInformation();
 	}
 
-	private static void registerStationGearBox() {
-		stationGearbox = new BlockStationGearBox();
-		RegistryUtil.registerBlock(stationGearbox, TEStationGearbox.class);
-	}
-
 	/**
 	 * @param e
 	 */
 	@EventHandler
 	public void init(FMLInitializationEvent e) {
+		// add all recipies
+
 		// gear box
 		GameRegistry.addRecipe(new ShapedOreRecipe(gearbox, " W ", "WSW", " W ", 'W',
 			Blocks.planks, 'S', Items.stick));
@@ -122,32 +132,6 @@ public class ATMain {
 		// /station gearbox
 		GameRegistry.addRecipe(new ShapedOreRecipe(stationGearbox, "WWW", "rGG", "WWW", 'W',
 			Blocks.planks, 'r', Items.redstone, 'G', gearbox));
-	}
-
-	private static void registerGearBox() {
-		gearbox = new ItemGearBox();
-		RegistryUtil.registerItem(gearbox);
-	}
-
-	private static void registerRope() {
-		ropeBlock = new BlockRope();
-		RegistryUtil.registerBlock(ropeBlock);
-
-		ropeOfStation = new ItemRope();
-		RegistryUtil.registerItem(ropeOfStation);
-	}
-
-	private static void registerGondola() {
-		gondola = new ItemGondola();
-		RegistryUtil.registerItem(gondola);
-
-		EntityRegistry.registerModEntity(EntityGondola.class, ATNames.gondola, 0, ATMain.instance,
-			80, 1, true);
-	}
-
-	private static void registerStation() {
-		station = new BlockStation();
-		RegistryUtil.registerBlock(station, TEStation.class);
 	}
 
 	private static void setMetaData(ModMetadata m) {

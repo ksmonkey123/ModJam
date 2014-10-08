@@ -11,5 +11,6 @@ public class ATNames {
 	public static final String	ropeBlock		= "rope_collision_block";
 	public static final String	gearbox			= "gearbox";
 	public static final String	station_gearbox	= "station_gearbox";
+	public static final String	mast			= "mast";
 
 }

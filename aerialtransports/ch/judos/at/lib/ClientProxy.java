@@ -6,6 +6,8 @@ import ch.judos.at.ATMain;
 import ch.judos.at.gondola.EntityGondola;
 import ch.judos.at.gondola.ItemRendererGondola;
 import ch.judos.at.gondola.RendererGondola;
+import ch.judos.at.mast.RendererMast;
+import ch.judos.at.mast.TEMast;
 import ch.judos.at.station.ItemRendererStation;
 import ch.judos.at.station.RendererStation;
 import ch.judos.at.station.TEStation;
@@ -21,6 +23,9 @@ public class ClientProxy extends CommonProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TEStation.class, new RendererStation());
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(ATMain.station),
 			new ItemRendererStation());
+
+		// Mast:
+		ClientRegistry.bindTileEntitySpecialRenderer(TEMast.class, new RendererMast());
 
 		// Gondolas:
 		RenderingRegistry

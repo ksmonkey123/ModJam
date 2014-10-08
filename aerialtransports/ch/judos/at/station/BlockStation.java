@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import ch.judos.at.ATMain;
@@ -121,10 +120,6 @@ public class BlockStation extends BlockContainer {
 		super.breakBlock(world, x, y, z, block, meta);
 	}
 
-	public IIcon getBlockIcon() {
-		return this.blockIcon;
-	}
-
 	@Override
 	public boolean renderAsNormalBlock() {
 		return false;
@@ -147,12 +142,6 @@ public class BlockStation extends BlockContainer {
 			t.detectNeighborBlocks();
 		else
 			ATMain.logger.error("station was added but no tileEntity was found");
-	}
-
-	@Override
-	public int onBlockPlaced(World world, int x, int y, int z, int side, float subX, float subY,
-			float subZ, int meta) {
-		return super.onBlockPlaced(world, x, y, z, side, subX, subY, subZ, meta);
 	}
 
 	@Override

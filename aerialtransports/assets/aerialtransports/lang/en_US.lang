@@ -5,6 +5,7 @@ item.gondola.name=Gondola
 tile.rope_collision_block.name=Rope collision block
 item.gearbox.name=Gearbox
 tile.station_gearbox.name=Station Gearbox
+tile.mast.name=Gondola Mast
 
 at.gondolas=Gondolas
 at.items=Items
