@@ -32,7 +32,7 @@ public class RendererMast extends BaseTESRenderer {
 		GL11.glTranslated(transX + 0.5, transY + 0.5, transZ + 0.5);
 
 		// ent.xCoord
-		int h = ent.xCoord % 3 + 2;
+		int h = ent.xCoord % 4 + 2;
 		float angleXZ = (float) ((-90 * h + 30.) / 180 * Math.PI);
 
 		Geometry stationG = renderMast(angleXZ);
@@ -79,7 +79,7 @@ public class RendererMast extends BaseTESRenderer {
 
 	public static Geometry renderMast(float angleXZ) {
 
-		Geometry3 g3 = new Geometry3(ATMain.MOD_ID + ":textures/blocks/" + ATNames.station + ".png");
+		Geometry3 g3 = new Geometry3(ATMain.MOD_ID + ":textures/blocks/" + ATNames.mast + ".png");
 		g3.clear();
 		g3.transform.rotate(angleXZ, new Vector3f(0, 1, 0));
 
