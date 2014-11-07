@@ -1,0 +1,1 @@
+This is a shared repository for development of Minecraft mods. We started with 3 people and develop individual mods in the same repository. This makes it easier for us to share and look into other code or to write utility classes.
